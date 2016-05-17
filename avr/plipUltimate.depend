@@ -1,0 +1,335 @@
+# depslib dependency file v1.0
+1461609013 source:d:\prg\_git\plipultimate\avr\src\base\cmd.c
+	<string.h>
+	"cmd.h"
+	"../cmd_table.h"
+	"../cmdkey_table.h"
+	"uartutil.h"
+	"uart.h"
+
+1461608965 d:\prg\_git\plipultimate\avr\src\base\cmd.h
+	"../global.h"
+
+1461612430 d:\prg\_git\plipultimate\avr\src\global.h
+	<stdint.h>
+
+1421491558 d:\prg\_git\plipultimate\avr\src\cmd_table.h
+	<avr/pgmspace.h>
+	"global.h"
+
+1421491558 d:\prg\_git\plipultimate\avr\src\cmdkey_table.h
+	<avr/pgmspace.h>
+	"global.h"
+
+1461609007 d:\prg\_git\plipultimate\avr\src\base\uartutil.h
+	<avr/pgmspace.h>
+	"../global.h"
+
+1461609022 d:\prg\_git\plipultimate\avr\src\base\uart.h
+	"../global.h"
+
+1463303245 source:d:\prg\_git\plipultimate\avr\src\base\timer.c
+	"../global.h"
+	<avr/interrupt.h>
+
+1461609230 source:d:\prg\_git\plipultimate\avr\src\base\uart.c
+	"../global.h"
+	<avr/io.h>
+	<avr/interrupt.h>
+	"uart.h"
+	"timer.h"
+	"../board.h"
+
+1461609056 d:\prg\_git\plipultimate\avr\src\base\timer.h
+	"../global.h"
+	<avr/io.h>
+
+1421491558 d:\prg\_git\plipultimate\avr\src\board.h
+	"global.h"
+
+1461609277 source:d:\prg\_git\plipultimate\avr\src\base\uartutil.c
+	"uart.h"
+	"util.h"
+	"uartutil.h"
+	"timer.h"
+
+1461609246 d:\prg\_git\plipultimate\avr\src\base\util.h
+	<avr/io.h>
+	"../global.h"
+
+1461609293 source:d:\prg\_git\plipultimate\avr\src\base\util.c
+	"util.h"
+
+1461609307 source:d:\prg\_git\plipultimate\avr\src\board\arduino.c
+	<avr/interrupt.h>
+	"../global.h"
+	"../board.h"
+
+1421491558 source:d:\prg\_git\plipultimate\avr\src\board\avrnetio.c
+
+1463304935 source:d:\prg\_git\plipultimate\avr\src\bridge.c
+	"global.h"
+	"pkt_buf.h"
+	"pb_proto.h"
+	"base/uartutil.h"
+	"param.h"
+	"dump.h"
+	"base/timer.h"
+	"stats.h"
+	"base/util.h"
+	"bridge.h"
+	"main.h"
+	"base/cmd.h"
+	"pb_util.h"
+	"pio_util.h"
+	"pio.h"
+	"net/eth.h"
+	"net/net.h"
+
+1421491558 d:\prg\_git\plipultimate\avr\src\pkt_buf.h
+	"global.h"
+
+1421491558 d:\prg\_git\plipultimate\avr\src\pb_proto.h
+	"global.h"
+
+1421491558 d:\prg\_git\plipultimate\avr\src\param.h
+	"global.h"
+
+1421491558 d:\prg\_git\plipultimate\avr\src\dump.h
+	"global.h"
+	"pb_proto.h"
+
+1421491558 d:\prg\_git\plipultimate\avr\src\stats.h
+	"global.h"
+
+1421491558 d:\prg\_git\plipultimate\avr\src\bridge.h
+	"global.h"
+
+1463304931 d:\prg\_git\plipultimate\avr\src\main.h
+	"global.h"
+
+1421491558 d:\prg\_git\plipultimate\avr\src\pb_util.h
+	"global.h"
+
+1421491558 d:\prg\_git\plipultimate\avr\src\pio_util.h
+	"global.h"
+
+1421491558 d:\prg\_git\plipultimate\avr\src\pio.h
+	"global.h"
+
+1461609865 d:\prg\_git\plipultimate\avr\src\net\eth.h
+	"../global.h"
+	"net.h"
+
+1461609382 d:\prg\_git\plipultimate\avr\src\net\net.h
+	"../global.h"
+
+1463304926 source:d:\prg\_git\plipultimate\avr\src\bridge_test.c
+	"bridge_test.h"
+	"pio.h"
+	"pio_util.h"
+	"param.h"
+	"base/uartutil.h"
+	"main.h"
+	"stats.h"
+	"base/cmd.h"
+	"pb_util.h"
+	"pb_proto.h"
+	"net/net.h"
+	"net/eth.h"
+	"pkt_buf.h"
+	"dump.h"
+
+1421491558 d:\prg\_git\plipultimate\avr\src\bridge_test.h
+	"global.h"
+
+1461610113 source:d:\prg\_git\plipultimate\avr\src\cmd_table.c
+	"cmd_table.h"
+	"base/uartutil.h"
+	"base/util.h"
+	"net/net.h"
+	"param.h"
+	"stats.h"
+
+1463304923 source:d:\prg\_git\plipultimate\avr\src\cmdkey_table.c
+	"cmdkey_table.h"
+	"stats.h"
+	"pb_test.h"
+	"main.h"
+	"base/uartutil.h"
+
+1421491558 d:\prg\_git\plipultimate\avr\src\pb_test.h
+	"global.h"
+
+1461610339 source:d:\prg\_git\plipultimate\avr\src\dump.c
+	"dump.h"
+	"base/uart.h"
+	"base/uartutil.h"
+	"net/net.h"
+	"net/arp.h"
+	"net/eth.h"
+	"net/ip.h"
+	"net/udp.h"
+	"net/tcp.h"
+	"param.h"
+	"base/util.h"
+	"pb_proto.h"
+
+1461610303 d:\prg\_git\plipultimate\avr\src\net\arp.h
+	"../global.h"
+	"net.h"
+
+1461610308 d:\prg\_git\plipultimate\avr\src\net\ip.h
+	"../global.h"
+	"net.h"
+
+1461610323 d:\prg\_git\plipultimate\avr\src\net\udp.h
+	"../global.h"
+	"net.h"
+	"ip.h"
+
+1461610330 d:\prg\_git\plipultimate\avr\src\net\tcp.h
+	"../global.h"
+	"net.h"
+	"ip.h"
+
+1463303708 source:d:\prg\_git\plipultimate\avr\src\eth\enc28j60.c
+	"../base/timer.h"
+	"enc28j60.h"
+	"spi.h"
+	"../pio.h"
+
+1461610347 d:\prg\_git\plipultimate\avr\src\eth\enc28j60.h
+	"../pio_dev.h"
+
+1421491558 d:\prg\_git\plipultimate\avr\src\pio_dev.h
+	<avr/pgmspace.h>
+	"global.h"
+
+1461610521 d:\prg\_git\plipultimate\avr\src\eth\spi.h
+	<avr/io.h>
+	"../global.h"
+
+1421491558 source:d:\prg\_git\plipultimate\avr\src\eth\spi.c
+	"spi.h"
+
+1461608476 source:d:\prg\_git\plipultimate\avr\src\fuse.c
+	<avr/io.h>
+
+1463307745 source:d:\prg\_git\plipultimate\avr\src\main.c
+	"global.h"
+	"board.h"
+	"base/uart.h"
+	"base/uartutil.h"
+	"base/timer.h"
+	"par_low.h"
+	"param.h"
+	"base/cmd.h"
+	"pb_test.h"
+	"pio_test.h"
+	"bridge_test.h"
+	"bridge.h"
+	"main.h"
+
+1463310162 d:\prg\_git\plipultimate\avr\src\par_low.h
+	"global.h"
+	<avr/io.h>
+
+1421491558 d:\prg\_git\plipultimate\avr\src\pio_test.h
+	"global.h"
+
+1421491558 source:d:\prg\_git\plipultimate\avr\src\net\arp.c
+	"arp.h"
+	"net.h"
+
+1461612282 source:d:\prg\_git\plipultimate\avr\src\net\net.c
+	"net.h"
+	"../base/util.h"
+	"../base/uartutil.h"
+
+1463308614 source:d:\prg\_git\plipultimate\avr\src\par_low.c
+	"par_low.h"
+	<avr/interrupt.h>
+	<util/delay_basic.h>
+
+1461612445 source:d:\prg\_git\plipultimate\avr\src\param.c
+	"param.h"
+	"base/uartutil.h"
+	"base/uart.h"
+	"net/net.h"
+	<avr/eeprom.h>
+	<util/crc16.h>
+	<avr/pgmspace.h>
+	<string.h>
+
+1461612488 source:d:\prg\_git\plipultimate\avr\src\pb_proto.c
+	<avr/interrupt.h>
+	<util/delay_basic.h>
+	"pb_proto.h"
+	"par_low.h"
+	"base/timer.h"
+	"stats.h"
+	"base/uartutil.h"
+
+1461612544 source:d:\prg\_git\plipultimate\avr\src\pb_test.c
+	"pb_test.h"
+	"base/uartutil.h"
+	"pb_proto.h"
+	"pb_util.h"
+	"param.h"
+	"stats.h"
+	"main.h"
+	"base/cmd.h"
+	"base/timer.h"
+	"net/net.h"
+	"pkt_buf.h"
+	"dump.h"
+
+1461612552 source:d:\prg\_git\plipultimate\avr\src\pb_util.c
+	"pb_util.h"
+	"pb_proto.h"
+	"base/timer.h"
+	"stats.h"
+	"dump.h"
+	"main.h"
+
+1461612559 source:d:\prg\_git\plipultimate\avr\src\pio.c
+	"pio.h"
+	"pio_dev.h"
+	"base/uartutil.h"
+	"net/net.h"
+	"enc28j60.h"
+
+1461612574 source:d:\prg\_git\plipultimate\avr\src\pio_test.c
+	"pio_test.h"
+	"pio.h"
+	"pio_util.h"
+	"param.h"
+	"base/uartutil.h"
+	"main.h"
+	"stats.h"
+	"base/cmd.h"
+
+1461612590 source:d:\prg\_git\plipultimate\avr\src\pio_util.c
+	"pio_util.h"
+	"base/timer.h"
+	"pio.h"
+	"base/uartutil.h"
+	"stats.h"
+	"pkt_buf.h"
+	"main.h"
+	"param.h"
+	"net/net.h"
+	"net/eth.h"
+	"net/arp.h"
+	"net/ip.h"
+	"net/udp.h"
+
+1421491558 source:d:\prg\_git\plipultimate\avr\src\pkt_buf.c
+	"pkt_buf.h"
+
+1461612603 source:d:\prg\_git\plipultimate\avr\src\stats.c
+	"stats.h"
+	"base/uartutil.h"
+	"base/uart.h"
+

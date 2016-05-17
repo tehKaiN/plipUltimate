@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="plipUltimate" />
+		<Option pch_mode="2" />
+		<Option compiler="avr-gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/plipUltimate.elf" prefix_auto="1" extension_auto="0" />
+				<Option working_dir="" />
+				<Option object_output="obj/Debug/" />
+				<Option type="5" />
+				<Option compiler="avr-gcc" />
+				<Compiler>
+					<Add option="-std=c99" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/plipUltimate.elf" prefix_auto="1" extension_auto="0" />
+				<Option working_dir="" />
+				<Option object_output="obj/Release/" />
+				<Option type="5" />
+				<Option compiler="avr-gcc" />
+				<Compiler>
+					<Add option="-Os" />
+				</Compiler>
+			</Target>
+			<Environment>
+				<Variable name="MCU" value="atmega328p" />
+			</Environment>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-mmcu=atmega328p" />
+			<Add option="-DF_CPU=16000000UL" />
+		</Compiler>
+		<Linker>
+			<Add option="-mmcu=atmega328p" />
+			<Add option="-Wl,-Map=$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).map,--cref" />
+		</Linker>
+		<ExtraCommands>
+			<Add after="avr-size --mcu=atmega328p --format=avr $(TARGET_OUTPUT_FILE)" />
+			<Add after='cmd /c &quot;avr-objdump -h -S $(TARGET_OUTPUT_FILE) &gt; $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).lss&quot;' />
+			<Add after="avr-objcopy -R .eeprom -R .fuse -R .lock -R .signature -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).hex" />
+			<Add after="avr-objcopy --no-change-warnings -j .eeprom --change-section-lma .eeprom=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).eep" />
+			<Add after="avr-objcopy --no-change-warnings -j .lock --change-section-lma .lock=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).lock" />
+			<Add after="avr-objcopy --no-change-warnings -j .signature --change-section-lma .signature=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).sig" />
+			<Add after="avr-objcopy --no-change-warnings -j .fuse --change-section-lma .fuse=0 -O ihex $(TARGET_OUTPUT_FILE) $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).fuse" />
+			<Add after="srec_cat $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).fuse -Intel -crop 0x00 0x01 -offset  0x00 -O $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).lfs -Intel " />
+			<Add after="srec_cat $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).fuse -Intel -crop 0x01 0x02 -offset -0x01 -O $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).hfs -Intel " />
+			<Add after="srec_cat $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).fuse -Intel -crop 0x02 0x03 -offset -0x02 -O $(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME).efs -Intel " />
+		</ExtraCommands>
+		<Unit filename="src/base/cmd.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/base/cmd.h" />
+		<Unit filename="src/base/timer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/base/timer.h" />
+		<Unit filename="src/base/uart.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/base/uart.h" />
+		<Unit filename="src/base/uartutil.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/base/uartutil.h" />
+		<Unit filename="src/base/util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/base/util.h" />
+		<Unit filename="src/board.h" />
+		<Unit filename="src/board/arduino.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/bridge.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/bridge.h" />
+		<Unit filename="src/bridge_test.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/bridge_test.h" />
+		<Unit filename="src/cmd_table.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/cmd_table.h" />
+		<Unit filename="src/cmdkey_table.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/cmdkey_table.h" />
+		<Unit filename="src/dump.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/dump.h" />
+		<Unit filename="src/eth/enc28j60.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/eth/enc28j60.h" />
+		<Unit filename="src/eth/spi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/eth/spi.h" />
+		<Unit filename="src/fuse.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/global.h" />
+		<Unit filename="src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/main.h" />
+		<Unit filename="src/net/arp.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/net/arp.h" />
+		<Unit filename="src/net/eth.h" />
+		<Unit filename="src/net/ip.h" />
+		<Unit filename="src/net/net.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/net/net.h" />
+		<Unit filename="src/net/tcp.h" />
+		<Unit filename="src/net/udp.h" />
+		<Unit filename="src/par_low.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/par_low.h" />
+		<Unit filename="src/param.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/param.h" />
+		<Unit filename="src/pb_proto.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/pb_proto.h" />
+		<Unit filename="src/pb_test.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/pb_test.h" />
+		<Unit filename="src/pb_util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/pb_util.h" />
+		<Unit filename="src/pio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/pio.h" />
+		<Unit filename="src/pio_dev.h" />
+		<Unit filename="src/pio_test.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/pio_test.h" />
+		<Unit filename="src/pio_util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/pio_util.h" />
+		<Unit filename="src/pkt_buf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/pkt_buf.h" />
+		<Unit filename="src/stats.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/stats.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
