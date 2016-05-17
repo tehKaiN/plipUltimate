@@ -28,16 +28,14 @@
 
 void spi_init(void)
 {
-	// output: SS, MOSI, SCK
-	DDRB |= SPI_SS_MASK | SPI_MOSI_MASK | SPI_SCK_MASK;
-	// input: MISO
-	DDRB &= ~(SPI_MISO_MASK);
-	
-	// MOSI, SCK = 0
-	PORTB &= ~(SPI_MOSI_MASK | SPI_SCK_MASK);
-	// SS = 1
-	PORTB |= SPI_SS_MASK;
+	// output: CS, MOSI, SCK, input: MISO, card detect, write protect
+	SPI_DDR |= SPI_SCK | SPI_MOSI | SD_CS | ETH_CS;
+	SPI_DDR &= ~(SPI_MISO | SD_DETECT | SD_LOCK);
+
+	// MOSI, SCK = 0, Eth CS = 1
+	SPI_PORT &= ~(SPI_MOSI | SPI_SCK);
+	SPI_PORT |= ETH_CS;
 
   SPCR = _BV(SPE) | _BV(MSTR); // 8 MHz @ 16
-	SPSR = _BV(SPI2X); 
+	SPSR = _BV(SPI2X);
 }

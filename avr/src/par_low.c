@@ -27,6 +27,7 @@
 #include "par_low.h"
 #include <avr/interrupt.h>
 #include <util/delay_basic.h>
+#include "../pinout.h"
 
 
 void par_low_init(void) {

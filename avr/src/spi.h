@@ -29,11 +29,7 @@
 
 #include <avr/io.h>
 #include "../global.h"
-
-#define SPI_SS_MASK		PB2
-#define SPI_MOSI_MASK	PB3
-#define SPI_MISO_MASK	PB4
-#define SPI_SCK_MASK	PB5
+#include "../../pinout.h"
 
 extern void spi_init(void);
 
@@ -50,7 +46,9 @@ inline u08 spi_in(void)
   return SPDR;
 }
 
-inline void spi_enable_eth(void) { PORTB &= ~SPI_SS_MASK; }
-inline void spi_disable_eth(void) { PORTB |= SPI_SS_MASK; }
+inline void spi_enable_eth(void)  {SPI_PORT &= ~ETH_CS;}
+inline void spi_disable_eth(void) {SPI_PORT |= ETH_CS;}
+inline void spi_enable_sd(void)   {SPI_PORT &= ~SD_CS;}
+inline void spi_disable_sd(void)  {SPI_PORT |= SD_CS;}
 
 #endif

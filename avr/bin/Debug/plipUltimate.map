@@ -818,7 +818,7 @@ LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  .debug_abbrev  0x0000214e       0x70 obj\Debug\src\pkt_buf.o
  .debug_abbrev  0x000021be      0x138 obj\Debug\src\stats.o
 
-.debug_line     0x00000000     0x4936
+.debug_line     0x00000000     0x4939
  *(.debug_line)
  .debug_line    0x00000000      0x47c obj\Debug\src\base\cmd.o
  .debug_line    0x0000047c      0x1d7 obj\Debug\src\base\timer.o
@@ -831,22 +831,22 @@ LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  .debug_line    0x0000153c      0x2c8 obj\Debug\src\cmd_table.o
  .debug_line    0x00001804      0x1d2 obj\Debug\src\cmdkey_table.o
  .debug_line    0x000019d6      0x60e obj\Debug\src\dump.o
- .debug_line    0x00001fe4      0x6bb obj\Debug\src\eth\enc28j60.o
- .debug_line    0x0000269f       0x8f obj\Debug\src\eth\spi.o
- .debug_line    0x0000272e       0x8e obj\Debug\src\fuse.o
- .debug_line    0x000027bc      0x14a obj\Debug\src\main.o
- .debug_line    0x00002906      0x138 obj\Debug\src\net\arp.o
- .debug_line    0x00002a3e      0x2ab obj\Debug\src\net\net.o
- .debug_line    0x00002ce9      0x156 obj\Debug\src\par_low.o
- .debug_line    0x00002e3f      0x31b obj\Debug\src\param.o
- .debug_line    0x0000315a      0x77d obj\Debug\src\pb_proto.o
- .debug_line    0x000038d7      0x39d obj\Debug\src\pb_test.o
- .debug_line    0x00003c74      0x123 obj\Debug\src\pb_util.o
- .debug_line    0x00003d97      0x2d2 obj\Debug\src\pio.o
- .debug_line    0x00004069      0x171 obj\Debug\src\pio_test.o
- .debug_line    0x000041da      0x412 obj\Debug\src\pio_util.o
- .debug_line    0x000045ec       0xa1 obj\Debug\src\pkt_buf.o
- .debug_line    0x0000468d      0x2a9 obj\Debug\src\stats.o
+ .debug_line    0x00001fe4      0x6be obj\Debug\src\eth\enc28j60.o
+ .debug_line    0x000026a2       0x8f obj\Debug\src\eth\spi.o
+ .debug_line    0x00002731       0x8e obj\Debug\src\fuse.o
+ .debug_line    0x000027bf      0x14a obj\Debug\src\main.o
+ .debug_line    0x00002909      0x138 obj\Debug\src\net\arp.o
+ .debug_line    0x00002a41      0x2ab obj\Debug\src\net\net.o
+ .debug_line    0x00002cec      0x156 obj\Debug\src\par_low.o
+ .debug_line    0x00002e42      0x31b obj\Debug\src\param.o
+ .debug_line    0x0000315d      0x77d obj\Debug\src\pb_proto.o
+ .debug_line    0x000038da      0x39d obj\Debug\src\pb_test.o
+ .debug_line    0x00003c77      0x123 obj\Debug\src\pb_util.o
+ .debug_line    0x00003d9a      0x2d2 obj\Debug\src\pio.o
+ .debug_line    0x0000406c      0x171 obj\Debug\src\pio_test.o
+ .debug_line    0x000041dd      0x412 obj\Debug\src\pio_util.o
+ .debug_line    0x000045ef       0xa1 obj\Debug\src\pkt_buf.o
+ .debug_line    0x00004690      0x2a9 obj\Debug\src\stats.o
 
 .debug_frame    0x00000000      0xaa0
  *(.debug_frame)

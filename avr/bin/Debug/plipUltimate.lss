@@ -21,15 +21,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   8 .debug_abbrev 000022f6  00000000  00000000  0000c4ca  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   00004936  00000000  00000000  0000e7c0  2**0
+  9 .debug_line   00004939  00000000  00000000  0000e7c0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  00000aa0  00000000  00000000  000130f8  2**2
+ 10 .debug_frame  00000aa0  00000000  00000000  000130fc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    000016ab  00000000  00000000  00013b98  2**0
+ 11 .debug_str    000016ab  00000000  00000000  00013b9c  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00003237  00000000  00000000  00015243  2**0
+ 12 .debug_loc    00003237  00000000  00000000  00015247  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 000004d8  00000000  00000000  0001847a  2**0
+ 13 .debug_ranges 000004d8  00000000  00000000  0001847e  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -5106,7 +5106,7 @@ extern void dump_line(const u08 *eth_buf, u16 size)
     1fda:	e5 e2       	ldi	r30, 0x25	; 37
     1fdc:	f0 e0       	ldi	r31, 0x00	; 0
     1fde:	90 81       	ld	r25, Z
-    1fe0:	9d 7f       	andi	r25, 0xFD	; 253
+    1fe0:	9b 7f       	andi	r25, 0xFB	; 251
     1fe2:	90 83       	st	Z, r25
 static u08 is_full_duplex;
 static u08 rev;
@@ -5142,7 +5142,7 @@ static uint8_t readOp (uint8_t op, uint8_t address) {
     2014:	e5 e2       	ldi	r30, 0x25	; 37
     2016:	f0 e0       	ldi	r31, 0x00	; 0
     2018:	90 81       	ld	r25, Z
-    201a:	92 60       	ori	r25, 0x02	; 2
+    201a:	94 60       	ori	r25, 0x04	; 4
     201c:	90 83       	st	Z, r25
         spi_out(0x00);
     uint8_t result = spi_in();
@@ -5155,7 +5155,7 @@ static uint8_t readOp (uint8_t op, uint8_t address) {
     2020:	e5 e2       	ldi	r30, 0x25	; 37
     2022:	f0 e0       	ldi	r31, 0x00	; 0
     2024:	90 81       	ld	r25, Z
-    2026:	9d 7f       	andi	r25, 0xFD	; 253
+    2026:	9b 7f       	andi	r25, 0xFB	; 251
     2028:	90 83       	st	Z, r25
 
 static void writeOp (uint8_t op, uint8_t address, uint8_t data) {
@@ -5178,7 +5178,7 @@ static void writeOp (uint8_t op, uint8_t address, uint8_t data) {
     2046:	e5 e2       	ldi	r30, 0x25	; 37
     2048:	f0 e0       	ldi	r31, 0x00	; 0
     204a:	80 81       	ld	r24, Z
-    204c:	82 60       	ori	r24, 0x02	; 2
+    204c:	84 60       	ori	r24, 0x04	; 4
     204e:	80 83       	st	Z, r24
     spi_out(data);
     spi_disable_eth();
@@ -5195,7 +5195,7 @@ static void readBuf(uint16_t len, uint8_t* data) {
     205a:	e5 e2       	ldi	r30, 0x25	; 37
     205c:	f0 e0       	ldi	r31, 0x00	; 0
     205e:	80 81       	ld	r24, Z
-    2060:	8d 7f       	andi	r24, 0xFD	; 253
+    2060:	8b 7f       	andi	r24, 0xFB	; 251
     2062:	80 83       	st	Z, r24
     2064:	8a e3       	ldi	r24, 0x3A	; 58
     2066:	8e bd       	out	0x2e, r24	; 46
@@ -5236,7 +5236,7 @@ static void readBuf(uint16_t len, uint8_t* data) {
     2096:	e5 e2       	ldi	r30, 0x25	; 37
     2098:	f0 e0       	ldi	r31, 0x00	; 0
     209a:	80 81       	ld	r24, Z
-    209c:	82 60       	ori	r24, 0x02	; 2
+    209c:	84 60       	ori	r24, 0x04	; 4
     209e:	80 83       	st	Z, r24
     }
     spi_disable_eth();
@@ -5528,7 +5528,7 @@ static u08 enc28j60_send(const u08 *data, u16 size)
     2210:	e5 e2       	ldi	r30, 0x25	; 37
     2212:	f0 e0       	ldi	r31, 0x00	; 0
     2214:	80 81       	ld	r24, Z
-    2216:	8d 7f       	andi	r24, 0xFD	; 253
+    2216:	8b 7f       	andi	r24, 0xFB	; 251
     2218:	80 83       	st	Z, r24
     221a:	8a e7       	ldi	r24, 0x7A	; 122
     221c:	8e bd       	out	0x2e, r24	; 46
@@ -5569,7 +5569,7 @@ static u08 enc28j60_send(const u08 *data, u16 size)
     224a:	e5 e2       	ldi	r30, 0x25	; 37
     224c:	f0 e0       	ldi	r31, 0x00	; 0
     224e:	80 81       	ld	r24, Z
-    2250:	82 60       	ori	r24, 0x02	; 2
+    2250:	84 60       	ori	r24, 0x04	; 4
     2252:	80 83       	st	Z, r24
     2254:	0f c0       	rjmp	.+30     	; 0x2274 <enc28j60_send+0x84>
   }
@@ -5659,7 +5659,7 @@ static u08 enc28j60_init(const u08 macaddr[6], u08 flags)
     22bc:	e5 e2       	ldi	r30, 0x25	; 37
     22be:	f0 e0       	ldi	r31, 0x00	; 0
     22c0:	80 81       	ld	r24, Z
-    22c2:	82 60       	ori	r24, 0x02	; 2
+    22c2:	84 60       	ori	r24, 0x04	; 4
     22c4:	80 83       	st	Z, r24
   spi_disable_eth();
 
@@ -6114,36 +6114,34 @@ inline static void next_pkt(void)
 
 void spi_init(void)
 {
-	// output: SS, MOSI, SCK
-	DDRB |= SPI_SS_MASK | SPI_MOSI_MASK | SPI_SCK_MASK;
+	// output: CS, MOSI, SCK, input: MISO, card detect, write protect
+	SPI_DDR |= SPI_SCK | SPI_MOSI | SD_CS | ETH_CS;
     2568:	e4 e2       	ldi	r30, 0x24	; 36
     256a:	f0 e0       	ldi	r31, 0x00	; 0
     256c:	80 81       	ld	r24, Z
-    256e:	87 60       	ori	r24, 0x07	; 7
+    256e:	8e 62       	ori	r24, 0x2E	; 46
     2570:	80 83       	st	Z, r24
-	// input: MISO
-	DDRB &= ~(SPI_MISO_MASK);
+	SPI_DDR &= ~(SPI_MISO | SD_DETECT | SD_LOCK);
     2572:	80 81       	ld	r24, Z
-    2574:	8b 7f       	andi	r24, 0xFB	; 251
+    2574:	8e 76       	andi	r24, 0x6E	; 110
     2576:	80 83       	st	Z, r24
-	
-	// MOSI, SCK = 0
-	PORTB &= ~(SPI_MOSI_MASK | SPI_SCK_MASK);
+
+	// MOSI, SCK = 0, Eth CS = 1
+	SPI_PORT &= ~(SPI_MOSI | SPI_SCK);
     2578:	e5 e2       	ldi	r30, 0x25	; 37
     257a:	f0 e0       	ldi	r31, 0x00	; 0
     257c:	80 81       	ld	r24, Z
-    257e:	88 7f       	andi	r24, 0xF8	; 248
+    257e:	87 7d       	andi	r24, 0xD7	; 215
     2580:	80 83       	st	Z, r24
-	// SS = 1
-	PORTB |= SPI_SS_MASK;
+	SPI_PORT |= ETH_CS;
     2582:	80 81       	ld	r24, Z
-    2584:	82 60       	ori	r24, 0x02	; 2
+    2584:	84 60       	ori	r24, 0x04	; 4
     2586:	80 83       	st	Z, r24
 
   SPCR = _BV(SPE) | _BV(MSTR); // 8 MHz @ 16
     2588:	80 e5       	ldi	r24, 0x50	; 80
     258a:	8c bd       	out	0x2c, r24	; 44
-	SPSR = _BV(SPI2X); 
+	SPSR = _BV(SPI2X);
     258c:	81 e0       	ldi	r24, 0x01	; 1
     258e:	8d bd       	out	0x2d, r24	; 45
 }
@@ -6970,7 +6968,7 @@ void net_dump_mac(const u08 *in) {
     29a4:	08 95       	ret
 
 000029a6 <par_low_init>:
-#include <util/delay_basic.h>
+#include "../pinout.h"
 
 
 void par_low_init(void) {
