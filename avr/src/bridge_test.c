@@ -40,13 +40,13 @@
 #include "pkt_buf.h"
 #include "dump.h"
 
-static u16 pio_pkt_size;
+static uint16_t pio_pkt_size;
 
 /* a RECV command arrived from Amiga.
    this should only happen if we got a packet here from PIO
    in the first place
 */
-static u08 fill_pkt(u08 *buf, u16 max_size, u16 *size)
+static uint8_t fill_pkt(uint8_t *buf, uint16_t max_size, uint16_t *size)
 {
   *size = pio_pkt_size;
   if(*size > max_size) {
@@ -68,10 +68,10 @@ static u08 fill_pkt(u08 *buf, u16 max_size, u16 *size)
 /* a SEND command arrvied from Amiga.
    we got our packet back. forward to PIO
 */
-static u08 proc_pkt(const u08 *buf, u16 size)
+static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
 {
   // make sure its the expected packet type
-  u16 type = net_get_word(pkt_buf + ETH_OFF_TYPE);
+  uint16_t type = net_get_word(pkt_buf + ETH_OFF_TYPE);
 
   // in test mode 0 packet was sent by internal device loopback
   if(param.test_mode == 0) {
@@ -95,9 +95,9 @@ static u08 proc_pkt(const u08 *buf, u16 size)
   return PBPROTO_STATUS_OK;
 }
 
-u08 bridge_test_loop(void)
+uint8_t bridge_test_loop(void)
 {
-  u08 result = CMD_WORKER_IDLE;
+  uint8_t result = CMD_WORKER_IDLE;
 
   uart_send_time_stamp_spc();
   uart_send_pstring(PSTR("[BRIDGE_TEST] on\r\n"));
@@ -118,7 +118,7 @@ u08 bridge_test_loop(void)
 
     // incoming packet via PIO?
     if(pio_has_recv()) {
-      u16 size;
+      uint16_t size;
       if(pio_util_recv_packet(&size) == PIO_OK) {
         // handle ARP?
         if(!pio_util_handle_arp(size)) {

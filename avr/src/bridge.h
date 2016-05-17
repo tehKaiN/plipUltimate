@@ -29,6 +29,6 @@
 
 #include "global.h"
 
-extern u08 bridge_loop(void);
+extern uint8_t bridge_loop(void);
 
 #endif

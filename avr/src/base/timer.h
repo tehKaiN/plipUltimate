@@ -36,27 +36,27 @@ void timer_init(void);
 
 // a 100 Hz = 10ms timer
 // 16bit: 0,10ms...~10hours
-extern volatile u16 timer_10ms;
+extern volatile uint16_t timer_10ms;
 
 // a 99.83ms ~ 100ms timer
 // 16bit: 0,100us...6.5s
-extern volatile u16 timer_100us;
+extern volatile uint16_t timer_100us;
 
 // in 100us
-extern volatile u32 time_stamp;
+extern volatile uint32_t time_stamp;
 
 // busy wait with 10ms timer
-extern void timer_delay_10ms(u16 timeout);
+extern void timer_delay_10ms(uint16_t timeout);
 
 // busy wait with 100us timer
-extern void timer_delay_100us(u16 timeout);
+extern void timer_delay_100us(uint16_t timeout);
 
 // ----- hardware timer -----
 
 // 16 bit hw timer with 4us resolution
 inline void timer_hw_reset(void) { TCNT1 = 0; }
-inline u16  timer_hw_get(void) { return TCNT1; }
-extern u16 timer_hw_calc_rate_kbs(u16 bytes, u16 delta);
+inline uint16_t  timer_hw_get(void) { return TCNT1; }
+extern uint16_t timer_hw_calc_rate_kbs(uint16_t bytes, uint16_t delta);
 
 
 #endif

@@ -38,13 +38,13 @@
 #include "pkt_buf.h"
 #include "dump.h"
 
-static u08 toggle_request;
-static u08 auto_mode;
-static u08 silent_mode;
+static uint8_t toggle_request;
+static uint8_t auto_mode;
+static uint8_t silent_mode;
 
 // ----- Packet Callbacks -----
 
-static u08 fill_pkt(u08 *buf, u16 max_size, u16 *size)
+static uint8_t fill_pkt(uint8_t *buf, uint16_t max_size, uint16_t *size)
 {
   *size = param.test_plen;
   if(*size > max_size) {
@@ -54,14 +54,14 @@ static u08 fill_pkt(u08 *buf, u16 max_size, u16 *size)
   net_copy_mac(net_bcast_mac, buf);
   net_copy_mac(param.mac_addr, buf+6);
 
-  u08 ptype_hi = (u08)(param.test_ptype >> 8);
-  u08 ptype_lo = (u08)(param.test_ptype & 0xff);
+  uint8_t ptype_hi = (uint8_t)(param.test_ptype >> 8);
+  uint8_t ptype_lo = (uint8_t)(param.test_ptype & 0xff);
   buf[12] = ptype_hi;
   buf[13] = ptype_lo;
 
-  u08 *ptr = buf + 14;
-  u16 num = *size - 14;
-  u08 val = 0;
+  uint8_t *ptr = buf + 14;
+  uint16_t num = *size - 14;
+  uint8_t val = 0;
   while(num > 0) {
     *ptr = val;
     ptr++;
@@ -72,9 +72,9 @@ static u08 fill_pkt(u08 *buf, u16 max_size, u16 *size)
   return PBPROTO_STATUS_OK;
 }
 
-static u08 proc_pkt(const u08 *buf, u16 size)
+static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
 {
-  u16 errors = 0;
+  uint16_t errors = 0;
 
   // check packet size
   if(size != param.test_plen) {
@@ -93,17 +93,17 @@ static u08 proc_pkt(const u08 *buf, u16 size)
     uart_send_pstring(PSTR("ERR: src mac\r\n"));
   }
   // +12,+13: pkt type
-  u08 ptype_hi = (u08)(param.test_ptype >> 8);
-  u08 ptype_lo = (u08)(param.test_ptype & 0xff);
+  uint8_t ptype_hi = (uint8_t)(param.test_ptype >> 8);
+  uint8_t ptype_lo = (uint8_t)(param.test_ptype & 0xff);
   if((buf[12] != ptype_hi) || (buf[13] != ptype_lo)) {
     errors++;
     uart_send_pstring(PSTR("ERR: pkt type\r\n"));
   }
 
   // +14: data
-  const u08 *ptr = buf + 14;
-  u16 num = size - 14;
-  u08 val = 0;
+  const uint8_t *ptr = buf + 14;
+  uint16_t num = size - 14;
+  uint8_t val = 0;
   while(num > 0) {
     if(*ptr != val) {
       uart_send_pstring(PSTR("ERR: data @"));
@@ -137,7 +137,7 @@ static u08 proc_pkt(const u08 *buf, u16 size)
 
 static void pb_test_worker(void)
 {
-  u08 status = pb_util_handle();
+  uint8_t status = pb_util_handle();
 
   // ok!
   if(status == PBPROTO_STATUS_OK) {
@@ -166,7 +166,7 @@ static void pb_test_worker(void)
   }
 }
 
-u08 pb_test_loop(void)
+uint8_t pb_test_loop(void)
 {
   uart_send_time_stamp_spc();
   uart_send_pstring(PSTR("[PB_TEST] on\r\n"));
@@ -180,7 +180,7 @@ u08 pb_test_loop(void)
   silent_mode = 0;
 
   // test loop
-  u08 result = CMD_WORKER_IDLE;
+  uint8_t result = CMD_WORKER_IDLE;
   while(run_mode == RUN_MODE_PB_TEST) {
     // command line handling
     result = cmd_worker();
@@ -199,7 +199,7 @@ u08 pb_test_loop(void)
   return result;
 }
 
-void pb_test_send_packet(u08 silent)
+void pb_test_send_packet(uint8_t silent)
 {
   silent_mode = silent;
   pb_proto_request_recv();

@@ -42,10 +42,10 @@ static const pio_dev_ptr_t PROGMEM devices[] = {
 #define NUM_DEVICES  (sizeof(devices) / sizeof(pio_dev_ptr_t))
 
 // index of active device
-static u08 dev_id;
+static uint8_t dev_id;
 static pio_dev_ptr_t cur_dev;
 
-u08 pio_set_device(u08 id)
+uint8_t pio_set_device(uint8_t id)
 {
   if(id < NUM_DEVICES) {
     dev_id = id;
@@ -55,7 +55,7 @@ u08 pio_set_device(u08 id)
   return 0;
 }
 
-u08 pio_init(const u08 mac[6],u08 flags)
+uint8_t pio_init(const uint8_t mac[6],uint8_t flags)
 {
   // get current device
   cur_dev = (pio_dev_ptr_t)pgm_read_word(devices + dev_id);
@@ -67,14 +67,14 @@ u08 pio_init(const u08 mac[6],u08 flags)
   uart_send_pstring(name);
 
   // call init
-  u08 result = pio_dev_init(cur_dev, mac, flags);
+  uint8_t result = pio_dev_init(cur_dev, mac, flags);
   if(result == PIO_OK) {
     uart_send_pstring(PSTR(": ok! mac="));
     net_dump_mac(mac);
     uart_send_pstring(PSTR(" flags="));
     uart_send_hex_byte(flags);
     // show revision
-    u08 rev;
+    uint8_t rev;
     result = pio_dev_status(cur_dev, PIO_STATUS_VERSION, &rev);
     if(result == PIO_OK) {
       uart_send_pstring(PSTR(" rev="));
@@ -95,27 +95,27 @@ void pio_exit(void)
   pio_dev_exit(cur_dev);
 }
 
-u08 pio_send(const u08 *buf, u16 size)
+uint8_t pio_send(const uint8_t *buf, uint16_t size)
 {
   return pio_dev_send(cur_dev, buf, size);
 }
 
-u08 pio_recv(u08 *buf, u16 max_size, u16 *got_size)
+uint8_t pio_recv(uint8_t *buf, uint16_t max_size, uint16_t *got_size)
 {
   return pio_dev_recv(cur_dev, buf, max_size, got_size);
 }
 
-u08 pio_has_recv(void)
+uint8_t pio_has_recv(void)
 {
   return pio_dev_has_recv(cur_dev);
 }
 
-u08 pio_status(u08 status_id, u08 *value)
+uint8_t pio_status(uint8_t status_id, uint8_t *value)
 {
   return pio_dev_status(cur_dev, status_id, value);
 }
 
-u08 pio_control(u08 control_id, u08 value)
+uint8_t pio_control(uint8_t control_id, uint8_t value)
 {
   return pio_dev_control(cur_dev, control_id, value);
 }

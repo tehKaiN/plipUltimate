@@ -33,13 +33,13 @@
 
 extern void spi_init(void);
 
-inline void spi_out(u08 data)
+inline void spi_out(uint8_t data)
 {
   SPDR = data;
   while (!(SPSR&(1<<SPIF)));
 }
 
-inline u08 spi_in(void)
+inline uint8_t spi_in(void)
 {
   SPDR = 0x00;
   while (!(SPSR&(1<<SPIF)));

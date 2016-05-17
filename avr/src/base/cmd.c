@@ -35,14 +35,14 @@
 #define MAX_LINE  32
 #define MAX_ARGS  4
 
-u08 cmd_line[MAX_LINE];
-u08 *cmd_args[MAX_ARGS];
+char cmd_line[MAX_LINE];
+char *cmd_args[MAX_ARGS];
 
-static u08 enter_line(void)
+static uint8_t enter_line(void)
 {
-  u08 cmd_pos = 0;
+  uint8_t cmd_pos = 0;
   while(1) {
-    u08 c = uart_read();
+    uint8_t c = uart_read();
     if(c=='\n') {
       uart_send_crlf();
       break;
@@ -68,11 +68,11 @@ static u08 enter_line(void)
   return cmd_pos;
 }
 
-static u08 parse_args(u08 len)
+static uint8_t parse_args(uint8_t len)
 {
-  u08 pos = 0;
-  u08 argc = 0;
-  u08 stay = 1;
+  uint8_t pos = 0;
+  uint8_t argc = 0;
+  uint8_t stay = 1;
   while(stay) {
     // skip leading spaces
     while(cmd_line[pos] == ' ') {
@@ -104,16 +104,16 @@ static void show_cmd_help(void)
   uart_send_pstring(PSTR("Command Help:\r\n"));
   const cmd_table_t * ptr = cmd_table;
   while(1) {
-    const char * name = (const char *)pgm_read_word(&ptr->name);
+    const char *name = (const char*)pgm_read_word(&ptr->name);
     if(name == 0) {
       break;
     }
-    const char * help = (const char *)pgm_read_word(&ptr->help);
+    const char *help = (const char*)pgm_read_word(&ptr->help);
 
     // show command
-    u08 pos = 0;
+    uint8_t pos = 0;
     while(1) {
-      u08 c = pgm_read_byte(name);
+      uint8_t c = pgm_read_byte(name);
       if(c==0) {
         break;
       }
@@ -136,12 +136,12 @@ static void show_cmd_help(void)
   }
 }
 
-static u08 cmd_loop(void)
+static uint8_t cmd_loop(void)
 {
   uart_send_pstring(PSTR("Command Mode. Enter <?>+<return> for help and <q>+<return> to leave.\r\n"));
-  u08 num_chars = 1;
-  u08 status = CMD_OK;
-  u08 result = CMD_WORKER_DONE;
+  uint8_t num_chars = 1;
+  uint8_t status = CMD_OK;
+  uint8_t result = CMD_WORKER_DONE;
   while(status != CMD_QUIT) {
     // print prompt
     uart_send_pstring(PSTR("> "));
@@ -153,13 +153,13 @@ static u08 cmd_loop(void)
       uart_send_crlf();
 #endif
       // parse line into args
-      u08 argc = parse_args(num_chars);
+      uint8_t argc = parse_args(num_chars);
       if(argc > 0) {
 #ifdef DEBUG_CMD
         uart_send_hex_byte(argc);
         uart_send_crlf();
-        for(u08 i=0;i<argc;i++) {
-          uart_send_string((const char *)cmd_args[i]);
+        for(uint8_t i=0;i<argc;i++) {
+          uart_send_string((const uint8_t *)cmd_args[i]);
           uart_send_crlf();
         }
 #endif
@@ -171,11 +171,11 @@ static u08 cmd_loop(void)
           const cmd_table_t * ptr = cmd_table;
           const cmd_table_t * found = 0;
           while(1) {
-            const char * name = (const char *)pgm_read_word(&ptr->name);
+            const char *name = (const char*)pgm_read_word(&ptr->name);
             if(name == 0) {
               break;
             }
-            if(strcmp_P((const char *)cmd_args[0], name)==0) {
+            if(strcmp_P(cmd_args[0], name)==0) {
               found = ptr;
               break;
             }
@@ -185,11 +185,11 @@ static u08 cmd_loop(void)
           if(found != 0) {
             // execute command
             cmd_table_func_t func = (cmd_table_func_t)pgm_read_word(&found->func);
-            status = func(argc, (const u08 **)&cmd_args);
+            status = func(argc, (const uint8_t **)&cmd_args);
             // show result
             uart_send_hex_byte(status);
             uart_send_spc();
-            u08 type = status & CMD_MASK;
+            uint8_t type = status & CMD_MASK;
             if(type == CMD_MASK_OK) {
               if(status == CMD_RESET) {
                 uart_send_pstring(PSTR("RESET\r\n"));
@@ -227,11 +227,11 @@ static void show_cmdkey_help(void)
   uart_send_pstring(PSTR("Command Key Help:\r\n"));
   const cmdkey_table_t *ptr = cmdkey_table;
   while(1) {
-    u08 key = pgm_read_byte(&ptr->key);
+    uint8_t key = pgm_read_byte(&ptr->key);
     if(key == 0) {
       break;
     }
-    const char *help = (const char *)pgm_read_word(&ptr->help);
+    const char *help = (const char*)pgm_read_word(&ptr->help);
 
     uart_send(key);
     uart_send_pstring(PSTR("   "));
@@ -243,13 +243,13 @@ static void show_cmdkey_help(void)
 
 }
 
-u08 cmd_worker(void)
+uint8_t cmd_worker(void)
 {
-  u08 result = CMD_WORKER_IDLE;
+  uint8_t result = CMD_WORKER_IDLE;
 
   // small hack to enter commands
   if(uart_read_data_available()) {
-    u08 cmd = uart_read();
+    uint8_t cmd = uart_read();
     if(cmd == '\n') {
       // enter command loop
       result = cmd_loop();
@@ -262,7 +262,7 @@ u08 cmd_worker(void)
       const cmdkey_table_t *ptr = cmdkey_table;
       const cmdkey_table_t *found = 0;
       while(1) {
-        u08 key = pgm_read_byte(&ptr->key);
+        uint8_t key = pgm_read_byte(&ptr->key);
         if(key == cmd) {
           found = ptr;
           break;

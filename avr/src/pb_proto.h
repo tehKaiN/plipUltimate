@@ -60,32 +60,32 @@
 #define PBPROTO_LINE_OK        0x1
 
 // callbacks
-typedef u08 (*pb_proto_fill_func)(u08 *buf,u16 max_size,u16 *size);
-typedef u08 (*pb_proto_proc_func)(const u08 *buf, u16 size);
+typedef uint8_t (*pb_proto_fill_func)(uint8_t *buf,uint16_t max_size,uint16_t *size);
+typedef uint8_t (*pb_proto_proc_func)(const uint8_t *buf, uint16_t size);
 
 typedef struct {
-  u08 cmd;		// received pb proto command
-  u08 status;   // status after processing the command
-  u08 is_send;    // was a transmit command (amiga send?)
-  u08 stats_id; // what id to use for stats recording
-  u16 size;     // packet size 
-  u16 delta;    // hw timing for transmit
-  u16 rate;     // delta converted to transfer rate
-  u16 recv_delta; // delta after recv was requested 
-  u32 ts;       // time stamp of transfer
+  uint8_t cmd;		// received pb proto command
+  uint8_t status;   // status after processing the command
+  uint8_t is_send;    // was a transmit command (amiga send?)
+  uint8_t stats_id; // what id to use for stats recording
+  uint16_t size;     // packet size
+  uint16_t delta;    // hw timing for transmit
+  uint16_t rate;     // delta converted to transfer rate
+  uint16_t recv_delta; // delta after recv was requested
+  uint32_t ts;       // time stamp of transfer
 } pb_proto_stat_t;
 
 extern pb_proto_stat_t pb_proto_stat; // filled by pb_proto_handle()
 
 // ----- Parameter -----
 
-extern u16 pb_proto_rx_timeout; // timeout for next byte in 100us
+extern uint16_t pb_proto_rx_timeout; // timeout for next byte in 100us
 
 // ----- API -----
 
-extern void pb_proto_init(pb_proto_fill_func fill_func, pb_proto_proc_func proc_func, u08 *buf, u16 buf_size);
-extern u08  pb_proto_get_line_status(void);
-extern u08  pb_proto_handle(void); // side effect: fill pb_proto_stat!
+extern void pb_proto_init(pb_proto_fill_func fill_func, pb_proto_proc_func proc_func, uint8_t *buf, uint16_t buf_size);
+extern uint8_t  pb_proto_get_line_status(void);
+extern uint8_t  pb_proto_handle(void); // side effect: fill pb_proto_stat!
 extern void pb_proto_request_recv(void);
 
 #endif

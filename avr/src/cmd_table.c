@@ -56,7 +56,7 @@ COMMAND(cmd_param_dump)
 
 COMMAND(cmd_param_save)
 {
-  u08 result = param_save();
+  uint8_t result = param_save();
   if(result == PARAM_OK) {
     return CMD_OK;
   } else {
@@ -66,7 +66,7 @@ COMMAND(cmd_param_save)
 
 COMMAND(cmd_param_load)
 {
-  u08 result = param_load();
+  uint8_t result = param_load();
   if(result == PARAM_OK) {
     return CMD_OK;
   } else {
@@ -82,10 +82,10 @@ COMMAND(cmd_param_reset)
 
 COMMAND(cmd_param_toggle)
 {
-  u08 group = argv[0][0];
-  u08 type = argv[0][1];
-  u08 *val = 0;
-  u08 result = CMD_OK;
+  uint8_t group = argv[0][0];
+  uint8_t type = argv[0][1];
+  uint8_t *val = 0;
+  uint8_t result = CMD_OK;
 
   if(group == 't') {
     switch(type) {
@@ -108,7 +108,7 @@ COMMAND(cmd_param_toggle)
     // toggle value if no argument is given
     *val = *val ? 0 : 1;
   } else {
-    u08 new_val;
+    uint8_t new_val;
     if(parse_byte(argv[1],&new_val)) {
       *val = new_val;
     } else {
@@ -120,9 +120,9 @@ COMMAND(cmd_param_toggle)
 
 COMMAND(cmd_param_word)
 {
-  u08 group = argv[0][0];
-  u08 type = argv[0][1];
-  u16 *val = 0;
+  uint8_t group = argv[0][0];
+  uint8_t type = argv[0][1];
+  uint16_t *val = 0;
 
   if(group == 't') {
     switch(type) {
@@ -139,7 +139,7 @@ COMMAND(cmd_param_word)
   if(argc == 1) {
     return CMD_PARSE_ERROR;
   } else {
-    u16 new_val;
+    uint16_t new_val;
     if(parse_word(argv[1],&new_val)) {
       *val = new_val;
     } else {
@@ -151,7 +151,7 @@ COMMAND(cmd_param_word)
 
 COMMAND(cmd_param_mac_addr)
 {
-  u08 mac[6];
+  uint8_t mac[6];
 
   if(net_parse_mac(argv[1], mac)) {
     net_copy_mac(mac, param.mac_addr);
@@ -163,7 +163,7 @@ COMMAND(cmd_param_mac_addr)
 
 COMMAND(cmd_param_ip_addr)
 {
-  u08 ip[4];
+  uint8_t ip[4];
 
   if(net_parse_ip(argv[1], ip)) {
     net_copy_ip(ip, param.test_ip);

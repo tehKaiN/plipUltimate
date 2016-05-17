@@ -34,9 +34,9 @@
 #include "stats.h"
 #include "base/cmd.h"
 
-u08 pio_test_loop(void)
+uint8_t pio_test_loop(void)
 {
-  u08 result = CMD_WORKER_IDLE;
+  uint8_t result = CMD_WORKER_IDLE;
 
   uart_send_time_stamp_spc();
   uart_send_pstring(PSTR("[PIO_TEST] on\r\n"));
@@ -53,7 +53,7 @@ u08 pio_test_loop(void)
 
     // incoming packet?
     if(pio_has_recv()) {
-      u16 size;
+      uint16_t size;
       if(pio_util_recv_packet(&size) == PIO_OK) {
         // handle ARP?
         if(!pio_util_handle_arp(size)) {

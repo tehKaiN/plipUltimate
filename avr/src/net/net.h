@@ -30,40 +30,40 @@
 #include "../global.h"
 
 /* typedefs for generic packet tx */
-typedef void (*net_tx_packet_func)(const u08 *buf, u16);
+typedef void (*net_tx_packet_func)(const uint8_t *buf, uint16_t);
 
-extern void net_copy_mac(const u08 *in, u08 *out);
-extern void net_copy_ip(const u08 *in, u08 *out);
+extern void net_copy_mac(const uint8_t *in, uint8_t *out);
+extern void net_copy_ip(const uint8_t *in, uint8_t *out);
 
-extern u08  net_compare_mac(const u08 *a, const u08 *b);
-extern u08  net_compare_ip(const u08 *a, const u08 *b);
+extern uint8_t  net_compare_mac(const uint8_t *a, const uint8_t *b);
+extern uint8_t  net_compare_ip(const uint8_t *a, const uint8_t *b);
 
-extern u16  net_get_word(const u08 *buf);
-extern void net_put_word(u08 *buf, u16 value);
+extern uint16_t  net_get_word(const uint8_t *buf);
+extern void net_put_word(uint8_t *buf, uint16_t value);
 
-extern u32  net_get_long(const u08 *buf);
-extern void net_put_long(u08 *buf, u32 value);
+extern uint32_t  net_get_long(const uint8_t *buf);
+extern void net_put_long(uint8_t *buf, uint32_t value);
 
-extern void net_dump_mac(const u08 *in);
-extern void net_dump_ip(const u08 *in);
+extern void net_dump_mac(const uint8_t *in);
+extern void net_dump_ip(const uint8_t *in);
 
-extern u08 net_parse_ip(const u08 *buf, u08 *ip);
-extern u08 net_parse_mac(const u08 *buf, u08 *mac);
+extern uint8_t net_parse_ip(const uint8_t *buf, uint8_t *ip);
+extern uint8_t net_parse_mac(const uint8_t *buf, uint8_t *mac);
 
 /* constants */
-extern const u08 net_bcast_mac[6];
-extern const u08 net_zero_mac[6];
-extern const u08 net_zero_ip[4];
-extern const u08 net_ones_ip[4];
+extern const uint8_t net_bcast_mac[6];
+extern const uint8_t net_zero_mac[6];
+extern const uint8_t net_zero_ip[4];
+extern const uint8_t net_ones_ip[4];
 
 /* convenience functions */
-inline void net_copy_bcast_mac(u08 *out) { net_copy_mac(net_bcast_mac, out); }
-inline void net_copy_zero_mac(u08 *out) { net_copy_mac(net_zero_mac, out); }
+inline void net_copy_bcast_mac(uint8_t *out) { net_copy_mac(net_bcast_mac, out); }
+inline void net_copy_zero_mac(uint8_t *out) { net_copy_mac(net_zero_mac, out); }
 
-inline void net_copy_zero_ip(u08 *out) { net_copy_ip(net_zero_ip, out); }
-inline u08 net_compare_bcast_ip(const u08 *in) { return net_compare_ip(net_ones_ip, in); }
+inline void net_copy_zero_ip(uint8_t *out) { net_copy_ip(net_zero_ip, out); }
+inline uint8_t net_compare_bcast_ip(const uint8_t *in) { return net_compare_ip(net_ones_ip, in); }
 
-inline u08 net_compare_bcast_mac(const u08 *in) { return net_compare_mac(net_bcast_mac, in); }
-inline u08 net_compare_zero_mac(const u08 *in) { return net_compare_mac(net_zero_mac, in); }
+inline uint8_t net_compare_bcast_mac(const uint8_t *in) { return net_compare_mac(net_bcast_mac, in); }
+inline uint8_t net_compare_zero_mac(const uint8_t *in) { return net_compare_mac(net_zero_mac, in); }
 
 #endif

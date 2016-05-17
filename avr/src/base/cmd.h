@@ -34,6 +34,6 @@
 #define CMD_WORKER_RESET    2
 #define CMD_WORKER_RESTART  3
 
-extern u08 cmd_worker(void);
+extern uint8_t cmd_worker(void);
 
 #endif

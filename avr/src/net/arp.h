@@ -45,14 +45,14 @@
 #define ARP_REQUEST       1
 #define ARP_REPLY         2
 
-extern u08 arp_is_ipv4(const u08 *buf, u16 len);
-extern void arp_make_reply(u08 *buf, const u08 *my_mac, const u08 *my_ip);
+extern uint8_t arp_is_ipv4(const uint8_t *buf, uint16_t len);
+extern void arp_make_reply(uint8_t *buf, const uint8_t *my_mac, const uint8_t *my_ip);
 
 /* getter */
-inline u16 arp_get_op(const u08 *buf) { return net_get_word(buf + ARP_OFF_OP); }
-inline const u08* arp_get_src_mac(const u08 *buf) { return buf + ARP_OFF_SRC_MAC; }
-inline const u08* arp_get_src_ip(const u08 *buf) { return buf + ARP_OFF_SRC_IP; }
-inline const u08* arp_get_tgt_mac(const u08 *buf) { return buf + ARP_OFF_TGT_MAC; }
-inline const u08* arp_get_tgt_ip(const u08 *buf) { return buf + ARP_OFF_TGT_IP; }
+inline uint16_t arp_get_op(const uint8_t *buf) { return net_get_word(buf + ARP_OFF_OP); }
+inline const uint8_t* arp_get_src_mac(const uint8_t *buf) { return buf + ARP_OFF_SRC_MAC; }
+inline const uint8_t* arp_get_src_ip(const uint8_t *buf) { return buf + ARP_OFF_SRC_IP; }
+inline const uint8_t* arp_get_tgt_mac(const uint8_t *buf) { return buf + ARP_OFF_TGT_MAC; }
+inline const uint8_t* arp_get_tgt_ip(const uint8_t *buf) { return buf + ARP_OFF_TGT_IP; }
 
 #endif

@@ -47,8 +47,8 @@
 #define FLAG_SEND_MAGIC     2
 #define FLAG_FIRST_TRANSFER 4
 
-static u08 flags;
-static u08 req_is_pending;
+static uint8_t flags;
+static uint8_t req_is_pending;
 
 static void trigger_request(void)
 {
@@ -69,14 +69,14 @@ static void trigger_request(void)
 
 // ----- magic packets -----
 
-static void magic_online(const u08 *buf)
+static void magic_online(const uint8_t *buf)
 {
   uart_send_time_stamp_spc();
   uart_send_pstring(PSTR("[MAGIC] online\r\n"));
   flags |= FLAG_ONLINE | FLAG_FIRST_TRANSFER;
 
   // validate mac address and if it does not match then reconfigure PIO
-  const u08 *src_mac = eth_get_src_mac(buf);
+  const uint8_t *src_mac = eth_get_src_mac(buf);
   if(!net_compare_mac(param.mac_addr, src_mac)) {
     // update mac param and save
     net_copy_mac(src_mac, param.mac_addr);
@@ -95,7 +95,7 @@ static void magic_offline(void)
   flags &= ~FLAG_ONLINE;
 }
 
-static void magic_loopback(u16 size)
+static void magic_loopback(uint16_t size)
 {
   flags |= FLAG_SEND_MAGIC;
   trigger_request();
@@ -114,7 +114,7 @@ static void request_magic(void)
 // ----- packet callbacks -----
 
 // the Amiga requests a new packet
-static u08 fill_pkt(u08 *buf, u16 max_size, u16 *size)
+static uint8_t fill_pkt(uint8_t *buf, uint16_t max_size, uint16_t *size)
 {
   // need to send a magic?
   if((flags & FLAG_SEND_MAGIC) == FLAG_SEND_MAGIC) {
@@ -144,10 +144,10 @@ static u08 fill_pkt(u08 *buf, u16 max_size, u16 *size)
 }
 
 // handle incoming packet from Amiga
-static u08 proc_pkt(const u08 *buf, u16 size)
+static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
 {
   // get eth type
-  u16 eth_type = eth_get_pkt_type(buf);
+  uint16_t eth_type = eth_get_pkt_type(buf);
   switch(eth_type) {
     case ETH_TYPE_MAGIC_ONLINE:
       magic_online(buf);
@@ -172,9 +172,9 @@ static u08 proc_pkt(const u08 *buf, u16 size)
 
 // ---------- loop ----------
 
-u08 bridge_loop(void)
+uint8_t bridge_loop(void)
 {
-  u08 result = CMD_WORKER_IDLE;
+  uint8_t result = CMD_WORKER_IDLE;
 
   uart_send_time_stamp_spc();
   uart_send_pstring(PSTR("[BRIDGE] on\r\n"));
@@ -187,9 +187,9 @@ u08 bridge_loop(void)
   flags = 0;
   req_is_pending = 0;
 
-  u08 flow_control = param.flow_ctl;
-  u08 limit_flow = 0;
-  u08 first = 1;
+  uint8_t flow_control = param.flow_ctl;
+  uint8_t limit_flow = 0;
+  uint8_t first = 1;
   while(run_mode == RUN_MODE_BRIDGE) {
     // handle commands
     result = cmd_worker();
@@ -201,7 +201,7 @@ u08 bridge_loop(void)
     pb_util_handle();
 
     // incoming packet via PIO available?
-    u08 n = pio_has_recv();
+    uint8_t n = pio_has_recv();
     if(n>0) {
       // show first incoming packet
       if(first) {
@@ -217,7 +217,7 @@ u08 bridge_loop(void)
       }
       // offline: get and drop pio packet
       else {
-        u16 size;
+        uint16_t size;
         pio_util_recv_packet(&size);
         uart_send_time_stamp_spc();
         uart_send_pstring(PSTR("OFFLINE DROP: "));

@@ -26,4 +26,4 @@
 
 #include "pkt_buf.h"
 
-u08 pkt_buf[PKT_BUF_SIZE];
+uint8_t pkt_buf[PKT_BUF_SIZE];

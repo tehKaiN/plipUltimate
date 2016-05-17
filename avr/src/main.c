@@ -40,8 +40,8 @@
 #include "bridge.h"
 #include "main.h"
 
-u08 run_mode = RUN_MODE_BRIDGE;
-u08 global_verbose = 0;
+uint8_t run_mode = RUN_MODE_BRIDGE;
+uint8_t global_verbose = 0;
 
 /**
  * ORIGINAL:
@@ -95,7 +95,7 @@ int main(void)
 		#endif
 
 		// select main loop depending on current run mode
-		u08 result = CMD_WORKER_IDLE;
+		uint8_t result = CMD_WORKER_IDLE;
 		while(result != CMD_WORKER_RESET)
 			switch(run_mode) {
 				case RUN_MODE_PB_TEST:

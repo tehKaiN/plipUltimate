@@ -48,7 +48,7 @@ void par_low_init(void) {
 
 // data bus
 
-void par_low_pulse_ack(u08 delay)
+void par_low_pulse_ack(uint8_t delay)
 {
   PAR_STATUS_PORT &= ~NACK;
   _delay_loop_1(delay);

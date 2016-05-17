@@ -42,6 +42,6 @@
 
 extern void par_low_init(void);
 
-extern void par_low_pulse_ack(u08 delay);
+extern void par_low_pulse_ack(uint8_t delay);
 
 #endif

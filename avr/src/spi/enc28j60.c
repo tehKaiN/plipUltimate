@@ -245,10 +245,10 @@
 // (note: maximum ethernet frame length would be 1518)
 #define MAX_FRAMELEN      1518
 
-static u08 Enc28j60Bank;
-static u16 gNextPacketPtr;
-static u08 is_full_duplex;
-static u08 rev;
+static uint8_t Enc28j60Bank;
+static uint16_t gNextPacketPtr;
+static uint8_t is_full_duplex;
+static uint8_t rev;
 
 static uint8_t readOp (uint8_t op, uint8_t address) {
     spi_enable_eth();
@@ -335,7 +335,7 @@ static inline void enc28j60_disable_broadcast ( void )
   writeRegByte(ERXFCON, ERXFCON_UCEN|ERXFCON_CRCEN/*|ERXFCON_PMEN*/);
 }
 
-static u08 enc28j60_init(const u08 macaddr[6], u08 flags)
+static uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
 {
   spi_init();
   spi_disable_eth();
@@ -347,7 +347,7 @@ static u08 enc28j60_init(const u08 macaddr[6], u08 flags)
   timer_delay_100us(20); // errata B7/2
 
   // wait or error
-  u16 count = 0;
+  uint16_t count = 0;
   while (!readOp(ENC28J60_READ_CTRL_REG, ESTAT) & ESTAT_CLKRDY) {
     count ++;
     if(count == 0xfff) {
@@ -377,7 +377,7 @@ static u08 enc28j60_init(const u08 macaddr[6], u08 flags)
   // MAC init (with flow control)
   writeRegByte(MACON1, MACON1_MARXEN|MACON1_TXPAUS|MACON1_RXPAUS);
   writeRegByte(MACON2, 0x00);
-  u08 mac3val = MACON3_PADCFG0|MACON3_TXCRCEN|MACON3_FRMLNEN;
+  uint8_t mac3val = MACON3_PADCFG0|MACON3_TXCRCEN|MACON3_FRMLNEN;
   if(is_full_duplex) {
     mac3val |= MACON3_FULDPX;
   }
@@ -437,12 +437,12 @@ static void enc28j60_exit(void)
 
 // ---------- control ----------
 
-static u08 enc28j60_control(u08 control_id, u08 value)
+static uint8_t enc28j60_control(uint8_t control_id, uint8_t value)
 {
   switch(control_id) {
     case PIO_CONTROL_FLOW:
       {
-        u08 flag;
+        uint8_t flag;
         if(is_full_duplex) {
           flag = value ? 2 : 3;
         } else {
@@ -458,7 +458,7 @@ static u08 enc28j60_control(u08 control_id, u08 value)
 
 // ---------- status ----------
 
-static u08 enc28j60_status(u08 status_id, u08 *value)
+static uint8_t enc28j60_status(uint8_t status_id, uint8_t *value)
 {
   switch(status_id) {
     case PIO_STATUS_VERSION:
@@ -474,9 +474,9 @@ static u08 enc28j60_status(u08 status_id, u08 *value)
 }
 
 #if 0
-static u08 enc28j60_get_status( void )
+static uint8_t enc28j60_get_status( void )
 {
-  u08 val = readRegByte(EIR);
+  uint8_t val = readRegByte(EIR);
   if(val & EIR_TXERIF) {
     writeOp(ENC28J60_BIT_FIELD_CLR, EIR, EIR_TXERIF);
   }
@@ -489,14 +489,14 @@ static u08 enc28j60_get_status( void )
 
 // ---------- send ----------
 
-static u08 enc28j60_send(const u08 *data, u16 size)
+static uint8_t enc28j60_send(const uint8_t *data, uint16_t size)
 {
   // prepare tx buffer write
   writeReg(EWRPT, TXSTART_INIT);
   writeOp(ENC28J60_WRITE_BUF_MEM, 0, 0x00);
 
   // fill buffer
-  u16 num = size;
+  uint16_t num = size;
   spi_enable_eth(),
   spi_out(ENC28J60_WRITE_BUF_MEM);
   while(num--) {
@@ -528,7 +528,7 @@ inline static void next_pkt(void)
   writeOp(ENC28J60_BIT_FIELD_SET, ECON2, ECON2_PKTDEC);
 }
 
-static u08 read_hdr(u16 *got_size)
+static uint8_t read_hdr(uint16_t *got_size)
 {
   struct {
       uint16_t nextPacket;
@@ -543,12 +543,12 @@ static u08 read_hdr(u16 *got_size)
   return header.status;
 }
 
-static u08 enc28j60_recv(u08 *data, u16 max_size, u16 *got_size)
+static uint8_t enc28j60_recv(uint8_t *data, uint16_t max_size, uint16_t *got_size)
 {
   writeReg(ERDPT, gNextPacketPtr);
 
   // read chip's packet header
-  u08 status = read_hdr(got_size);
+  uint8_t status = read_hdr(got_size);
 
   // was a receive error?
   if ((status & 0x80)==0) {
@@ -557,8 +557,8 @@ static u08 enc28j60_recv(u08 *data, u16 max_size, u16 *got_size)
   }
 
   // check size
-  u16 len = *got_size;
-  u08 result = PIO_OK;
+  uint16_t len = *got_size;
+  uint8_t result = PIO_OK;
   if(len > max_size) {
     len = max_size;
     result = PIO_TOO_LARGE;
@@ -573,7 +573,7 @@ static u08 enc28j60_recv(u08 *data, u16 max_size, u16 *got_size)
 
 // ---------- has_recv ----------
 
-static u08 enc28j60_has_recv(void)
+static uint8_t enc28j60_has_recv(void)
 {
   return readRegByte(EPKTCNT);
 }
@@ -676,7 +676,7 @@ uint8_t enc28j60_do_BIST ( void )
 #endif
 
 // ----- pio_dev -----
-static const char PROGMEM dev_name[] = "enc28j60";
+static const uint8_t PROGMEM dev_name[] = "enc28j60";
 const pio_dev_t PROGMEM pio_dev_enc28j60 = {
   .name = dev_name,
   .init_f = enc28j60_init,

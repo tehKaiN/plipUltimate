@@ -29,9 +29,9 @@
 
 #include "global.h"
 
-extern u08 pb_test_loop(void);
+extern uint8_t pb_test_loop(void);
 
 extern void pb_test_toggle_auto(void);
-extern void pb_test_send_packet(u08 silent);
+extern void pb_test_send_packet(uint8_t silent);
 
 #endif

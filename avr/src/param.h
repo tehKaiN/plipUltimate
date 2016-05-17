@@ -30,19 +30,19 @@
 #include "global.h"
 
 typedef struct {
-  u08 mac_addr[6];
+  uint8_t mac_addr[6];
 
-  u08 flow_ctl;
-  u08 full_duplex;
+  uint8_t flow_ctl;
+  uint8_t full_duplex;
 
-  u16 test_plen;
-  u16 test_ptype;
-  u08 test_ip[4];
-  u16 test_port;
-  u08 test_mode;
+  uint16_t test_plen;
+  uint16_t test_ptype;
+  uint8_t test_ip[4];
+  uint16_t test_port;
+  uint8_t test_mode;
 } param_t;
-  
-extern param_t param;  
+
+extern param_t param;
 
 // param result
 #define PARAM_OK                  0
@@ -51,10 +51,10 @@ extern param_t param;
 
 // init parameters. try to load from eeprom or use default
 void param_init(void);
-// save param to eeprom (returns param result) 
-u08 param_save(void);
+// save param to eeprom (returns param result)
+uint8_t param_save(void);
 // load param from eeprom (returns param result)
-u08 param_load(void);
+uint8_t param_load(void);
 // reset param
 void param_reset(void);
 // show params

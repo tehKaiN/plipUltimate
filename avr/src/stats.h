@@ -36,21 +36,21 @@
 #define STATS_ID_NUM    4
 
 typedef struct {
-  u32 bytes;
-  u16 cnt;
-  u16 err;
-  u16 drop;
-  u16 max_rate;
+  uint32_t bytes;
+  uint16_t cnt;
+  uint16_t err;
+  uint16_t drop;
+  uint16_t max_rate;
 } stats_t;
 
 extern stats_t stats[STATS_ID_NUM];
 
 extern void stats_reset(void);
 extern void stats_dump_all(void);
-extern void stats_dump(u08 pb, u08 pio);
-extern void stats_update_ok(u08 id, u16 size, u16 rate);
+extern void stats_dump(uint8_t pb, uint8_t pio);
+extern void stats_update_ok(uint8_t id, uint16_t size, uint16_t rate);
 
-inline stats_t *stats_get(u08 id)
+inline stats_t *stats_get(uint8_t id)
 {
   return &stats[id];
 }

@@ -28,7 +28,7 @@
 
 // convert to hex
 
-u08 nybble_to_hex(u08 in)
+uint8_t nybble_to_hex(uint8_t in)
 {
   if(in<10)
     return '0' + in;
@@ -36,40 +36,40 @@ u08 nybble_to_hex(u08 in)
     return 'A' + in - 10;
 }
 
-void byte_to_hex(u08 in,u08 *out)
+void byte_to_hex(uint8_t in,uint8_t *out)
 {
   out[0] = nybble_to_hex(in >> 4);
   out[1] = nybble_to_hex(in & 0xf);
 }
 
-void word_to_hex(u16 in,u08 *out)
+void word_to_hex(uint16_t in,uint8_t *out)
 {
-  byte_to_hex((u08)(in>>8),out);
-  byte_to_hex((u08)(in&0xff),out+2);
+  byte_to_hex((uint8_t)(in>>8),out);
+  byte_to_hex((uint8_t)(in&0xff),out+2);
 }
 
-void dword_to_hex(u32 addr,u08 *out)
+void dword_to_hex(uint32_t addr,uint8_t *out)
 {
-  word_to_hex((u16)(addr>>16),out);
-  word_to_hex((u16)(addr&0xffff),out+4);
+  word_to_hex((uint16_t)(addr>>16),out);
+  word_to_hex((uint16_t)(addr&0xffff),out+4);
 }
 
-void byte_to_dec(u08 value, u08 *out)
+void byte_to_dec(uint8_t value, uint8_t *out)
 {
-  u08 h = value / 100;
-  u08 t = value % 100;
-  u08 o = t % 10;
+  uint8_t h = value / 100;
+  uint8_t t = value % 100;
+  uint8_t o = t % 10;
   t = t / 10;
   out[0] = '0' + h;
   out[1] = '0' + t;
   out[2] = '0' + o;
 }
 
-void dword_to_dec(u32 value, u08 *out, u08 num_digits, u08 point_pos)
+void dword_to_dec(uint32_t value, uint8_t *out, uint8_t num_digits, uint8_t point_pos)
 {
-	u08 i;
+	uint8_t i;
   // start backwards
-  u08 *pos = out + num_digits - 1;
+  uint8_t *pos = out + num_digits - 1;
   if(point_pos < num_digits) {
     pos++;
   }
@@ -78,7 +78,7 @@ void dword_to_dec(u32 value, u08 *out, u08 num_digits, u08 point_pos)
       *pos = '.';
       pos--;
     }
-    u08 dec = value % 10;
+    uint8_t dec = value % 10;
     *pos = '0' + dec;
     pos--;
     value /= 10;
@@ -87,7 +87,7 @@ void dword_to_dec(u32 value, u08 *out, u08 num_digits, u08 point_pos)
 
 // parse
 
-u08 parse_nybble(u08 c,u08 *value)
+uint8_t parse_nybble(uint8_t c,uint8_t *value)
 {
   if((c>='a')&&(c<='f')) {
     *value = c + 10 - 'a';
@@ -105,9 +105,9 @@ u08 parse_nybble(u08 c,u08 *value)
     return 0;
 }
 
-u08 parse_byte(const u08 *str,u08 *value)
+uint8_t parse_byte(const uint8_t *str,uint8_t *value)
 {
-  u08 val;
+  uint8_t val;
   if(!parse_nybble(str[0],&val))
     return 0;
   val <<= 4;
@@ -117,42 +117,42 @@ u08 parse_byte(const u08 *str,u08 *value)
   return 1;
 }
 
-u08 parse_word(const u08 *str,u16 *value)
+uint8_t parse_word(const uint8_t *str,uint16_t *value)
 {
-  u08 val;
+  uint8_t val;
   if(!parse_byte(&str[0],&val))
     return 0;
-  u08 val2;
+  uint8_t val2;
   if(!parse_byte(&str[2],&val2))
     return 0;
-  *value = (u16)val << 8 | val2;
+  *value = (uint16_t)val << 8 | val2;
   return 1;
 }
 
-u08 parse_dword(const u08 *str,u32 *value)
+uint8_t parse_dword(const uint8_t *str,uint32_t *value)
 {
-  u08 val;
+  uint8_t val;
   if(!parse_byte(&str[0],&val))
     return 0;
-  u08 val2;
+  uint8_t val2;
   if(!parse_byte(&str[2],&val2))
     return 0;
-  u08 val3;
+  uint8_t val3;
   if(!parse_byte(&str[4],&val3))
     return 0;
-  u08 val4;
+  uint8_t val4;
   if(!parse_byte(&str[6],&val4))
     return 0;
-  *value = (u32)val << 24 | (u32)val2 << 16 | (u32)val3 << 8 | val4;
+  *value = (uint32_t)val << 24 | (uint32_t)val2 << 16 | (uint32_t)val3 << 8 | val4;
   return 1;
 }
 
-u08 parse_byte_dec(const u08 *buf, u08 *out)
+uint8_t parse_byte_dec(const uint8_t *buf, uint8_t *out)
 {
-  u08 value = 0;
-  u08 digits = 0;
+  uint8_t value = 0;
+  uint8_t digits = 0;
   while(digits < 3) {
-    u08 c = buf[digits];
+    uint8_t c = buf[digits];
     if((c<'0')||(c>'9')) {
       break;
     }

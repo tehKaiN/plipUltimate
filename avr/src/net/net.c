@@ -28,64 +28,64 @@
 #include "../base/util.h"
 #include "../base/uartutil.h"
 
-const u08 net_bcast_mac[6] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
-const u08 net_zero_mac[6] = { 0,0,0,0,0,0 };
-const u08 net_zero_ip[4] = { 0,0,0,0 };
-const u08 net_ones_ip[4] = { 255,255,255,255 };
+const uint8_t net_bcast_mac[6] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+const uint8_t net_zero_mac[6] = { 0,0,0,0,0,0 };
+const uint8_t net_zero_ip[4] = { 0,0,0,0 };
+const uint8_t net_ones_ip[4] = { 255,255,255,255 };
 
-void net_copy_mac(const u08 *in, u08 *out) {
-	u08 i;
+void net_copy_mac(const uint8_t *in, uint8_t *out) {
+	uint8_t i;
   for(i=6; i--;)
     out[i] = in[i];
 }
 
-void net_copy_ip(const u08 *in, u08 *out) {
-	u08 i;
+void net_copy_ip(const uint8_t *in, uint8_t *out) {
+	uint8_t i;
   for(i = 4; i--;)
 		out[i] = in[i];
 }
 
-u16  net_get_word(const u08 *buf) {
-  return (u16)buf[0] << 8 | (u16)buf[1];
+uint16_t  net_get_word(const uint8_t *buf) {
+  return (uint16_t)buf[0] << 8 | (uint16_t)buf[1];
 }
 
-void net_put_word(u08 *buf, u16 value)
+void net_put_word(uint8_t *buf, uint16_t value)
 {
-  buf[0] = (u08)(value >> 8);
-  buf[1] = (u08)(value & 0xff);
+  buf[0] = (uint8_t)(value >> 8);
+  buf[1] = (uint8_t)(value & 0xff);
 }
 
-u32  net_get_long(const u08 *buf)
+uint32_t  net_get_long(const uint8_t *buf)
 {
-  return (u32)buf[0] << 24 | (u32)buf[1] << 16 | (u32)buf[2] << 8 | (u32)buf[3];
+  return (uint32_t)buf[0] << 24 | (uint32_t)buf[1] << 16 | (uint32_t)buf[2] << 8 | (uint32_t)buf[3];
 }
 
-void net_put_long(u08 *buf, u32 value)
+void net_put_long(uint8_t *buf, uint32_t value)
 {
-  buf[0] = (u08)(value >> 24);
-  buf[1] = (u08)((value >> 16) & 0xff);
-  buf[2] = (u08)((value >> 8) & 0xff);
-  buf[3] = (u08)(value & 0xff);
+  buf[0] = (uint8_t)(value >> 24);
+  buf[1] = (uint8_t)((value >> 16) & 0xff);
+  buf[2] = (uint8_t)((value >> 8) & 0xff);
+  buf[3] = (uint8_t)(value & 0xff);
 }
 
 static char *mac_str = "00:00:00:00:00:00";
 static char *ip_str = "000.000.000.000";
 
-void net_dump_mac(const u08 *in) {
+void net_dump_mac(const uint8_t *in) {
   int pos = 0;
-  u08 i;
+  uint8_t i;
   for(i=0;i<6;i++) {
-    byte_to_hex(in[i],(u08 *)(mac_str+pos));
+    byte_to_hex(in[i],(uint8_t *)(mac_str+pos));
     pos += 3;
   }
   uart_send_string(mac_str);
 }
 
-u08 net_parse_ip(const u08 *buf, u08 *ip) {
-	u08 i;
+uint8_t net_parse_ip(const uint8_t *buf, uint8_t *ip) {
+	uint8_t i;
   for(i=0;i<4;i++) {
-    u08 value;
-    u08 digits = parse_byte_dec(buf,&value);
+    uint8_t value;
+    uint8_t digits = parse_byte_dec(buf,&value);
     if(digits == 0)
       return 0;
     buf += digits + 1;
@@ -94,10 +94,10 @@ u08 net_parse_ip(const u08 *buf, u08 *ip) {
   return 1;
 }
 
-u08 net_parse_mac(const u08 *buf, u08 *mac) {
-	u08 i;
+uint8_t net_parse_mac(const uint8_t *buf, uint8_t *mac) {
+	uint8_t i;
   for(i=0;i<6;i++) {
-    u08 value;
+    uint8_t value;
     if(!parse_byte(buf, &value)) {
       return 0;
     }
@@ -107,26 +107,26 @@ u08 net_parse_mac(const u08 *buf, u08 *mac) {
   return 1;
 }
 
-void net_dump_ip(const u08 *in) {
-  u08 pos = 0;
-  u08 i;
+void net_dump_ip(const uint8_t *in) {
+  uint8_t pos = 0;
+  uint8_t i;
   for(i=0;i<4;i++) {
-    byte_to_dec(in[i],(u08 *)(ip_str+pos));
+    byte_to_dec(in[i],(uint8_t *)(ip_str+pos));
     pos += 4;
   }
   uart_send_string(ip_str);
 }
 
-u08  net_compare_mac(const u08 *a, const u08 *b) {
-	u08 i;
+uint8_t  net_compare_mac(const uint8_t *a, const uint8_t *b) {
+	uint8_t i;
   for(i=0;i<6;i++)
     if(a[i] != b[i])
       return 0;
   return 1;
 }
 
-u08  net_compare_ip(const u08 *a, const u08 *b) {
-	u08 i;
+uint8_t  net_compare_ip(const uint8_t *a, const uint8_t *b) {
+	uint8_t i;
   for(i=0;i<4;i++)
     if(a[i] != b[i])
       return 0;

@@ -73,10 +73,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/base/util.h" />
-		<Unit filename="src/board.h" />
-		<Unit filename="src/board/arduino.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="src/bridge.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -97,14 +93,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/dump.h" />
-		<Unit filename="src/eth/enc28j60.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/eth/enc28j60.h" />
-		<Unit filename="src/eth/spi.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/eth/spi.h" />
 		<Unit filename="src/fuse.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -162,6 +150,14 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/pkt_buf.h" />
+		<Unit filename="src/spi/enc28j60.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/spi/enc28j60.h" />
+		<Unit filename="src/spi/spi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/spi/spi.h" />
 		<Unit filename="src/stats.c">
 			<Option compilerVar="CC" />
 		</Unit>

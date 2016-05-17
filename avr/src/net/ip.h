@@ -42,10 +42,10 @@
 #define UDP_CHECKSUM_OFF    6
 #define TCP_CHECKSUM_OFF    16
 
-inline const u08 *ip_get_src_ip(const u08 *buf) { return buf + 12; }
-inline const u08 *ip_get_tgt_ip(const u08 *buf) { return buf + 16; }
-inline u16 ip_get_total_length(const u08 *buf) { return (u16)buf[2] << 8 | (u16)buf[3]; }
-inline u08 ip_get_hdr_length(const u08 *buf) { return (buf[0] & 0xf) * 4; }
-inline u08 ip_get_protocol(const u08 *buf) { return buf[9]; }
+inline const uint8_t *ip_get_src_ip(const uint8_t *buf) { return buf + 12; }
+inline const uint8_t *ip_get_tgt_ip(const uint8_t *buf) { return buf + 16; }
+inline uint16_t ip_get_total_length(const uint8_t *buf) { return (uint16_t)buf[2] << 8 | (uint16_t)buf[3]; }
+inline uint8_t ip_get_hdr_length(const uint8_t *buf) { return (buf[0] & 0xf) * 4; }
+inline uint8_t ip_get_protocol(const uint8_t *buf) { return buf[9]; }
 
 #endif

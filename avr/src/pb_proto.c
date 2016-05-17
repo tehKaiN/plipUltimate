@@ -53,18 +53,18 @@
 // recv funcs
 static pb_proto_fill_func fill_func;
 static pb_proto_proc_func proc_func;
-static u08 *pb_buf;
-static u16 pb_buf_size;
-static u32 trigger_ts;
+static uint8_t *pb_buf;
+static uint16_t pb_buf_size;
+static uint32_t trigger_ts;
 
-u16 pb_proto_timeout = 5000; // = 500ms in 100us ticks
+uint16_t pb_proto_timeout = 5000; // = 500ms in 100us ticks
 
 // public stat func
 pb_proto_stat_t pb_proto_stat;
 
 // ----- Init -----
 
-void pb_proto_init(pb_proto_fill_func ff, pb_proto_proc_func pf, u08 *buf, u16 buf_size)
+void pb_proto_init(pb_proto_fill_func ff, pb_proto_proc_func pf, uint8_t *buf, uint16_t buf_size)
 {
   fill_func = ff;
   proc_func = pf;
@@ -76,11 +76,13 @@ void pb_proto_init(pb_proto_fill_func ff, pb_proto_proc_func pf, u08 *buf, u16 b
   PAR_STATUS_PIN &= ~BUSY;
 }
 
-u08 pb_proto_get_line_status(void) {
-  u08 strobe = PAR_STATUS_PIN & NSTROBE;
-  u08 select = PAR_STATUS_PIN & SEL;
-  u08 pout = PAR_STATUS_PIN & POUT;
-  return ((pout >> (POUT_PIN-2)) | (select >> (SEL_PIN-1)) | (strobe >> NSTROBE_PIN));
+uint8_t pb_proto_get_line_status(void) {
+	uint8_t ubIn, ubStrobe, ubSelect, ubPOut;
+	ubIn = PAR_STATUS_PIN;
+  ubStrobe = (ubIn & NSTROBE) >> POUT_PIN;
+  ubSelect = (ubIn & SEL)     >> SEL_PIN;
+  ubPOut   = (ubIn & POUT)    >> NSTROBE_PIN;
+  return ((ubPOut << 2) | (ubSelect << 1) | ubStrobe);
 }
 
 void pb_proto_request_recv(void)
@@ -91,24 +93,25 @@ void pb_proto_request_recv(void)
 
 // ----- HELPER -----
 
-static u08 wait_req(u08 toggle_expect, u08 state_flag) {
+static uint8_t wait_req(uint8_t ubReqValue, uint8_t ubStateFlag) {
   // wait for new REQ value
   timer_100us = 0;
   while(timer_100us < pb_proto_timeout) {
-    u08 pout = (PAR_STATUS_PIN & POUT) >> POUT_PIN;
-    if((toggle_expect && pout) || (!toggle_expect && !pout))
+		uint8_t ubIn = PAR_STATUS_PIN;
+    uint8_t ubPOut = (ubIn & POUT) >> POUT_PIN;
+    if(ubReqValue == ubPOut)
       return PBPROTO_STATUS_OK;
     // during transfer client aborted and removed SEL
-    if(!(PAR_STATUS_PIN & SEL))
-      return PBPROTO_STATUS_LOST_SELECT | state_flag;
+    if(!(ubIn & SEL))
+      return PBPROTO_STATUS_LOST_SELECT | ubStateFlag;
   }
-  return PBPROTO_STATUS_TIMEOUT | state_flag;
+  return PBPROTO_STATUS_TIMEOUT | ubStateFlag;
 }
 
-static u08 wait_sel(u08 select_state, u08 state_flag) {
+static uint8_t wait_sel(uint8_t select_state, uint8_t state_flag) {
   timer_100us = 0;
   while(timer_100us < pb_proto_timeout) {
-    if((PAR_STATUS_PIN & SEL) >> SEL_PIN == select_state)
+    if(((PAR_STATUS_PIN & SEL) >> SEL_PIN) == select_state)
       return PBPROTO_STATUS_OK;
   }
   return PBPROTO_STATUS_TIMEOUT | state_flag;
@@ -117,10 +120,10 @@ static u08 wait_sel(u08 select_state, u08 state_flag) {
 // ---------- Handler ----------
 
 // amiga wants to send a packet
-static u08 cmd_send(u16 *pReadSize)
+static uint8_t cmd_send(uint16_t *pReadSize)
 {
-  u08 ubStatus;
-  u16 uwSize;
+  uint8_t ubStatus;
+  uint16_t uwSize;
 
   // --- get size hi ---
   ubStatus = wait_req(1, PBPROTO_STAGE_SIZE_HI);
@@ -143,13 +146,13 @@ static u08 cmd_send(u16 *pReadSize)
 
   // Original plipbox had following loop operating on words, so size has to be
   // rounded up
-  // TODO: Make odd transfers safe?
+  // TODO(KaiN#9): Make odd transfers safe?
   uwSize = (uwSize+1)&0xFFFE;
 
   // Packet read loop
-  u16 uwReadSize = 0;
-  u08 *ptr = pb_buf;
-  u08 ubPOutWait = 1;
+  uint16_t uwReadSize = 0;
+  uint8_t *ptr = pb_buf;
+  uint8_t ubPOutWait = 1;
   while(uwSize--) {
     ubStatus = wait_req(ubPOutWait, PBPROTO_STAGE_DATA);
     if(ubStatus != PBPROTO_STATUS_OK)
@@ -165,9 +168,9 @@ static u08 cmd_send(u16 *pReadSize)
 }
 
 // amiga wants to receive a packet
-static u08 cmd_recv(u16 uwSize, u16 *pWriteSize)
+static uint8_t cmd_recv(uint16_t uwSize, uint16_t *pWriteSize)
 {
-	u08 ubStatus;
+	uint8_t ubStatus;
 
   PAR_DATA_DDR = 0xFF;
 
@@ -175,7 +178,7 @@ static u08 cmd_recv(u16 uwSize, u16 *pWriteSize)
   ubStatus = wait_req(1, PBPROTO_STAGE_SIZE_HI);
   if(ubStatus != PBPROTO_STATUS_OK) {
     return ubStatus;
-    // NOTE: return without DDR switchback
+    // NOTE(KaiN): return without DDR switchback
   }
   PAR_DATA_PORT = uwSize >> 8;
   PAR_STATUS_PORT &= ~BUSY;
@@ -184,18 +187,18 @@ static u08 cmd_recv(u16 uwSize, u16 *pWriteSize)
   ubStatus = wait_req(0, PBPROTO_STAGE_SIZE_LO);
   if(ubStatus != PBPROTO_STATUS_OK) {
     return ubStatus;
-    // NOTE: return without DDR switchback
+    // NOTE(KaiN): return without DDR switchback
   }
   PAR_DATA_PORT = uwSize & 0xFF;
   PAR_STATUS_PORT ^= BUSY;
 
   // --- data ---
-  u16 uwWriteSize = 0;
-  const u08 *ptr = pb_buf;
-  u08 ubPOutWait = 1;
+  uint16_t uwWriteSize = 0;
+  const uint8_t *ptr = pb_buf;
+  uint8_t ubPOutWait = 1;
   // Original plipbox had following loop operating on words, so size has to be
   // rounded up
-  // TODO: Make odd transfers safe?
+  // TODO(KaiN#9): Make odd transfers safe?
   uwSize = (uwSize+1)&0xFFFE;
   while(uwSize--) {
     ubStatus = wait_req(ubPOutWait, PBPROTO_STAGE_DATA);
@@ -220,10 +223,10 @@ static u08 cmd_recv(u16 uwSize, u16 *pWriteSize)
 
 // ---------- BURST ----------
 
-static u08 cmd_send_burst(u16 *ret_size)
+static uint8_t cmd_send_burst(uint16_t *ret_size)
 {
-  u16 uwSize;
-  u08 ubStatus;
+  uint16_t uwSize;
+  uint8_t ubStatus;
 
   // --- packet size hi ---
   ubStatus = wait_req(1, PBPROTO_STAGE_SIZE_HI);
@@ -246,10 +249,10 @@ static u08 cmd_send_burst(u16 *ret_size)
     return PBPROTO_STATUS_PACKET_TOO_LARGE;
 
   // round to even and convert to words
-  u16 words = (uwSize +1) >> 1;
-  u16 i;
-  u08 result = PBPROTO_STATUS_OK;
-  u08 *ptr = pb_buf;
+  uint16_t words = (uwSize +1) >> 1;
+  uint16_t i;
+  uint8_t result = PBPROTO_STATUS_OK;
+  uint8_t *ptr = pb_buf;
 
   // ----- burst loop -----
   // BEGIN TIME CRITICAL
@@ -298,9 +301,9 @@ static u08 cmd_send_burst(u16 *ret_size)
  * AVR doesn't acknowledge sending next part of data, so Amiga just reads
  * as fast as it can and acks every byte read
  */
-static u08 cmd_recv_burst(u16 size, u16 *ret_size)
+static uint8_t cmd_recv_burst(uint16_t size, uint16_t *ret_size)
 {
-  u08 status;
+  uint8_t status;
 
   // --- set packet size hi
   status = wait_req(1, PBPROTO_STAGE_SIZE_HI);
@@ -325,10 +328,10 @@ static u08 cmd_recv_burst(u16 size, u16 *ret_size)
     return status;
 
   // round to even and convert to words
-  u16 words = (size + 1) >> 1;
-  u08 result = PBPROTO_STATUS_OK;
-  u16 i;
-  u08 *ptr = pb_buf;
+  uint16_t words = (size + 1) >> 1;
+  uint8_t result = PBPROTO_STATUS_OK;
+  uint16_t i;
+  uint8_t *ptr = pb_buf;
 
   // ----- burst loop -----
   // BEGIN TIME CRITICAL
@@ -355,7 +358,7 @@ static u08 cmd_recv_burst(u16 size, u16 *ret_size)
   sei();
   // END TIME CRITICAL
 
-	// TODO: WTF with label/goto
+	// TODO(KaiN#9): WTF with label/goto
   // final wait REQ == 0
   while(PAR_STATUS_PIN & POUT)
     if(!(PAR_STATUS_PIN & SEL))
@@ -382,9 +385,9 @@ static u08 cmd_recv_burst(u16 size, u16 *ret_size)
   return result;
 }
 
-u08 pb_proto_handle(void)
+uint8_t pb_proto_handle(void)
 {
-  u08 result;
+  uint8_t result;
   pb_proto_stat_t *ps = &pb_proto_stat;
 
   // handle server side of plipbox protocol
@@ -403,12 +406,12 @@ u08 pb_proto_handle(void)
   }
 
   // read command byte and execute it
-  u08 cmd = PAR_DATA_PIN;
+  uint8_t cmd = PAR_DATA_PIN;
 
   // fill buffer for recv command
-  u16 pkt_size = 0;
+  uint16_t pkt_size = 0;
   if((cmd == PBPROTO_CMD_RECV) || (cmd == PBPROTO_CMD_RECV_BURST)) {
-    u08 res = fill_func(pb_buf, pb_buf_size, &pkt_size);
+    uint8_t res = fill_func(pb_buf, pb_buf_size, &pkt_size);
     if(res != PBPROTO_STATUS_OK) {
       ps->status = res;
       return res;
@@ -416,13 +419,13 @@ u08 pb_proto_handle(void)
   }
 
   // start timer
-  u32 ts = time_stamp;
+  uint32_t ts = time_stamp;
   timer_hw_reset();
 
   // confirm cmd with RAK = 1
   PAR_STATUS_PORT |= BUSY;
 
-  u16 ret_size = 0;
+  uint16_t ret_size = 0;
   switch(cmd) {
     case PBPROTO_CMD_RECV:
       result = cmd_recv(pkt_size, &ret_size);
@@ -448,7 +451,7 @@ u08 pb_proto_handle(void)
   PAR_STATUS_PORT &= ~BUSY;
 
   // read timer
-  u16 delta = timer_hw_get();
+  uint16_t delta = timer_hw_get();
 
   // process buffer for send command
   if(result == PBPROTO_STATUS_OK) {
@@ -466,6 +469,6 @@ u08 pb_proto_handle(void)
   ps->ts = ts;
   ps->is_send = (cmd == PBPROTO_CMD_SEND) || (cmd == PBPROTO_CMD_SEND_BURST);
   ps->stats_id = ps->is_send ? STATS_ID_PB_TX : STATS_ID_PB_RX;
-  ps->recv_delta = ps->is_send ? 0 : (u16)(ps->ts - trigger_ts);
+  ps->recv_delta = ps->is_send ? 0 : (uint16_t)(ps->ts - trigger_ts);
   return result;
 }

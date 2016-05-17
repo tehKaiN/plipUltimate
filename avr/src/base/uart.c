@@ -57,10 +57,12 @@
 #define UART_RX_BUF_SIZE 16
 #define UART_RX_SET_CTS_POS  2
 #define UART_RX_CLR_CTS_POS  13
-static volatile u08 uart_rx_buf[UART_RX_BUF_SIZE];
-static volatile u08 uart_rx_start = 0;
-static volatile u08 uart_rx_end = 0;
-static volatile u08 uart_rx_size = 0;
+static volatile uint8_t uart_rx_buf[UART_RX_BUF_SIZE];
+static volatile uint8_t uart_rx_start = 0;
+static volatile uint8_t uart_rx_end = 0;
+static volatile uint8_t uart_rx_size = 0;
+
+/// TODO(KaiN#5): Remove serial dump in favor of parallel comm
 
 void uart_init(void)
 {
@@ -70,8 +72,8 @@ void uart_init(void)
   UCSRB = 0;
 
   // baud rate
-  UBRRH = (u08)((UART_UBRR)>>8);
-  UBRRL = (u08)((UART_UBRR)&0xff);
+  UBRRH = (uint8_t)((UART_UBRR)>>8);
+  UBRRL = (uint8_t)((UART_UBRR)&0xff);
 
   UCSRB = 0x98; // 0x18  enable tranceiver and transmitter, RX interrupt
   UCSRC = 0x86; // 0x86 -> use UCSRC, 8 bit, 1 stop, no parity, asynch. mode
@@ -90,7 +92,7 @@ ISR(USART_RXC_vect)
 ISR(USART_RX_vect)
 #endif
 {
-  u08 data = UDR;
+  uint8_t data = UDR;
   uart_rx_buf[uart_rx_end] = data;
 
   uart_rx_end++;
@@ -100,12 +102,12 @@ ISR(USART_RX_vect)
   uart_rx_size++;
 }
 
-u08 uart_read_data_available(void)
+uint8_t uart_read_data_available(void)
 {
   return uart_rx_start != uart_rx_end;
 }
 
-u08 uart_read(void)
+uint8_t uart_read(void)
 {
   // wait for buffe to be filled
   while(uart_rx_start==uart_rx_end);
@@ -113,7 +115,7 @@ u08 uart_read(void)
   // read buffer
   cli();
 
-  u08 data = uart_rx_buf[uart_rx_start];
+  uint8_t data = uart_rx_buf[uart_rx_start];
 
   uart_rx_start++;
   if(uart_rx_start == UART_RX_BUF_SIZE)
@@ -125,7 +127,7 @@ u08 uart_read(void)
   return data;
 }
 
-void uart_send(u08 data)
+void uart_send(uint8_t data)
 {
   // wait for transmitter to become ready
   while(!( UCSRA & (1<<UDRE)));

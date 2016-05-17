@@ -37,9 +37,9 @@
 #include "base/util.h"
 #include "pb_proto.h"
 
-void dump_eth_pkt(const u08 *eth_buf, u16 size)
+void dump_eth_pkt(const uint8_t *eth_buf, uint16_t size)
 {
-  u08 buf[4];
+  uint8_t buf[4];
 
   uart_send('[');
   dword_to_dec(size, buf, 4, 4);
@@ -54,12 +54,12 @@ void dump_eth_pkt(const u08 *eth_buf, u16 size)
   uart_send(' ');
 }
 
-void dump_arp_pkt(const u08 *arp_buf)
+void dump_arp_pkt(const uint8_t *arp_buf)
 {
   uart_send_pstring(PSTR("[ARP:"));
 
   // ARP op
-  u16 op = arp_get_op(arp_buf);
+  uint16_t op = arp_get_op(arp_buf);
   if(op == ARP_REQUEST) {
     uart_send_pstring(PSTR("REQ "));
   } else if(op == ARP_REPLY) {
@@ -88,7 +88,7 @@ void dump_arp_pkt(const u08 *arp_buf)
   uart_send(' ');
 }
 
-void dump_ip_pkt(const u08 *ip_buf)
+void dump_ip_pkt(const uint8_t *ip_buf)
 {
   uart_send_pstring(PSTR("[IP4:"));
 
@@ -96,7 +96,7 @@ void dump_ip_pkt(const u08 *ip_buf)
   uart_send_hex_word(ip_get_total_length(ip_buf));
 
   // ip proto
-  u08 proto = ip_get_protocol(ip_buf);
+  uint8_t proto = ip_get_protocol(ip_buf);
   if(proto == IP_PROTOCOL_ICMP) {
     uart_send_pstring(PSTR(",ICMP"));
   } else if(proto == IP_PROTOCOL_TCP) {
@@ -118,7 +118,7 @@ void dump_ip_pkt(const u08 *ip_buf)
   uart_send(' ');
 }
 
-static void dump_udp_port(u16 port)
+static void dump_udp_port(uint16_t port)
 {
   if(port == 67) {
     uart_send_pstring(PSTR("BOOTPS"));
@@ -131,7 +131,7 @@ static void dump_udp_port(u16 port)
   }
 }
 
-static void dump_tcp_port(u16 port)
+static void dump_tcp_port(uint16_t port)
 {
   if(port == 21) {
     uart_send_pstring(PSTR("FTPctl"));
@@ -144,14 +144,14 @@ static void dump_tcp_port(u16 port)
   }
 }
 
-extern void dump_ip_protocol(const u08 *ip_buf)
+extern void dump_ip_protocol(const uint8_t *ip_buf)
 {
-  const u08 *proto_buf = ip_buf + ip_get_hdr_length(ip_buf);
-  u08 proto = ip_get_protocol(ip_buf);
+  const uint8_t *proto_buf = ip_buf + ip_get_hdr_length(ip_buf);
+  uint8_t proto = ip_get_protocol(ip_buf);
   if(proto == IP_PROTOCOL_UDP) {
     uart_send_pstring(PSTR("[UDP:"));
-    u16 src_port = udp_get_src_port(proto_buf);
-    u16 tgt_port = udp_get_tgt_port(proto_buf);
+    uint16_t src_port = udp_get_src_port(proto_buf);
+    uint16_t tgt_port = udp_get_tgt_port(proto_buf);
     dump_udp_port(src_port);
     uart_send('>');
     dump_udp_port(tgt_port);
@@ -160,22 +160,22 @@ extern void dump_ip_protocol(const u08 *ip_buf)
   }
   else if(proto == IP_PROTOCOL_TCP) {
     uart_send_pstring(PSTR("[TCP:"));
-    u16 src_port = tcp_get_src_port(proto_buf);
-    u16 tgt_port = tcp_get_tgt_port(proto_buf);
+    uint16_t src_port = tcp_get_src_port(proto_buf);
+    uint16_t tgt_port = tcp_get_tgt_port(proto_buf);
     dump_tcp_port(src_port);
     uart_send('>');
     dump_tcp_port(tgt_port);
 
-    u16 flags = tcp_get_flags(proto_buf);
+    uint16_t flags = tcp_get_flags(proto_buf);
     uart_send_pstring(PSTR(",flags="));
     uart_send_hex_word(flags);
 
     uart_send_pstring(PSTR(",seq="));
-    u32 seq = tcp_get_seq_num(proto_buf);
+    uint32_t seq = tcp_get_seq_num(proto_buf);
     uart_send_hex_dword(seq);
 
     if(flags & TCP_FLAGS_ACK) {
-      u32 ack = tcp_get_ack_num(proto_buf);
+      uint32_t ack = tcp_get_ack_num(proto_buf);
       uart_send_pstring(PSTR(",ack="));
       uart_send_hex_dword(ack);
     }
@@ -185,12 +185,12 @@ extern void dump_ip_protocol(const u08 *ip_buf)
   }
 }
 
-extern void dump_line(const u08 *eth_buf, u16 size)
+extern void dump_line(const uint8_t *eth_buf, uint16_t size)
 {
   dump_eth_pkt(eth_buf, size);
 
-  const u08 *ip_buf = eth_buf + ETH_HDR_SIZE;
-  u16 type = eth_get_pkt_type(eth_buf);
+  const uint8_t *ip_buf = eth_buf + ETH_HDR_SIZE;
+  uint16_t type = eth_get_pkt_type(eth_buf);
   if(type == ETH_TYPE_ARP) {
     dump_arp_pkt(ip_buf);
   } else if(type == ETH_TYPE_IPV4) {
@@ -201,13 +201,13 @@ extern void dump_line(const u08 *eth_buf, u16 size)
 
 void dump_pb_cmd(const pb_proto_stat_t *ps)
 {
-  u08 buf[4];
+  uint8_t buf[4];
 
   uart_send_time_stamp_spc();
 
   // show command
-  u08 cmd = ps->cmd;
-  u08 is_valid = 1;
+  uint8_t cmd = ps->cmd;
+  uint8_t is_valid = 1;
   switch(cmd) {
     case PBPROTO_CMD_SEND:
     case PBPROTO_CMD_SEND_BURST:
@@ -220,7 +220,7 @@ void dump_pb_cmd(const pb_proto_stat_t *ps)
       break;
   }
 
-  u08 status = ps->status;
+  uint8_t status = ps->status;
 
   // invalid command
   if(!is_valid) {

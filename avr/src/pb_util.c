@@ -32,10 +32,10 @@
 #include "dump.h"
 #include "main.h"
 
-u08 pb_util_handle(void)
+uint8_t pb_util_handle(void)
 {
   // call protocol handler (low level transmit)
-  u08 status = pb_proto_handle();
+  uint8_t status = pb_proto_handle();
   // nothing done... return
   if(status == PBPROTO_STATUS_IDLE) {
     return PBPROTO_STATUS_IDLE; // inactive

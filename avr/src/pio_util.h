@@ -30,33 +30,33 @@
 #include "global.h"
 
 /* get the configured init flags for PIO */
-extern u08 pio_util_get_init_flags(void);
+extern uint8_t pio_util_get_init_flags(void);
 
 /* receive packet from current PIO and store in pkt_buf.
    also update stats and is verbose if enabled.
    only call if pio_has_recv() ist not 0!
    returns packet size and pio status.
 */
-extern u08 pio_util_recv_packet(u16 *size);
+extern uint8_t pio_util_recv_packet(uint16_t *size);
 
 /* send packet to current PIO from pkt_buf
    aöso updates stats and is verbose if enabled.
    return pio status.
 */
-extern u08 pio_util_send_packet(u16 size);
+extern uint8_t pio_util_send_packet(uint16_t size);
 
 /* check current packet in pkt_buf if its an ARP packet.
    return 1 if its ARP.
    if its an ARP request for me then reply it and
    create a reply packet in pkt_buf first.
 */
-extern u08 pio_util_handle_arp(u16 size);
+extern uint8_t pio_util_handle_arp(uint16_t size);
 
 /* check if its an incoming UDP test packet.
    if yes prepare reply packet in pkt_buf but do
    NOT send it.
    returns 1 if test packet was handled.
 */
-extern u08 pio_util_handle_udp_test(u16 size);
+extern uint8_t pio_util_handle_udp_test(uint16_t size);
 
 #endif

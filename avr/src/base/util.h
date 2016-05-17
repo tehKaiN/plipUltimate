@@ -33,35 +33,35 @@
 
 // ----- conversion functions -----
 // convert nybble to hex char
-extern u08 nybble_to_hex(u08 in);
-// convert u08 to 2 hex chars
-extern void byte_to_hex(u08 in,u08 *out);
+extern uint8_t nybble_to_hex(uint8_t in);
+// convert uint8_t to 2 hex chars
+extern void byte_to_hex(uint8_t in,uint8_t *out);
 // convert word to 4 hex chars
-extern void word_to_hex(u16 in,u08 *out);
+extern void word_to_hex(uint16_t in,uint8_t *out);
 // convert dword to 6 hex chars
-extern void dword_to_hex(u32 in,u08 *out);
+extern void dword_to_hex(uint32_t in,uint8_t *out);
 // convert a byte to 3 dec chars
-extern void byte_to_dec(u08 value, u08 *out);
+extern void byte_to_dec(uint8_t value, uint8_t *out);
 // convert a dword to <num_digits> (up to 10) with fixed point at <point_pos>
 // if <point_pos> < <num_digits> then no point is printed
-extern void dword_to_dec(u32 value, u08 *out, u08 num_digits, u08 point_pos);
+extern void dword_to_dec(uint32_t value, uint8_t *out, uint8_t num_digits, uint8_t point_pos);
 
 // ----- parse functions: 01=ok, 00=error -----
 // parse a nybble
-extern u08 parse_nybble(u08 in,u08 *value);
+extern uint8_t parse_nybble(uint8_t in,uint8_t *value);
 // parse a byte
-extern u08 parse_byte(const u08 *str,u08 *value);
+extern uint8_t parse_byte(const uint8_t *str,uint8_t *value);
 // parse a word
-extern u08 parse_word(const u08 *str,u16 *value);
+extern uint8_t parse_word(const uint8_t *str,uint16_t *value);
 // parse a 6 byte dword
-extern u08 parse_dword(const u08 *str,u32 *value);
+extern uint8_t parse_dword(const uint8_t *str,uint32_t *value);
 // parse a decimal byte value
-extern u08 parse_byte_dec(const u08 *buf, u08 *out);
+extern uint8_t parse_byte_dec(const uint8_t *buf, uint8_t *out);
 
 #ifdef DEBUG
 // ---- stack free -----
 extern void *__heap_start;
-inline u16 stack_free(void) { return SP - (u16) &__heap_start; }
+inline uint16_t stack_free(void) { return SP - (uint16_t) &__heap_start; }
 #endif
 
 #endif

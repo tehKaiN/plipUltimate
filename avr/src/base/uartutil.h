@@ -35,25 +35,25 @@ void uart_send_pstring(PGM_P data);
 // send a c string
 void uart_send_string(const char *data);
 // send data
-void uart_send_data(u08 *data,u08 size);
+void uart_send_data(uint8_t *data,uint8_t size);
 // send a CR+LF
 void uart_send_crlf(void);
 // send a Space
 void uart_send_spc(void);
 // send time stamp
 void uart_send_time_stamp_spc(void);
-void uart_send_time_stamp_spc_ext(u32 ts);
+void uart_send_time_stamp_spc_ext(uint32_t ts);
 // send rate in KB/s
-void uart_send_rate_kbs(u16 kbs);
+void uart_send_rate_kbs(uint16_t kbs);
 // send a delta in decimal
-void uart_send_delta(u32 delta);
+void uart_send_delta(uint32_t delta);
 
 // send a hex byte
-void uart_send_hex_byte(u08 data);
+void uart_send_hex_byte(uint8_t data);
 // send a hex word
-void uart_send_hex_word(u16 data);
+void uart_send_hex_word(uint16_t data);
 // send a hex dword
-void uart_send_hex_dword(u32 data);
+void uart_send_hex_dword(uint32_t data);
 
 #ifdef DEBUG
 // send free stack

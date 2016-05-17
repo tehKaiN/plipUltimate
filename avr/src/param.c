@@ -55,14 +55,14 @@ static const param_t PROGMEM default_param = {
   .test_mode = 0
 };
 
-static void dump_byte(PGM_P str, const u08 val)
+static void dump_byte(PGM_P str, const uint8_t val)
 {
   uart_send_pstring(str);
   uart_send_hex_byte(val);
   uart_send_crlf();
 }
 
-static void dump_word(PGM_P str, const u16 val)
+static void dump_word(PGM_P str, const uint16_t val)
 {
   uart_send_pstring(str);
   uart_send_hex_word(val);
@@ -94,11 +94,11 @@ void param_dump(void)
 }
 
 // build check sum for parameter block
-static u16 calc_crc16(param_t *p)
+static uint16_t calc_crc16(param_t *p)
 {
-  u16 crc16 = 0xffff;
-  u08 *data = (u08 *)p;
-  u16 i;
+  uint16_t crc16 = 0xffff;
+  uint8_t *data = (uint8_t *)p;
+  uint16_t i;
   for(i=0;i<sizeof(param_t);i++) {
     crc16 = _crc16_update(crc16,*data);
     data++;
@@ -106,7 +106,7 @@ static u16 calc_crc16(param_t *p)
   return crc16;
 }
 
-u08 param_save(void)
+uint8_t param_save(void)
 {
   // check that eeprom is writable
   if(!eeprom_is_ready())
@@ -122,7 +122,7 @@ u08 param_save(void)
   return PARAM_OK;
 }
 
-u08 param_load(void)
+uint8_t param_load(void)
 {
   // check that eeprom is readable
   if(!eeprom_is_ready())
@@ -144,10 +144,10 @@ u08 param_load(void)
 
 void param_reset(void)
 {
-	u08 i;
+	uint8_t i;
   // restore default param
-  u08 *out = (u08 *)&param;
-  const u08 *in = (const u08 *)&default_param;
+  uint8_t *out = (uint8_t *)&param;
+  const uint8_t *in = (const uint8_t *)&default_param;
   for(i=0;i<sizeof(param_t);i++) {
     *(out++) = pgm_read_byte_near(in++);
   }

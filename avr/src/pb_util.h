@@ -29,6 +29,6 @@
 
 #include "global.h"
 
-extern u08 pb_util_handle(void);
+extern uint8_t pb_util_handle(void);
 
 #endif

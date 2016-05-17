@@ -40,9 +40,9 @@
 #include "net/ip.h"
 #include "net/udp.h"
 
-u08 pio_util_get_init_flags()
+uint8_t pio_util_get_init_flags()
 {
-  u08 flags = PIO_INIT_BROAD_CAST;
+  uint8_t flags = PIO_INIT_BROAD_CAST;
 
   if(param.flow_ctl) {
     flags |= PIO_INIT_FLOW_CONTROL;
@@ -54,15 +54,15 @@ u08 pio_util_get_init_flags()
   return flags;
 }
 
-u08 pio_util_recv_packet(u16 *size)
+uint8_t pio_util_recv_packet(uint16_t *size)
 {
   // measure packet receive
   timer_hw_reset();
-  u08 result = pio_recv(pkt_buf, PKT_BUF_SIZE, size);
-  u16 delta = timer_hw_get();
+  uint8_t result = pio_recv(pkt_buf, PKT_BUF_SIZE, size);
+  uint16_t delta = timer_hw_get();
 
-  u16 s = *size;
-  u16 rate = timer_hw_calc_rate_kbs(s, delta);
+  uint16_t s = *size;
+  uint16_t rate = timer_hw_calc_rate_kbs(s, delta);
   if(result == PIO_OK) {
     stats_update_ok(STATS_ID_PIO_RX, s, rate);
   } else {
@@ -90,13 +90,13 @@ u08 pio_util_recv_packet(u16 *size)
   return result;
 }
 
-u08 pio_util_send_packet(u16 size)
+uint8_t pio_util_send_packet(uint16_t size)
 {
   timer_hw_reset();
-  u08 result = pio_send(pkt_buf, size);
-  u16 delta = timer_hw_get();
+  uint8_t result = pio_send(pkt_buf, size);
+  uint16_t delta = timer_hw_get();
 
-  u16 rate = timer_hw_calc_rate_kbs(size, delta);
+  uint16_t rate = timer_hw_calc_rate_kbs(size, delta);
   if(result == PIO_OK) {
     stats_update_ok(STATS_ID_PIO_TX, size, rate);
   } else {
@@ -124,9 +124,9 @@ u08 pio_util_send_packet(u16 size)
   return result;
 }
 
-u08 pio_util_handle_arp(u16 size)
+uint8_t pio_util_handle_arp(uint16_t size)
 {
-  u16 type = eth_get_pkt_type(pkt_buf);
+  uint16_t type = eth_get_pkt_type(pkt_buf);
   if(type != ETH_TYPE_ARP) {
     return 0;
   }
@@ -135,13 +135,13 @@ u08 pio_util_handle_arp(u16 size)
   }
 
   // payload buf/size
-  u08 *pl_buf = pkt_buf + ETH_HDR_SIZE;
-  u16 pl_size = size - ETH_HDR_SIZE;
+  uint8_t *pl_buf = pkt_buf + ETH_HDR_SIZE;
+  uint16_t pl_size = size - ETH_HDR_SIZE;
 
   // is an ARP request
   if(arp_is_ipv4(pl_buf, pl_size) && (arp_get_op(pl_buf) == ARP_REQUEST)) {
     // is our IP?
-    const u08 *tgt_ip = arp_get_tgt_ip(pl_buf);
+    const uint8_t *tgt_ip = arp_get_tgt_ip(pl_buf);
 
     if(global_verbose) {
       uart_send_time_stamp_spc();
@@ -165,13 +165,13 @@ u08 pio_util_handle_arp(u16 size)
   return 1;
 }
 
-u08 pio_util_handle_udp_test(u16 size)
+uint8_t pio_util_handle_udp_test(uint16_t size)
 {
-  u08 *ip_buf = pkt_buf + ETH_HDR_SIZE;
-  u08 *udp_buf = ip_buf + ip_get_hdr_length(ip_buf);
-  const u08 *dst_ip = ip_get_tgt_ip(ip_buf);
-  u16 dst_port = udp_get_tgt_port(udp_buf);
-  const u08 *data_ptr = udp_get_data_ptr(udp_buf);
+  uint8_t *ip_buf = pkt_buf + ETH_HDR_SIZE;
+  uint8_t *udp_buf = ip_buf + ip_get_hdr_length(ip_buf);
+  const uint8_t *dst_ip = ip_get_tgt_ip(ip_buf);
+  uint16_t dst_port = udp_get_tgt_port(udp_buf);
+  const uint8_t *data_ptr = udp_get_data_ptr(udp_buf);
 
   // for us?
   if(net_compare_ip(param.test_ip, dst_ip) && (dst_port == param.test_port)) {
@@ -184,10 +184,10 @@ u08 pio_util_handle_udp_test(u16 size)
 
     // send UDP packet back again
     // flip IP/UDP
-    const u08 *src_ip = ip_get_src_ip(ip_buf);
+    const uint8_t *src_ip = ip_get_src_ip(ip_buf);
     net_copy_ip(src_ip, ip_buf + 16); // set tgt ip
     net_copy_ip(param.test_ip, ip_buf + 12); // set src ip
-    u16 src_port = udp_get_src_port(udp_buf);
+    uint16_t src_port = udp_get_src_port(udp_buf);
     net_put_word(udp_buf + UDP_SRC_PORT_OFF, dst_port);
     net_put_word(udp_buf + UDP_TGT_PORT_OFF, src_port);
 

@@ -31,13 +31,13 @@
 #define T2_vect TIMER2_COMPA_vect
 
 // timer counter
-volatile u16 timer_100us; /// Number of 100us intervals passed
-volatile u16 timer_10ms;  /// Number of 10-ms intervals passed
-volatile u32 time_stamp;  /// Time stamp since beginning of runtime - 1 tick equals 100us
-static u16 count;         /// Number of 100us intervals to increment 10-ms count
+volatile uint16_t timer_100us; /// Number of 100us intervals passed
+volatile uint16_t timer_10ms;  /// Number of 10-ms intervals passed
+volatile uint32_t time_stamp;  /// Time stamp since beginning of runtime - 1 tick equals 100us
+static uint16_t count;         /// Number of 100us intervals to increment 10-ms count
 
 /// 100us is 1/10k of a second
-/// TODO: time was reduced by 1, should it be?
+/// NOTE(KaiN#): time was reduced by 1, should it be?
 #define T2_100us ((F_CPU/8)/10000)
 
 void timer_init(void) {
@@ -83,24 +83,24 @@ ISR(T2_vect) {
 }
 
 /// Busy-wait for supplied number of 10ms intervals
-void timer_delay_10ms(u16 uwIntervalCount) {
+void timer_delay_10ms(uint16_t uwIntervalCount) {
 	timer_10ms=0;
 	while(timer_10ms<uwIntervalCount);
 }
 
 /// Busy-wait for supplied number of 100us intervals
-void timer_delay_100us(u16 uwIntervalCount) {
+void timer_delay_100us(uint16_t uwIntervalCount) {
 	timer_100us=0;
 	while(timer_100us<uwIntervalCount);
 }
 
 /// Calculates bitrate based on transferred byte count and elapsed time
-u16 timer_hw_calc_rate_kbs(u16 bytes, u16 delta) {
+uint16_t timer_hw_calc_rate_kbs(uint16_t bytes, uint16_t delta) {
   if(delta != 0) {
-    u32 nom = 1000 * (u32)bytes * 100;
-    u32 denom = (u32)delta * 4;
-    u32 rate = nom / denom;
-    return (u16)rate;
+    uint32_t nom = 1000 * (uint32_t)bytes * 100;
+    uint32_t denom = (uint32_t)delta * 4;
+    uint32_t rate = nom / denom;
+    return (uint16_t)rate;
   }
 	else
 		return 0;

@@ -44,14 +44,14 @@
 #define ETH_TYPE_MAGIC_OFFLINE  0xfffe
 #define ETH_TYPE_MAGIC_LOOPBACK 0xfffd
 
-inline const u08* eth_get_tgt_mac(const u08 *pkt) { return pkt + ETH_OFF_TGT_MAC; }
-inline const u08 *eth_get_src_mac(const u08 *pkt) { return pkt + ETH_OFF_SRC_MAC; }
-inline u16 eth_get_pkt_type(const u08 *pkt) { return net_get_word(pkt + ETH_OFF_TYPE); }
-inline u08 eth_is_arp_pkt(const u08 *pkt) { return eth_get_pkt_type(pkt) == ETH_TYPE_ARP; }
-inline u08  eth_is_ipv4_pkt(const u08 *pkt) { return eth_get_pkt_type(pkt) == ETH_TYPE_IPV4; }
-inline void eth_set_pkt_type(u08 *pkt, u16 type) { net_put_word(pkt + ETH_OFF_TYPE, type); }
+inline const uint8_t* eth_get_tgt_mac(const uint8_t *pkt) { return pkt + ETH_OFF_TGT_MAC; }
+inline const uint8_t *eth_get_src_mac(const uint8_t *pkt) { return pkt + ETH_OFF_SRC_MAC; }
+inline uint16_t eth_get_pkt_type(const uint8_t *pkt) { return net_get_word(pkt + ETH_OFF_TYPE); }
+inline uint8_t eth_is_arp_pkt(const uint8_t *pkt) { return eth_get_pkt_type(pkt) == ETH_TYPE_ARP; }
+inline uint8_t  eth_is_ipv4_pkt(const uint8_t *pkt) { return eth_get_pkt_type(pkt) == ETH_TYPE_IPV4; }
+inline void eth_set_pkt_type(uint8_t *pkt, uint16_t type) { net_put_word(pkt + ETH_OFF_TYPE, type); }
 
-inline void eth_make_bcast(u08 *pkt, const u08 *my_mac)
+inline void eth_make_bcast(uint8_t *pkt, const uint8_t *my_mac)
 {
 	net_copy_mac(net_bcast_mac, pkt + ETH_OFF_TGT_MAC);
 	net_copy_mac(my_mac, pkt + ETH_OFF_SRC_MAC);

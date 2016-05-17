@@ -29,6 +29,6 @@
 
 #include "global.h"
 
-extern u08 pio_test_loop(void);
+extern uint8_t pio_test_loop(void);
 
 #endif

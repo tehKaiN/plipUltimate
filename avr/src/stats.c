@@ -32,7 +32,7 @@ stats_t stats[STATS_ID_NUM];
 
 void stats_reset(void)
 {
-  for(u08 i=0;i<STATS_ID_NUM;i++) {
+  for(uint8_t i=0;i<STATS_ID_NUM;i++) {
     stats_t *s = &stats[i];
     s->bytes = 0;
     s->cnt = 0;
@@ -42,7 +42,7 @@ void stats_reset(void)
   }
 }
 
-void stats_update_ok(u08 id, u16 size, u16 rate)
+void stats_update_ok(uint8_t id, uint16_t size, uint16_t rate)
 {
   stats_t *s = &stats[id];
   s->cnt++;
@@ -52,7 +52,7 @@ void stats_update_ok(u08 id, u16 size, u16 rate)
   }
 }
 
-static void dump_line(u08 id)
+static void dump_line(uint8_t id)
 {
   const stats_t *s = &stats[id];
 
@@ -96,12 +96,12 @@ static void dump_header(void)
 void stats_dump_all(void)
 {
   dump_header();
-  for(u08 i=0;i<STATS_ID_NUM;i++) {
+  for(uint8_t i=0;i<STATS_ID_NUM;i++) {
     dump_line(i);
   }
 }
 
-void stats_dump(u08 pb, u08 pio)
+void stats_dump(uint8_t pb, uint8_t pio)
 {
   dump_header();
   if(pb) {

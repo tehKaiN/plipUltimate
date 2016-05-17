@@ -36,7 +36,7 @@
 
 
 /* access run mode for command keys */
-extern u08 run_mode;
-extern u08 global_verbose;
+extern uint8_t run_mode;
+extern uint8_t global_verbose;
 
 #endif
