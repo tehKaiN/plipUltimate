@@ -24,8 +24,9 @@
  *
  */
 
+#include <avr/interrupt.h>
+#include <avr/wdt.h>
 #include "global.h"
-#include "board.h"
 #include "base/uart.h"
 #include "base/uartutil.h"
 #include "base/timer.h"
@@ -49,17 +50,28 @@ u08 global_verbose = 0;
  * EEPROM:     21 ( 2.1%)
  *
  * Changes:
- *   Removed util/delay.h - Program: -48 B
- *   Simplified parallel interface init: -564 B
+ *   Removed util/delay.h (Prg: -48 B)
+ *   Simplified parallel interface init (Prg: -564 B)
+ *   Added SPI SD Card support
+ *   Watchdog based on wdt functions (Prg: -24 B)
  *   Other minor changes
+ *
+ * Current sizes after last change:
+ * Program: 15872 (48.4%)
+ * Data:     1767 (86.3%)
+ * EEPROM:     21 ( 2.1%)
 */
 
 static void init_hw(void)
 {
-  board_init();   // Disable watchdog
-  timer_init();   // Setup timer
-  uart_init();    // Setup serial interface
-  par_low_init(); // Setup parallel interface
+	/// Disable watchdog
+	cli();
+	wdt_disable();
+	sei();
+	/// Setup other HW stuff
+	timer_init();                   // Setup timer
+	uart_init();                    // Setup serial interface
+	par_low_init();                 // Setup parallel interface
 }
 
 int main(void)

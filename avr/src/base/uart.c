@@ -31,7 +31,6 @@
 
 #include "uart.h"
 #include "timer.h"
-#include "../board.h"
 
 #ifdef UBRR0H
 
