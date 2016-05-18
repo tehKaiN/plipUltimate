@@ -385,8 +385,7 @@ static uint8_t cmd_recv_burst(uint16_t size, uint16_t *ret_size)
   return result;
 }
 
-uint8_t pb_proto_handle(void)
-{
+uint8_t pb_proto_handle(void) {
   uint8_t result;
   pb_proto_stat_t *ps = &pb_proto_stat;
 
