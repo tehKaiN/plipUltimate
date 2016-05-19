@@ -1,0 +1,3 @@
+(fp_lib_table
+  (lib (name plipUltimate)(type KiCad)(uri ${KIPRJMOD}\plipUltimate.pretty)(options "")(descr ""))
+)
