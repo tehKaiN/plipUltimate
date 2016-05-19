@@ -51,6 +51,11 @@ K CONN SD
 F http://portal.fciconnect.com/Comergent//fci/drawing/10067847.pdf
 $ENDCMP
 #
+$CMP USB_microB
+D micro/mini connector
+K USB USB_OTG USB_mini USB_micro
+$ENDCMP
+#
 $CMP plip_LED
 K LED
 $ENDCMP
