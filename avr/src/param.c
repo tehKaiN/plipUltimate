@@ -57,40 +57,30 @@ static const param_t PROGMEM default_param = {
 
 static void dump_byte(PGM_P str, const uint8_t val)
 {
-  uart_send_pstring(str);
-  uart_send_hex_byte(val);
-  uart_send_crlf();
+	// NOTE: UART - str hex_byte(val) \r\n
 }
 
 static void dump_word(PGM_P str, const uint16_t val)
 {
-  uart_send_pstring(str);
-  uart_send_hex_word(val);
-  uart_send_crlf();
+	// NOTE: UART - str, hex_word(val) \r\n
 }
 
 // dump all params
 void param_dump(void)
 {
   // mac address
-  uart_send_pstring(PSTR("m: mac address   "));
-  net_dump_mac(param.mac_addr);
-  uart_send_crlf();
+  // NOTE: UART - m: mac address, param.mac_addr \r\n
 
   // options
-  uart_send_crlf();
-  dump_byte(PSTR("fd: full duplex  "), param.full_duplex);
-  dump_byte(PSTR("fc: flow control "), param.flow_ctl);
+  // NOTE: UART - \r\n fd: full duplex param.full_duplex
+  // NOTE: UART - \r\n fc: flow control param.flow_ctl
 
   // test
-  uart_send_crlf();
-  dump_word(PSTR("tl: packet len   "), param.test_plen);
-  dump_word(PSTR("tt: packet type  "), param.test_ptype);
-  uart_send_pstring(PSTR("ti: ip address   "));
-  net_dump_ip(param.test_ip);
-  uart_send_crlf();
-  dump_word(PSTR("tp: udp port     "), param.test_port);
-  dump_byte(PSTR("tm: test mode    "), param.test_mode);
+	// NOTE: UART - \r\n tl: packet len param.test_plen
+	// NOTE: UART - \r\n tt: packet type param.test_ptype
+	// NOTE: UART - \r\n ti: ip address param.test_ip
+	// NOTE: UART - \r\n tp: udp port param.test_port
+	// NOTE: UART - \r\n tm: test mode param.test_mode
 }
 
 // build check sum for parameter block

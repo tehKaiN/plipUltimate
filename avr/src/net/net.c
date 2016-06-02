@@ -78,7 +78,7 @@ void net_dump_mac(const uint8_t *in) {
     byte_to_hex(in[i],(uint8_t *)(mac_str+pos));
     pos += 3;
   }
-  uart_send_string(mac_str);
+  // NOTE: UART - mac_str
 }
 
 uint8_t net_parse_ip(const uint8_t *buf, uint8_t *ip) {
@@ -114,7 +114,7 @@ void net_dump_ip(const uint8_t *in) {
     byte_to_dec(in[i],(uint8_t *)(ip_str+pos));
     pos += 4;
   }
-  uart_send_string(ip_str);
+  // NOTE: UART - ip_str
 }
 
 uint8_t  net_compare_mac(const uint8_t *a, const uint8_t *b) {

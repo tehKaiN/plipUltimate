@@ -44,7 +44,7 @@ COMMAND(cmd_device_reset)
 
 COMMAND(cmd_version)
 {
-  uart_send_pstring(PSTR(VERSION " " BUILD_DATE "\r\n"));
+	// NOTE: UART - VERSION BUILD_DATE\r\n
   return CMD_OK;
 }
 

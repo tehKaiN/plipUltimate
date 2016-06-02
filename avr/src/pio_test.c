@@ -38,18 +38,14 @@ uint8_t pio_test_loop(void)
 {
   uint8_t result = CMD_WORKER_IDLE;
 
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("[PIO_TEST] on\r\n"));
+  // NOTE: UART - time_stamp_spc() [PIO_TEST] on\r\n
 
   pio_init(param.mac_addr, pio_util_get_init_flags());
   stats_reset();
 
   while(run_mode == RUN_MODE_PIO_TEST) {
     // handle commands
-    result = cmd_worker();
-    if(result & CMD_WORKER_RESET) {
-      break;
-    }
+    // NOTE: UART cmd_worker() processing here, reset by loop break
 
     // incoming packet?
     if(pio_has_recv()) {
@@ -72,8 +68,7 @@ uint8_t pio_test_loop(void)
   stats_dump(0,1);
   pio_exit();
 
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("[PIO_TEST] off\r\n"));
+	// NOTE: UART - time_stamp_spc() [PIO_TEST] off\r\n
 
   return result;
 }

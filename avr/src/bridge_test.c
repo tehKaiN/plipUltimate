@@ -76,7 +76,7 @@ static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
   // in test mode 0 packet was sent by internal device loopback
   if(param.test_mode == 0) {
     if(type != ETH_TYPE_MAGIC_LOOPBACK) {
-      uart_send_pstring(PSTR("NO MAGIC!!\r\n"));
+			// NOTE: UART - NO MAGIC!!\r\n
       return PBPROTO_STATUS_OK;
     } else {
       // switch eth type back to IPv4
@@ -84,7 +84,7 @@ static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
     }
   } else {
     if(type != ETH_TYPE_IPV4) {
-      uart_send_pstring(PSTR("NO IPV4!!\r\n"));
+			// NOTE: UART - NO IPV4!!\r\n
       return PBPROTO_STATUS_OK;
     }
   }
@@ -99,8 +99,7 @@ uint8_t bridge_test_loop(void)
 {
   uint8_t result = CMD_WORKER_IDLE;
 
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("[BRIDGE_TEST] on\r\n"));
+	// NOTE: UART - time_stamp_spc [BRIDGE_TEST] on\r\n
 
   pb_proto_init(fill_pkt, proc_pkt, pkt_buf, PKT_BUF_SIZE);
   pio_init(param.mac_addr, pio_util_get_init_flags());
@@ -108,10 +107,7 @@ uint8_t bridge_test_loop(void)
 
   while(run_mode == RUN_MODE_BRIDGE_TEST) {
     // handle commands
-    result = cmd_worker();
-    if(result & CMD_WORKER_RESET) {
-      break;
-    }
+    // NOTE: cmd_worker was here, reset by loop break
 
     // handle pbproto
     pb_util_handle();
@@ -127,7 +123,7 @@ uint8_t bridge_test_loop(void)
 
             // oops! overwrite??
             if(pio_pkt_size != 0) {
-              uart_send_pstring(PSTR("OVERWRITE?!\r\n"));
+							// NOTE: UART - OVERWRITE?!\r\n
             }
 
             // request receive
@@ -142,8 +138,7 @@ uint8_t bridge_test_loop(void)
   stats_dump_all();
   pio_exit();
 
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("[BRIDGE_TEST] off\r\n"));
+  // NOTE: UART - time_stamp_spc() [BRIDGE_TEST] off\r\n
 
   return result;
 }

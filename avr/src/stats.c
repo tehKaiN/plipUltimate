@@ -54,43 +54,31 @@ void stats_update_ok(uint8_t id, uint16_t size, uint16_t rate)
 
 static void dump_line(uint8_t id)
 {
-  const stats_t *s = &stats[id];
+//  const stats_t *s = &stats[id];
 
-  uart_send_hex_word(s->cnt);
-  uart_send_spc();
-  uart_send_hex_dword(s->bytes);
-  uart_send_spc();
-  uart_send_hex_word(s->err);
-  uart_send_spc();
-  uart_send_hex_word(s->drop);
-  uart_send_spc();
-  uart_send_rate_kbs(s->max_rate);
-  uart_send_spc();
+  // NOTE: UART - hex_word(s->cnt) hex_word(s->bytes) hex_word(s->err) hex_word(s->drop) hex_word(s->max_rate)
 
-  PGM_P str;
+//  PGM_P str;
   switch(id) {
     case STATS_ID_PB_RX:
-      str = PSTR("rx plipbox");
+			// NOTE: UART - rx plipbox
       break;
     case STATS_ID_PIO_RX:
-      str = PSTR("rx pio");
+			// NOTE: UART - rx_pio
       break;
     case STATS_ID_PB_TX:
     case STATS_ID_PIO_TX:
-      str = PSTR("tx");
+			// NOTE: UART - tx
       break;
     default:
-      str = PSTR("?");
+			// NOTE: UART - ?
       break;
   }
-  uart_send_pstring(str);
-
-  uart_send_crlf();
 }
 
 static void dump_header(void)
 {
-  uart_send_pstring(PSTR("cnt  bytes    err  drop rate\r\n"));
+	// NOTE: UART - cnt  bytes    err  drop rate\r\n
 }
 
 void stats_dump_all(void)

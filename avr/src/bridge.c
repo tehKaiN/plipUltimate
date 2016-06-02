@@ -56,13 +56,11 @@ static void trigger_request(void)
     req_is_pending = 1;
     pb_proto_request_recv();
     if(global_verbose) {
-      uart_send_time_stamp_spc();
-      uart_send_pstring(PSTR("REQ\r\n"));
+			// NOTE: UART - time_stamp_spc() REQ\r\n
     }
   } else {
     if(global_verbose) {
-      uart_send_time_stamp_spc();
-      uart_send_pstring(PSTR("req ign\r\n"));
+			// NOTE: UART - time_stamp_spc() REQ IGN\r\n
     }
   }
 }
@@ -71,8 +69,7 @@ static void trigger_request(void)
 
 static void magic_online(const uint8_t *buf)
 {
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("[MAGIC] online\r\n"));
+	// NOTE: UART - time_stamp_spc() [MAGIC] online \r\n
   flags |= FLAG_ONLINE | FLAG_FIRST_TRANSFER;
 
   // validate mac address and if it does not match then reconfigure PIO
@@ -90,8 +87,7 @@ static void magic_online(const uint8_t *buf)
 
 static void magic_offline(void)
 {
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("[MAGIC] offline\r\n"));
+	// NOTE: UART - time_stamp_spc() [MAGIC] offline
   flags &= ~FLAG_ONLINE;
 }
 
@@ -103,8 +99,7 @@ static void magic_loopback(uint16_t size)
 
 static void request_magic(void)
 {
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("[MAGIC] request\r\n"));
+	// NOTE: UART - time_stamp_spc() [MAGIC] request\r\n
 
   // request receive
   flags |= FLAG_SEND_MAGIC | FLAG_FIRST_TRANSFER;
@@ -133,8 +128,7 @@ static uint8_t fill_pkt(uint8_t *buf, uint16_t max_size, uint16_t *size)
     // report first packet transfer
     if(flags & FLAG_FIRST_TRANSFER) {
       flags &= ~FLAG_FIRST_TRANSFER;
-      uart_send_time_stamp_spc();
-      uart_send_pstring(PSTR("FIRST TRANSFER!\r\n"));
+      // NOTE: UART - time_stamp_spc() FIRST TRANSFER!\r\n
     }
   }
 
@@ -176,8 +170,7 @@ uint8_t bridge_loop(void)
 {
   uint8_t result = CMD_WORKER_IDLE;
 
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("[BRIDGE] on\r\n"));
+  // NOTE: UART - time_stamp_spc() [BRIDGE] on\r\n
 
   pb_proto_init(fill_pkt, proc_pkt, pkt_buf, PKT_BUF_SIZE);
   pio_init(param.mac_addr, pio_util_get_init_flags());
@@ -191,11 +184,7 @@ uint8_t bridge_loop(void)
   uint8_t limit_flow = 0;
   uint8_t first = 1;
   while(run_mode == RUN_MODE_BRIDGE) {
-    // handle commands
-    result = cmd_worker();
-    if(result & CMD_WORKER_RESET) {
-      break;
-    }
+    // NOTE: UART command handling was here
 
     // handle pbproto
     pb_util_handle();
@@ -206,8 +195,7 @@ uint8_t bridge_loop(void)
       // show first incoming packet
       if(first) {
         first = 0;
-        uart_send_time_stamp_spc();
-        uart_send_pstring(PSTR("FIRST INCOMING!\r\n"));
+        // NOTE: UART - time_stamp_spc() FIRST INCOMING!\r\n
       }
 
       // if we are online then request the packet receiption
@@ -219,10 +207,7 @@ uint8_t bridge_loop(void)
       else {
         uint16_t size;
         pio_util_recv_packet(&size);
-        uart_send_time_stamp_spc();
-        uart_send_pstring(PSTR("OFFLINE DROP: "));
-        uart_send_hex_word(size);
-        uart_send_crlf();
+        // NOTE: UART - time_stamp_spc() OFFLINE DROP: hex_word(size)\r\n
       }
     }
 
@@ -235,8 +220,7 @@ uint8_t bridge_loop(void)
           pio_control(PIO_CONTROL_FLOW, 0);
           limit_flow = 0;
           if(global_verbose) {
-            uart_send_time_stamp_spc();
-            uart_send_pstring(PSTR("FLOW off\r\n"));
+						// NOTE: UART - time_stamp_spc() FLOW off\r\n
           }
         }
       }
@@ -247,8 +231,7 @@ uint8_t bridge_loop(void)
           pio_control(PIO_CONTROL_FLOW, 1);
           limit_flow = 1;
           if(global_verbose) {
-            uart_send_time_stamp_spc();
-            uart_send_pstring(PSTR("FLOW on\r\n"));
+						// NOTE: UART - time_stamp_spc() FLOW on\r\n
           }
         }
       }
@@ -258,8 +241,7 @@ uint8_t bridge_loop(void)
   stats_dump_all();
   pio_exit();
 
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("[BRIDGE] off\r\n"));
+	// NOTE: UART - time_stamp_spc() [BRIDGE] off\r\n
 
   return result;
 }

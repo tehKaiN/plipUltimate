@@ -79,8 +79,7 @@ COMMAND_KEY(cmd_toggle_auto_mode)
 COMMAND_KEY(cmd_toggle_verbose)
 {
   global_verbose = !global_verbose;
-  uart_send_pstring(PSTR("VERBOSE: "));
-  uart_send_pstring(global_verbose ? PSTR("ON\r\n") : PSTR("OFF\r\n"));
+  // NOTE: UART - VERBOSE: global_verbose ? "ON\r\n" : "OFF\r\n"
 }
 
 CMDKEY_HELP(cmd_enter_bridge_mode, "enter bridge mode");

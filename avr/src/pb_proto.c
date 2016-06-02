@@ -301,8 +301,7 @@ static uint8_t cmd_send_burst(uint16_t *ret_size)
  * AVR doesn't acknowledge sending next part of data, so Amiga just reads
  * as fast as it can and acks every byte read
  */
-static uint8_t cmd_recv_burst(uint16_t size, uint16_t *ret_size)
-{
+static uint8_t cmd_recv_burst(uint16_t size, uint16_t *ret_size) {
   uint8_t status;
 
   // --- set packet size hi

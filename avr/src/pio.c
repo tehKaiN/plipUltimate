@@ -61,37 +61,28 @@ uint8_t pio_init(const uint8_t mac[6],uint8_t flags)
   cur_dev = (pio_dev_ptr_t)pgm_read_word(devices + dev_id);
 
   // show hello
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("pio: init: "));
-  PGM_P name = pio_dev_name(cur_dev);
-  uart_send_pstring(name);
+  // NOTE: UART - time_stamp_spc() pio: init: pio_dev_name(cur_dev)
 
   // call init
   uint8_t result = pio_dev_init(cur_dev, mac, flags);
   if(result == PIO_OK) {
-    uart_send_pstring(PSTR(": ok! mac="));
-    net_dump_mac(mac);
-    uart_send_pstring(PSTR(" flags="));
-    uart_send_hex_byte(flags);
+		// NOTE: UART - : ok! mac=mac, flags=flags
     // show revision
     uint8_t rev;
     result = pio_dev_status(cur_dev, PIO_STATUS_VERSION, &rev);
     if(result == PIO_OK) {
-      uart_send_pstring(PSTR(" rev="));
-      uart_send_hex_byte(rev);
+			// NOTE: UART - rev=hex_byte(rev)
     }
   } else {
-    uart_send_pstring(PSTR("ERROR:"));
-    uart_send_hex_byte(result);
+		// NOTE: UART = ERROR: hex_byte(result)
   }
-  uart_send_crlf();
+  // NOTE: UART - \r\n
   return result;
 }
 
 void pio_exit(void)
 {
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("pio: exit\r\n"));
+	// NOTE: UART - time_stamp_spc() pio: exit\r\n
   pio_dev_exit(cur_dev);
 }
 

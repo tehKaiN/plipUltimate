@@ -56,6 +56,11 @@ uint8_t global_verbose = 0;
  *   Watchdog based on wdt functions (Prg: -24 B)
  *   Other minor changes
  *
+ * Sizes after UART removal:
+ * Program: 10230 (31.2%)
+ * Data: 1696 (82.8%)
+ * EEPROM: 21 (2.1%)
+ *
  * Current sizes after last change:
  * Program: 15872 (48.4%)
  * Data:     1767 (86.3%)
@@ -70,7 +75,6 @@ static void init_hw(void)
 	sei();
 	/// Setup other HW stuff
 	timer_init();                   // Setup timer
-	uart_init();                    // Setup serial interface
 	par_low_init();                 // Setup parallel interface
 }
 
@@ -80,15 +84,15 @@ int main(void)
 		init_hw();
 
 		// send welcome
-		uart_send_pstring(PSTR("\r\nWelcome to plipbox " VERSION " " BUILD_DATE "\r\n"));
+		// NOTE: UART - \r\nWelcome to plipbox " VERSION " " BUILD_DATE "\r\n
 
 		// param init
 		param_init();
 		param_dump();
-		uart_send_crlf();
+		// NOTE: UART - \r\n
 
 		// help info
-		uart_send_pstring(PSTR("Press <return> to enter command mode or <?> for key help\r\n"));
+		// NOTE: UART - Press <return> to enter command mode or <?> for key help\r\n
 
 		#ifdef DEBUG
 			uart_send_free_stack();
@@ -114,7 +118,7 @@ int main(void)
 			}
 
 		// wait a bit
-		uart_send_pstring(PSTR("resetting...\r\n"));
+		// NOTE: UART - resetting...\r\n
 		timer_delay_10ms(10);
 
 	}

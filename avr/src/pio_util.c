@@ -70,21 +70,12 @@ uint8_t pio_util_recv_packet(uint16_t *size)
   }
 
   if(global_verbose) {
-    uart_send_time_stamp_spc();
-    uart_send_pstring(PSTR("pio rx: "));
+		// NOTE: UART - time_stamp_spc() pio rx:
     if(result == PIO_OK) {
-      // speed
-      uart_send_pstring(PSTR("v="));
-      uart_send_rate_kbs(rate);
-
-      // size
-      uart_send_pstring(PSTR(" n="));
-      uart_send_hex_word(s);
-      uart_send_crlf();
+      // speed & size
+      // NOTE: UART - v= send_rate_kbs(rate) n=hex_word(s)\r\n
     } else {
-      uart_send_pstring(PSTR("ERROR="));
-      uart_send_hex_byte(result);
-      uart_send_crlf();
+			// NOTE: UART - ERROR=hex_byte(result)\r\n
     }
   }
   return result;
@@ -104,21 +95,12 @@ uint8_t pio_util_send_packet(uint16_t size)
   }
 
   if(global_verbose) {
-    uart_send_time_stamp_spc();
-    uart_send_pstring(PSTR("pio tx: "));
+		// NOTE: UART - time_stamp_spc() pio tx:
     if(result == PIO_OK) {
       // speed
-      uart_send_pstring(PSTR("v="));
-      uart_send_rate_kbs(rate);
-
-      // size
-      uart_send_pstring(PSTR(" n="));
-      uart_send_hex_word(size);
-      uart_send_crlf();
+      // NOTE: UART - v= send_rate_kbs(rate) n=hex_word(size)\r\n
     } else {
-      uart_send_pstring(PSTR("ERROR="));
-      uart_send_hex_byte(result);
-      uart_send_crlf();
+			// NOTE: UART - ERROR=hex_byte(result)\r\n
     }
   }
   return result;
@@ -144,10 +126,7 @@ uint8_t pio_util_handle_arp(uint16_t size)
     const uint8_t *tgt_ip = arp_get_tgt_ip(pl_buf);
 
     if(global_verbose) {
-      uart_send_time_stamp_spc();
-      uart_send_pstring(PSTR("ARP REQ: IP="));
-      net_dump_ip(tgt_ip);
-      uart_send_crlf();
+			// NOTE: UART - time_stamp_spc() ARP REQ: IP=tgt_ip\r\n
     }
 
     if(net_compare_ip(tgt_ip, param.test_ip)) {
@@ -156,8 +135,7 @@ uint8_t pio_util_handle_arp(uint16_t size)
       pio_util_send_packet(size);
 
       if(global_verbose) {
-        uart_send_time_stamp_spc();
-        uart_send_pstring(PSTR("ARP REPLY!\r\n"));
+				// NOTE: UART - time_stamp_spc ARP RELPY!\r\n
       }
     }
   }
@@ -176,10 +154,7 @@ uint8_t pio_util_handle_udp_test(uint16_t size)
   // for us?
   if(net_compare_ip(param.test_ip, dst_ip) && (dst_port == param.test_port)) {
     if(global_verbose) {
-      uart_send_time_stamp_spc();
-      uart_send_pstring(PSTR("UDP: "));
-      uart_send_hex_byte(*data_ptr);
-      uart_send_crlf();
+			// NOTE: UART - time_stamp_spc() UDP: hex_byte(*data_ptr)\r\n
     }
 
     // send UDP packet back again

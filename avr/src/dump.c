@@ -41,106 +41,69 @@ void dump_eth_pkt(const uint8_t *eth_buf, uint16_t size)
 {
   uint8_t buf[4];
 
-  uart_send('[');
-  dword_to_dec(size, buf, 4, 4);
-  uart_send_data(buf,4);
-  uart_send(',');
-  uart_send_hex_word(eth_get_pkt_type(eth_buf));
-  uart_send(',');
-  net_dump_mac(eth_get_src_mac(eth_buf));
-  uart_send('>');
-  net_dump_mac(eth_get_tgt_mac(eth_buf));
-  uart_send(']');
-  uart_send(' ');
+  // NOTE: UART - [dword_to_dec(size), hex_word(eth_get_pkt_type(eth_buf)), eth_get_src_mac(eth_buf) > eth_get_tgt_mac(eth_buf)]
 }
 
 void dump_arp_pkt(const uint8_t *arp_buf)
 {
-  uart_send_pstring(PSTR("[ARP:"));
+	// NOTE: UART - [ARP:
 
   // ARP op
   uint16_t op = arp_get_op(arp_buf);
   if(op == ARP_REQUEST) {
-    uart_send_pstring(PSTR("REQ "));
+		// NOTE: UART - REQ
   } else if(op == ARP_REPLY) {
-    uart_send_pstring(PSTR("REPL"));
+		// NOTE: UART - REPL
   } else {
-    uart_send_hex_word(op);
+		// NOTE: UART - hex_word(op)
   }
-  uart_send(',');
 
-  // src pair
-  uart_send('(');
-  net_dump_mac(arp_get_src_mac(arp_buf));
-  uart_send(',');
-  net_dump_ip(arp_get_src_ip(arp_buf));
-  uart_send(')');
-  uart_send('>');
-
-  // tgt pair
-  uart_send('(');
-  net_dump_mac(arp_get_tgt_mac(arp_buf));
-  uart_send(',');
-  net_dump_ip(arp_get_tgt_ip(arp_buf));
-  uart_send(')');
-
-  uart_send(']');
-  uart_send(' ');
+  // src-tgt pair
+  // NOTE: UART - ,(net_dump_mac(arp_get_src_mac(arp_buf)), net_dump_ip(arp_get_src_ip(arp_buf))) > (net_dump_mac(arp_get_tgt_mac(arp_buf)) , net_dump_ip(arp_get_tgt_ip(arp_buf)))]
 }
 
 void dump_ip_pkt(const uint8_t *ip_buf)
 {
-  uart_send_pstring(PSTR("[IP4:"));
+	// NOTE: UART - [IP4:
 
   // size
-  uart_send_hex_word(ip_get_total_length(ip_buf));
+  // NOTE: UART - hex_word(ip_get_total_length(ip_buf))
 
   // ip proto
   uint8_t proto = ip_get_protocol(ip_buf);
   if(proto == IP_PROTOCOL_ICMP) {
-    uart_send_pstring(PSTR(",ICMP"));
+		// NOTE: UART - ,ICMP
   } else if(proto == IP_PROTOCOL_TCP) {
-    uart_send_pstring(PSTR(",TCP "));
+		// NOTE: UART - ,TCP
   } else if(proto == IP_PROTOCOL_UDP) {
-    uart_send_pstring(PSTR(",UDP "));
+		// NOTE: UART - UDP
   } else {
-    uart_send(',');
-    uart_send_hex_word(proto);
+		// NOTE: UART - , hex_word(proto)
   }
 
   // src/tgt ip
-  uart_send(',');
-  net_dump_ip(ip_get_src_ip(ip_buf));
-  uart_send('>');
-  net_dump_ip(ip_get_tgt_ip(ip_buf)),
-
-  uart_send(']');
-  uart_send(' ');
+  // NOTE: UART - , net_dump_ip(ip_get_src_ip(ip_buf)) > net_dump_ip(ip_get_tgt_ip(ip_buf)) ]
 }
 
 static void dump_udp_port(uint16_t port)
 {
   if(port == 67) {
-    uart_send_pstring(PSTR("BOOTPS"));
+		// NOTE: UART - BOOTPS
   } else if(port == 68) {
-    uart_send_pstring(PSTR("BOOTPC"));
+		// NOTE: UART - BOOTPC
   } else {
-    uart_send(' ');
-    uart_send_hex_word(port);
-    uart_send(' ');
+		// NOTE: UART - hex_word(port)
   }
 }
 
 static void dump_tcp_port(uint16_t port)
 {
   if(port == 21) {
-    uart_send_pstring(PSTR("FTPctl"));
+		// NOTE: UART - FTPctl
   } else if(port == 20) {
-    uart_send_pstring(PSTR("FTPdat"));
+		// NOTE: UART - FTPdat
   } else {
-    uart_send(' ');
-    uart_send_hex_word(port);
-    uart_send(' ');
+		// NOTE: UART - hex_word(port)
   }
 }
 
@@ -149,39 +112,29 @@ extern void dump_ip_protocol(const uint8_t *ip_buf)
   const uint8_t *proto_buf = ip_buf + ip_get_hdr_length(ip_buf);
   uint8_t proto = ip_get_protocol(ip_buf);
   if(proto == IP_PROTOCOL_UDP) {
-    uart_send_pstring(PSTR("[UDP:"));
+		// NOTE: UART - [UDP:
     uint16_t src_port = udp_get_src_port(proto_buf);
     uint16_t tgt_port = udp_get_tgt_port(proto_buf);
-    dump_udp_port(src_port);
-    uart_send('>');
-    dump_udp_port(tgt_port);
-    uart_send(']');
-    uart_send(' ');
+    // NOTE: UART - src_port > tgt_port]
   }
   else if(proto == IP_PROTOCOL_TCP) {
-    uart_send_pstring(PSTR("[TCP:"));
+		// NOTE: UART -   [TCP:
     uint16_t src_port = tcp_get_src_port(proto_buf);
     uint16_t tgt_port = tcp_get_tgt_port(proto_buf);
-    dump_tcp_port(src_port);
-    uart_send('>');
-    dump_tcp_port(tgt_port);
+    // NOTE: UART - src_port > tgt_port
 
     uint16_t flags = tcp_get_flags(proto_buf);
-    uart_send_pstring(PSTR(",flags="));
-    uart_send_hex_word(flags);
+		// NOTE: UART - ,flags= hex_word(flags)
 
-    uart_send_pstring(PSTR(",seq="));
     uint32_t seq = tcp_get_seq_num(proto_buf);
-    uart_send_hex_dword(seq);
+    // NOTE: UART - ,seq= hex_word(seq)
 
     if(flags & TCP_FLAGS_ACK) {
       uint32_t ack = tcp_get_ack_num(proto_buf);
-      uart_send_pstring(PSTR(",ack="));
-      uart_send_hex_dword(ack);
+      // NOTE: UART - ,ack= hex_word(ack)
     }
 
-    uart_send(']');
-    uart_send(' ');
+    // NOTE: UART - ]
   }
 }
 
@@ -203,7 +156,7 @@ void dump_pb_cmd(const pb_proto_stat_t *ps)
 {
   uint8_t buf[4];
 
-  uart_send_time_stamp_spc();
+  // NOTE: UART - time_stamp_spc()
 
   // show command
   uint8_t cmd = ps->cmd;
@@ -224,44 +177,32 @@ void dump_pb_cmd(const pb_proto_stat_t *ps)
 
   // invalid command
   if(!is_valid) {
-    uart_send_pstring(PSTR("cmd="));
-    uart_send_hex_byte(cmd);
-    uart_send_pstring(PSTR("?? ERR:"));
-    uart_send_hex_byte(status);
-    uart_send_crlf();
+		// NOTE: UART - cmd=cmd?? ERR:status\r\n
     return;
   }
 
-  PGM_P str = ps->is_send ? PSTR("[TX:") : PSTR("[RX:");
-  uart_send_pstring(str);
-  uart_send_hex_byte(cmd);
+  // NOTE: UART - ps->is_send ? [TX: : [RX: hex_byte(cmd)
 
   // result
   if(status == PBPROTO_STATUS_OK) {
-    uart_send_pstring(PSTR("] ok"));
+		// NOTE: UART - ] ok
   } else {
-    uart_send_pstring(PSTR("] ERR:"));
-    uart_send_hex_byte(status);
+		// NOTE: UART - ] ERR: hex_byte(status)
   }
 
   // packet size
-  uart_send_pstring(PSTR(" n="));
-  dword_to_dec(ps->size, buf, 4, 4);
-  uart_send_data(buf,4);
+  // NOTE: UART - n= dword_to_dec(ps->size, buf, 4, 4)
 
   // packet delta
-  uart_send_pstring(PSTR(" d="));
-  dword_to_dec(ps->delta, buf, 4, 4);
-  uart_send_data(buf,4);
+  // NOTE: UART - d= dword_to_dec(ps->delta, buf, 4, 4)
 
   // speed
-  uart_send_pstring(PSTR(" v="));
-  uart_send_rate_kbs(ps->rate);
+  // NOTE: UART - v= uart_send_rate_kbs(ps->rate)
 
   // request delay
   if(!ps->is_send) {
-    uart_send_pstring(PSTR("  +req="));
-    uart_send_delta(ps->recv_delta);
+		// NOTE: UART - +req= uart_send_delta(ps->recv_delta);
   }
-  uart_send_crlf();
+
+  // NOTE: UART - \r\n
 }

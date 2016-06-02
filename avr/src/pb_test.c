@@ -79,25 +79,25 @@ static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
   // check packet size
   if(size != param.test_plen) {
     errors = 1;
-    uart_send_pstring(PSTR("ERR: size\r\n"));
+    // NOTE: UART - ERR: size\r\n
   }
 
   // +0: check dst mac
   if(!net_compare_mac(buf, net_bcast_mac)) {
     errors++;
-    uart_send_pstring(PSTR("ERR: dst mac\r\n"));
+    // NOTE: UART - ERR: dst mac\r\n
   }
   // +6: check src mac
   if(!net_compare_mac(buf+6, param.mac_addr)) {
     errors++;
-    uart_send_pstring(PSTR("ERR: src mac\r\n"));
+    // NOTE: UART - ERR: src mac\r\n
   }
   // +12,+13: pkt type
   uint8_t ptype_hi = (uint8_t)(param.test_ptype >> 8);
   uint8_t ptype_lo = (uint8_t)(param.test_ptype & 0xff);
   if((buf[12] != ptype_hi) || (buf[13] != ptype_lo)) {
     errors++;
-    uart_send_pstring(PSTR("ERR: pkt type\r\n"));
+		// NOTE: UART - ERR: pkt type\r\n
   }
 
   // +14: data
@@ -106,9 +106,7 @@ static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
   uint8_t val = 0;
   while(num > 0) {
     if(*ptr != val) {
-      uart_send_pstring(PSTR("ERR: data @"));
-      uart_send_hex_word(num);
-      uart_send_crlf();
+			// NOTE: UART - ERR: data @hex_word(num)\r\n
     }
     val++;
     ptr++;
@@ -124,9 +122,7 @@ static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
 #endif
 
   if(errors > 0) {
-    uart_send_pstring(PSTR("TOTAL ERRORS "));
-    uart_send_hex_word(errors);
-    uart_send_crlf();
+		// NOTE: UART - TOTAL ERRORS hex_word(errors)\r\n
     return PBPROTO_STATUS_ERROR;
   } else {
     return PBPROTO_STATUS_OK;
@@ -168,8 +164,7 @@ static void pb_test_worker(void)
 
 uint8_t pb_test_loop(void)
 {
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("[PB_TEST] on\r\n"));
+	// NOTE: time_stamp_spc() [PB_TEST] on\r\n
 
   stats_reset();
 
@@ -183,18 +178,14 @@ uint8_t pb_test_loop(void)
   uint8_t result = CMD_WORKER_IDLE;
   while(run_mode == RUN_MODE_PB_TEST) {
     // command line handling
-    result = cmd_worker();
-    if(result & CMD_WORKER_RESET) {
-      break;
-    }
+    // NOTE: UART cmd_worker handling was here, reset by loop break
 
     pb_test_worker();
   }
 
   stats_dump(1,0);
 
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("[PB_TEST] off\r\n"));
+	// NOTE: UART - time_stamp_spc() [PB_TEST] off\r\n
 
   return result;
 }
@@ -209,14 +200,12 @@ void pb_test_toggle_auto(void)
 {
   auto_mode = !auto_mode;
 
-  uart_send_time_stamp_spc();
-  uart_send_pstring(PSTR("[AUTO] "));
+	// NOTE: UART - time_stamp_spc() [AUTO]
   if(auto_mode) {
-    uart_send_pstring(PSTR("on"));
+		// NOTE: UART - on
   } else {
-    uart_send_pstring(PSTR("off"));
+		// NOTE: UART - off
   }
-  uart_send_crlf();
 
   if(auto_mode) {
     // send first packet
