@@ -1,0 +1,36 @@
+Messages sent by UART:
+* - no timestamp
+# - with timestamp
+
+# REQ
+# REQ IGN
+# [MAGIC] online
+# [MAGIC] offline
+# [MAGIC] request
+# FIRST TRANSFER!
+# [BRIDGE] on
+# FIRST INCOMING!
+# OFFLINE DROP: <w:size>
+# FLOW ON
+# FLOW OFF
+# [BRIDGE] off
+* NO MAGIC
+* NO IPv4
+# [BRIDGE TEST] on
+* OVERWRITE?!
+# [BRIDGE TEST] off
+* <version> <build date>
+* VERBOSE: <on/off>
+* [<dword:size>, <w:packetType>, <srcMAC> > <dstMAC>]
+* [ARP: <w:op>, (<srcMAC>, <dw:srcIP>) > (<dstMAC>, <dw:dstIP>)]
+* [IP4: <w:ipBufLen>, <w:protoType>, <dw:srcIP> > <dw:dstIP>]
+* UDP Port: <w:port>
+* TCP Port: <w:port>
+* [UDP: <w:srcPort> > <w:dstPort>]
+* [IP: <w:srcPort> > <w:dstPort>, flags: <w:flags>, seq: <w:seq>]
+# invalid cmd: <b:cmd> ERR: <b:status>
+# [<TX/RX>: <b:cmd>] <b:status> n: <dw:packetSize>, d: <dw:packetDelta>, v: <w:rateKBps> +req: <dw:recvDelta>
+* Welcome to plipUltimate <ver> <date>
+* Resetting...
+* mac addr: <param.mac_addr>, full duplex: <param.full_duplex>, fc: <param.flow_ctl>, test packet length: <param.test_plen>, test packet type: <param.test_ptype>, test ip: <param.test_ip>, test port: <param.test_port>, test mode: <param.test_mode>
+

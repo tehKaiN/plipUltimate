@@ -2446,7 +2446,7 @@ static void init_hw(void)
 	cli();
 	wdt_disable();
      e7c:	18 e1       	ldi	r17, 0x18	; 24
-*/
+ */
 
 static void init_hw(void)
 {
@@ -3207,7 +3207,7 @@ void net_dump_mac(const uint8_t *in) {
     1248:	08 95       	ret
 
 0000124a <par_low_init>:
-#include "../pinout.h"
+#include "pinout.h"
 
 
 void par_low_init(void) {

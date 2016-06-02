@@ -56,16 +56,17 @@ uint8_t global_verbose = 0;
  *   Watchdog based on wdt functions (Prg: -24 B)
  *   Other minor changes
  *
- * Sizes after UART removal:
+ * Sizes before UART removal:
+ * Program: 15872 (48.4%)
+ * Data:     1767 (86.3%)
+ * EEPROM:     21 ( 2.1%)
+ *
+ * Current sizes after last change:
  * Program: 10230 (31.2%)
  * Data: 1696 (82.8%)
  * EEPROM: 21 (2.1%)
  *
- * Current sizes after last change:
- * Program: 15872 (48.4%)
- * Data:     1767 (86.3%)
- * EEPROM:     21 ( 2.1%)
-*/
+ */
 
 static void init_hw(void)
 {

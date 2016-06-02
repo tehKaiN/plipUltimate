@@ -29,7 +29,7 @@
 
 #include <avr/io.h>
 #include "../global.h"
-#include "../../pinout.h"
+#include "../pinout.h"
 
 extern void spi_init(void);
 

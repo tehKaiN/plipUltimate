@@ -33,7 +33,7 @@
 #include "stats.h"
 
 #include "base/uartutil.h"
-#include "../pinout.h"
+#include "pinout.h"
 
 // define symbolic names for protocol
 #define SET_RAK         par_low_set_busy_hi

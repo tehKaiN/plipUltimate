@@ -216,7 +216,7 @@
 1461608476 source:d:\prg\_git\plipultimate\avr\src\fuse.c
 	<avr/io.h>
 
-1464861201 source:d:\prg\_git\plipultimate\avr\src\main.c
+1464893358 source:d:\prg\_git\plipultimate\avr\src\main.c
 	<avr/interrupt.h>
 	<avr/wdt.h>
 	"global.h"
@@ -248,11 +248,11 @@
 	"../base/util.h"
 	"../base/uartutil.h"
 
-1463513560 source:d:\prg\_git\plipultimate\avr\src\par_low.c
+1464893544 source:d:\prg\_git\plipultimate\avr\src\par_low.c
 	"par_low.h"
 	<avr/interrupt.h>
 	<util/delay_basic.h>
-	"../pinout.h"
+	"pinout.h"
 
 1464861565 source:d:\prg\_git\plipultimate\avr\src\param.c
 	"param.h"
@@ -264,7 +264,7 @@
 	<avr/pgmspace.h>
 	<string.h>
 
-1464858153 source:d:\prg\_git\plipultimate\avr\src\pb_proto.c
+1464893550 source:d:\prg\_git\plipultimate\avr\src\pb_proto.c
 	<avr/interrupt.h>
 	<util/delay_basic.h>
 	"pb_proto.h"
@@ -272,7 +272,7 @@
 	"base/timer.h"
 	"stats.h"
 	"base/uartutil.h"
-	"../pinout.h"
+	"pinout.h"
 
 1464863106 source:d:\prg\_git\plipultimate\avr\src\pb_test.c
 	"pb_test.h"
@@ -347,11 +347,13 @@
 1461610347 d:\prg\_git\plipultimate\avr\src\spi\enc28j60.h
 	"../pio_dev.h"
 
-1463513560 d:\prg\_git\plipultimate\avr\src\spi\spi.h
+1464893556 d:\prg\_git\plipultimate\avr\src\spi\spi.h
 	<avr/io.h>
 	"../global.h"
-	"../../pinout.h"
+	"../pinout.h"
 
 1463504340 source:d:\prg\_git\plipultimate\avr\src\spi\spi.c
 	"spi.h"
+
+1463503353 d:\prg\_git\plipultimate\avr\src\pinout.h
 
