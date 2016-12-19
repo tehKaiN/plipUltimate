@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1482176036 source:d:\prg\_git\plipultimate\avr-bootloader\main.c
+	<avr/io.h>
+	<util/delay.h>
+

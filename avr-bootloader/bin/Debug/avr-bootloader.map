@@ -18,8 +18,8 @@ Linker script and memory map
 
 Address of section .data set to 0x800100
 LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
-LOAD obj\Debug\fuse.o
 LOAD obj\Debug\main.o
+Address of section .text set to 0x7000
 LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libm.a
 LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
@@ -116,40 +116,40 @@ LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000       0xb6
+.text           0x00007000       0xd6
  *(.vectors)
- .vectors       0x00000000       0x68 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
-                0x00000000                __vectors
-                0x00000000                __vector_default
+ .vectors       0x00007000       0x68 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+                0x00007000                __vectors
+                0x00007000                __vector_default
  *(.vectors)
  *(.progmem.gcc*)
  *(.progmem*)
-                0x00000068                . = ALIGN (0x2)
-                0x00000068                __trampolines_start = .
+                0x00007068                . = ALIGN (0x2)
+                0x00007068                __trampolines_start = .
  *(.trampolines)
- .trampolines   0x00000068        0x0 linker stubs
+ .trampolines   0x00007068        0x0 linker stubs
  *(.trampolines*)
-                0x00000068                __trampolines_end = .
+                0x00007068                __trampolines_end = .
  *(.jumptables)
  *(.jumptables*)
  *(.lowtext)
  *(.lowtext*)
-                0x00000068                __ctors_start = .
+                0x00007068                __ctors_start = .
  *(.ctors)
-                0x00000068                __ctors_end = .
-                0x00000068                __dtors_start = .
+                0x00007068                __ctors_end = .
+                0x00007068                __dtors_start = .
  *(.dtors)
-                0x00000068                __dtors_end = .
+                0x00007068                __dtors_end = .
  SORT(*)(.ctors)
  SORT(*)(.dtors)
  *(.init0)
- .init0         0x00000068        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
-                0x00000068                __init
+ .init0         0x00007068        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+                0x00007068                __init
  *(.init0)
  *(.init1)
  *(.init1)
  *(.init2)
- .init2         0x00000068        0xc d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+ .init2         0x00007068        0xc d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
  *(.init2)
  *(.init3)
  *(.init3)
@@ -164,48 +164,47 @@ LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x00000074        0x8 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+ .init9         0x00007074        0x8 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
  *(.init9)
  *(.text)
- .text          0x0000007c        0x4 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
-                0x0000007c                __vector_22
-                0x0000007c                __vector_1
-                0x0000007c                __vector_24
-                0x0000007c                __vector_12
-                0x0000007c                __bad_interrupt
-                0x0000007c                __vector_6
-                0x0000007c                __vector_3
-                0x0000007c                __vector_23
-                0x0000007c                __vector_25
-                0x0000007c                __vector_11
-                0x0000007c                __vector_13
-                0x0000007c                __vector_17
-                0x0000007c                __vector_19
-                0x0000007c                __vector_7
-                0x0000007c                __vector_5
-                0x0000007c                __vector_4
-                0x0000007c                __vector_9
-                0x0000007c                __vector_2
-                0x0000007c                __vector_21
-                0x0000007c                __vector_15
-                0x0000007c                __vector_8
-                0x0000007c                __vector_14
-                0x0000007c                __vector_10
-                0x0000007c                __vector_16
-                0x0000007c                __vector_18
-                0x0000007c                __vector_20
- .text          0x00000080        0x0 obj\Debug\fuse.o
- .text          0x00000080       0x32 obj\Debug\main.o
-                0x00000080                main
- .text          0x000000b2        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x000000b2                . = ALIGN (0x2)
+ .text          0x0000707c        0x4 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+                0x0000707c                __vector_22
+                0x0000707c                __vector_1
+                0x0000707c                __vector_24
+                0x0000707c                __vector_12
+                0x0000707c                __bad_interrupt
+                0x0000707c                __vector_6
+                0x0000707c                __vector_3
+                0x0000707c                __vector_23
+                0x0000707c                __vector_25
+                0x0000707c                __vector_11
+                0x0000707c                __vector_13
+                0x0000707c                __vector_17
+                0x0000707c                __vector_19
+                0x0000707c                __vector_7
+                0x0000707c                __vector_5
+                0x0000707c                __vector_4
+                0x0000707c                __vector_9
+                0x0000707c                __vector_2
+                0x0000707c                __vector_21
+                0x0000707c                __vector_15
+                0x0000707c                __vector_8
+                0x0000707c                __vector_14
+                0x0000707c                __vector_10
+                0x0000707c                __vector_16
+                0x0000707c                __vector_18
+                0x0000707c                __vector_20
+ .text          0x00007080       0x52 obj\Debug\main.o
+                0x00007080                main
+ .text          0x000070d2        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x000070d2                . = ALIGN (0x2)
  *(.text.*)
- .text.libgcc   0x000000b2        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x000000b2                . = ALIGN (0x2)
+ .text.libgcc   0x000070d2        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x000070d2                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x000000b2        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
-                0x000000b2                exit
-                0x000000b2                _exit
+ .fini9         0x000070d2        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x000070d2                exit
+                0x000070d2                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -224,15 +223,14 @@ LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x000000b2        0x4 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .fini0         0x000070d2        0x4 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.fini0)
-                0x000000b6                _etext = .
+                0x000070d6                _etext = .
 
-.data           0x00800100        0x0 load address 0x000000b6
+.data           0x00800100        0x0 load address 0x000070d6
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800100        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
- .data          0x00800100        0x0 obj\Debug\fuse.o
  .data          0x00800100        0x0 obj\Debug\main.o
  .data          0x00800100        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.data*)
@@ -247,14 +245,13 @@ LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                 0x00800100                PROVIDE (__bss_start, .)
  *(.bss)
  .bss           0x00800100        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
- .bss           0x00800100        0x0 obj\Debug\fuse.o
  .bss           0x00800100        0x0 obj\Debug\main.o
  .bss           0x00800100        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
  *(.bss*)
  *(COMMON)
                 0x00800100                PROVIDE (__bss_end, .)
-                0x000000b6                __data_load_start = LOADADDR (.data)
-                0x000000b6                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000070d6                __data_load_start = LOADADDR (.data)
+                0x000070d6                __data_load_end = (__data_load_start + SIZEOF (.data))
 
 .noinit         0x00800100        0x0
                 0x00800100                PROVIDE (__noinit_start, .)
@@ -267,10 +264,8 @@ LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  *(.eeprom*)
                 0x00810000                __eeprom_end = .
 
-.fuse           0x00820000        0x3
+.fuse
  *(.fuse)
- .fuse          0x00820000        0x3 obj\Debug\fuse.o
-                0x00820000                __fuse
  *(.lfuse)
  *(.hfuse)
  *(.efuse)
@@ -320,57 +315,46 @@ LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
                 0x00000000       0x20 obj\Debug\main.o
 
 .debug_pubnames
-                0x00000000       0x38
+                0x00000000       0x1b
  *(.debug_pubnames)
  .debug_pubnames
-                0x00000000       0x1d obj\Debug\fuse.o
- .debug_pubnames
-                0x0000001d       0x1b obj\Debug\main.o
+                0x00000000       0x1b obj\Debug\main.o
 
-.debug_info     0x00000000      0x1bb
+.debug_info     0x00000000      0x166
  *(.debug_info)
- .debug_info    0x00000000       0xae obj\Debug\fuse.o
- .debug_info    0x000000ae      0x10d obj\Debug\main.o
+ .debug_info    0x00000000      0x166 obj\Debug\main.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev   0x00000000      0x125
+.debug_abbrev   0x00000000       0xd0
  *(.debug_abbrev)
- .debug_abbrev  0x00000000       0x73 obj\Debug\fuse.o
- .debug_abbrev  0x00000073       0xb2 obj\Debug\main.o
+ .debug_abbrev  0x00000000       0xd0 obj\Debug\main.o
 
-.debug_line     0x00000000      0x1c4
+.debug_line     0x00000000      0x161
  *(.debug_line)
- .debug_line    0x00000000       0x8a obj\Debug\fuse.o
- .debug_line    0x0000008a      0x13a obj\Debug\main.o
+ .debug_line    0x00000000      0x161 obj\Debug\main.o
 
 .debug_frame    0x00000000       0x20
  *(.debug_frame)
  .debug_frame   0x00000000       0x20 obj\Debug\main.o
 
-.debug_str      0x00000000       0xd6
+.debug_str      0x00000000       0xb6
  *(.debug_str)
- .debug_str     0x00000000       0x87 obj\Debug\fuse.o
-                                 0xbb (size before relaxing)
- .debug_str     0x00000087       0x4f obj\Debug\main.o
-                                 0xe5 (size before relaxing)
+ .debug_str     0x00000000       0xb6 obj\Debug\main.o
+                                 0xea (size before relaxing)
 
-.debug_loc      0x00000000       0x50
+.debug_loc      0x00000000       0x48
  *(.debug_loc)
- .debug_loc     0x00000000       0x50 obj\Debug\main.o
+ .debug_loc     0x00000000       0x48 obj\Debug\main.o
 
 .debug_macinfo
  *(.debug_macinfo)
-OUTPUT(bin\Debug\avr-blink.elf elf32-avr)
+OUTPUT(bin\Debug\avr-bootloader.elf elf32-avr)
 LOAD linker stubs
-
-.debug_ranges   0x00000000       0x48
- .debug_ranges  0x00000000       0x48 obj\Debug\main.o
 
 Cross Reference Table
 
 Symbol                                            File
 __bad_interrupt                                   d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
-__fuse                                            obj\Debug\fuse.o
 __heap_end                                        d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
 __init                                            d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
 __stack                                           d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
