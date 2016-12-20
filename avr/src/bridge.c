@@ -109,19 +109,22 @@ static void request_magic(void)
 // ----- packet callbacks -----
 
 // the Amiga requests a new packet
+
 static uint8_t fill_pkt(uint8_t *buf, uint16_t max_size, uint16_t *size)
 {
   // need to send a magic?
   if((flags & FLAG_SEND_MAGIC) == FLAG_SEND_MAGIC) {
     flags &= ~FLAG_SEND_MAGIC;
 
-    // build magic packet
+    // Build magic packet
+    // Target (bcast) MAC, src (plipbox) MAC, 0xFFFF => size: 14 bytes
     net_copy_bcast_mac(pkt_buf + ETH_OFF_TGT_MAC);
     net_copy_mac(param.mac_addr, pkt_buf + ETH_OFF_SRC_MAC);
     net_put_word(pkt_buf + ETH_OFF_TYPE, ETH_TYPE_MAGIC_ONLINE);
 
     *size = ETH_HDR_SIZE;
-  } else {
+  }
+  else {
     // pending PIO packet?
     pio_util_recv_packet(size);
 
@@ -137,7 +140,14 @@ static uint8_t fill_pkt(uint8_t *buf, uint16_t max_size, uint16_t *size)
   return PBPROTO_STATUS_OK;
 }
 
-// handle incoming packet from Amiga
+/**
+ * Handles packet sent by Amiga.
+ * There are basically 4 possible packet types, all defined
+ * by ETH_TYPE_* defines.
+ * @param buf Buffer containing sent data
+ * @param size Packet length
+ * @return Always PBPROTO_STATUS_OK
+ */
 static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
 {
   // get eth type
@@ -172,11 +182,16 @@ uint8_t bridge_loop(void)
 
   // NOTE: UART - time_stamp_spc() [BRIDGE] on\r\n
 
+  // Associate protocol fns with given ptrs
   pb_proto_init(fill_pkt, proc_pkt, pkt_buf, PKT_BUF_SIZE);
+
+  // Init ENC28j60
   pio_init(param.mac_addr, pio_util_get_init_flags());
+
+  // Reset stats
   stats_reset();
 
-  // online flag
+  // Reset flags & request state
   flags = 0;
   req_is_pending = 0;
 
@@ -186,7 +201,7 @@ uint8_t bridge_loop(void)
   while(run_mode == RUN_MODE_BRIDGE) {
     // NOTE: UART command handling was here
 
-    // handle pbproto
+    // Calls pb_proto_handle - this is where PAR communication is done
     pb_util_handle();
 
     // incoming packet via PIO available?
@@ -198,13 +213,13 @@ uint8_t bridge_loop(void)
         // NOTE: UART - time_stamp_spc() FIRST INCOMING!\r\n
       }
 
-      // if we are online then request the packet receiption
       if(flags & FLAG_ONLINE) {
+				// if we are online then request the packet receiption
         // if no request is pending then request it
         trigger_request();
       }
-      // offline: get and drop pio packet
       else {
+				// offline: get and drop pio packet
         uint16_t size;
         pio_util_recv_packet(&size);
         // NOTE: UART - time_stamp_spc() OFFLINE DROP: hex_word(size)\r\n

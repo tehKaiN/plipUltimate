@@ -81,6 +81,7 @@ void param_dump(void)
 	// NOTE: UART - \r\n ti: ip address param.test_ip
 	// NOTE: UART - \r\n tp: udp port param.test_port
 	// NOTE: UART - \r\n tm: test mode param.test_mode
+	// NOTE: UART - \r\n
 }
 
 // build check sum for parameter block

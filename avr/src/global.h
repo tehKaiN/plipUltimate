@@ -36,6 +36,7 @@
 #define BUILD_DATE "BUILD_DATE"
 
 /// CPU cycle count per microsecond
+#define F_CPU 20000000UL
 #define CYCLES_PER_US ((F_CPU+500000)/1000000)
 
 #endif

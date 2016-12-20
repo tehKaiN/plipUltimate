@@ -34,30 +34,25 @@
 
 uint8_t pb_util_handle(void)
 {
-  // call protocol handler (low level transmit)
-  uint8_t status = pb_proto_handle();
-  // nothing done... return
-  if(status == PBPROTO_STATUS_IDLE) {
-    return PBPROTO_STATUS_IDLE; // inactive
-  }
-
   const pb_proto_stat_t *ps = &pb_proto_stat;
 
-  // ok!
+  // call protocol handler (low level transmit)
+  uint8_t status = pb_proto_handle();
+  if(status == PBPROTO_STATUS_IDLE)
+    return PBPROTO_STATUS_IDLE; // Nothing done... return
+
   if(status == PBPROTO_STATUS_OK) {
-    // account data
+		// Everything went OK
+    // Update stats
     stats_update_ok(ps->stats_id, ps->size, ps->rate);
-    // dump result?
-    if(global_verbose) {
-      // in interactive mode show result
-      dump_pb_cmd(ps);
-    }
+    if(global_verbose)
+      dump_pb_cmd(ps); // In interactive (verbose) mode show result
   }
-  // pb proto failed with an error
   else {
-    // dump error
+		// PB proto failed with an error
+    // Dump error
     dump_pb_cmd(ps);
-    // account data
+    // Update stats
     stats_get(ps->stats_id)->err++;
   }
   return status;
