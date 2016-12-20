@@ -34,6 +34,19 @@
 #endif
 
 // the table of available devices
+/**
+ * Since there were other network adapters to be added in the future,
+ * One would need to be able to choose one. Ofc one can just make array
+ * of devices, but why not storing them in EEPROM, so that they won't waste
+ * RAM & flash?
+ * - devices[] are ptrs to device descriptors. Located in EEPROM.
+ * - each descriptor is a uint8 devname and series of fn ptrs. Located in
+ *   EEPROM, pointed by ptrs from devices[].
+ *
+ * Basically pio_* fns are calling pio_dev_* fns, which extract ptrs from EEPROM
+ * mess & execute those fns. Looks like one helluva place for optimization.
+ **/
+
 static const pio_dev_ptr_t PROGMEM devices[] = {
 #ifdef DEV_ENC28J60
   &pio_dev_enc28j60,

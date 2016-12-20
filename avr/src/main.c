@@ -81,47 +81,45 @@ static void init_hw(void)
 
 int main(void)
 {
-  while(1) {
-		init_hw();
+	init_hw();
 
-		// send welcome
-		// NOTE: UART - \r\nWelcome to plipbox " VERSION " " BUILD_DATE "\r\n
+	// Send welcome message
+	// NOTE: UART - \r\nWelcome to plipbox " VERSION " " BUILD_DATE "\r\n
 
-		// param init
-		param_init();
-		param_dump();
-		// NOTE: UART - \r\n
+	// Load & display parameters (config)
+	param_init();
+	param_dump();
 
-		// help info
-		// NOTE: UART - Press <return> to enter command mode or <?> for key help\r\n
+	// Display help message
+	// NOTE: UART - Press <return> to enter command mode or <?> for key help\r\n
 
-		#ifdef DEBUG
-			uart_send_free_stack();
-		#endif
+	#ifdef DEBUG
+		uart_send_free_stack();
+	#endif
 
-		// select main loop depending on current run mode
-		uint8_t result = CMD_WORKER_IDLE;
-		while(result != CMD_WORKER_RESET)
-			switch(run_mode) {
-				case RUN_MODE_PB_TEST:
-					result = pb_test_loop();
-					break;
-				case RUN_MODE_PIO_TEST:
-					result = pio_test_loop();
-					break;
-				case RUN_MODE_BRIDGE_TEST:
-					result = bridge_test_loop();
-					break;
-				case RUN_MODE_BRIDGE:
-				default:
-					result = bridge_loop();
-					break;
-			}
+	// Enter main loop depending on current run mode
+	uint8_t result = CMD_WORKER_IDLE;
+	while(result != CMD_WORKER_RESET)
+		switch(run_mode) {
+			case RUN_MODE_PB_TEST:
+				result = pb_test_loop();
+				break;
+			case RUN_MODE_PIO_TEST:
+				result = pio_test_loop();
+				break;
+			case RUN_MODE_BRIDGE_TEST:
+				result = bridge_test_loop();
+				break;
+			case RUN_MODE_BRIDGE:
+			default:
+				result = bridge_loop();
+				break;
+		}
 
-		// wait a bit
-		// NOTE: UART - resetting...\r\n
-		timer_delay_10ms(10);
+	// Wait a bit and do a reset
+	timer_delay_10ms(10);
+	wdt_enable(WDTO_15MS);
+	while(1);
 
-	}
   return 0;
 }

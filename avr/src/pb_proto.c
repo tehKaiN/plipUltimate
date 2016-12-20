@@ -27,6 +27,7 @@
 #include <avr/interrupt.h>
 #include <util/delay_basic.h>
 
+#include "global.h"
 #include "pb_proto.h"
 #include "par_low.h"
 #include "base/timer.h"
@@ -41,11 +42,13 @@
 #define GET_REQ         par_low_get_pout
 #define GET_SELECT      par_low_get_select
 
-// delay loop for recv_burst
-// at least 2us
+// Delay loop for recv_burst
+// Should be at least 2us
+// Each loop takes 3 cycles, e.g. arg = 6 takes 18 cycles + overhead
 #if (F_CPU == 16000000)
-	// 3 cycles per call
 	#define BURST_DELAY _delay_loop_1(6)
+#elif (F_CPU == 20000000UL)
+	#define BURST_DELAY _delay_loop_1(15)
 #else
 	#error Delay loop not defined for F_CPU
 #endif
@@ -85,14 +88,25 @@ uint8_t pb_proto_get_line_status(void) {
   return ((ubPOut << 2) | (ubSelect << 1) | ubStrobe);
 }
 
+/**
+ * Sends data receive request (?) to Amiga.
+ * Done as pulse on ACK line.
+ */
 void pb_proto_request_recv(void)
 {
   par_low_pulse_ack(1);
+  // TODO(KaiN#9): Perhaps should be longer as atmega clk is faster?
   trigger_ts = time_stamp;
 }
 
 // ----- HELPER -----
 
+/**
+ * Waits for PaperOut pin state specified by ubReqValue, for ubStateFlag purposes.
+ * @param ubReqValue Requested PaperOut pin state (1: hi, 0: lo)
+ * @param ubStateFlag For debugging purposes. Flag is appended to return value.
+ * @return wait result - PBPROTO_STATUS_OK on success, otherwise error occured.
+ */
 static uint8_t wait_req(uint8_t ubReqValue, uint8_t ubStateFlag) {
   // wait for new REQ value
   timer_100us = 0;
@@ -168,6 +182,16 @@ static uint8_t cmd_send(uint16_t *pReadSize)
 }
 
 // amiga wants to receive a packet
+/**
+ * Sends data to Amiga in normal (non-burst) way.
+ * Algorithm is as following:
+ * - send size hiWord and set BUSY=0
+ * - send size loWord and set BUSY=1
+ * - send all message bytes
+ * Amiga must indicate its ready state by alternating PaperOut line,
+ * then PlipBox sends next byte and alternates BUSY line.
+ * Not sure if it matters but BUSY is set contrary to POUT.
+ */
 static uint8_t cmd_recv(uint16_t uwSize, uint16_t *pWriteSize)
 {
 	uint8_t ubStatus;
@@ -190,7 +214,7 @@ static uint8_t cmd_recv(uint16_t uwSize, uint16_t *pWriteSize)
     // NOTE(KaiN): return without DDR switchback
   }
   PAR_DATA_PORT = uwSize & 0xFF;
-  PAR_STATUS_PORT ^= BUSY;
+  PAR_STATUS_PORT |= BUSY;
 
   // --- data ---
   uint16_t uwWriteSize = 0;
@@ -384,6 +408,17 @@ static uint8_t cmd_recv_burst(uint16_t size, uint16_t *ret_size) {
   return result;
 }
 
+/**
+ * Handles communication with Amiga.
+ * This function does the following:
+ * - checks if SEL=1 and REQ=0, if not then aborts
+ * - reads send/recv normal/burst byte
+ * - sets BUSY=1
+ * - prepares response for recv
+ * - does normal/burst comm with Amiga
+ * - waits for SEL=0, then sets BUSY=0
+ * - processes packet sent by Amiga
+ */
 uint8_t pb_proto_handle(void) {
   uint8_t result;
   pb_proto_stat_t *ps = &pb_proto_stat;
@@ -391,22 +426,17 @@ uint8_t pb_proto_handle(void) {
   // handle server side of plipbox protocol
   ps->cmd = 0;
 
-  // make sure that SEL == 1
-  if(!(PAR_STATUS_PIN & SEL)) {
+  // make sure that SEL == 1 and REQ == 0
+  if(!(PAR_STATUS_PIN & SEL) || (PAR_STATUS_PIN & POUT)) {
     ps->status = PBPROTO_STATUS_IDLE;
     return PBPROTO_STATUS_IDLE;
   }
 
-  // make sure that REQ == 0
-  if(!(PAR_STATUS_PIN & POUT)) {
-    ps->status = PBPROTO_STATUS_IDLE;
-    return PBPROTO_STATUS_IDLE;
-  }
-
-  // read command byte and execute it
+  // Read command byte
   uint8_t cmd = PAR_DATA_PIN;
 
   // fill buffer for recv command
+  /// Amiga wants to receive data - prepare
   uint16_t pkt_size = 0;
   if((cmd == PBPROTO_CMD_RECV) || (cmd == PBPROTO_CMD_RECV_BURST)) {
     uint8_t res = fill_func(pb_buf, pb_buf_size, &pkt_size);
@@ -452,6 +482,7 @@ uint8_t pb_proto_handle(void) {
   uint16_t delta = timer_hw_get();
 
   // process buffer for send command
+  /// Amiga sent data - process it
   if(result == PBPROTO_STATUS_OK) {
     if((cmd == PBPROTO_CMD_SEND) || (cmd == PBPROTO_CMD_SEND_BURST)) {
       result = proc_func(pb_buf, ret_size);
