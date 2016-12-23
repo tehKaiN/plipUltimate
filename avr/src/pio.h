@@ -50,14 +50,5 @@
 
 /* --- API --- */
 
-extern uint8_t pio_set_device(uint8_t id);
-extern uint8_t pio_init(const uint8_t mac[6],uint8_t flags);
-extern void pio_exit(void);
-
-extern uint8_t pio_send(const uint8_t *buf, uint16_t size);
-extern uint8_t pio_recv(uint8_t *buf, uint16_t max_size, uint16_t *got_size);
-extern uint8_t pio_has_recv(void);
-extern uint8_t pio_status(uint8_t status_id, uint8_t *value);
-extern uint8_t pio_control(uint8_t control_id, uint8_t value);
 
 #endif

@@ -33,6 +33,7 @@
 #include "main.h"
 #include "stats.h"
 #include "base/cmd.h"
+#include "spi/enc28j60.h"
 
 /**
  * Packet IO test mode loop.
@@ -44,7 +45,7 @@ uint8_t pio_test_loop(void)
 
   // NOTE: UART - time_stamp_spc() [PIO_TEST] on\r\n
 
-  pio_init(param.mac_addr, pio_util_get_init_flags());
+  enc28j60_init(param.mac_addr, pio_util_get_init_flags());
   stats_reset();
 
   while(run_mode == RUN_MODE_PIO_TEST) {
@@ -52,7 +53,7 @@ uint8_t pio_test_loop(void)
     // NOTE: UART cmd_worker() processing here, reset by loop break
 
     // incoming packet?
-    if(pio_has_recv()) {
+    if(enc28j60_has_recv()) {
       uint16_t size;
       if(pio_util_recv_packet(&size) == PIO_OK) {
         // handle ARP?
@@ -70,7 +71,7 @@ uint8_t pio_test_loop(void)
   }
 
   stats_dump(0,1);
-  pio_exit();
+  enc28j60_exit();
 
 	// NOTE: UART - time_stamp_spc() [PIO_TEST] off\r\n
 

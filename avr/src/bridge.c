@@ -42,6 +42,7 @@
 #include "pio.h"
 #include "net/eth.h"
 #include "net/net.h"
+#include "spi/enc28j60.h"
 
 #define FLAG_ONLINE         1
 #define FLAG_SEND_MAGIC     2
@@ -85,8 +86,8 @@ static void magic_online(const uint8_t *buf)
     param_save();
 
     // re-configure PIO
-    pio_exit();
-    pio_init(param.mac_addr, PIO_INIT_BROAD_CAST);
+    enc28j60_exit();
+    enc28j60_init(param.mac_addr, PIO_INIT_BROAD_CAST);
   }
 }
 
@@ -195,7 +196,7 @@ uint8_t bridge_loop(void)
   pb_proto_init(fill_pkt, proc_pkt, pkt_buf, PKT_BUF_SIZE);
 
   // Init ENC28j60
-  pio_init(param.mac_addr, pio_util_get_init_flags());
+  enc28j60_init(param.mac_addr, pio_util_get_init_flags());
 
   // Reset stats
   stats_reset();
@@ -214,7 +215,7 @@ uint8_t bridge_loop(void)
     pb_util_handle();
 
     // incoming packet via PIO available?
-    uint8_t n = pio_has_recv();
+    uint8_t n = enc28j60_has_recv();
     if(n>0) {
       // show first incoming packet
       if(first) {
@@ -241,7 +242,7 @@ uint8_t bridge_loop(void)
       if(limit_flow) {
         // disable again?
         if(n==0) {
-          pio_control(PIO_CONTROL_FLOW, 0);
+          enc28j60_control(PIO_CONTROL_FLOW, 0);
           limit_flow = 0;
           if(global_verbose) {
 						// NOTE: UART - time_stamp_spc() FLOW off\r\n
@@ -252,7 +253,7 @@ uint8_t bridge_loop(void)
       else {
         // enable?
         if(n>1) {
-          pio_control(PIO_CONTROL_FLOW, 1);
+          enc28j60_control(PIO_CONTROL_FLOW, 1);
           limit_flow = 1;
           if(global_verbose) {
 						// NOTE: UART - time_stamp_spc() FLOW on\r\n
@@ -263,7 +264,7 @@ uint8_t bridge_loop(void)
   }
 
   stats_dump_all();
-  pio_exit();
+  enc28j60_exit();
 
 	// NOTE: UART - time_stamp_spc() [BRIDGE] off\r\n
 

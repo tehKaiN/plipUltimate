@@ -39,6 +39,7 @@
 #include "net/arp.h"
 #include "net/ip.h"
 #include "net/udp.h"
+#include "spi/enc28j60.h"
 
 uint8_t pio_util_get_init_flags()
 {
@@ -58,7 +59,7 @@ uint8_t pio_util_recv_packet(uint16_t *size)
 {
   // measure packet receive
   timer_hw_reset();
-  uint8_t result = pio_recv(pkt_buf, PKT_BUF_SIZE, size);
+  uint8_t result = enc28j60_recv(pkt_buf, PKT_BUF_SIZE, size);
   uint16_t delta = timer_hw_get();
 
   uint16_t s = *size;
@@ -84,7 +85,7 @@ uint8_t pio_util_recv_packet(uint16_t *size)
 uint8_t pio_util_send_packet(uint16_t size)
 {
   timer_hw_reset();
-  uint8_t result = pio_send(pkt_buf, size);
+  uint8_t result = enc28j60_send(pkt_buf, size);
   uint16_t delta = timer_hw_get();
 
   uint16_t rate = timer_hw_calc_rate_kbs(size, delta);

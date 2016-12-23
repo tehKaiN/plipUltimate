@@ -39,6 +39,7 @@
 #include "net/eth.h"
 #include "pkt_buf.h"
 #include "dump.h"
+#include "spi/enc28j60.h"
 
 static uint16_t pio_pkt_size;
 
@@ -102,7 +103,7 @@ uint8_t bridge_test_loop(void)
 	// NOTE: UART - time_stamp_spc [BRIDGE_TEST] on\r\n
 
   pb_proto_init(fill_pkt, proc_pkt, pkt_buf, PKT_BUF_SIZE);
-  pio_init(param.mac_addr, pio_util_get_init_flags());
+  enc28j60_init(param.mac_addr, pio_util_get_init_flags());
   stats_reset();
 
   while(run_mode == RUN_MODE_BRIDGE_TEST) {
@@ -113,7 +114,7 @@ uint8_t bridge_test_loop(void)
     pb_util_handle();
 
     // incoming packet via PIO?
-    if(pio_has_recv()) {
+    if(enc28j60_has_recv()) {
       uint16_t size;
       if(pio_util_recv_packet(&size) == PIO_OK) {
         // handle ARP?
@@ -136,7 +137,7 @@ uint8_t bridge_test_loop(void)
   }
 
   stats_dump_all();
-  pio_exit();
+  enc28j60_exit();
 
   // NOTE: UART - time_stamp_spc() [BRIDGE_TEST] off\r\n
 

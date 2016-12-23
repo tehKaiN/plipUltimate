@@ -351,6 +351,8 @@ uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
   while (!readOp(ENC28J60_READ_CTRL_REG, ESTAT) & ESTAT_CLKRDY) {
     count ++;
     if(count == 0xfff) {
+			// Moved error from pio_init
+			// NOTE: UART = ERROR: hex_byte(result)
       return PIO_NOT_FOUND;
     }
   }
@@ -424,6 +426,13 @@ uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
   writeOp(ENC28J60_BIT_FIELD_SET, EIE, EIE_INTIE|EIE_PKTIE);
   writeOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_RXEN);
 
+  // Code moved from pio_init
+	uint8_t rev, result;
+	result = enc28j60_status(PIO_STATUS_VERSION, &rev);
+	if(result == PIO_OK) {
+		// NOTE: UART - rev=hex_byte(rev)
+	}
+
   return PIO_OK;
 }
 
@@ -431,6 +440,8 @@ uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
 
 void enc28j60_exit(void)
 {
+	// Moved notice from pio_exit
+	// NOTE: UART - time_stamp_spc() pio: exit\r\n
   SetBank(ECON1);
   writeOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_RXEN);
 }
@@ -674,18 +685,3 @@ uint8_t enc28j60_do_BIST ( void )
 	return macResult == bitsResult;
 }
 #endif
-
-// ----- pio_dev -----
-/*
-static const uint8_t PROGMEM dev_name[] = "enc28j60";
-const pio_dev_t PROGMEM pio_dev_enc28j60 = {
-  .name = dev_name,
-  .init_f = enc28j60_init,
-  .exit_f = enc28j60_exit,
-  .send_f = enc28j60_send,
-  .recv_f = enc28j60_recv,
-  .has_recv_f = enc28j60_has_recv,
-  .status_f = enc28j60_status,
-  .control_f = enc28j60_control
-};
-*/
