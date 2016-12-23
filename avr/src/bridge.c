@@ -207,29 +207,27 @@ uint8_t bridge_loop(void)
 
   uint8_t flow_control = param.flow_ctl;
   uint8_t limit_flow = 0;
-  uint8_t first = 1;
+  uint8_t ubDisplayPacketInfo = 1;
   while(run_mode == RUN_MODE_BRIDGE) {
     // NOTE: UART command handling was here
 
     // Calls pb_proto_handle - this is where PAR communication is done
     pb_util_handle();
 
-    // incoming packet via PIO available?
-    uint8_t n = enc28j60_has_recv();
-    if(n>0) {
-      // show first incoming packet
-      if(first) {
-        first = 0;
+    // Handle packets coming from network
+    uint8_t ubPacketCount = enc28j60_has_recv();
+    if(ubPacketCount) {
+      if(ubDisplayPacketInfo) {
         // NOTE: UART - time_stamp_spc() FIRST INCOMING!\r\n
+        ubDisplayPacketInfo = 0;
       }
 
       if(flags & FLAG_ONLINE) {
-				// if we are online then request the packet receiption
-        // if no request is pending then request it
+				// Comm online: let Amiga know about new packet
         trigger_request();
       }
       else {
-				// offline: get and drop pio packet
+				// Comm offline: read packet from ENC28j60 and drop it
         uint16_t size;
         pio_util_recv_packet(&size);
         // NOTE: UART - time_stamp_spc() OFFLINE DROP: hex_word(size)\r\n
@@ -241,7 +239,7 @@ uint8_t bridge_loop(void)
       // flow limited
       if(limit_flow) {
         // disable again?
-        if(n==0) {
+        if(!ubPacketCount) {
           enc28j60_control(PIO_CONTROL_FLOW, 0);
           limit_flow = 0;
           if(global_verbose) {
@@ -252,7 +250,7 @@ uint8_t bridge_loop(void)
       // no flow limit
       else {
         // enable?
-        if(n>1) {
+        if(ubPacketCount) {
           enc28j60_control(PIO_CONTROL_FLOW, 1);
           limit_flow = 1;
           if(global_verbose) {

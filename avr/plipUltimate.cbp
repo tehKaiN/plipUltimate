@@ -13,7 +13,6 @@
 				<Option type="5" />
 				<Option compiler="avr-gcc" />
 				<Compiler>
-					<Add option="-std=c99" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
@@ -26,6 +25,9 @@
 				<Compiler>
 					<Add option="-Os" />
 				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
 			</Target>
 			<Environment>
 				<Variable name="MCU" value="atmega328p" />
@@ -33,6 +35,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c99" />
 			<Add option="-mmcu=atmega328p" />
 		</Compiler>
 		<Linker>
@@ -120,11 +123,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/pb_util.h" />
-		<Unit filename="src/pio.c">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="src/pio.h" />
-		<Unit filename="src/pio_dev.h" />
 		<Unit filename="src/pio_test.c">
 			<Option compilerVar="CC" />
 		</Unit>

@@ -63,7 +63,7 @@ uint8_t global_verbose = 0;
  * EEPROM:     21 ( 2.1%)
  *
  * Current sizes after last change:
- * Program: 1006 (30.7%)
+ * Program: 10004 (30.5%)
  * Data: 1693 (82.7%)
  * EEPROM: 21 (2.1%)
  *

@@ -55,31 +55,38 @@ uint8_t pio_util_get_init_flags()
   return flags;
 }
 
-uint8_t pio_util_recv_packet(uint16_t *size)
+/**
+ * Receives data from ENC28j60, calculates stats & does logging.
+ * @param pDataSize Pointer to addr to be filled with read data size.
+ */
+uint8_t pio_util_recv_packet(uint16_t *pDataSize)
 {
-  // measure packet receive
+  // Fetch packet from ENC28j60, measure elapsed time
   timer_hw_reset();
-  uint8_t result = enc28j60_recv(pkt_buf, PKT_BUF_SIZE, size);
-  uint16_t delta = timer_hw_get();
+  uint8_t ubRecvResult = enc28j60_recv(pkt_buf, PKT_BUF_SIZE, pDataSize);
+  uint16_t uwTimeDelta = timer_hw_get();
+  uint16_t uwDataRate = timer_hw_calc_rate_kbs(*pDataSize, uwTimeDelta);
 
-  uint16_t s = *size;
-  uint16_t rate = timer_hw_calc_rate_kbs(s, delta);
-  if(result == PIO_OK) {
-    stats_update_ok(STATS_ID_PIO_RX, s, rate);
-  } else {
+  if(ubRecvResult == PIO_OK) {
+		// Update stats - write new data size & rate
+    stats_update_ok(STATS_ID_PIO_RX, *pDataSize, uwDataRate);
+  }
+  else {
+		// Update stats - increase error count
     stats_get(STATS_ID_PIO_RX)->err++;
   }
 
   if(global_verbose) {
 		// NOTE: UART - time_stamp_spc() pio rx:
-    if(result == PIO_OK) {
+    if(ubRecvResult == PIO_OK) {
       // speed & size
-      // NOTE: UART - v= send_rate_kbs(rate) n=hex_word(s)\r\n
-    } else {
-			// NOTE: UART - ERROR=hex_byte(result)\r\n
+      // NOTE: UART - v= send_rate_kbs(uwDataRate) n=hex_word(*pDataSize)\r\n
+    }
+    else {
+			// NOTE: UART - ERROR=hex_byte(ubRecvResult)\r\n
     }
   }
-  return result;
+  return ubRecvResult;
 }
 
 uint8_t pio_util_send_packet(uint16_t size)

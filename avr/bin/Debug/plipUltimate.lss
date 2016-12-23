@@ -3,33 +3,33 @@ bin\Debug\plipUltimate.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         0000003c  00800100  000026da  000027ae  2**0
+  0 .data         0000003c  00800100  000026d8  000027ac  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         000026da  00000000  00000000  000000d4  2**1
+  1 .text         000026d8  00000000  00000000  000000d4  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000661  0080013c  0080013c  000027ea  2**0
+  2 .bss          00000661  0080013c  0080013c  000027e8  2**0
                   ALLOC
-  3 .eeprom       00000015  00810000  00810000  000027ea  2**0
+  3 .eeprom       00000015  00810000  00810000  000027e8  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  4 .fuse         00000003  00820000  00820000  000027ff  2**0
+  4 .fuse         00000003  00820000  00820000  000027fd  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  5 .debug_aranges 00000280  00000000  00000000  00002802  2**0
+  5 .debug_aranges 00000280  00000000  00000000  00002800  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_pubnames 000007e3  00000000  00000000  00002a82  2**0
+  6 .debug_pubnames 000007e3  00000000  00000000  00002a80  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_info   00004e4a  00000000  00000000  00003265  2**0
+  7 .debug_info   00004e3f  00000000  00000000  00003263  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 00001a8d  00000000  00000000  000080af  2**0
+  8 .debug_abbrev 00001a6f  00000000  00000000  000080a2  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   00003076  00000000  00000000  00009b3c  2**0
+  9 .debug_line   0000306e  00000000  00000000  00009b11  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  00000860  00000000  00000000  0000cbb4  2**2
+ 10 .debug_frame  00000860  00000000  00000000  0000cb80  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    00001259  00000000  00000000  0000d414  2**0
+ 11 .debug_str    000012a3  00000000  00000000  0000d3e0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00002172  00000000  00000000  0000e66d  2**0
+ 12 .debug_loc    0000215a  00000000  00000000  0000e683  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00000178  00000000  00000000  000107df  2**0
+ 13 .debug_ranges 00000178  00000000  00000000  000107dd  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -251,7 +251,7 @@ Disassembly of section .text:
      3ba:	11 e0       	ldi	r17, 0x01	; 1
      3bc:	a0 e0       	ldi	r26, 0x00	; 0
      3be:	b1 e0       	ldi	r27, 0x01	; 1
-     3c0:	ea ed       	ldi	r30, 0xDA	; 218
+     3c0:	e8 ed       	ldi	r30, 0xD8	; 216
      3c2:	f6 e2       	ldi	r31, 0x26	; 38
      3c4:	02 c0       	rjmp	.+4      	; 0x3ca <.do_copy_data_start>
 
@@ -278,7 +278,7 @@ Disassembly of section .text:
      3dc:	b1 07       	cpc	r27, r17
      3de:	e1 f7       	brne	.-8      	; 0x3d8 <.do_clear_bss_loop>
      3e0:	0e 94 30 07 	call	0xe60	; 0xe60 <main>
-     3e4:	0c 94 6b 13 	jmp	0x26d6	; 0x26d6 <_exit>
+     3e4:	0c 94 6a 13 	jmp	0x26d4	; 0x26d4 <_exit>
 
 000003e8 <__bad_interrupt>:
      3e8:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -466,7 +466,7 @@ uint16_t timer_hw_calc_rate_kbs(uint16_t bytes, uint16_t delta) {
      528:	36 e8       	ldi	r19, 0x86	; 134
      52a:	41 e0       	ldi	r20, 0x01	; 1
      52c:	50 e0       	ldi	r21, 0x00	; 0
-     52e:	0e 94 eb 12 	call	0x25d6	; 0x25d6 <__mulsi3>
+     52e:	0e 94 ea 12 	call	0x25d4	; 0x25d4 <__mulsi3>
      532:	9e 01       	movw	r18, r28
      534:	40 e0       	ldi	r20, 0x00	; 0
      536:	50 e0       	ldi	r21, 0x00	; 0
@@ -478,7 +478,7 @@ uint16_t timer_hw_calc_rate_kbs(uint16_t bytes, uint16_t delta) {
      542:	33 1f       	adc	r19, r19
      544:	44 1f       	adc	r20, r20
      546:	55 1f       	adc	r21, r21
-     548:	0e 94 16 13 	call	0x262c	; 0x262c <__udivmodsi4>
+     548:	0e 94 15 13 	call	0x262a	; 0x262a <__udivmodsi4>
   }
 	else
 		return 0;
@@ -600,24 +600,24 @@ void byte_to_dec(uint8_t value, uint8_t *out)
   uint8_t h = value / 100;
   uint8_t t = value % 100;
      5ea:	64 e6       	ldi	r22, 0x64	; 100
-     5ec:	0e 94 0a 13 	call	0x2614	; 0x2614 <__udivmodqi4>
+     5ec:	0e 94 09 13 	call	0x2612	; 0x2612 <__udivmodqi4>
      5f0:	39 2f       	mov	r19, r25
   uint8_t o = t % 10;
   t = t / 10;
   out[0] = '0' + h;
      5f2:	82 2f       	mov	r24, r18
-     5f4:	0e 94 0a 13 	call	0x2614	; 0x2614 <__udivmodqi4>
+     5f4:	0e 94 09 13 	call	0x2612	; 0x2612 <__udivmodqi4>
      5f8:	80 5d       	subi	r24, 0xD0	; 208
      5fa:	80 83       	st	Z, r24
   out[1] = '0' + t;
      5fc:	83 2f       	mov	r24, r19
      5fe:	6a e0       	ldi	r22, 0x0A	; 10
-     600:	0e 94 0a 13 	call	0x2614	; 0x2614 <__udivmodqi4>
+     600:	0e 94 09 13 	call	0x2612	; 0x2612 <__udivmodqi4>
      604:	80 5d       	subi	r24, 0xD0	; 208
      606:	81 83       	std	Z+1, r24	; 0x01
   out[2] = '0' + o;
      608:	83 2f       	mov	r24, r19
-     60a:	0e 94 0a 13 	call	0x2614	; 0x2614 <__udivmodqi4>
+     60a:	0e 94 09 13 	call	0x2612	; 0x2612 <__udivmodqi4>
      60e:	90 5d       	subi	r25, 0xD0	; 208
      610:	92 83       	std	Z+2, r25	; 0x02
 }
@@ -690,7 +690,7 @@ void dword_to_dec(uint32_t value, uint8_t *out, uint8_t num_digits, uint8_t poin
      664:	30 e0       	ldi	r19, 0x00	; 0
      666:	40 e0       	ldi	r20, 0x00	; 0
      668:	50 e0       	ldi	r21, 0x00	; 0
-     66a:	0e 94 16 13 	call	0x262c	; 0x262c <__udivmodsi4>
+     66a:	0e 94 15 13 	call	0x262a	; 0x262a <__udivmodsi4>
      66e:	60 5d       	subi	r22, 0xD0	; 208
      670:	68 83       	st	Y, r22
   // start backwards
@@ -718,7 +718,7 @@ void dword_to_dec(uint32_t value, uint8_t *out, uint8_t num_digits, uint8_t poin
      684:	30 e0       	ldi	r19, 0x00	; 0
      686:	40 e0       	ldi	r20, 0x00	; 0
      688:	50 e0       	ldi	r21, 0x00	; 0
-     68a:	0e 94 16 13 	call	0x262c	; 0x262c <__udivmodsi4>
+     68a:	0e 94 15 13 	call	0x262a	; 0x262a <__udivmodsi4>
      68e:	c2 2e       	mov	r12, r18
      690:	d3 2e       	mov	r13, r19
      692:	e4 2e       	mov	r14, r20
@@ -1147,11 +1147,11 @@ uint8_t bridge_loop(void)
      8e6:	00 e6       	ldi	r16, 0x60	; 96
      8e8:	11 e0       	ldi	r17, 0x01	; 1
      8ea:	c8 01       	movw	r24, r16
-     8ec:	0e 94 28 11 	call	0x2250	; 0x2250 <enc28j60_init>
+     8ec:	0e 94 27 11 	call	0x224e	; 0x224e <enc28j60_init>
 
   // Reset stats
   stats_reset();
-     8f0:	0e 94 ab 12 	call	0x2556	; 0x2556 <stats_reset>
+     8f0:	0e 94 aa 12 	call	0x2554	; 0x2554 <stats_reset>
 
   // Reset flags & request state
   flags = 0;
@@ -1166,7 +1166,7 @@ uint8_t bridge_loop(void)
         trigger_request();
       }
       else {
-				// offline: get and drop pio packet
+				// Comm offline: read packet from ENC28j60 and drop it
         uint16_t size;
         pio_util_recv_packet(&size);
      902:	6e 01       	movw	r12, r28
@@ -1174,7 +1174,7 @@ uint8_t bridge_loop(void)
      906:	c1 1c       	adc	r12, r1
      908:	d1 1c       	adc	r13, r1
      90a:	24 c0       	rjmp	.+72     	; 0x954 <__stack+0x55>
-  uint8_t first = 1;
+  uint8_t ubDisplayPacketInfo = 1;
   while(run_mode == RUN_MODE_BRIDGE) {
     // NOTE: UART command handling was here
 
@@ -1182,30 +1182,29 @@ uint8_t bridge_loop(void)
     pb_util_handle();
      90c:	0e 94 19 0e 	call	0x1c32	; 0x1c32 <pb_util_handle>
 
-    // incoming packet via PIO available?
-    uint8_t n = enc28j60_has_recv();
-     910:	0e 94 24 11 	call	0x2248	; 0x2248 <enc28j60_has_recv>
+    // Handle packets coming from network
+    uint8_t ubPacketCount = enc28j60_has_recv();
+     910:	0e 94 23 11 	call	0x2246	; 0x2246 <enc28j60_has_recv>
      914:	08 2f       	mov	r16, r24
-    if(n>0) {
+    if(ubPacketCount) {
      916:	88 23       	and	r24, r24
      918:	51 f0       	breq	.+20     	; 0x92e <__stack+0x2f>
-      if(first) {
-        first = 0;
+      if(ubDisplayPacketInfo) {
         // NOTE: UART - time_stamp_spc() FIRST INCOMING!\r\n
+        ubDisplayPacketInfo = 0;
       }
 
       if(flags & FLAG_ONLINE) {
      91a:	80 91 3e 01 	lds	r24, 0x013E
      91e:	80 ff       	sbrs	r24, 0
      920:	03 c0       	rjmp	.+6      	; 0x928 <__stack+0x29>
-				// if we are online then request the packet receiption
-        // if no request is pending then request it
+				// Comm online: let Amiga know about new packet
         trigger_request();
      922:	0e 94 52 04 	call	0x8a4	; 0x8a4 <trigger_request>
      926:	03 c0       	rjmp	.+6      	; 0x92e <__stack+0x2f>
       }
       else {
-				// offline: get and drop pio packet
+				// Comm offline: read packet from ENC28j60 and drop it
         uint16_t size;
         pio_util_recv_packet(&size);
      928:	c6 01       	movw	r24, r12
@@ -1223,13 +1222,13 @@ uint8_t bridge_loop(void)
      932:	11 23       	and	r17, r17
      934:	41 f0       	breq	.+16     	; 0x946 <__stack+0x47>
         // disable again?
-        if(n==0) {
+        if(!ubPacketCount) {
      936:	00 23       	and	r16, r16
      938:	69 f4       	brne	.+26     	; 0x954 <__stack+0x55>
           enc28j60_control(PIO_CONTROL_FLOW, 0);
      93a:	80 e0       	ldi	r24, 0x00	; 0
      93c:	60 e0       	ldi	r22, 0x00	; 0
-     93e:	0e 94 87 10 	call	0x210e	; 0x210e <enc28j60_control>
+     93e:	0e 94 86 10 	call	0x210c	; 0x210c <enc28j60_control>
      942:	10 e0       	ldi	r17, 0x00	; 0
      944:	07 c0       	rjmp	.+14     	; 0x954 <__stack+0x55>
         }
@@ -1237,19 +1236,19 @@ uint8_t bridge_loop(void)
       // no flow limit
       else {
         // enable?
-        if(n>1) {
-     946:	02 30       	cpi	r16, 0x02	; 2
-     948:	28 f0       	brcs	.+10     	; 0x954 <__stack+0x55>
+        if(ubPacketCount) {
+     946:	00 23       	and	r16, r16
+     948:	29 f0       	breq	.+10     	; 0x954 <__stack+0x55>
           enc28j60_control(PIO_CONTROL_FLOW, 1);
      94a:	80 e0       	ldi	r24, 0x00	; 0
      94c:	61 e0       	ldi	r22, 0x01	; 1
-     94e:	0e 94 87 10 	call	0x210e	; 0x210e <enc28j60_control>
+     94e:	0e 94 86 10 	call	0x210c	; 0x210c <enc28j60_control>
      952:	11 e0       	ldi	r17, 0x01	; 1
   req_is_pending = 0;
 
   uint8_t flow_control = param.flow_ctl;
   uint8_t limit_flow = 0;
-  uint8_t first = 1;
+  uint8_t ubDisplayPacketInfo = 1;
   while(run_mode == RUN_MODE_BRIDGE) {
      954:	80 91 42 01 	lds	r24, 0x0142
      958:	88 23       	and	r24, r24
@@ -1260,9 +1259,9 @@ uint8_t bridge_loop(void)
   }
 
   stats_dump_all();
-     95c:	0e 94 e9 12 	call	0x25d2	; 0x25d2 <stats_dump_all>
+     95c:	0e 94 e8 12 	call	0x25d0	; 0x25d0 <stats_dump_all>
   enc28j60_exit();
-     960:	0e 94 7e 10 	call	0x20fc	; 0x20fc <enc28j60_exit>
+     960:	0e 94 7d 10 	call	0x20fa	; 0x20fa <enc28j60_exit>
 
 	// NOTE: UART - time_stamp_spc() [BRIDGE] off\r\n
 
@@ -1342,11 +1341,11 @@ static void magic_online(const uint8_t *buf)
 
     // re-configure PIO
     enc28j60_exit();
-     9ce:	0e 94 7e 10 	call	0x20fc	; 0x20fc <enc28j60_exit>
+     9ce:	0e 94 7d 10 	call	0x20fa	; 0x20fa <enc28j60_exit>
     enc28j60_init(param.mac_addr, PIO_INIT_BROAD_CAST);
      9d2:	c8 01       	movw	r24, r16
      9d4:	64 e0       	ldi	r22, 0x04	; 4
-     9d6:	0e 94 28 11 	call	0x2250	; 0x2250 <enc28j60_init>
+     9d6:	0e 94 27 11 	call	0x224e	; 0x224e <enc28j60_init>
      9da:	1a c0       	rjmp	.+52     	; 0xa10 <proc_pkt+0x96>
  * Disables ethernet communication.
  */
@@ -1519,9 +1518,9 @@ uint8_t bridge_test_loop(void)
      ab0:	68 2f       	mov	r22, r24
      ab2:	80 e6       	ldi	r24, 0x60	; 96
      ab4:	91 e0       	ldi	r25, 0x01	; 1
-     ab6:	0e 94 28 11 	call	0x2250	; 0x2250 <enc28j60_init>
+     ab6:	0e 94 27 11 	call	0x224e	; 0x224e <enc28j60_init>
   stats_reset();
-     aba:	0e 94 ab 12 	call	0x2556	; 0x2556 <stats_reset>
+     aba:	0e 94 aa 12 	call	0x2554	; 0x2554 <stats_reset>
     pb_util_handle();
 
     // incoming packet via PIO?
@@ -1542,7 +1541,7 @@ uint8_t bridge_test_loop(void)
 
     // incoming packet via PIO?
     if(enc28j60_has_recv()) {
-     aca:	0e 94 24 11 	call	0x2248	; 0x2248 <enc28j60_has_recv>
+     aca:	0e 94 23 11 	call	0x2246	; 0x2246 <enc28j60_has_recv>
      ace:	88 23       	and	r24, r24
      ad0:	c9 f0       	breq	.+50     	; 0xb04 <bridge_test_loop+0x7a>
       uint16_t size;
@@ -1592,9 +1591,9 @@ uint8_t bridge_test_loop(void)
   }
 
   stats_dump_all();
-     b0c:	0e 94 e9 12 	call	0x25d2	; 0x25d2 <stats_dump_all>
+     b0c:	0e 94 e8 12 	call	0x25d0	; 0x25d0 <stats_dump_all>
   enc28j60_exit();
-     b10:	0e 94 7e 10 	call	0x20fc	; 0x20fc <enc28j60_exit>
+     b10:	0e 94 7d 10 	call	0x20fa	; 0x20fa <enc28j60_exit>
 
   // NOTE: UART - time_stamp_spc() [BRIDGE_TEST] off\r\n
 
@@ -2048,7 +2047,7 @@ COMMAND(cmd_param_mac_addr)
 COMMAND(cmd_stats_reset)
 {
   stats_reset();
-     d38:	0e 94 ab 12 	call	0x2556	; 0x2556 <stats_reset>
+     d38:	0e 94 aa 12 	call	0x2554	; 0x2554 <stats_reset>
   return CMD_OK;
 }
      d3c:	80 e0       	ldi	r24, 0x00	; 0
@@ -2061,7 +2060,7 @@ COMMAND(cmd_stats_reset)
 COMMAND(cmd_stats_dump)
 {
   stats_dump_all();
-     d40:	0e 94 e9 12 	call	0x25d2	; 0x25d2 <stats_dump_all>
+     d40:	0e 94 e8 12 	call	0x25d0	; 0x25d0 <stats_dump_all>
   return CMD_OK;
 }
      d44:	80 e0       	ldi	r24, 0x00	; 0
@@ -2229,7 +2228,7 @@ COMMAND_KEY(cmd_send_test_packet)
 COMMAND_KEY(cmd_reset_stats)
 {
   stats_reset();
-     db2:	0e 94 ab 12 	call	0x2556	; 0x2556 <stats_reset>
+     db2:	0e 94 aa 12 	call	0x2554	; 0x2554 <stats_reset>
 }
      db6:	08 95       	ret
 
@@ -2240,7 +2239,7 @@ COMMAND_KEY(cmd_reset_stats)
 COMMAND_KEY(cmd_dump_stats)
 {
   stats_dump_all();
-     db8:	0e 94 e9 12 	call	0x25d2	; 0x25d2 <stats_dump_all>
+     db8:	0e 94 e8 12 	call	0x25d0	; 0x25d0 <stats_dump_all>
 }
      dbc:	08 95       	ret
 
@@ -3417,13 +3416,13 @@ uint8_t param_load(void)
     1308:	70 e0       	ldi	r23, 0x00	; 0
     130a:	43 e1       	ldi	r20, 0x13	; 19
     130c:	50 e0       	ldi	r21, 0x00	; 0
-    130e:	0e 94 38 13 	call	0x2670	; 0x2670 <__eerd_block_m328p>
+    130e:	0e 94 37 13 	call	0x266e	; 0x266e <__eerd_block_m328p>
 
   // read crc16
   uint16_t crc16 = eeprom_read_word(&eeprom_crc16);
     1312:	83 e1       	ldi	r24, 0x13	; 19
     1314:	90 e0       	ldi	r25, 0x00	; 0
-    1316:	0e 94 48 13 	call	0x2690	; 0x2690 <__eerd_word_m328p>
+    1316:	0e 94 47 13 	call	0x268e	; 0x268e <__eerd_word_m328p>
     131a:	8c 01       	movw	r16, r24
   uint16_t my_crc16 = calc_crc16(&param);
     131c:	c7 01       	movw	r24, r14
@@ -3488,7 +3487,7 @@ uint8_t param_save(void)
     135e:	70 e0       	ldi	r23, 0x00	; 0
     1360:	43 e1       	ldi	r20, 0x13	; 19
     1362:	50 e0       	ldi	r21, 0x00	; 0
-    1364:	0e 94 4e 13 	call	0x269c	; 0x269c <__eewr_block_m328p>
+    1364:	0e 94 4d 13 	call	0x269a	; 0x269a <__eewr_block_m328p>
 
   // calc current parameter crc
   uint16_t crc16 = calc_crc16(&param);
@@ -3498,7 +3497,7 @@ uint8_t param_save(void)
   eeprom_write_word(&eeprom_crc16,crc16);
     1370:	83 e1       	ldi	r24, 0x13	; 19
     1372:	90 e0       	ldi	r25, 0x00	; 0
-    1374:	0e 94 66 13 	call	0x26cc	; 0x26cc <__eewr_word_m328p>
+    1374:	0e 94 65 13 	call	0x26ca	; 0x26ca <__eewr_word_m328p>
     1378:	80 e0       	ldi	r24, 0x00	; 0
 
   return PARAM_OK;
@@ -4933,7 +4932,7 @@ void pb_test_toggle_auto(void)
     1aa0:	0e 94 40 0d 	call	0x1a80	; 0x1a80 <pb_test_send_packet>
     // clear stats
     stats_reset();
-    1aa4:	0e 94 ab 12 	call	0x2556	; 0x2556 <stats_reset>
+    1aa4:	0e 94 aa 12 	call	0x2554	; 0x2554 <stats_reset>
     1aa8:	08 95       	ret
 
 00001aaa <pb_test_loop>:
@@ -4950,7 +4949,7 @@ uint8_t pb_test_loop(void)
 	// NOTE: time_stamp_spc() [PB_TEST] on\r\n
 
   stats_reset();
-    1ab2:	0e 94 ab 12 	call	0x2556	; 0x2556 <stats_reset>
+    1ab2:	0e 94 aa 12 	call	0x2554	; 0x2554 <stats_reset>
 
   // setup handlers for pb testing
   pb_proto_init(fill_pkt, proc_pkt, pkt_buf, PKT_BUF_SIZE);
@@ -5058,7 +5057,7 @@ static void pb_test_worker(void)
   stats_dump(1,0);
     1b2a:	81 e0       	ldi	r24, 0x01	; 1
     1b2c:	60 e0       	ldi	r22, 0x00	; 0
-    1b2e:	0e 94 ea 12 	call	0x25d4	; 0x25d4 <stats_dump>
+    1b2e:	0e 94 e9 12 	call	0x25d2	; 0x25d2 <stats_dump>
 
 	// NOTE: UART - time_stamp_spc() [PB_TEST] off\r\n
 
@@ -5297,7 +5296,7 @@ uint8_t pb_util_handle(void)
     1c4a:	45 81       	ldd	r20, Z+5	; 0x05
     1c4c:	56 81       	ldd	r21, Z+6	; 0x06
     1c4e:	80 81       	ld	r24, Z
-    1c50:	0e 94 c0 12 	call	0x2580	; 0x2580 <stats_update_ok>
+    1c50:	0e 94 bf 12 	call	0x257e	; 0x257e <stats_update_ok>
     if(global_verbose)
     1c54:	80 91 43 01 	lds	r24, 0x0143
     1c58:	88 23       	and	r24, r24
@@ -5361,9 +5360,9 @@ uint8_t pio_test_loop(void)
     1ca4:	68 2f       	mov	r22, r24
     1ca6:	80 e6       	ldi	r24, 0x60	; 96
     1ca8:	91 e0       	ldi	r25, 0x01	; 1
-    1caa:	0e 94 28 11 	call	0x2250	; 0x2250 <enc28j60_init>
+    1caa:	0e 94 27 11 	call	0x224e	; 0x224e <enc28j60_init>
   stats_reset();
-    1cae:	0e 94 ab 12 	call	0x2556	; 0x2556 <stats_reset>
+    1cae:	0e 94 aa 12 	call	0x2554	; 0x2554 <stats_reset>
     // NOTE: UART cmd_worker() processing here, reset by loop break
 
     // incoming packet?
@@ -5389,7 +5388,7 @@ uint8_t pio_test_loop(void)
 
     // incoming packet?
     if(enc28j60_has_recv()) {
-    1cc0:	0e 94 24 11 	call	0x2248	; 0x2248 <enc28j60_has_recv>
+    1cc0:	0e 94 23 11 	call	0x2246	; 0x2246 <enc28j60_has_recv>
     1cc4:	88 23       	and	r24, r24
     1cc6:	e1 f0       	breq	.+56     	; 0x1d00 <pio_test_loop+0x72>
       uint16_t size;
@@ -5445,9 +5444,9 @@ uint8_t pio_test_loop(void)
   stats_dump(0,1);
     1d08:	80 e0       	ldi	r24, 0x00	; 0
     1d0a:	61 e0       	ldi	r22, 0x01	; 1
-    1d0c:	0e 94 ea 12 	call	0x25d4	; 0x25d4 <stats_dump>
+    1d0c:	0e 94 e9 12 	call	0x25d2	; 0x25d2 <stats_dump>
   enc28j60_exit();
-    1d10:	0e 94 7e 10 	call	0x20fc	; 0x20fc <enc28j60_exit>
+    1d10:	0e 94 7d 10 	call	0x20fa	; 0x20fa <enc28j60_exit>
 
 	// NOTE: UART - time_stamp_spc() [PIO_TEST] off\r\n
 
@@ -5633,7 +5632,7 @@ inline uint16_t  udp_get_src_port(const uint8_t *udp_buf) { return net_get_word(
 
 00001e1c <pio_util_send_packet>:
   }
-  return result;
+  return ubRecvResult;
 }
 
 uint8_t pio_util_send_packet(uint16_t size)
@@ -5660,7 +5659,7 @@ inline void timer_hw_reset(void) { TCNT1 = 0; }
     1e32:	83 e8       	ldi	r24, 0x83	; 131
     1e34:	91 e0       	ldi	r25, 0x01	; 1
     1e36:	be 01       	movw	r22, r28
-    1e38:	0e 94 cb 10 	call	0x2196	; 0x2196 <enc28j60_send>
+    1e38:	0e 94 ca 10 	call	0x2194	; 0x2194 <enc28j60_send>
     1e3c:	f8 2e       	mov	r15, r24
 inline uint16_t  timer_hw_get(void) { return TCNT1; }
     1e3e:	f8 01       	movw	r30, r16
@@ -5678,7 +5677,7 @@ inline uint16_t  timer_hw_get(void) { return TCNT1; }
     stats_update_ok(STATS_ID_PIO_TX, size, rate);
     1e50:	83 e0       	ldi	r24, 0x03	; 3
     1e52:	be 01       	movw	r22, r28
-    1e54:	0e 94 c0 12 	call	0x2580	; 0x2580 <stats_update_ok>
+    1e54:	0e 94 bf 12 	call	0x257e	; 0x257e <stats_update_ok>
     1e58:	07 c0       	rjmp	.+14     	; 0x1e68 <pio_util_send_packet+0x4c>
   } else {
     stats_get(STATS_ID_PIO_TX)->err++;
@@ -5817,18 +5816,18 @@ inline void eth_make_bcast(uint8_t *pkt, const uint8_t *my_mac)
     1f1a:	08 95       	ret
 
 00001f1c <pio_util_recv_packet>:
-
-  return flags;
-}
-
-uint8_t pio_util_recv_packet(uint16_t *size)
+/**
+ * Receives data from ENC28j60, calculates stats & does logging.
+ * @param pDataSize Pointer to addr to be filled with read data size.
+ */
+uint8_t pio_util_recv_packet(uint16_t *pDataSize)
 {
-    1f1c:	df 92       	push	r13
-    1f1e:	ef 92       	push	r14
-    1f20:	ff 92       	push	r15
-    1f22:	0f 93       	push	r16
-    1f24:	1f 93       	push	r17
-    1f26:	7c 01       	movw	r14, r24
+    1f1c:	ff 92       	push	r15
+    1f1e:	0f 93       	push	r16
+    1f20:	1f 93       	push	r17
+    1f22:	cf 93       	push	r28
+    1f24:	df 93       	push	r29
+    1f26:	ec 01       	movw	r28, r24
 extern void timer_delay_100us(uint16_t timeout);
 
 // ----- hardware timer -----
@@ -5840,1415 +5839,1416 @@ inline void timer_hw_reset(void) { TCNT1 = 0; }
     1f2c:	f8 01       	movw	r30, r16
     1f2e:	11 82       	std	Z+1, r1	; 0x01
     1f30:	10 82       	st	Z, r1
-  // measure packet receive
+  // Fetch packet from ENC28j60, measure elapsed time
   timer_hw_reset();
-  uint8_t result = enc28j60_recv(pkt_buf, PKT_BUF_SIZE, size);
+  uint8_t ubRecvResult = enc28j60_recv(pkt_buf, PKT_BUF_SIZE, pDataSize);
     1f32:	83 e8       	ldi	r24, 0x83	; 131
     1f34:	91 e0       	ldi	r25, 0x01	; 1
     1f36:	6a ee       	ldi	r22, 0xEA	; 234
     1f38:	75 e0       	ldi	r23, 0x05	; 5
-    1f3a:	a7 01       	movw	r20, r14
-    1f3c:	0e 94 1c 12 	call	0x2438	; 0x2438 <enc28j60_recv>
-    1f40:	d8 2e       	mov	r13, r24
+    1f3a:	ae 01       	movw	r20, r28
+    1f3c:	0e 94 1b 12 	call	0x2436	; 0x2436 <enc28j60_recv>
+    1f40:	f8 2e       	mov	r15, r24
 inline uint16_t  timer_hw_get(void) { return TCNT1; }
     1f42:	f8 01       	movw	r30, r16
     1f44:	60 81       	ld	r22, Z
     1f46:	71 81       	ldd	r23, Z+1	; 0x01
-  uint16_t delta = timer_hw_get();
+  uint16_t uwTimeDelta = timer_hw_get();
+  uint16_t uwDataRate = timer_hw_calc_rate_kbs(*pDataSize, uwTimeDelta);
+    1f48:	88 81       	ld	r24, Y
+    1f4a:	99 81       	ldd	r25, Y+1	; 0x01
+    1f4c:	0e 94 87 02 	call	0x50e	; 0x50e <timer_hw_calc_rate_kbs>
+    1f50:	ac 01       	movw	r20, r24
 
-  uint16_t s = *size;
-    1f48:	f7 01       	movw	r30, r14
-    1f4a:	e0 80       	ld	r14, Z
-    1f4c:	f1 80       	ldd	r15, Z+1	; 0x01
-  uint16_t rate = timer_hw_calc_rate_kbs(s, delta);
-    1f4e:	c7 01       	movw	r24, r14
-    1f50:	0e 94 87 02 	call	0x50e	; 0x50e <timer_hw_calc_rate_kbs>
-    1f54:	ac 01       	movw	r20, r24
-  if(result == PIO_OK) {
-    1f56:	dd 20       	and	r13, r13
-    1f58:	29 f4       	brne	.+10     	; 0x1f64 <pio_util_recv_packet+0x48>
-    stats_update_ok(STATS_ID_PIO_RX, s, rate);
+  if(ubRecvResult == PIO_OK) {
+    1f52:	ff 20       	and	r15, r15
+    1f54:	31 f4       	brne	.+12     	; 0x1f62 <pio_util_recv_packet+0x46>
+		// Update stats - write new data size & rate
+    stats_update_ok(STATS_ID_PIO_RX, *pDataSize, uwDataRate);
+    1f56:	68 81       	ld	r22, Y
+    1f58:	79 81       	ldd	r23, Y+1	; 0x01
     1f5a:	82 e0       	ldi	r24, 0x02	; 2
-    1f5c:	b7 01       	movw	r22, r14
-    1f5e:	0e 94 c0 12 	call	0x2580	; 0x2580 <stats_update_ok>
-    1f62:	07 c0       	rjmp	.+14     	; 0x1f72 <pio_util_recv_packet+0x56>
-  } else {
+    1f5c:	0e 94 bf 12 	call	0x257e	; 0x257e <stats_update_ok>
+    1f60:	07 c0       	rjmp	.+14     	; 0x1f70 <pio_util_recv_packet+0x54>
+  }
+  else {
+		// Update stats - increase error count
     stats_get(STATS_ID_PIO_RX)->err++;
-    1f64:	eb e8       	ldi	r30, 0x8B	; 139
-    1f66:	f7 e0       	ldi	r31, 0x07	; 7
-    1f68:	80 81       	ld	r24, Z
-    1f6a:	91 81       	ldd	r25, Z+1	; 0x01
-    1f6c:	01 96       	adiw	r24, 0x01	; 1
-    1f6e:	91 83       	std	Z+1, r25	; 0x01
-    1f70:	80 83       	st	Z, r24
-    } else {
-			// NOTE: UART - ERROR=hex_byte(result)\r\n
+    1f62:	eb e8       	ldi	r30, 0x8B	; 139
+    1f64:	f7 e0       	ldi	r31, 0x07	; 7
+    1f66:	80 81       	ld	r24, Z
+    1f68:	91 81       	ldd	r25, Z+1	; 0x01
+    1f6a:	01 96       	adiw	r24, 0x01	; 1
+    1f6c:	91 83       	std	Z+1, r25	; 0x01
+    1f6e:	80 83       	st	Z, r24
+    else {
+			// NOTE: UART - ERROR=hex_byte(ubRecvResult)\r\n
     }
   }
-  return result;
+  return ubRecvResult;
 }
-    1f72:	8d 2d       	mov	r24, r13
-    1f74:	1f 91       	pop	r17
-    1f76:	0f 91       	pop	r16
-    1f78:	ff 90       	pop	r15
-    1f7a:	ef 90       	pop	r14
-    1f7c:	df 90       	pop	r13
-    1f7e:	08 95       	ret
+    1f70:	8f 2d       	mov	r24, r15
+    1f72:	df 91       	pop	r29
+    1f74:	cf 91       	pop	r28
+    1f76:	1f 91       	pop	r17
+    1f78:	0f 91       	pop	r16
+    1f7a:	ff 90       	pop	r15
+    1f7c:	08 95       	ret
 
-00001f80 <readOp>:
-    1f80:	e5 e2       	ldi	r30, 0x25	; 37
-    1f82:	f0 e0       	ldi	r31, 0x00	; 0
-    1f84:	90 81       	ld	r25, Z
-    1f86:	9b 7f       	andi	r25, 0xFB	; 251
-    1f88:	90 83       	st	Z, r25
+00001f7e <readOp>:
+    1f7e:	e5 e2       	ldi	r30, 0x25	; 37
+    1f80:	f0 e0       	ldi	r31, 0x00	; 0
+    1f82:	90 81       	ld	r25, Z
+    1f84:	9b 7f       	andi	r25, 0xFB	; 251
+    1f86:	90 83       	st	Z, r25
 static uint8_t is_full_duplex;
 static uint8_t rev;
 
 static uint8_t readOp (uint8_t op, uint8_t address) {
     spi_enable_eth();
     spi_out(op | (address & ADDR_MASK));
-    1f8a:	96 2f       	mov	r25, r22
-    1f8c:	9f 71       	andi	r25, 0x1F	; 31
-    1f8e:	98 2b       	or	r25, r24
-    1f90:	9e bd       	out	0x2e, r25	; 46
-    1f92:	ed e4       	ldi	r30, 0x4D	; 77
-    1f94:	f0 e0       	ldi	r31, 0x00	; 0
-    1f96:	80 81       	ld	r24, Z
-    1f98:	88 23       	and	r24, r24
-    1f9a:	ec f7       	brge	.-6      	; 0x1f96 <readOp+0x16>
+    1f88:	96 2f       	mov	r25, r22
+    1f8a:	9f 71       	andi	r25, 0x1F	; 31
+    1f8c:	98 2b       	or	r25, r24
+    1f8e:	9e bd       	out	0x2e, r25	; 46
+    1f90:	ed e4       	ldi	r30, 0x4D	; 77
+    1f92:	f0 e0       	ldi	r31, 0x00	; 0
+    1f94:	80 81       	ld	r24, Z
+    1f96:	88 23       	and	r24, r24
+    1f98:	ec f7       	brge	.-6      	; 0x1f94 <readOp+0x16>
     if (address & 0x80)
-    1f9c:	66 23       	and	r22, r22
-    1f9e:	34 f4       	brge	.+12     	; 0x1fac <readOp+0x2c>
-    1fa0:	1e bc       	out	0x2e, r1	; 46
-    1fa2:	ed e4       	ldi	r30, 0x4D	; 77
-    1fa4:	f0 e0       	ldi	r31, 0x00	; 0
-    1fa6:	80 81       	ld	r24, Z
-    1fa8:	88 23       	and	r24, r24
-    1faa:	ec f7       	brge	.-6      	; 0x1fa6 <readOp+0x26>
-    1fac:	1e bc       	out	0x2e, r1	; 46
-    1fae:	ed e4       	ldi	r30, 0x4D	; 77
-    1fb0:	f0 e0       	ldi	r31, 0x00	; 0
-    1fb2:	80 81       	ld	r24, Z
-    1fb4:	88 23       	and	r24, r24
-    1fb6:	ec f7       	brge	.-6      	; 0x1fb2 <readOp+0x32>
-    1fb8:	8e b5       	in	r24, 0x2e	; 46
-    1fba:	e5 e2       	ldi	r30, 0x25	; 37
-    1fbc:	f0 e0       	ldi	r31, 0x00	; 0
-    1fbe:	90 81       	ld	r25, Z
-    1fc0:	94 60       	ori	r25, 0x04	; 4
-    1fc2:	90 83       	st	Z, r25
+    1f9a:	66 23       	and	r22, r22
+    1f9c:	34 f4       	brge	.+12     	; 0x1faa <readOp+0x2c>
+    1f9e:	1e bc       	out	0x2e, r1	; 46
+    1fa0:	ed e4       	ldi	r30, 0x4D	; 77
+    1fa2:	f0 e0       	ldi	r31, 0x00	; 0
+    1fa4:	80 81       	ld	r24, Z
+    1fa6:	88 23       	and	r24, r24
+    1fa8:	ec f7       	brge	.-6      	; 0x1fa4 <readOp+0x26>
+    1faa:	1e bc       	out	0x2e, r1	; 46
+    1fac:	ed e4       	ldi	r30, 0x4D	; 77
+    1fae:	f0 e0       	ldi	r31, 0x00	; 0
+    1fb0:	80 81       	ld	r24, Z
+    1fb2:	88 23       	and	r24, r24
+    1fb4:	ec f7       	brge	.-6      	; 0x1fb0 <readOp+0x32>
+    1fb6:	8e b5       	in	r24, 0x2e	; 46
+    1fb8:	e5 e2       	ldi	r30, 0x25	; 37
+    1fba:	f0 e0       	ldi	r31, 0x00	; 0
+    1fbc:	90 81       	ld	r25, Z
+    1fbe:	94 60       	ori	r25, 0x04	; 4
+    1fc0:	90 83       	st	Z, r25
         spi_out(0x00);
     uint8_t result = spi_in();
     spi_disable_eth();
     return result;
 }
-    1fc4:	08 95       	ret
+    1fc2:	08 95       	ret
 
-00001fc6 <writeOp>:
-    1fc6:	e5 e2       	ldi	r30, 0x25	; 37
-    1fc8:	f0 e0       	ldi	r31, 0x00	; 0
-    1fca:	90 81       	ld	r25, Z
-    1fcc:	9b 7f       	andi	r25, 0xFB	; 251
-    1fce:	90 83       	st	Z, r25
+00001fc4 <writeOp>:
+    1fc4:	e5 e2       	ldi	r30, 0x25	; 37
+    1fc6:	f0 e0       	ldi	r31, 0x00	; 0
+    1fc8:	90 81       	ld	r25, Z
+    1fca:	9b 7f       	andi	r25, 0xFB	; 251
+    1fcc:	90 83       	st	Z, r25
 
 static void writeOp (uint8_t op, uint8_t address, uint8_t data) {
     spi_enable_eth();
     spi_out(op | (address & ADDR_MASK));
-    1fd0:	6f 71       	andi	r22, 0x1F	; 31
-    1fd2:	68 2b       	or	r22, r24
-    1fd4:	6e bd       	out	0x2e, r22	; 46
-    1fd6:	ed e4       	ldi	r30, 0x4D	; 77
-    1fd8:	f0 e0       	ldi	r31, 0x00	; 0
-    1fda:	80 81       	ld	r24, Z
-    1fdc:	88 23       	and	r24, r24
-    1fde:	ec f7       	brge	.-6      	; 0x1fda <writeOp+0x14>
-    1fe0:	4e bd       	out	0x2e, r20	; 46
-    1fe2:	ed e4       	ldi	r30, 0x4D	; 77
-    1fe4:	f0 e0       	ldi	r31, 0x00	; 0
-    1fe6:	80 81       	ld	r24, Z
-    1fe8:	88 23       	and	r24, r24
-    1fea:	ec f7       	brge	.-6      	; 0x1fe6 <writeOp+0x20>
-    1fec:	e5 e2       	ldi	r30, 0x25	; 37
-    1fee:	f0 e0       	ldi	r31, 0x00	; 0
-    1ff0:	80 81       	ld	r24, Z
-    1ff2:	84 60       	ori	r24, 0x04	; 4
-    1ff4:	80 83       	st	Z, r24
+    1fce:	6f 71       	andi	r22, 0x1F	; 31
+    1fd0:	68 2b       	or	r22, r24
+    1fd2:	6e bd       	out	0x2e, r22	; 46
+    1fd4:	ed e4       	ldi	r30, 0x4D	; 77
+    1fd6:	f0 e0       	ldi	r31, 0x00	; 0
+    1fd8:	80 81       	ld	r24, Z
+    1fda:	88 23       	and	r24, r24
+    1fdc:	ec f7       	brge	.-6      	; 0x1fd8 <writeOp+0x14>
+    1fde:	4e bd       	out	0x2e, r20	; 46
+    1fe0:	ed e4       	ldi	r30, 0x4D	; 77
+    1fe2:	f0 e0       	ldi	r31, 0x00	; 0
+    1fe4:	80 81       	ld	r24, Z
+    1fe6:	88 23       	and	r24, r24
+    1fe8:	ec f7       	brge	.-6      	; 0x1fe4 <writeOp+0x20>
+    1fea:	e5 e2       	ldi	r30, 0x25	; 37
+    1fec:	f0 e0       	ldi	r31, 0x00	; 0
+    1fee:	80 81       	ld	r24, Z
+    1ff0:	84 60       	ori	r24, 0x04	; 4
+    1ff2:	80 83       	st	Z, r24
     spi_out(data);
     spi_disable_eth();
 }
-    1ff6:	08 95       	ret
+    1ff4:	08 95       	ret
 
-00001ff8 <readBuf>:
+00001ff6 <readBuf>:
 
 static void readBuf(uint16_t len, uint8_t* data) {
-    1ff8:	cf 93       	push	r28
-    1ffa:	df 93       	push	r29
-    1ffc:	9c 01       	movw	r18, r24
-    1ffe:	db 01       	movw	r26, r22
-    2000:	e5 e2       	ldi	r30, 0x25	; 37
-    2002:	f0 e0       	ldi	r31, 0x00	; 0
-    2004:	80 81       	ld	r24, Z
-    2006:	8b 7f       	andi	r24, 0xFB	; 251
-    2008:	80 83       	st	Z, r24
-    200a:	8a e3       	ldi	r24, 0x3A	; 58
-    200c:	8e bd       	out	0x2e, r24	; 46
-    200e:	ed e4       	ldi	r30, 0x4D	; 77
-    2010:	f0 e0       	ldi	r31, 0x00	; 0
-    2012:	80 81       	ld	r24, Z
-    2014:	88 23       	and	r24, r24
-    2016:	ec f7       	brge	.-6      	; 0x2012 <readBuf+0x1a>
+    1ff6:	cf 93       	push	r28
+    1ff8:	df 93       	push	r29
+    1ffa:	9c 01       	movw	r18, r24
+    1ffc:	db 01       	movw	r26, r22
+    1ffe:	e5 e2       	ldi	r30, 0x25	; 37
+    2000:	f0 e0       	ldi	r31, 0x00	; 0
+    2002:	80 81       	ld	r24, Z
+    2004:	8b 7f       	andi	r24, 0xFB	; 251
+    2006:	80 83       	st	Z, r24
+    2008:	8a e3       	ldi	r24, 0x3A	; 58
+    200a:	8e bd       	out	0x2e, r24	; 46
+    200c:	ed e4       	ldi	r30, 0x4D	; 77
+    200e:	f0 e0       	ldi	r31, 0x00	; 0
+    2010:	80 81       	ld	r24, Z
+    2012:	88 23       	and	r24, r24
+    2014:	ec f7       	brge	.-6      	; 0x2010 <readBuf+0x1a>
     spi_enable_eth();
     spi_out(ENC28J60_READ_BUF_MEM);
     while (len--) {
-    2018:	21 15       	cp	r18, r1
-    201a:	31 05       	cpc	r19, r1
-    201c:	79 f0       	breq	.+30     	; 0x203c <readBuf+0x44>
-    201e:	ce e4       	ldi	r28, 0x4E	; 78
-    2020:	d0 e0       	ldi	r29, 0x00	; 0
-    2022:	ed e4       	ldi	r30, 0x4D	; 77
-    2024:	f0 e0       	ldi	r31, 0x00	; 0
-    2026:	18 82       	st	Y, r1
-    2028:	80 81       	ld	r24, Z
-    202a:	88 23       	and	r24, r24
-    202c:	ec f7       	brge	.-6      	; 0x2028 <readBuf+0x30>
-    202e:	88 81       	ld	r24, Y
+    2016:	21 15       	cp	r18, r1
+    2018:	31 05       	cpc	r19, r1
+    201a:	79 f0       	breq	.+30     	; 0x203a <readBuf+0x44>
+    201c:	ce e4       	ldi	r28, 0x4E	; 78
+    201e:	d0 e0       	ldi	r29, 0x00	; 0
+    2020:	ed e4       	ldi	r30, 0x4D	; 77
+    2022:	f0 e0       	ldi	r31, 0x00	; 0
+    2024:	18 82       	st	Y, r1
+    2026:	80 81       	ld	r24, Z
+    2028:	88 23       	and	r24, r24
+    202a:	ec f7       	brge	.-6      	; 0x2026 <readBuf+0x30>
+    202c:	88 81       	ld	r24, Y
         *data++ = spi_in();
-    2030:	8c 93       	st	X, r24
-    2032:	21 50       	subi	r18, 0x01	; 1
-    2034:	30 40       	sbci	r19, 0x00	; 0
+    202e:	8c 93       	st	X, r24
+    2030:	21 50       	subi	r18, 0x01	; 1
+    2032:	30 40       	sbci	r19, 0x00	; 0
 }
 
 static void readBuf(uint16_t len, uint8_t* data) {
     spi_enable_eth();
     spi_out(ENC28J60_READ_BUF_MEM);
     while (len--) {
-    2036:	11 f0       	breq	.+4      	; 0x203c <readBuf+0x44>
+    2034:	11 f0       	breq	.+4      	; 0x203a <readBuf+0x44>
         *data++ = spi_in();
-    2038:	11 96       	adiw	r26, 0x01	; 1
-    203a:	f5 cf       	rjmp	.-22     	; 0x2026 <readBuf+0x2e>
-    203c:	e5 e2       	ldi	r30, 0x25	; 37
-    203e:	f0 e0       	ldi	r31, 0x00	; 0
-    2040:	80 81       	ld	r24, Z
-    2042:	84 60       	ori	r24, 0x04	; 4
-    2044:	80 83       	st	Z, r24
+    2036:	11 96       	adiw	r26, 0x01	; 1
+    2038:	f5 cf       	rjmp	.-22     	; 0x2024 <readBuf+0x2e>
+    203a:	e5 e2       	ldi	r30, 0x25	; 37
+    203c:	f0 e0       	ldi	r31, 0x00	; 0
+    203e:	80 81       	ld	r24, Z
+    2040:	84 60       	ori	r24, 0x04	; 4
+    2042:	80 83       	st	Z, r24
     }
     spi_disable_eth();
 }
-    2046:	df 91       	pop	r29
-    2048:	cf 91       	pop	r28
-    204a:	08 95       	ret
+    2044:	df 91       	pop	r29
+    2046:	cf 91       	pop	r28
+    2048:	08 95       	ret
 
-0000204c <SetBank>:
+0000204a <SetBank>:
 
 static void SetBank (uint8_t address) {
-    204c:	1f 93       	push	r17
-    204e:	18 2f       	mov	r17, r24
+    204a:	1f 93       	push	r17
+    204c:	18 2f       	mov	r17, r24
     if ((address & BANK_MASK) != Enc28j60Bank) {
-    2050:	28 2f       	mov	r18, r24
-    2052:	30 e0       	ldi	r19, 0x00	; 0
-    2054:	20 76       	andi	r18, 0x60	; 96
-    2056:	30 70       	andi	r19, 0x00	; 0
-    2058:	80 91 53 01 	lds	r24, 0x0153
-    205c:	90 e0       	ldi	r25, 0x00	; 0
-    205e:	28 17       	cp	r18, r24
-    2060:	39 07       	cpc	r19, r25
-    2062:	81 f0       	breq	.+32     	; 0x2084 <SetBank+0x38>
+    204e:	28 2f       	mov	r18, r24
+    2050:	30 e0       	ldi	r19, 0x00	; 0
+    2052:	20 76       	andi	r18, 0x60	; 96
+    2054:	30 70       	andi	r19, 0x00	; 0
+    2056:	80 91 53 01 	lds	r24, 0x0153
+    205a:	90 e0       	ldi	r25, 0x00	; 0
+    205c:	28 17       	cp	r18, r24
+    205e:	39 07       	cpc	r19, r25
+    2060:	81 f0       	breq	.+32     	; 0x2082 <SetBank+0x38>
         writeOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_BSEL1|ECON1_BSEL0);
-    2064:	80 ea       	ldi	r24, 0xA0	; 160
-    2066:	6f e1       	ldi	r22, 0x1F	; 31
-    2068:	43 e0       	ldi	r20, 0x03	; 3
-    206a:	0e 94 e3 0f 	call	0x1fc6	; 0x1fc6 <writeOp>
+    2062:	80 ea       	ldi	r24, 0xA0	; 160
+    2064:	6f e1       	ldi	r22, 0x1F	; 31
+    2066:	43 e0       	ldi	r20, 0x03	; 3
+    2068:	0e 94 e2 0f 	call	0x1fc4	; 0x1fc4 <writeOp>
         Enc28j60Bank = address & BANK_MASK;
-    206e:	41 2f       	mov	r20, r17
-    2070:	40 76       	andi	r20, 0x60	; 96
-    2072:	40 93 53 01 	sts	0x0153, r20
+    206c:	41 2f       	mov	r20, r17
+    206e:	40 76       	andi	r20, 0x60	; 96
+    2070:	40 93 53 01 	sts	0x0153, r20
         writeOp(ENC28J60_BIT_FIELD_SET, ECON1, Enc28j60Bank>>5);
-    2076:	42 95       	swap	r20
-    2078:	46 95       	lsr	r20
-    207a:	47 70       	andi	r20, 0x07	; 7
-    207c:	80 e8       	ldi	r24, 0x80	; 128
-    207e:	6f e1       	ldi	r22, 0x1F	; 31
-    2080:	0e 94 e3 0f 	call	0x1fc6	; 0x1fc6 <writeOp>
+    2074:	42 95       	swap	r20
+    2076:	46 95       	lsr	r20
+    2078:	47 70       	andi	r20, 0x07	; 7
+    207a:	80 e8       	ldi	r24, 0x80	; 128
+    207c:	6f e1       	ldi	r22, 0x1F	; 31
+    207e:	0e 94 e2 0f 	call	0x1fc4	; 0x1fc4 <writeOp>
     }
 }
-    2084:	1f 91       	pop	r17
-    2086:	08 95       	ret
+    2082:	1f 91       	pop	r17
+    2084:	08 95       	ret
 
-00002088 <readRegByte>:
+00002086 <readRegByte>:
 
 static uint8_t readRegByte (uint8_t address) {
-    2088:	1f 93       	push	r17
-    208a:	18 2f       	mov	r17, r24
+    2086:	1f 93       	push	r17
+    2088:	18 2f       	mov	r17, r24
     SetBank(address);
-    208c:	0e 94 26 10 	call	0x204c	; 0x204c <SetBank>
+    208a:	0e 94 25 10 	call	0x204a	; 0x204a <SetBank>
     return readOp(ENC28J60_READ_CTRL_REG, address);
-    2090:	80 e0       	ldi	r24, 0x00	; 0
-    2092:	61 2f       	mov	r22, r17
-    2094:	0e 94 c0 0f 	call	0x1f80	; 0x1f80 <readOp>
+    208e:	80 e0       	ldi	r24, 0x00	; 0
+    2090:	61 2f       	mov	r22, r17
+    2092:	0e 94 bf 0f 	call	0x1f7e	; 0x1f7e <readOp>
 }
-    2098:	1f 91       	pop	r17
-    209a:	08 95       	ret
+    2096:	1f 91       	pop	r17
+    2098:	08 95       	ret
 
-0000209c <writeRegByte>:
+0000209a <writeRegByte>:
 static uint16_t readReg(uint8_t address) {
 	return readRegByte(address) + (readRegByte(address+1) << 8);
 }
 #endif
 
 static void writeRegByte (uint8_t address, uint8_t data) {
-    209c:	0f 93       	push	r16
-    209e:	1f 93       	push	r17
-    20a0:	18 2f       	mov	r17, r24
-    20a2:	06 2f       	mov	r16, r22
+    209a:	0f 93       	push	r16
+    209c:	1f 93       	push	r17
+    209e:	18 2f       	mov	r17, r24
+    20a0:	06 2f       	mov	r16, r22
     SetBank(address);
-    20a4:	0e 94 26 10 	call	0x204c	; 0x204c <SetBank>
+    20a2:	0e 94 25 10 	call	0x204a	; 0x204a <SetBank>
     writeOp(ENC28J60_WRITE_CTRL_REG, address, data);
-    20a8:	80 e4       	ldi	r24, 0x40	; 64
-    20aa:	61 2f       	mov	r22, r17
-    20ac:	40 2f       	mov	r20, r16
-    20ae:	0e 94 e3 0f 	call	0x1fc6	; 0x1fc6 <writeOp>
+    20a6:	80 e4       	ldi	r24, 0x40	; 64
+    20a8:	61 2f       	mov	r22, r17
+    20aa:	40 2f       	mov	r20, r16
+    20ac:	0e 94 e2 0f 	call	0x1fc4	; 0x1fc4 <writeOp>
 }
-    20b2:	1f 91       	pop	r17
-    20b4:	0f 91       	pop	r16
-    20b6:	08 95       	ret
+    20b0:	1f 91       	pop	r17
+    20b2:	0f 91       	pop	r16
+    20b4:	08 95       	ret
 
-000020b8 <writeReg>:
+000020b6 <writeReg>:
 
 static void writeReg(uint8_t address, uint16_t data) {
-    20b8:	0f 93       	push	r16
-    20ba:	1f 93       	push	r17
-    20bc:	18 2f       	mov	r17, r24
-    20be:	07 2f       	mov	r16, r23
+    20b6:	0f 93       	push	r16
+    20b8:	1f 93       	push	r17
+    20ba:	18 2f       	mov	r17, r24
+    20bc:	07 2f       	mov	r16, r23
     writeRegByte(address, data);
-    20c0:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    20be:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
     writeRegByte(address + 1, data >> 8);
-    20c4:	81 2f       	mov	r24, r17
-    20c6:	8f 5f       	subi	r24, 0xFF	; 255
-    20c8:	60 2f       	mov	r22, r16
-    20ca:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    20c2:	81 2f       	mov	r24, r17
+    20c4:	8f 5f       	subi	r24, 0xFF	; 255
+    20c6:	60 2f       	mov	r22, r16
+    20c8:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
 }
-    20ce:	1f 91       	pop	r17
-    20d0:	0f 91       	pop	r16
-    20d2:	08 95       	ret
+    20cc:	1f 91       	pop	r17
+    20ce:	0f 91       	pop	r16
+    20d0:	08 95       	ret
 
-000020d4 <writePhy>:
+000020d2 <writePhy>:
         ;
     writeRegByte(MICMD, 0x00);
     return readRegByte(MIRD+1);
 }
 
 static void writePhy (uint8_t address, uint16_t data) {
-    20d4:	0f 93       	push	r16
-    20d6:	1f 93       	push	r17
-    20d8:	98 2f       	mov	r25, r24
-    20da:	8b 01       	movw	r16, r22
+    20d2:	0f 93       	push	r16
+    20d4:	1f 93       	push	r17
+    20d6:	98 2f       	mov	r25, r24
+    20d8:	8b 01       	movw	r16, r22
     writeRegByte(MIREGADR, address);
-    20dc:	84 ed       	ldi	r24, 0xD4	; 212
-    20de:	69 2f       	mov	r22, r25
-    20e0:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    20da:	84 ed       	ldi	r24, 0xD4	; 212
+    20dc:	69 2f       	mov	r22, r25
+    20de:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
     writeReg(MIWR, data);
-    20e4:	86 ed       	ldi	r24, 0xD6	; 214
-    20e6:	b8 01       	movw	r22, r16
-    20e8:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    20e2:	86 ed       	ldi	r24, 0xD6	; 214
+    20e4:	b8 01       	movw	r22, r16
+    20e6:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
     while (readRegByte(MISTAT) & MISTAT_BUSY)
-    20ec:	8a ee       	ldi	r24, 0xEA	; 234
-    20ee:	0e 94 44 10 	call	0x2088	; 0x2088 <readRegByte>
-    20f2:	80 fd       	sbrc	r24, 0
-    20f4:	fb cf       	rjmp	.-10     	; 0x20ec <writePhy+0x18>
+    20ea:	8a ee       	ldi	r24, 0xEA	; 234
+    20ec:	0e 94 43 10 	call	0x2086	; 0x2086 <readRegByte>
+    20f0:	80 fd       	sbrc	r24, 0
+    20f2:	fb cf       	rjmp	.-10     	; 0x20ea <writePhy+0x18>
         ;
 }
-    20f6:	1f 91       	pop	r17
-    20f8:	0f 91       	pop	r16
-    20fa:	08 95       	ret
+    20f4:	1f 91       	pop	r17
+    20f6:	0f 91       	pop	r16
+    20f8:	08 95       	ret
 
-000020fc <enc28j60_exit>:
+000020fa <enc28j60_exit>:
 
 void enc28j60_exit(void)
 {
 	// Moved notice from pio_exit
 	// NOTE: UART - time_stamp_spc() pio: exit\r\n
   SetBank(ECON1);
-    20fc:	8f e1       	ldi	r24, 0x1F	; 31
-    20fe:	0e 94 26 10 	call	0x204c	; 0x204c <SetBank>
+    20fa:	8f e1       	ldi	r24, 0x1F	; 31
+    20fc:	0e 94 25 10 	call	0x204a	; 0x204a <SetBank>
   writeOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_RXEN);
-    2102:	80 ea       	ldi	r24, 0xA0	; 160
-    2104:	6f e1       	ldi	r22, 0x1F	; 31
-    2106:	44 e0       	ldi	r20, 0x04	; 4
-    2108:	0e 94 e3 0f 	call	0x1fc6	; 0x1fc6 <writeOp>
+    2100:	80 ea       	ldi	r24, 0xA0	; 160
+    2102:	6f e1       	ldi	r22, 0x1F	; 31
+    2104:	44 e0       	ldi	r20, 0x04	; 4
+    2106:	0e 94 e2 0f 	call	0x1fc4	; 0x1fc4 <writeOp>
 }
-    210c:	08 95       	ret
+    210a:	08 95       	ret
 
-0000210e <enc28j60_control>:
+0000210c <enc28j60_control>:
 
 // ---------- control ----------
 
 uint8_t enc28j60_control(uint8_t control_id, uint8_t value)
 {
   switch(control_id) {
-    210e:	88 23       	and	r24, r24
-    2110:	11 f0       	breq	.+4      	; 0x2116 <enc28j60_control+0x8>
-    2112:	81 e0       	ldi	r24, 0x01	; 1
-    2114:	08 95       	ret
+    210c:	88 23       	and	r24, r24
+    210e:	11 f0       	breq	.+4      	; 0x2114 <enc28j60_control+0x8>
+    2110:	81 e0       	ldi	r24, 0x01	; 1
+    2112:	08 95       	ret
     case PIO_CONTROL_FLOW:
       {
         uint8_t flag;
         if(is_full_duplex) {
-    2116:	80 91 56 01 	lds	r24, 0x0156
-    211a:	88 23       	and	r24, r24
-    211c:	31 f0       	breq	.+12     	; 0x212a <enc28j60_control+0x1c>
+    2114:	80 91 56 01 	lds	r24, 0x0156
+    2118:	88 23       	and	r24, r24
+    211a:	31 f0       	breq	.+12     	; 0x2128 <enc28j60_control+0x1c>
           flag = value ? 2 : 3;
-    211e:	66 23       	and	r22, r22
-    2120:	11 f4       	brne	.+4      	; 0x2126 <enc28j60_control+0x18>
-    2122:	63 e0       	ldi	r22, 0x03	; 3
-    2124:	04 c0       	rjmp	.+8      	; 0x212e <enc28j60_control+0x20>
-    2126:	62 e0       	ldi	r22, 0x02	; 2
-    2128:	02 c0       	rjmp	.+4      	; 0x212e <enc28j60_control+0x20>
+    211c:	66 23       	and	r22, r22
+    211e:	11 f4       	brne	.+4      	; 0x2124 <enc28j60_control+0x18>
+    2120:	63 e0       	ldi	r22, 0x03	; 3
+    2122:	04 c0       	rjmp	.+8      	; 0x212c <enc28j60_control+0x20>
+    2124:	62 e0       	ldi	r22, 0x02	; 2
+    2126:	02 c0       	rjmp	.+4      	; 0x212c <enc28j60_control+0x20>
         } else {
           flag = value ? 1 : 0;
-    212a:	61 11       	cpse	r22, r1
-    212c:	61 e0       	ldi	r22, 0x01	; 1
+    2128:	61 11       	cpse	r22, r1
+    212a:	61 e0       	ldi	r22, 0x01	; 1
         }
         writeRegByte(EFLOCON, flag);
-    212e:	87 e7       	ldi	r24, 0x77	; 119
-    2130:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
-    2134:	80 e0       	ldi	r24, 0x00	; 0
+    212c:	87 e7       	ldi	r24, 0x77	; 119
+    212e:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
+    2132:	80 e0       	ldi	r24, 0x00	; 0
         return PIO_OK;
       }
     default:
       return PIO_NOT_FOUND;
   }
 }
-    2136:	08 95       	ret
+    2134:	08 95       	ret
 
-00002138 <enc28j60_status>:
+00002136 <enc28j60_status>:
 
 // ---------- status ----------
 
 uint8_t enc28j60_status(uint8_t status_id, uint8_t *value)
 {
-    2138:	cf 93       	push	r28
-    213a:	df 93       	push	r29
-    213c:	eb 01       	movw	r28, r22
+    2136:	cf 93       	push	r28
+    2138:	df 93       	push	r29
+    213a:	eb 01       	movw	r28, r22
   switch(status_id) {
-    213e:	88 23       	and	r24, r24
-    2140:	19 f0       	breq	.+6      	; 0x2148 <enc28j60_status+0x10>
-    2142:	81 30       	cpi	r24, 0x01	; 1
-    2144:	19 f5       	brne	.+70     	; 0x218c <enc28j60_status+0x54>
-    2146:	05 c0       	rjmp	.+10     	; 0x2152 <enc28j60_status+0x1a>
+    213c:	88 23       	and	r24, r24
+    213e:	19 f0       	breq	.+6      	; 0x2146 <enc28j60_status+0x10>
+    2140:	81 30       	cpi	r24, 0x01	; 1
+    2142:	19 f5       	brne	.+70     	; 0x218a <enc28j60_status+0x54>
+    2144:	05 c0       	rjmp	.+10     	; 0x2150 <enc28j60_status+0x1a>
     case PIO_STATUS_VERSION:
       *value = rev;
-    2148:	80 91 57 01 	lds	r24, 0x0157
-    214c:	88 83       	st	Y, r24
-    214e:	80 e0       	ldi	r24, 0x00	; 0
-    2150:	1f c0       	rjmp	.+62     	; 0x2190 <enc28j60_status+0x58>
+    2146:	80 91 57 01 	lds	r24, 0x0157
+    214a:	88 83       	st	Y, r24
+    214c:	80 e0       	ldi	r24, 0x00	; 0
+    214e:	1f c0       	rjmp	.+62     	; 0x218e <enc28j60_status+0x58>
     writeRegByte(address, data);
     writeRegByte(address + 1, data >> 8);
 }
 
 static uint16_t readPhyByte (uint8_t address) {
     writeRegByte(MIREGADR, address);
-    2152:	84 ed       	ldi	r24, 0xD4	; 212
-    2154:	61 e1       	ldi	r22, 0x11	; 17
-    2156:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    2150:	84 ed       	ldi	r24, 0xD4	; 212
+    2152:	61 e1       	ldi	r22, 0x11	; 17
+    2154:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
     writeRegByte(MICMD, MICMD_MIIRD);
-    215a:	82 ed       	ldi	r24, 0xD2	; 210
-    215c:	61 e0       	ldi	r22, 0x01	; 1
-    215e:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    2158:	82 ed       	ldi	r24, 0xD2	; 210
+    215a:	61 e0       	ldi	r22, 0x01	; 1
+    215c:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
     while (readRegByte(MISTAT) & MISTAT_BUSY)
-    2162:	8a ee       	ldi	r24, 0xEA	; 234
-    2164:	0e 94 44 10 	call	0x2088	; 0x2088 <readRegByte>
-    2168:	80 fd       	sbrc	r24, 0
-    216a:	fb cf       	rjmp	.-10     	; 0x2162 <enc28j60_status+0x2a>
+    2160:	8a ee       	ldi	r24, 0xEA	; 234
+    2162:	0e 94 43 10 	call	0x2086	; 0x2086 <readRegByte>
+    2166:	80 fd       	sbrc	r24, 0
+    2168:	fb cf       	rjmp	.-10     	; 0x2160 <enc28j60_status+0x2a>
         ;
     writeRegByte(MICMD, 0x00);
-    216c:	82 ed       	ldi	r24, 0xD2	; 210
-    216e:	60 e0       	ldi	r22, 0x00	; 0
-    2170:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    216a:	82 ed       	ldi	r24, 0xD2	; 210
+    216c:	60 e0       	ldi	r22, 0x00	; 0
+    216e:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
     return readRegByte(MIRD+1);
-    2174:	89 ed       	ldi	r24, 0xD9	; 217
-    2176:	0e 94 44 10 	call	0x2088	; 0x2088 <readRegByte>
+    2172:	89 ed       	ldi	r24, 0xD9	; 217
+    2174:	0e 94 43 10 	call	0x2086	; 0x2086 <readRegByte>
   switch(status_id) {
     case PIO_STATUS_VERSION:
       *value = rev;
       return PIO_OK;
     case PIO_STATUS_LINK_UP:
       *value = (readPhyByte(PHSTAT2) >> 2) & 1;
-    217a:	90 e0       	ldi	r25, 0x00	; 0
-    217c:	96 95       	lsr	r25
-    217e:	87 95       	ror	r24
-    2180:	96 95       	lsr	r25
-    2182:	87 95       	ror	r24
-    2184:	81 70       	andi	r24, 0x01	; 1
-    2186:	88 83       	st	Y, r24
-    2188:	80 e0       	ldi	r24, 0x00	; 0
-    218a:	02 c0       	rjmp	.+4      	; 0x2190 <enc28j60_status+0x58>
+    2178:	90 e0       	ldi	r25, 0x00	; 0
+    217a:	96 95       	lsr	r25
+    217c:	87 95       	ror	r24
+    217e:	96 95       	lsr	r25
+    2180:	87 95       	ror	r24
+    2182:	81 70       	andi	r24, 0x01	; 1
+    2184:	88 83       	st	Y, r24
+    2186:	80 e0       	ldi	r24, 0x00	; 0
+    2188:	02 c0       	rjmp	.+4      	; 0x218e <enc28j60_status+0x58>
       return PIO_OK;
     default:
       *value = 0;
-    218c:	18 82       	st	Y, r1
-    218e:	81 e0       	ldi	r24, 0x01	; 1
+    218a:	18 82       	st	Y, r1
+    218c:	81 e0       	ldi	r24, 0x01	; 1
       return PIO_NOT_FOUND;
   }
 }
-    2190:	df 91       	pop	r29
-    2192:	cf 91       	pop	r28
-    2194:	08 95       	ret
+    218e:	df 91       	pop	r29
+    2190:	cf 91       	pop	r28
+    2192:	08 95       	ret
 
-00002196 <enc28j60_send>:
+00002194 <enc28j60_send>:
 #endif
 
 // ---------- send ----------
 
 uint8_t enc28j60_send(const uint8_t *data, uint16_t size)
 {
-    2196:	0f 93       	push	r16
-    2198:	1f 93       	push	r17
-    219a:	cf 93       	push	r28
-    219c:	df 93       	push	r29
-    219e:	ec 01       	movw	r28, r24
-    21a0:	8b 01       	movw	r16, r22
+    2194:	0f 93       	push	r16
+    2196:	1f 93       	push	r17
+    2198:	cf 93       	push	r28
+    219a:	df 93       	push	r29
+    219c:	ec 01       	movw	r28, r24
+    219e:	8b 01       	movw	r16, r22
   // prepare tx buffer write
   writeReg(EWRPT, TXSTART_INIT);
-    21a2:	82 e0       	ldi	r24, 0x02	; 2
-    21a4:	60 e0       	ldi	r22, 0x00	; 0
-    21a6:	7a e1       	ldi	r23, 0x1A	; 26
-    21a8:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    21a0:	82 e0       	ldi	r24, 0x02	; 2
+    21a2:	60 e0       	ldi	r22, 0x00	; 0
+    21a4:	7a e1       	ldi	r23, 0x1A	; 26
+    21a6:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
   writeOp(ENC28J60_WRITE_BUF_MEM, 0, 0x00);
-    21ac:	8a e7       	ldi	r24, 0x7A	; 122
-    21ae:	60 e0       	ldi	r22, 0x00	; 0
-    21b0:	40 e0       	ldi	r20, 0x00	; 0
-    21b2:	0e 94 e3 0f 	call	0x1fc6	; 0x1fc6 <writeOp>
-    21b6:	e5 e2       	ldi	r30, 0x25	; 37
-    21b8:	f0 e0       	ldi	r31, 0x00	; 0
-    21ba:	80 81       	ld	r24, Z
-    21bc:	8b 7f       	andi	r24, 0xFB	; 251
-    21be:	80 83       	st	Z, r24
-    21c0:	8a e7       	ldi	r24, 0x7A	; 122
-    21c2:	8e bd       	out	0x2e, r24	; 46
-    21c4:	ed e4       	ldi	r30, 0x4D	; 77
-    21c6:	f0 e0       	ldi	r31, 0x00	; 0
-    21c8:	80 81       	ld	r24, Z
-    21ca:	88 23       	and	r24, r24
-    21cc:	ec f7       	brge	.-6      	; 0x21c8 <enc28j60_send+0x32>
-    21ce:	98 01       	movw	r18, r16
-    21d0:	ae e4       	ldi	r26, 0x4E	; 78
-    21d2:	b0 e0       	ldi	r27, 0x00	; 0
-    21d4:	ed e4       	ldi	r30, 0x4D	; 77
-    21d6:	f0 e0       	ldi	r31, 0x00	; 0
-    21d8:	08 c0       	rjmp	.+16     	; 0x21ea <enc28j60_send+0x54>
+    21aa:	8a e7       	ldi	r24, 0x7A	; 122
+    21ac:	60 e0       	ldi	r22, 0x00	; 0
+    21ae:	40 e0       	ldi	r20, 0x00	; 0
+    21b0:	0e 94 e2 0f 	call	0x1fc4	; 0x1fc4 <writeOp>
+    21b4:	e5 e2       	ldi	r30, 0x25	; 37
+    21b6:	f0 e0       	ldi	r31, 0x00	; 0
+    21b8:	80 81       	ld	r24, Z
+    21ba:	8b 7f       	andi	r24, 0xFB	; 251
+    21bc:	80 83       	st	Z, r24
+    21be:	8a e7       	ldi	r24, 0x7A	; 122
+    21c0:	8e bd       	out	0x2e, r24	; 46
+    21c2:	ed e4       	ldi	r30, 0x4D	; 77
+    21c4:	f0 e0       	ldi	r31, 0x00	; 0
+    21c6:	80 81       	ld	r24, Z
+    21c8:	88 23       	and	r24, r24
+    21ca:	ec f7       	brge	.-6      	; 0x21c6 <enc28j60_send+0x32>
+    21cc:	98 01       	movw	r18, r16
+    21ce:	ae e4       	ldi	r26, 0x4E	; 78
+    21d0:	b0 e0       	ldi	r27, 0x00	; 0
+    21d2:	ed e4       	ldi	r30, 0x4D	; 77
+    21d4:	f0 e0       	ldi	r31, 0x00	; 0
+    21d6:	08 c0       	rjmp	.+16     	; 0x21e8 <enc28j60_send+0x54>
   // fill buffer
   uint16_t num = size;
   spi_enable_eth(),
   spi_out(ENC28J60_WRITE_BUF_MEM);
   while(num--) {
     spi_out(*data++);
-    21da:	88 81       	ld	r24, Y
-    21dc:	8c 93       	st	X, r24
-    21de:	80 81       	ld	r24, Z
-    21e0:	88 23       	and	r24, r24
-    21e2:	ec f7       	brge	.-6      	; 0x21de <enc28j60_send+0x48>
-    21e4:	21 96       	adiw	r28, 0x01	; 1
-    21e6:	21 50       	subi	r18, 0x01	; 1
-    21e8:	30 40       	sbci	r19, 0x00	; 0
+    21d8:	88 81       	ld	r24, Y
+    21da:	8c 93       	st	X, r24
+    21dc:	80 81       	ld	r24, Z
+    21de:	88 23       	and	r24, r24
+    21e0:	ec f7       	brge	.-6      	; 0x21dc <enc28j60_send+0x48>
+    21e2:	21 96       	adiw	r28, 0x01	; 1
+    21e4:	21 50       	subi	r18, 0x01	; 1
+    21e6:	30 40       	sbci	r19, 0x00	; 0
 
   // fill buffer
   uint16_t num = size;
   spi_enable_eth(),
   spi_out(ENC28J60_WRITE_BUF_MEM);
   while(num--) {
-    21ea:	21 15       	cp	r18, r1
-    21ec:	31 05       	cpc	r19, r1
-    21ee:	a9 f7       	brne	.-22     	; 0x21da <enc28j60_send+0x44>
-    21f0:	e5 e2       	ldi	r30, 0x25	; 37
-    21f2:	f0 e0       	ldi	r31, 0x00	; 0
-    21f4:	80 81       	ld	r24, Z
-    21f6:	84 60       	ori	r24, 0x04	; 4
-    21f8:	80 83       	st	Z, r24
-    21fa:	0f c0       	rjmp	.+30     	; 0x221a <enc28j60_send+0x84>
+    21e8:	21 15       	cp	r18, r1
+    21ea:	31 05       	cpc	r19, r1
+    21ec:	a9 f7       	brne	.-22     	; 0x21d8 <enc28j60_send+0x44>
+    21ee:	e5 e2       	ldi	r30, 0x25	; 37
+    21f0:	f0 e0       	ldi	r31, 0x00	; 0
+    21f2:	80 81       	ld	r24, Z
+    21f4:	84 60       	ori	r24, 0x04	; 4
+    21f6:	80 83       	st	Z, r24
+    21f8:	0f c0       	rjmp	.+30     	; 0x2218 <enc28j60_send+0x84>
   }
   spi_disable_eth();
 
   // wait for tx ready
   while (readOp(ENC28J60_READ_CTRL_REG, ECON1) & ECON1_TXRTS)
       if (readRegByte(EIR) & EIR_TXERIF) {
-    21fc:	8c e1       	ldi	r24, 0x1C	; 28
-    21fe:	0e 94 44 10 	call	0x2088	; 0x2088 <readRegByte>
-    2202:	81 ff       	sbrs	r24, 1
-    2204:	0a c0       	rjmp	.+20     	; 0x221a <enc28j60_send+0x84>
+    21fa:	8c e1       	ldi	r24, 0x1C	; 28
+    21fc:	0e 94 43 10 	call	0x2086	; 0x2086 <readRegByte>
+    2200:	81 ff       	sbrs	r24, 1
+    2202:	0a c0       	rjmp	.+20     	; 0x2218 <enc28j60_send+0x84>
           writeOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_TXRST);
-    2206:	80 e8       	ldi	r24, 0x80	; 128
-    2208:	6f e1       	ldi	r22, 0x1F	; 31
-    220a:	40 e8       	ldi	r20, 0x80	; 128
-    220c:	0e 94 e3 0f 	call	0x1fc6	; 0x1fc6 <writeOp>
+    2204:	80 e8       	ldi	r24, 0x80	; 128
+    2206:	6f e1       	ldi	r22, 0x1F	; 31
+    2208:	40 e8       	ldi	r20, 0x80	; 128
+    220a:	0e 94 e2 0f 	call	0x1fc4	; 0x1fc4 <writeOp>
           writeOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_TXRST);
-    2210:	80 ea       	ldi	r24, 0xA0	; 160
-    2212:	6f e1       	ldi	r22, 0x1F	; 31
-    2214:	40 e8       	ldi	r20, 0x80	; 128
-    2216:	0e 94 e3 0f 	call	0x1fc6	; 0x1fc6 <writeOp>
+    220e:	80 ea       	ldi	r24, 0xA0	; 160
+    2210:	6f e1       	ldi	r22, 0x1F	; 31
+    2212:	40 e8       	ldi	r20, 0x80	; 128
+    2214:	0e 94 e2 0f 	call	0x1fc4	; 0x1fc4 <writeOp>
     spi_out(*data++);
   }
   spi_disable_eth();
 
   // wait for tx ready
   while (readOp(ENC28J60_READ_CTRL_REG, ECON1) & ECON1_TXRTS)
-    221a:	80 e0       	ldi	r24, 0x00	; 0
-    221c:	6f e1       	ldi	r22, 0x1F	; 31
-    221e:	0e 94 c0 0f 	call	0x1f80	; 0x1f80 <readOp>
-    2222:	83 fd       	sbrc	r24, 3
-    2224:	eb cf       	rjmp	.-42     	; 0x21fc <enc28j60_send+0x66>
+    2218:	80 e0       	ldi	r24, 0x00	; 0
+    221a:	6f e1       	ldi	r22, 0x1F	; 31
+    221c:	0e 94 bf 0f 	call	0x1f7e	; 0x1f7e <readOp>
+    2220:	83 fd       	sbrc	r24, 3
+    2222:	eb cf       	rjmp	.-42     	; 0x21fa <enc28j60_send+0x66>
           writeOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_TXRST);
           writeOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_TXRST);
       }
 
   // initiate send
   writeReg(ETXND, TXSTART_INIT+size);
-    2226:	b8 01       	movw	r22, r16
-    2228:	60 50       	subi	r22, 0x00	; 0
-    222a:	76 4e       	sbci	r23, 0xE6	; 230
-    222c:	86 e0       	ldi	r24, 0x06	; 6
-    222e:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    2224:	b8 01       	movw	r22, r16
+    2226:	60 50       	subi	r22, 0x00	; 0
+    2228:	76 4e       	sbci	r23, 0xE6	; 230
+    222a:	86 e0       	ldi	r24, 0x06	; 6
+    222c:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
   writeOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_TXRTS);
-    2232:	80 e8       	ldi	r24, 0x80	; 128
-    2234:	6f e1       	ldi	r22, 0x1F	; 31
-    2236:	48 e0       	ldi	r20, 0x08	; 8
-    2238:	0e 94 e3 0f 	call	0x1fc6	; 0x1fc6 <writeOp>
+    2230:	80 e8       	ldi	r24, 0x80	; 128
+    2232:	6f e1       	ldi	r22, 0x1F	; 31
+    2234:	48 e0       	ldi	r20, 0x08	; 8
+    2236:	0e 94 e2 0f 	call	0x1fc4	; 0x1fc4 <writeOp>
   return PIO_OK;
 }
-    223c:	80 e0       	ldi	r24, 0x00	; 0
-    223e:	df 91       	pop	r29
-    2240:	cf 91       	pop	r28
-    2242:	1f 91       	pop	r17
-    2244:	0f 91       	pop	r16
-    2246:	08 95       	ret
+    223a:	80 e0       	ldi	r24, 0x00	; 0
+    223c:	df 91       	pop	r29
+    223e:	cf 91       	pop	r28
+    2240:	1f 91       	pop	r17
+    2242:	0f 91       	pop	r16
+    2244:	08 95       	ret
 
-00002248 <enc28j60_has_recv>:
+00002246 <enc28j60_has_recv>:
 
 // ---------- has_recv ----------
 
 uint8_t enc28j60_has_recv(void)
 {
   return readRegByte(EPKTCNT);
-    2248:	89 e3       	ldi	r24, 0x39	; 57
-    224a:	0e 94 44 10 	call	0x2088	; 0x2088 <readRegByte>
+    2246:	89 e3       	ldi	r24, 0x39	; 57
+    2248:	0e 94 43 10 	call	0x2086	; 0x2086 <readRegByte>
 }
-    224e:	08 95       	ret
+    224c:	08 95       	ret
 
-00002250 <enc28j60_init>:
+0000224e <enc28j60_init>:
 {
   writeRegByte(ERXFCON, ERXFCON_UCEN|ERXFCON_CRCEN/*|ERXFCON_PMEN*/);
 }
 
 uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
 {
-    2250:	df 92       	push	r13
-    2252:	ef 92       	push	r14
-    2254:	ff 92       	push	r15
-    2256:	0f 93       	push	r16
-    2258:	1f 93       	push	r17
-    225a:	df 93       	push	r29
-    225c:	cf 93       	push	r28
-    225e:	0f 92       	push	r0
-    2260:	cd b7       	in	r28, 0x3d	; 61
-    2262:	de b7       	in	r29, 0x3e	; 62
-    2264:	7c 01       	movw	r14, r24
-    2266:	d6 2e       	mov	r13, r22
+    224e:	df 92       	push	r13
+    2250:	ef 92       	push	r14
+    2252:	ff 92       	push	r15
+    2254:	0f 93       	push	r16
+    2256:	1f 93       	push	r17
+    2258:	df 93       	push	r29
+    225a:	cf 93       	push	r28
+    225c:	0f 92       	push	r0
+    225e:	cd b7       	in	r28, 0x3d	; 61
+    2260:	de b7       	in	r29, 0x3e	; 62
+    2262:	7c 01       	movw	r14, r24
+    2264:	d6 2e       	mov	r13, r22
   spi_init();
-    2268:	0e 94 96 12 	call	0x252c	; 0x252c <spi_init>
-    226c:	e5 e2       	ldi	r30, 0x25	; 37
-    226e:	f0 e0       	ldi	r31, 0x00	; 0
-    2270:	80 81       	ld	r24, Z
-    2272:	84 60       	ori	r24, 0x04	; 4
-    2274:	80 83       	st	Z, r24
+    2266:	0e 94 95 12 	call	0x252a	; 0x252a <spi_init>
+    226a:	e5 e2       	ldi	r30, 0x25	; 37
+    226c:	f0 e0       	ldi	r31, 0x00	; 0
+    226e:	80 81       	ld	r24, Z
+    2270:	84 60       	ori	r24, 0x04	; 4
+    2272:	80 83       	st	Z, r24
   spi_disable_eth();
 
   is_full_duplex = (flags & PIO_INIT_FULL_DUPLEX) == PIO_INIT_FULL_DUPLEX;
-    2276:	8d 2d       	mov	r24, r13
-    2278:	81 70       	andi	r24, 0x01	; 1
-    227a:	80 93 56 01 	sts	0x0156, r24
+    2274:	8d 2d       	mov	r24, r13
+    2276:	81 70       	andi	r24, 0x01	; 1
+    2278:	80 93 56 01 	sts	0x0156, r24
 
   // soft reset cpu
   writeOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET);
-    227e:	8f ef       	ldi	r24, 0xFF	; 255
-    2280:	60 e0       	ldi	r22, 0x00	; 0
-    2282:	4f ef       	ldi	r20, 0xFF	; 255
-    2284:	0e 94 e3 0f 	call	0x1fc6	; 0x1fc6 <writeOp>
+    227c:	8f ef       	ldi	r24, 0xFF	; 255
+    227e:	60 e0       	ldi	r22, 0x00	; 0
+    2280:	4f ef       	ldi	r20, 0xFF	; 255
+    2282:	0e 94 e2 0f 	call	0x1fc4	; 0x1fc4 <writeOp>
   timer_delay_100us(20); // errata B7/2
-    2288:	84 e1       	ldi	r24, 0x14	; 20
-    228a:	90 e0       	ldi	r25, 0x00	; 0
-    228c:	0e 94 7a 02 	call	0x4f4	; 0x4f4 <timer_delay_100us>
-    2290:	00 e0       	ldi	r16, 0x00	; 0
-    2292:	10 e0       	ldi	r17, 0x00	; 0
-    2294:	08 c0       	rjmp	.+16     	; 0x22a6 <enc28j60_init+0x56>
+    2286:	84 e1       	ldi	r24, 0x14	; 20
+    2288:	90 e0       	ldi	r25, 0x00	; 0
+    228a:	0e 94 7a 02 	call	0x4f4	; 0x4f4 <timer_delay_100us>
+    228e:	00 e0       	ldi	r16, 0x00	; 0
+    2290:	10 e0       	ldi	r17, 0x00	; 0
+    2292:	08 c0       	rjmp	.+16     	; 0x22a4 <enc28j60_init+0x56>
 
   // wait or error
   uint16_t count = 0;
   while (!readOp(ENC28J60_READ_CTRL_REG, ESTAT) & ESTAT_CLKRDY) {
     count ++;
-    2296:	0f 5f       	subi	r16, 0xFF	; 255
-    2298:	1f 4f       	sbci	r17, 0xFF	; 255
+    2294:	0f 5f       	subi	r16, 0xFF	; 255
+    2296:	1f 4f       	sbci	r17, 0xFF	; 255
     if(count == 0xfff) {
-    229a:	8f e0       	ldi	r24, 0x0F	; 15
-    229c:	0f 3f       	cpi	r16, 0xFF	; 255
-    229e:	18 07       	cpc	r17, r24
-    22a0:	11 f4       	brne	.+4      	; 0x22a6 <enc28j60_init+0x56>
-    22a2:	81 e0       	ldi	r24, 0x01	; 1
-    22a4:	c0 c0       	rjmp	.+384    	; 0x2426 <enc28j60_init+0x1d6>
+    2298:	8f e0       	ldi	r24, 0x0F	; 15
+    229a:	0f 3f       	cpi	r16, 0xFF	; 255
+    229c:	18 07       	cpc	r17, r24
+    229e:	11 f4       	brne	.+4      	; 0x22a4 <enc28j60_init+0x56>
+    22a0:	81 e0       	ldi	r24, 0x01	; 1
+    22a2:	c0 c0       	rjmp	.+384    	; 0x2424 <enc28j60_init+0x1d6>
   writeOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET);
   timer_delay_100us(20); // errata B7/2
 
   // wait or error
   uint16_t count = 0;
   while (!readOp(ENC28J60_READ_CTRL_REG, ESTAT) & ESTAT_CLKRDY) {
-    22a6:	80 e0       	ldi	r24, 0x00	; 0
-    22a8:	6d e1       	ldi	r22, 0x1D	; 29
-    22aa:	0e 94 c0 0f 	call	0x1f80	; 0x1f80 <readOp>
-    22ae:	88 23       	and	r24, r24
-    22b0:	91 f3       	breq	.-28     	; 0x2296 <enc28j60_init+0x46>
+    22a4:	80 e0       	ldi	r24, 0x00	; 0
+    22a6:	6d e1       	ldi	r22, 0x1D	; 29
+    22a8:	0e 94 bf 0f 	call	0x1f7e	; 0x1f7e <readOp>
+    22ac:	88 23       	and	r24, r24
+    22ae:	91 f3       	breq	.-28     	; 0x2294 <enc28j60_init+0x46>
       return PIO_NOT_FOUND;
     }
   }
 
   // set packet pointers
   gNextPacketPtr = RXSTART_INIT;
-    22b2:	10 92 55 01 	sts	0x0155, r1
-    22b6:	10 92 54 01 	sts	0x0154, r1
+    22b0:	10 92 55 01 	sts	0x0155, r1
+    22b4:	10 92 54 01 	sts	0x0154, r1
   writeReg(ERXST, RXSTART_INIT);
-    22ba:	88 e0       	ldi	r24, 0x08	; 8
-    22bc:	60 e0       	ldi	r22, 0x00	; 0
-    22be:	70 e0       	ldi	r23, 0x00	; 0
-    22c0:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    22b8:	88 e0       	ldi	r24, 0x08	; 8
+    22ba:	60 e0       	ldi	r22, 0x00	; 0
+    22bc:	70 e0       	ldi	r23, 0x00	; 0
+    22be:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
   writeReg(ERXRDPT, RXSTART_INIT);
-    22c4:	8c e0       	ldi	r24, 0x0C	; 12
-    22c6:	60 e0       	ldi	r22, 0x00	; 0
-    22c8:	70 e0       	ldi	r23, 0x00	; 0
-    22ca:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    22c2:	8c e0       	ldi	r24, 0x0C	; 12
+    22c4:	60 e0       	ldi	r22, 0x00	; 0
+    22c6:	70 e0       	ldi	r23, 0x00	; 0
+    22c8:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
   writeReg(ERXND, RXSTOP_INIT);
-    22ce:	8a e0       	ldi	r24, 0x0A	; 10
-    22d0:	6f ef       	ldi	r22, 0xFF	; 255
-    22d2:	79 e1       	ldi	r23, 0x19	; 25
-    22d4:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    22cc:	8a e0       	ldi	r24, 0x0A	; 10
+    22ce:	6f ef       	ldi	r22, 0xFF	; 255
+    22d0:	79 e1       	ldi	r23, 0x19	; 25
+    22d2:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
   writeReg(ETXST, TXSTART_INIT);
-    22d8:	84 e0       	ldi	r24, 0x04	; 4
-    22da:	60 e0       	ldi	r22, 0x00	; 0
-    22dc:	7a e1       	ldi	r23, 0x1A	; 26
-    22de:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    22d6:	84 e0       	ldi	r24, 0x04	; 4
+    22d8:	60 e0       	ldi	r22, 0x00	; 0
+    22da:	7a e1       	ldi	r23, 0x1A	; 26
+    22dc:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
   writeReg(ETXND, TXSTOP_INIT);
-    22e2:	86 e0       	ldi	r24, 0x06	; 6
-    22e4:	6f ef       	ldi	r22, 0xFF	; 255
-    22e6:	7f e1       	ldi	r23, 0x1F	; 31
-    22e8:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    22e0:	86 e0       	ldi	r24, 0x06	; 6
+    22e2:	6f ef       	ldi	r22, 0xFF	; 255
+    22e4:	7f e1       	ldi	r23, 0x1F	; 31
+    22e6:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
 
   // set packet filter
   if(flags & PIO_INIT_BROAD_CAST) {
-    22ec:	d2 fe       	sbrs	r13, 2
-    22ee:	05 c0       	rjmp	.+10     	; 0x22fa <enc28j60_init+0xaa>
+    22ea:	d2 fe       	sbrs	r13, 2
+    22ec:	05 c0       	rjmp	.+10     	; 0x22f8 <enc28j60_init+0xaa>
 
 // Functions to enable/disable broadcast filter bits
 // With the bit set, broadcast packets are filtered.
 static inline void enc28j60_enable_broadcast ( void )
 {
   writeRegByte(ERXFCON, ERXFCON_UCEN|ERXFCON_CRCEN/*|ERXFCON_PMEN*/|ERXFCON_BCEN);
-    22f0:	88 e3       	ldi	r24, 0x38	; 56
-    22f2:	61 ea       	ldi	r22, 0xA1	; 161
-    22f4:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
-    22f8:	04 c0       	rjmp	.+8      	; 0x2302 <enc28j60_init+0xb2>
+    22ee:	88 e3       	ldi	r24, 0x38	; 56
+    22f0:	61 ea       	ldi	r22, 0xA1	; 161
+    22f2:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
+    22f6:	04 c0       	rjmp	.+8      	; 0x2300 <enc28j60_init+0xb2>
 }
 
 static inline void enc28j60_disable_broadcast ( void )
 {
   writeRegByte(ERXFCON, ERXFCON_UCEN|ERXFCON_CRCEN/*|ERXFCON_PMEN*/);
-    22fa:	88 e3       	ldi	r24, 0x38	; 56
-    22fc:	60 ea       	ldi	r22, 0xA0	; 160
-    22fe:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    22f8:	88 e3       	ldi	r24, 0x38	; 56
+    22fa:	60 ea       	ldi	r22, 0xA0	; 160
+    22fc:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
   } else {
     enc28j60_disable_broadcast(); // change to add ERXFCON_BCEN recommended by epam
   }
 
   // BIST pattern generator?
   writeReg(EPMM0, 0x303f);
-    2302:	88 e2       	ldi	r24, 0x28	; 40
-    2304:	6f e3       	ldi	r22, 0x3F	; 63
-    2306:	70 e3       	ldi	r23, 0x30	; 48
-    2308:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    2300:	88 e2       	ldi	r24, 0x28	; 40
+    2302:	6f e3       	ldi	r22, 0x3F	; 63
+    2304:	70 e3       	ldi	r23, 0x30	; 48
+    2306:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
   writeReg(EPMCS, 0xf7f9);
-    230c:	80 e3       	ldi	r24, 0x30	; 48
-    230e:	69 ef       	ldi	r22, 0xF9	; 249
-    2310:	77 ef       	ldi	r23, 0xF7	; 247
-    2312:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    230a:	80 e3       	ldi	r24, 0x30	; 48
+    230c:	69 ef       	ldi	r22, 0xF9	; 249
+    230e:	77 ef       	ldi	r23, 0xF7	; 247
+    2310:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
 
   // MAC init (with flow control)
   writeRegByte(MACON1, MACON1_MARXEN|MACON1_TXPAUS|MACON1_RXPAUS);
-    2316:	80 ec       	ldi	r24, 0xC0	; 192
-    2318:	6d e0       	ldi	r22, 0x0D	; 13
-    231a:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    2314:	80 ec       	ldi	r24, 0xC0	; 192
+    2316:	6d e0       	ldi	r22, 0x0D	; 13
+    2318:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
   writeRegByte(MACON2, 0x00);
-    231e:	81 ec       	ldi	r24, 0xC1	; 193
-    2320:	60 e0       	ldi	r22, 0x00	; 0
-    2322:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    231c:	81 ec       	ldi	r24, 0xC1	; 193
+    231e:	60 e0       	ldi	r22, 0x00	; 0
+    2320:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
   uint8_t mac3val = MACON3_PADCFG0|MACON3_TXCRCEN|MACON3_FRMLNEN;
   if(is_full_duplex) {
-    2326:	80 91 56 01 	lds	r24, 0x0156
-    232a:	88 23       	and	r24, r24
-    232c:	11 f0       	breq	.+4      	; 0x2332 <enc28j60_init+0xe2>
-    232e:	63 e3       	ldi	r22, 0x33	; 51
-    2330:	01 c0       	rjmp	.+2      	; 0x2334 <enc28j60_init+0xe4>
-    2332:	62 e3       	ldi	r22, 0x32	; 50
+    2324:	80 91 56 01 	lds	r24, 0x0156
+    2328:	88 23       	and	r24, r24
+    232a:	11 f0       	breq	.+4      	; 0x2330 <enc28j60_init+0xe2>
+    232c:	63 e3       	ldi	r22, 0x33	; 51
+    232e:	01 c0       	rjmp	.+2      	; 0x2332 <enc28j60_init+0xe4>
+    2330:	62 e3       	ldi	r22, 0x32	; 50
     mac3val |= MACON3_FULDPX;
   }
   writeRegByte(MACON3, mac3val);
-    2334:	82 ec       	ldi	r24, 0xC2	; 194
-    2336:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    2332:	82 ec       	ldi	r24, 0xC2	; 194
+    2334:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
 
   if(is_full_duplex) {
-    233a:	80 91 56 01 	lds	r24, 0x0156
-    233e:	88 23       	and	r24, r24
-    2340:	51 f0       	breq	.+20     	; 0x2356 <enc28j60_init+0x106>
+    2338:	80 91 56 01 	lds	r24, 0x0156
+    233c:	88 23       	and	r24, r24
+    233e:	51 f0       	breq	.+20     	; 0x2354 <enc28j60_init+0x106>
     writeRegByte(MABBIPG, 0x15);
-    2342:	84 ec       	ldi	r24, 0xC4	; 196
-    2344:	65 e1       	ldi	r22, 0x15	; 21
-    2346:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    2340:	84 ec       	ldi	r24, 0xC4	; 196
+    2342:	65 e1       	ldi	r22, 0x15	; 21
+    2344:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
     writeReg(MAIPG, 0x0012);
-    234a:	86 ec       	ldi	r24, 0xC6	; 198
-    234c:	62 e1       	ldi	r22, 0x12	; 18
-    234e:	70 e0       	ldi	r23, 0x00	; 0
-    2350:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
-    2354:	09 c0       	rjmp	.+18     	; 0x2368 <enc28j60_init+0x118>
+    2348:	86 ec       	ldi	r24, 0xC6	; 198
+    234a:	62 e1       	ldi	r22, 0x12	; 18
+    234c:	70 e0       	ldi	r23, 0x00	; 0
+    234e:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
+    2352:	09 c0       	rjmp	.+18     	; 0x2366 <enc28j60_init+0x118>
   } else {
     writeRegByte(MABBIPG, 0x12);
-    2356:	84 ec       	ldi	r24, 0xC4	; 196
-    2358:	62 e1       	ldi	r22, 0x12	; 18
-    235a:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    2354:	84 ec       	ldi	r24, 0xC4	; 196
+    2356:	62 e1       	ldi	r22, 0x12	; 18
+    2358:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
     writeReg(MAIPG, 0x0C12);
-    235e:	86 ec       	ldi	r24, 0xC6	; 198
-    2360:	62 e1       	ldi	r22, 0x12	; 18
-    2362:	7c e0       	ldi	r23, 0x0C	; 12
-    2364:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    235c:	86 ec       	ldi	r24, 0xC6	; 198
+    235e:	62 e1       	ldi	r22, 0x12	; 18
+    2360:	7c e0       	ldi	r23, 0x0C	; 12
+    2362:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
   }
   writeReg(MAMXFL, MAX_FRAMELEN);
-    2368:	8a ec       	ldi	r24, 0xCA	; 202
-    236a:	6e ee       	ldi	r22, 0xEE	; 238
-    236c:	75 e0       	ldi	r23, 0x05	; 5
-    236e:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    2366:	8a ec       	ldi	r24, 0xCA	; 202
+    2368:	6e ee       	ldi	r22, 0xEE	; 238
+    236a:	75 e0       	ldi	r23, 0x05	; 5
+    236c:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
 
   // PHY init
   if(is_full_duplex) {
-    2372:	80 91 56 01 	lds	r24, 0x0156
-    2376:	88 23       	and	r24, r24
-    2378:	59 f0       	breq	.+22     	; 0x2390 <enc28j60_init+0x140>
+    2370:	80 91 56 01 	lds	r24, 0x0156
+    2374:	88 23       	and	r24, r24
+    2376:	59 f0       	breq	.+22     	; 0x238e <enc28j60_init+0x140>
     writePhy(PHCON1, PHCON1_PDPXMD);
-    237a:	80 e0       	ldi	r24, 0x00	; 0
-    237c:	60 e0       	ldi	r22, 0x00	; 0
-    237e:	71 e0       	ldi	r23, 0x01	; 1
-    2380:	0e 94 6a 10 	call	0x20d4	; 0x20d4 <writePhy>
+    2378:	80 e0       	ldi	r24, 0x00	; 0
+    237a:	60 e0       	ldi	r22, 0x00	; 0
+    237c:	71 e0       	ldi	r23, 0x01	; 1
+    237e:	0e 94 69 10 	call	0x20d2	; 0x20d2 <writePhy>
     writePhy(PHCON2, 0);
-    2384:	80 e1       	ldi	r24, 0x10	; 16
-    2386:	60 e0       	ldi	r22, 0x00	; 0
-    2388:	70 e0       	ldi	r23, 0x00	; 0
-    238a:	0e 94 6a 10 	call	0x20d4	; 0x20d4 <writePhy>
-    238e:	0a c0       	rjmp	.+20     	; 0x23a4 <enc28j60_init+0x154>
+    2382:	80 e1       	ldi	r24, 0x10	; 16
+    2384:	60 e0       	ldi	r22, 0x00	; 0
+    2386:	70 e0       	ldi	r23, 0x00	; 0
+    2388:	0e 94 69 10 	call	0x20d2	; 0x20d2 <writePhy>
+    238c:	0a c0       	rjmp	.+20     	; 0x23a2 <enc28j60_init+0x154>
   } else {
     writePhy(PHCON1, 0);
-    2390:	80 e0       	ldi	r24, 0x00	; 0
-    2392:	60 e0       	ldi	r22, 0x00	; 0
-    2394:	70 e0       	ldi	r23, 0x00	; 0
-    2396:	0e 94 6a 10 	call	0x20d4	; 0x20d4 <writePhy>
+    238e:	80 e0       	ldi	r24, 0x00	; 0
+    2390:	60 e0       	ldi	r22, 0x00	; 0
+    2392:	70 e0       	ldi	r23, 0x00	; 0
+    2394:	0e 94 69 10 	call	0x20d2	; 0x20d2 <writePhy>
     writePhy(PHCON2, PHCON2_HDLDIS);
-    239a:	80 e1       	ldi	r24, 0x10	; 16
-    239c:	60 e0       	ldi	r22, 0x00	; 0
-    239e:	71 e0       	ldi	r23, 0x01	; 1
-    23a0:	0e 94 6a 10 	call	0x20d4	; 0x20d4 <writePhy>
+    2398:	80 e1       	ldi	r24, 0x10	; 16
+    239a:	60 e0       	ldi	r22, 0x00	; 0
+    239c:	71 e0       	ldi	r23, 0x01	; 1
+    239e:	0e 94 69 10 	call	0x20d2	; 0x20d2 <writePhy>
   }
 
   // prepare flow control
   writeReg(EPAUS, 20 * 100); // 100ms
-    23a4:	88 e7       	ldi	r24, 0x78	; 120
-    23a6:	60 ed       	ldi	r22, 0xD0	; 208
-    23a8:	77 e0       	ldi	r23, 0x07	; 7
-    23aa:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    23a2:	88 e7       	ldi	r24, 0x78	; 120
+    23a4:	60 ed       	ldi	r22, 0xD0	; 208
+    23a6:	77 e0       	ldi	r23, 0x07	; 7
+    23a8:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
 
   // return rev
   rev = readRegByte(EREVID);
-    23ae:	82 e7       	ldi	r24, 0x72	; 114
-    23b0:	0e 94 44 10 	call	0x2088	; 0x2088 <readRegByte>
-    23b4:	80 93 57 01 	sts	0x0157, r24
+    23ac:	82 e7       	ldi	r24, 0x72	; 114
+    23ae:	0e 94 43 10 	call	0x2086	; 0x2086 <readRegByte>
+    23b2:	80 93 57 01 	sts	0x0157, r24
   // microchip forgot to step the number on the silcon when they
   // released the revision B7. 6 is now rev B7. We still have
   // to see what they do when they release B8. At the moment
   // there is no B8 out yet
   if (rev > 5) ++rev;
-    23b8:	86 30       	cpi	r24, 0x06	; 6
-    23ba:	18 f0       	brcs	.+6      	; 0x23c2 <enc28j60_init+0x172>
-    23bc:	8f 5f       	subi	r24, 0xFF	; 255
-    23be:	80 93 57 01 	sts	0x0157, r24
+    23b6:	86 30       	cpi	r24, 0x06	; 6
+    23b8:	18 f0       	brcs	.+6      	; 0x23c0 <enc28j60_init+0x172>
+    23ba:	8f 5f       	subi	r24, 0xFF	; 255
+    23bc:	80 93 57 01 	sts	0x0157, r24
 
   // set mac
   writeRegByte(MAADR5, macaddr[0]);
-    23c2:	84 ee       	ldi	r24, 0xE4	; 228
-    23c4:	f7 01       	movw	r30, r14
-    23c6:	60 81       	ld	r22, Z
-    23c8:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    23c0:	84 ee       	ldi	r24, 0xE4	; 228
+    23c2:	f7 01       	movw	r30, r14
+    23c4:	60 81       	ld	r22, Z
+    23c6:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
   writeRegByte(MAADR4, macaddr[1]);
-    23cc:	85 ee       	ldi	r24, 0xE5	; 229
-    23ce:	f7 01       	movw	r30, r14
-    23d0:	61 81       	ldd	r22, Z+1	; 0x01
-    23d2:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    23ca:	85 ee       	ldi	r24, 0xE5	; 229
+    23cc:	f7 01       	movw	r30, r14
+    23ce:	61 81       	ldd	r22, Z+1	; 0x01
+    23d0:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
   writeRegByte(MAADR3, macaddr[2]);
-    23d6:	82 ee       	ldi	r24, 0xE2	; 226
-    23d8:	f7 01       	movw	r30, r14
-    23da:	62 81       	ldd	r22, Z+2	; 0x02
-    23dc:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    23d4:	82 ee       	ldi	r24, 0xE2	; 226
+    23d6:	f7 01       	movw	r30, r14
+    23d8:	62 81       	ldd	r22, Z+2	; 0x02
+    23da:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
   writeRegByte(MAADR2, macaddr[3]);
-    23e0:	83 ee       	ldi	r24, 0xE3	; 227
-    23e2:	f7 01       	movw	r30, r14
-    23e4:	63 81       	ldd	r22, Z+3	; 0x03
-    23e6:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    23de:	83 ee       	ldi	r24, 0xE3	; 227
+    23e0:	f7 01       	movw	r30, r14
+    23e2:	63 81       	ldd	r22, Z+3	; 0x03
+    23e4:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
   writeRegByte(MAADR1, macaddr[4]);
-    23ea:	80 ee       	ldi	r24, 0xE0	; 224
-    23ec:	f7 01       	movw	r30, r14
-    23ee:	64 81       	ldd	r22, Z+4	; 0x04
-    23f0:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    23e8:	80 ee       	ldi	r24, 0xE0	; 224
+    23ea:	f7 01       	movw	r30, r14
+    23ec:	64 81       	ldd	r22, Z+4	; 0x04
+    23ee:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
   writeRegByte(MAADR0, macaddr[5]);
-    23f4:	81 ee       	ldi	r24, 0xE1	; 225
-    23f6:	f7 01       	movw	r30, r14
-    23f8:	65 81       	ldd	r22, Z+5	; 0x05
-    23fa:	0e 94 4e 10 	call	0x209c	; 0x209c <writeRegByte>
+    23f2:	81 ee       	ldi	r24, 0xE1	; 225
+    23f4:	f7 01       	movw	r30, r14
+    23f6:	65 81       	ldd	r22, Z+5	; 0x05
+    23f8:	0e 94 4d 10 	call	0x209a	; 0x209a <writeRegByte>
 
   SetBank(ECON1);
-    23fe:	8f e1       	ldi	r24, 0x1F	; 31
-    2400:	0e 94 26 10 	call	0x204c	; 0x204c <SetBank>
+    23fc:	8f e1       	ldi	r24, 0x1F	; 31
+    23fe:	0e 94 25 10 	call	0x204a	; 0x204a <SetBank>
   writeOp(ENC28J60_BIT_FIELD_SET, EIE, EIE_INTIE|EIE_PKTIE);
-    2404:	80 e8       	ldi	r24, 0x80	; 128
-    2406:	6b e1       	ldi	r22, 0x1B	; 27
-    2408:	40 ec       	ldi	r20, 0xC0	; 192
-    240a:	0e 94 e3 0f 	call	0x1fc6	; 0x1fc6 <writeOp>
+    2402:	80 e8       	ldi	r24, 0x80	; 128
+    2404:	6b e1       	ldi	r22, 0x1B	; 27
+    2406:	40 ec       	ldi	r20, 0xC0	; 192
+    2408:	0e 94 e2 0f 	call	0x1fc4	; 0x1fc4 <writeOp>
   writeOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_RXEN);
-    240e:	80 e8       	ldi	r24, 0x80	; 128
-    2410:	6f e1       	ldi	r22, 0x1F	; 31
-    2412:	44 e0       	ldi	r20, 0x04	; 4
-    2414:	0e 94 e3 0f 	call	0x1fc6	; 0x1fc6 <writeOp>
+    240c:	80 e8       	ldi	r24, 0x80	; 128
+    240e:	6f e1       	ldi	r22, 0x1F	; 31
+    2410:	44 e0       	ldi	r20, 0x04	; 4
+    2412:	0e 94 e2 0f 	call	0x1fc4	; 0x1fc4 <writeOp>
 
   // Code moved from pio_init
 	uint8_t rev, result;
 	result = enc28j60_status(PIO_STATUS_VERSION, &rev);
-    2418:	80 e0       	ldi	r24, 0x00	; 0
-    241a:	be 01       	movw	r22, r28
-    241c:	6f 5f       	subi	r22, 0xFF	; 255
-    241e:	7f 4f       	sbci	r23, 0xFF	; 255
-    2420:	0e 94 9c 10 	call	0x2138	; 0x2138 <enc28j60_status>
-    2424:	80 e0       	ldi	r24, 0x00	; 0
+    2416:	80 e0       	ldi	r24, 0x00	; 0
+    2418:	be 01       	movw	r22, r28
+    241a:	6f 5f       	subi	r22, 0xFF	; 255
+    241c:	7f 4f       	sbci	r23, 0xFF	; 255
+    241e:	0e 94 9b 10 	call	0x2136	; 0x2136 <enc28j60_status>
+    2422:	80 e0       	ldi	r24, 0x00	; 0
 	if(result == PIO_OK) {
 		// NOTE: UART - rev=hex_byte(rev)
 	}
 
   return PIO_OK;
 }
-    2426:	0f 90       	pop	r0
-    2428:	cf 91       	pop	r28
-    242a:	df 91       	pop	r29
-    242c:	1f 91       	pop	r17
-    242e:	0f 91       	pop	r16
-    2430:	ff 90       	pop	r15
-    2432:	ef 90       	pop	r14
-    2434:	df 90       	pop	r13
-    2436:	08 95       	ret
+    2424:	0f 90       	pop	r0
+    2426:	cf 91       	pop	r28
+    2428:	df 91       	pop	r29
+    242a:	1f 91       	pop	r17
+    242c:	0f 91       	pop	r16
+    242e:	ff 90       	pop	r15
+    2430:	ef 90       	pop	r14
+    2432:	df 90       	pop	r13
+    2434:	08 95       	ret
 
-00002438 <enc28j60_recv>:
+00002436 <enc28j60_recv>:
   *got_size = header.byteCount - 4; //remove the CRC count
   return header.status;
 }
 
 uint8_t enc28j60_recv(uint8_t *data, uint16_t max_size, uint16_t *got_size)
 {
-    2438:	af 92       	push	r10
-    243a:	bf 92       	push	r11
-    243c:	cf 92       	push	r12
-    243e:	df 92       	push	r13
-    2440:	ef 92       	push	r14
-    2442:	ff 92       	push	r15
-    2444:	0f 93       	push	r16
-    2446:	1f 93       	push	r17
-    2448:	df 93       	push	r29
-    244a:	cf 93       	push	r28
-    244c:	00 d0       	rcall	.+0      	; 0x244e <enc28j60_recv+0x16>
-    244e:	00 d0       	rcall	.+0      	; 0x2450 <enc28j60_recv+0x18>
-    2450:	00 d0       	rcall	.+0      	; 0x2452 <enc28j60_recv+0x1a>
-    2452:	cd b7       	in	r28, 0x3d	; 61
-    2454:	de b7       	in	r29, 0x3e	; 62
-    2456:	5c 01       	movw	r10, r24
-    2458:	6b 01       	movw	r12, r22
-    245a:	8a 01       	movw	r16, r20
+    2436:	af 92       	push	r10
+    2438:	bf 92       	push	r11
+    243a:	cf 92       	push	r12
+    243c:	df 92       	push	r13
+    243e:	ef 92       	push	r14
+    2440:	ff 92       	push	r15
+    2442:	0f 93       	push	r16
+    2444:	1f 93       	push	r17
+    2446:	df 93       	push	r29
+    2448:	cf 93       	push	r28
+    244a:	00 d0       	rcall	.+0      	; 0x244c <enc28j60_recv+0x16>
+    244c:	00 d0       	rcall	.+0      	; 0x244e <enc28j60_recv+0x18>
+    244e:	00 d0       	rcall	.+0      	; 0x2450 <enc28j60_recv+0x1a>
+    2450:	cd b7       	in	r28, 0x3d	; 61
+    2452:	de b7       	in	r29, 0x3e	; 62
+    2454:	5c 01       	movw	r10, r24
+    2456:	6b 01       	movw	r12, r22
+    2458:	8a 01       	movw	r16, r20
   writeReg(ERDPT, gNextPacketPtr);
-    245c:	60 91 54 01 	lds	r22, 0x0154
-    2460:	70 91 55 01 	lds	r23, 0x0155
-    2464:	80 e0       	ldi	r24, 0x00	; 0
-    2466:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    245a:	60 91 54 01 	lds	r22, 0x0154
+    245e:	70 91 55 01 	lds	r23, 0x0155
+    2462:	80 e0       	ldi	r24, 0x00	; 0
+    2464:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
       uint16_t nextPacket;
       uint16_t byteCount;
       uint16_t status;
   } header;
 
   readBuf(sizeof header, (uint8_t*) &header);
-    246a:	86 e0       	ldi	r24, 0x06	; 6
-    246c:	90 e0       	ldi	r25, 0x00	; 0
-    246e:	be 01       	movw	r22, r28
-    2470:	6f 5f       	subi	r22, 0xFF	; 255
-    2472:	7f 4f       	sbci	r23, 0xFF	; 255
-    2474:	0e 94 fc 0f 	call	0x1ff8	; 0x1ff8 <readBuf>
+    2468:	86 e0       	ldi	r24, 0x06	; 6
+    246a:	90 e0       	ldi	r25, 0x00	; 0
+    246c:	be 01       	movw	r22, r28
+    246e:	6f 5f       	subi	r22, 0xFF	; 255
+    2470:	7f 4f       	sbci	r23, 0xFF	; 255
+    2472:	0e 94 fb 0f 	call	0x1ff6	; 0x1ff6 <readBuf>
 
   gNextPacketPtr  = header.nextPacket;
-    2478:	e9 80       	ldd	r14, Y+1	; 0x01
-    247a:	fa 80       	ldd	r15, Y+2	; 0x02
-    247c:	f0 92 55 01 	sts	0x0155, r15
-    2480:	e0 92 54 01 	sts	0x0154, r14
+    2476:	e9 80       	ldd	r14, Y+1	; 0x01
+    2478:	fa 80       	ldd	r15, Y+2	; 0x02
+    247a:	f0 92 55 01 	sts	0x0155, r15
+    247e:	e0 92 54 01 	sts	0x0154, r14
   *got_size = header.byteCount - 4; //remove the CRC count
-    2484:	8b 81       	ldd	r24, Y+3	; 0x03
-    2486:	9c 81       	ldd	r25, Y+4	; 0x04
-    2488:	9c 01       	movw	r18, r24
-    248a:	24 50       	subi	r18, 0x04	; 4
-    248c:	30 40       	sbci	r19, 0x00	; 0
-    248e:	f8 01       	movw	r30, r16
-    2490:	31 83       	std	Z+1, r19	; 0x01
-    2492:	20 83       	st	Z, r18
+    2482:	8b 81       	ldd	r24, Y+3	; 0x03
+    2484:	9c 81       	ldd	r25, Y+4	; 0x04
+    2486:	9c 01       	movw	r18, r24
+    2488:	24 50       	subi	r18, 0x04	; 4
+    248a:	30 40       	sbci	r19, 0x00	; 0
+    248c:	f8 01       	movw	r30, r16
+    248e:	31 83       	std	Z+1, r19	; 0x01
+    2490:	20 83       	st	Z, r18
 
   // read chip's packet header
   uint8_t status = read_hdr(got_size);
 
   // was a receive error?
   if ((status & 0x80)==0) {
-    2494:	8d 81       	ldd	r24, Y+5	; 0x05
-    2496:	88 23       	and	r24, r24
-    2498:	bc f0       	brlt	.+46     	; 0x24c8 <enc28j60_recv+0x90>
+    2492:	8d 81       	ldd	r24, Y+5	; 0x05
+    2494:	88 23       	and	r24, r24
+    2496:	bc f0       	brlt	.+46     	; 0x24c6 <enc28j60_recv+0x90>
 
 // ---------- recv ----------
 
 inline static void next_pkt(void)
 {
   if (gNextPacketPtr - 1 > RXSTOP_INIT)
-    249a:	b7 01       	movw	r22, r14
-    249c:	61 50       	subi	r22, 0x01	; 1
-    249e:	70 40       	sbci	r23, 0x00	; 0
-    24a0:	fa e1       	ldi	r31, 0x1A	; 26
-    24a2:	60 30       	cpi	r22, 0x00	; 0
-    24a4:	7f 07       	cpc	r23, r31
-    24a6:	30 f0       	brcs	.+12     	; 0x24b4 <enc28j60_recv+0x7c>
+    2498:	b7 01       	movw	r22, r14
+    249a:	61 50       	subi	r22, 0x01	; 1
+    249c:	70 40       	sbci	r23, 0x00	; 0
+    249e:	fa e1       	ldi	r31, 0x1A	; 26
+    24a0:	60 30       	cpi	r22, 0x00	; 0
+    24a2:	7f 07       	cpc	r23, r31
+    24a4:	30 f0       	brcs	.+12     	; 0x24b2 <enc28j60_recv+0x7c>
       writeReg(ERXRDPT, RXSTOP_INIT);
-    24a8:	8c e0       	ldi	r24, 0x0C	; 12
-    24aa:	6f ef       	ldi	r22, 0xFF	; 255
-    24ac:	79 e1       	ldi	r23, 0x19	; 25
-    24ae:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
-    24b2:	03 c0       	rjmp	.+6      	; 0x24ba <enc28j60_recv+0x82>
+    24a6:	8c e0       	ldi	r24, 0x0C	; 12
+    24a8:	6f ef       	ldi	r22, 0xFF	; 255
+    24aa:	79 e1       	ldi	r23, 0x19	; 25
+    24ac:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
+    24b0:	03 c0       	rjmp	.+6      	; 0x24b8 <enc28j60_recv+0x82>
   else
       writeReg(ERXRDPT, gNextPacketPtr - 1);
-    24b4:	8c e0       	ldi	r24, 0x0C	; 12
-    24b6:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    24b2:	8c e0       	ldi	r24, 0x0C	; 12
+    24b4:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
   writeOp(ENC28J60_BIT_FIELD_SET, ECON2, ECON2_PKTDEC);
-    24ba:	80 e8       	ldi	r24, 0x80	; 128
-    24bc:	6e e1       	ldi	r22, 0x1E	; 30
-    24be:	40 e4       	ldi	r20, 0x40	; 64
-    24c0:	0e 94 e3 0f 	call	0x1fc6	; 0x1fc6 <writeOp>
-    24c4:	03 e0       	ldi	r16, 0x03	; 3
-    24c6:	20 c0       	rjmp	.+64     	; 0x2508 <enc28j60_recv+0xd0>
+    24b8:	80 e8       	ldi	r24, 0x80	; 128
+    24ba:	6e e1       	ldi	r22, 0x1E	; 30
+    24bc:	40 e4       	ldi	r20, 0x40	; 64
+    24be:	0e 94 e2 0f 	call	0x1fc4	; 0x1fc4 <writeOp>
+    24c2:	03 e0       	ldi	r16, 0x03	; 3
+    24c4:	20 c0       	rjmp	.+64     	; 0x2506 <enc28j60_recv+0xd0>
   }
 
   // check size
   uint16_t len = *got_size;
   uint8_t result = PIO_OK;
   if(len > max_size) {
-    24c8:	c2 16       	cp	r12, r18
-    24ca:	d3 06       	cpc	r13, r19
-    24cc:	18 f4       	brcc	.+6      	; 0x24d4 <enc28j60_recv+0x9c>
-    24ce:	96 01       	movw	r18, r12
-    24d0:	02 e0       	ldi	r16, 0x02	; 2
-    24d2:	01 c0       	rjmp	.+2      	; 0x24d6 <enc28j60_recv+0x9e>
-    24d4:	00 e0       	ldi	r16, 0x00	; 0
+    24c6:	c2 16       	cp	r12, r18
+    24c8:	d3 06       	cpc	r13, r19
+    24ca:	18 f4       	brcc	.+6      	; 0x24d2 <enc28j60_recv+0x9c>
+    24cc:	96 01       	movw	r18, r12
+    24ce:	02 e0       	ldi	r16, 0x02	; 2
+    24d0:	01 c0       	rjmp	.+2      	; 0x24d4 <enc28j60_recv+0x9e>
+    24d2:	00 e0       	ldi	r16, 0x00	; 0
     len = max_size;
     result = PIO_TOO_LARGE;
   }
 
   // read packet
   readBuf(len, data);
-    24d6:	c9 01       	movw	r24, r18
-    24d8:	b5 01       	movw	r22, r10
-    24da:	0e 94 fc 0f 	call	0x1ff8	; 0x1ff8 <readBuf>
+    24d4:	c9 01       	movw	r24, r18
+    24d6:	b5 01       	movw	r22, r10
+    24d8:	0e 94 fb 0f 	call	0x1ff6	; 0x1ff6 <readBuf>
 
 // ---------- recv ----------
 
 inline static void next_pkt(void)
 {
   if (gNextPacketPtr - 1 > RXSTOP_INIT)
-    24de:	b7 01       	movw	r22, r14
-    24e0:	61 50       	subi	r22, 0x01	; 1
-    24e2:	70 40       	sbci	r23, 0x00	; 0
-    24e4:	8a e1       	ldi	r24, 0x1A	; 26
-    24e6:	60 30       	cpi	r22, 0x00	; 0
-    24e8:	78 07       	cpc	r23, r24
-    24ea:	30 f0       	brcs	.+12     	; 0x24f8 <enc28j60_recv+0xc0>
+    24dc:	b7 01       	movw	r22, r14
+    24de:	61 50       	subi	r22, 0x01	; 1
+    24e0:	70 40       	sbci	r23, 0x00	; 0
+    24e2:	8a e1       	ldi	r24, 0x1A	; 26
+    24e4:	60 30       	cpi	r22, 0x00	; 0
+    24e6:	78 07       	cpc	r23, r24
+    24e8:	30 f0       	brcs	.+12     	; 0x24f6 <enc28j60_recv+0xc0>
       writeReg(ERXRDPT, RXSTOP_INIT);
-    24ec:	8c e0       	ldi	r24, 0x0C	; 12
-    24ee:	6f ef       	ldi	r22, 0xFF	; 255
-    24f0:	79 e1       	ldi	r23, 0x19	; 25
-    24f2:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
-    24f6:	03 c0       	rjmp	.+6      	; 0x24fe <enc28j60_recv+0xc6>
+    24ea:	8c e0       	ldi	r24, 0x0C	; 12
+    24ec:	6f ef       	ldi	r22, 0xFF	; 255
+    24ee:	79 e1       	ldi	r23, 0x19	; 25
+    24f0:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
+    24f4:	03 c0       	rjmp	.+6      	; 0x24fc <enc28j60_recv+0xc6>
   else
       writeReg(ERXRDPT, gNextPacketPtr - 1);
-    24f8:	8c e0       	ldi	r24, 0x0C	; 12
-    24fa:	0e 94 5c 10 	call	0x20b8	; 0x20b8 <writeReg>
+    24f6:	8c e0       	ldi	r24, 0x0C	; 12
+    24f8:	0e 94 5b 10 	call	0x20b6	; 0x20b6 <writeReg>
   writeOp(ENC28J60_BIT_FIELD_SET, ECON2, ECON2_PKTDEC);
-    24fe:	80 e8       	ldi	r24, 0x80	; 128
-    2500:	6e e1       	ldi	r22, 0x1E	; 30
-    2502:	40 e4       	ldi	r20, 0x40	; 64
-    2504:	0e 94 e3 0f 	call	0x1fc6	; 0x1fc6 <writeOp>
+    24fc:	80 e8       	ldi	r24, 0x80	; 128
+    24fe:	6e e1       	ldi	r22, 0x1E	; 30
+    2500:	40 e4       	ldi	r20, 0x40	; 64
+    2502:	0e 94 e2 0f 	call	0x1fc4	; 0x1fc4 <writeOp>
   // read packet
   readBuf(len, data);
 
   next_pkt();
   return result;
 }
-    2508:	80 2f       	mov	r24, r16
-    250a:	26 96       	adiw	r28, 0x06	; 6
-    250c:	0f b6       	in	r0, 0x3f	; 63
-    250e:	f8 94       	cli
-    2510:	de bf       	out	0x3e, r29	; 62
-    2512:	0f be       	out	0x3f, r0	; 63
-    2514:	cd bf       	out	0x3d, r28	; 61
-    2516:	cf 91       	pop	r28
-    2518:	df 91       	pop	r29
-    251a:	1f 91       	pop	r17
-    251c:	0f 91       	pop	r16
-    251e:	ff 90       	pop	r15
-    2520:	ef 90       	pop	r14
-    2522:	df 90       	pop	r13
-    2524:	cf 90       	pop	r12
-    2526:	bf 90       	pop	r11
-    2528:	af 90       	pop	r10
-    252a:	08 95       	ret
+    2506:	80 2f       	mov	r24, r16
+    2508:	26 96       	adiw	r28, 0x06	; 6
+    250a:	0f b6       	in	r0, 0x3f	; 63
+    250c:	f8 94       	cli
+    250e:	de bf       	out	0x3e, r29	; 62
+    2510:	0f be       	out	0x3f, r0	; 63
+    2512:	cd bf       	out	0x3d, r28	; 61
+    2514:	cf 91       	pop	r28
+    2516:	df 91       	pop	r29
+    2518:	1f 91       	pop	r17
+    251a:	0f 91       	pop	r16
+    251c:	ff 90       	pop	r15
+    251e:	ef 90       	pop	r14
+    2520:	df 90       	pop	r13
+    2522:	cf 90       	pop	r12
+    2524:	bf 90       	pop	r11
+    2526:	af 90       	pop	r10
+    2528:	08 95       	ret
 
-0000252c <spi_init>:
+0000252a <spi_init>:
 #include "spi.h"
 
 void spi_init(void)
 {
 	// output: CS, MOSI, SCK, input: MISO, card detect, write protect
 	SPI_DDR |= SPI_SCK | SPI_MOSI | SD_CS | ETH_CS;
-    252c:	e4 e2       	ldi	r30, 0x24	; 36
-    252e:	f0 e0       	ldi	r31, 0x00	; 0
-    2530:	80 81       	ld	r24, Z
-    2532:	8e 62       	ori	r24, 0x2E	; 46
-    2534:	80 83       	st	Z, r24
+    252a:	e4 e2       	ldi	r30, 0x24	; 36
+    252c:	f0 e0       	ldi	r31, 0x00	; 0
+    252e:	80 81       	ld	r24, Z
+    2530:	8e 62       	ori	r24, 0x2E	; 46
+    2532:	80 83       	st	Z, r24
 	SPI_DDR &= ~(SPI_MISO | SD_DETECT | SD_LOCK);
-    2536:	80 81       	ld	r24, Z
-    2538:	8e 76       	andi	r24, 0x6E	; 110
-    253a:	80 83       	st	Z, r24
+    2534:	80 81       	ld	r24, Z
+    2536:	8e 76       	andi	r24, 0x6E	; 110
+    2538:	80 83       	st	Z, r24
 
 	// MOSI, SCK = 0, Eth CS = 1
 	SPI_PORT &= ~(SPI_MOSI | SPI_SCK);
-    253c:	e5 e2       	ldi	r30, 0x25	; 37
-    253e:	f0 e0       	ldi	r31, 0x00	; 0
-    2540:	80 81       	ld	r24, Z
-    2542:	87 7d       	andi	r24, 0xD7	; 215
-    2544:	80 83       	st	Z, r24
+    253a:	e5 e2       	ldi	r30, 0x25	; 37
+    253c:	f0 e0       	ldi	r31, 0x00	; 0
+    253e:	80 81       	ld	r24, Z
+    2540:	87 7d       	andi	r24, 0xD7	; 215
+    2542:	80 83       	st	Z, r24
 	SPI_PORT |= ETH_CS;
-    2546:	80 81       	ld	r24, Z
-    2548:	84 60       	ori	r24, 0x04	; 4
-    254a:	80 83       	st	Z, r24
+    2544:	80 81       	ld	r24, Z
+    2546:	84 60       	ori	r24, 0x04	; 4
+    2548:	80 83       	st	Z, r24
 
   SPCR = _BV(SPE) | _BV(MSTR); // 8 MHz @ 16
-    254c:	80 e5       	ldi	r24, 0x50	; 80
-    254e:	8c bd       	out	0x2c, r24	; 44
+    254a:	80 e5       	ldi	r24, 0x50	; 80
+    254c:	8c bd       	out	0x2c, r24	; 44
 	SPSR = _BV(SPI2X);
-    2550:	81 e0       	ldi	r24, 0x01	; 1
-    2552:	8d bd       	out	0x2d, r24	; 45
+    254e:	81 e0       	ldi	r24, 0x01	; 1
+    2550:	8d bd       	out	0x2d, r24	; 45
 }
-    2554:	08 95       	ret
+    2552:	08 95       	ret
 
-00002556 <stats_reset>:
+00002554 <stats_reset>:
 #include "base/uart.h"
 
 stats_t stats[STATS_ID_NUM];
 
 void stats_reset(void)
 {
-    2556:	ed e6       	ldi	r30, 0x6D	; 109
-    2558:	f7 e0       	ldi	r31, 0x07	; 7
+    2554:	ed e6       	ldi	r30, 0x6D	; 109
+    2556:	f7 e0       	ldi	r31, 0x07	; 7
   for(uint8_t i=0;i<STATS_ID_NUM;i++) {
-    255a:	2d e9       	ldi	r18, 0x9D	; 157
-    255c:	37 e0       	ldi	r19, 0x07	; 7
+    2558:	2d e9       	ldi	r18, 0x9D	; 157
+    255a:	37 e0       	ldi	r19, 0x07	; 7
     stats_t *s = &stats[i];
     s->bytes = 0;
-    255e:	10 82       	st	Z, r1
-    2560:	11 82       	std	Z+1, r1	; 0x01
-    2562:	12 82       	std	Z+2, r1	; 0x02
-    2564:	13 82       	std	Z+3, r1	; 0x03
+    255c:	10 82       	st	Z, r1
+    255e:	11 82       	std	Z+1, r1	; 0x01
+    2560:	12 82       	std	Z+2, r1	; 0x02
+    2562:	13 82       	std	Z+3, r1	; 0x03
     s->cnt = 0;
-    2566:	15 82       	std	Z+5, r1	; 0x05
-    2568:	14 82       	std	Z+4, r1	; 0x04
+    2564:	15 82       	std	Z+5, r1	; 0x05
+    2566:	14 82       	std	Z+4, r1	; 0x04
     s->err = 0;
-    256a:	17 82       	std	Z+7, r1	; 0x07
-    256c:	16 82       	std	Z+6, r1	; 0x06
+    2568:	17 82       	std	Z+7, r1	; 0x07
+    256a:	16 82       	std	Z+6, r1	; 0x06
     s->drop = 0;
-    256e:	11 86       	std	Z+9, r1	; 0x09
-    2570:	10 86       	std	Z+8, r1	; 0x08
+    256c:	11 86       	std	Z+9, r1	; 0x09
+    256e:	10 86       	std	Z+8, r1	; 0x08
     s->max_rate = 0;
-    2572:	13 86       	std	Z+11, r1	; 0x0b
-    2574:	12 86       	std	Z+10, r1	; 0x0a
-    2576:	3c 96       	adiw	r30, 0x0c	; 12
+    2570:	13 86       	std	Z+11, r1	; 0x0b
+    2572:	12 86       	std	Z+10, r1	; 0x0a
+    2574:	3c 96       	adiw	r30, 0x0c	; 12
 
 stats_t stats[STATS_ID_NUM];
 
 void stats_reset(void)
 {
   for(uint8_t i=0;i<STATS_ID_NUM;i++) {
-    2578:	e2 17       	cp	r30, r18
-    257a:	f3 07       	cpc	r31, r19
-    257c:	81 f7       	brne	.-32     	; 0x255e <stats_reset+0x8>
+    2576:	e2 17       	cp	r30, r18
+    2578:	f3 07       	cpc	r31, r19
+    257a:	81 f7       	brne	.-32     	; 0x255c <stats_reset+0x8>
     s->cnt = 0;
     s->err = 0;
     s->drop = 0;
     s->max_rate = 0;
   }
 }
-    257e:	08 95       	ret
+    257c:	08 95       	ret
 
-00002580 <stats_update_ok>:
+0000257e <stats_update_ok>:
 
 void stats_update_ok(uint8_t id, uint16_t size, uint16_t rate)
 {
-    2580:	0f 93       	push	r16
-    2582:	1f 93       	push	r17
+    257e:	0f 93       	push	r16
+    2580:	1f 93       	push	r17
   stats_t *s = &stats[id];
-    2584:	9c e0       	ldi	r25, 0x0C	; 12
-    2586:	89 9f       	mul	r24, r25
-    2588:	c0 01       	movw	r24, r0
-    258a:	11 24       	eor	r1, r1
-    258c:	fc 01       	movw	r30, r24
-    258e:	e3 59       	subi	r30, 0x93	; 147
-    2590:	f8 4f       	sbci	r31, 0xF8	; 248
+    2582:	9c e0       	ldi	r25, 0x0C	; 12
+    2584:	89 9f       	mul	r24, r25
+    2586:	c0 01       	movw	r24, r0
+    2588:	11 24       	eor	r1, r1
+    258a:	fc 01       	movw	r30, r24
+    258c:	e3 59       	subi	r30, 0x93	; 147
+    258e:	f8 4f       	sbci	r31, 0xF8	; 248
   s->cnt++;
-    2592:	84 81       	ldd	r24, Z+4	; 0x04
-    2594:	95 81       	ldd	r25, Z+5	; 0x05
-    2596:	01 96       	adiw	r24, 0x01	; 1
-    2598:	95 83       	std	Z+5, r25	; 0x05
-    259a:	84 83       	std	Z+4, r24	; 0x04
+    2590:	84 81       	ldd	r24, Z+4	; 0x04
+    2592:	95 81       	ldd	r25, Z+5	; 0x05
+    2594:	01 96       	adiw	r24, 0x01	; 1
+    2596:	95 83       	std	Z+5, r25	; 0x05
+    2598:	84 83       	std	Z+4, r24	; 0x04
   s->bytes += size;
-    259c:	8b 01       	movw	r16, r22
-    259e:	20 e0       	ldi	r18, 0x00	; 0
-    25a0:	30 e0       	ldi	r19, 0x00	; 0
-    25a2:	80 81       	ld	r24, Z
-    25a4:	91 81       	ldd	r25, Z+1	; 0x01
-    25a6:	a2 81       	ldd	r26, Z+2	; 0x02
-    25a8:	b3 81       	ldd	r27, Z+3	; 0x03
-    25aa:	80 0f       	add	r24, r16
-    25ac:	91 1f       	adc	r25, r17
-    25ae:	a2 1f       	adc	r26, r18
-    25b0:	b3 1f       	adc	r27, r19
-    25b2:	80 83       	st	Z, r24
-    25b4:	91 83       	std	Z+1, r25	; 0x01
-    25b6:	a2 83       	std	Z+2, r26	; 0x02
-    25b8:	b3 83       	std	Z+3, r27	; 0x03
+    259a:	8b 01       	movw	r16, r22
+    259c:	20 e0       	ldi	r18, 0x00	; 0
+    259e:	30 e0       	ldi	r19, 0x00	; 0
+    25a0:	80 81       	ld	r24, Z
+    25a2:	91 81       	ldd	r25, Z+1	; 0x01
+    25a4:	a2 81       	ldd	r26, Z+2	; 0x02
+    25a6:	b3 81       	ldd	r27, Z+3	; 0x03
+    25a8:	80 0f       	add	r24, r16
+    25aa:	91 1f       	adc	r25, r17
+    25ac:	a2 1f       	adc	r26, r18
+    25ae:	b3 1f       	adc	r27, r19
+    25b0:	80 83       	st	Z, r24
+    25b2:	91 83       	std	Z+1, r25	; 0x01
+    25b4:	a2 83       	std	Z+2, r26	; 0x02
+    25b6:	b3 83       	std	Z+3, r27	; 0x03
   if(rate > s->max_rate) {
-    25ba:	82 85       	ldd	r24, Z+10	; 0x0a
-    25bc:	93 85       	ldd	r25, Z+11	; 0x0b
-    25be:	84 17       	cp	r24, r20
-    25c0:	95 07       	cpc	r25, r21
-    25c2:	10 f4       	brcc	.+4      	; 0x25c8 <stats_update_ok+0x48>
+    25b8:	82 85       	ldd	r24, Z+10	; 0x0a
+    25ba:	93 85       	ldd	r25, Z+11	; 0x0b
+    25bc:	84 17       	cp	r24, r20
+    25be:	95 07       	cpc	r25, r21
+    25c0:	10 f4       	brcc	.+4      	; 0x25c6 <stats_update_ok+0x48>
     s->max_rate = rate;
-    25c4:	53 87       	std	Z+11, r21	; 0x0b
-    25c6:	42 87       	std	Z+10, r20	; 0x0a
+    25c2:	53 87       	std	Z+11, r21	; 0x0b
+    25c4:	42 87       	std	Z+10, r20	; 0x0a
   }
 }
-    25c8:	1f 91       	pop	r17
-    25ca:	0f 91       	pop	r16
-    25cc:	08 95       	ret
+    25c6:	1f 91       	pop	r17
+    25c8:	0f 91       	pop	r16
+    25ca:	08 95       	ret
 
-000025ce <dump_line>:
+000025cc <dump_line>:
       break;
     default:
 			// NOTE: UART - ?
       break;
   }
 }
-    25ce:	08 95       	ret
+    25cc:	08 95       	ret
 
-000025d0 <dump_header>:
+000025ce <dump_header>:
 
 static void dump_header(void)
 {
 	// NOTE: UART - cnt  bytes    err  drop rate\r\n
 }
-    25d0:	08 95       	ret
+    25ce:	08 95       	ret
 
-000025d2 <stats_dump_all>:
+000025d0 <stats_dump_all>:
 {
   dump_header();
   for(uint8_t i=0;i<STATS_ID_NUM;i++) {
     dump_line(i);
   }
 }
-    25d2:	08 95       	ret
+    25d0:	08 95       	ret
 
-000025d4 <stats_dump>:
+000025d2 <stats_dump>:
   }
   if(pio) {
     dump_line(STATS_ID_PIO_RX);
     dump_line(STATS_ID_PIO_TX);
   }
 }
-    25d4:	08 95       	ret
+    25d2:	08 95       	ret
 
-000025d6 <__mulsi3>:
-    25d6:	62 9f       	mul	r22, r18
-    25d8:	d0 01       	movw	r26, r0
-    25da:	73 9f       	mul	r23, r19
-    25dc:	f0 01       	movw	r30, r0
-    25de:	82 9f       	mul	r24, r18
-    25e0:	e0 0d       	add	r30, r0
-    25e2:	f1 1d       	adc	r31, r1
-    25e4:	64 9f       	mul	r22, r20
-    25e6:	e0 0d       	add	r30, r0
-    25e8:	f1 1d       	adc	r31, r1
-    25ea:	92 9f       	mul	r25, r18
-    25ec:	f0 0d       	add	r31, r0
-    25ee:	83 9f       	mul	r24, r19
-    25f0:	f0 0d       	add	r31, r0
-    25f2:	74 9f       	mul	r23, r20
-    25f4:	f0 0d       	add	r31, r0
-    25f6:	65 9f       	mul	r22, r21
-    25f8:	f0 0d       	add	r31, r0
-    25fa:	99 27       	eor	r25, r25
-    25fc:	72 9f       	mul	r23, r18
-    25fe:	b0 0d       	add	r27, r0
-    2600:	e1 1d       	adc	r30, r1
-    2602:	f9 1f       	adc	r31, r25
-    2604:	63 9f       	mul	r22, r19
-    2606:	b0 0d       	add	r27, r0
-    2608:	e1 1d       	adc	r30, r1
-    260a:	f9 1f       	adc	r31, r25
-    260c:	bd 01       	movw	r22, r26
-    260e:	cf 01       	movw	r24, r30
-    2610:	11 24       	eor	r1, r1
-    2612:	08 95       	ret
+000025d4 <__mulsi3>:
+    25d4:	62 9f       	mul	r22, r18
+    25d6:	d0 01       	movw	r26, r0
+    25d8:	73 9f       	mul	r23, r19
+    25da:	f0 01       	movw	r30, r0
+    25dc:	82 9f       	mul	r24, r18
+    25de:	e0 0d       	add	r30, r0
+    25e0:	f1 1d       	adc	r31, r1
+    25e2:	64 9f       	mul	r22, r20
+    25e4:	e0 0d       	add	r30, r0
+    25e6:	f1 1d       	adc	r31, r1
+    25e8:	92 9f       	mul	r25, r18
+    25ea:	f0 0d       	add	r31, r0
+    25ec:	83 9f       	mul	r24, r19
+    25ee:	f0 0d       	add	r31, r0
+    25f0:	74 9f       	mul	r23, r20
+    25f2:	f0 0d       	add	r31, r0
+    25f4:	65 9f       	mul	r22, r21
+    25f6:	f0 0d       	add	r31, r0
+    25f8:	99 27       	eor	r25, r25
+    25fa:	72 9f       	mul	r23, r18
+    25fc:	b0 0d       	add	r27, r0
+    25fe:	e1 1d       	adc	r30, r1
+    2600:	f9 1f       	adc	r31, r25
+    2602:	63 9f       	mul	r22, r19
+    2604:	b0 0d       	add	r27, r0
+    2606:	e1 1d       	adc	r30, r1
+    2608:	f9 1f       	adc	r31, r25
+    260a:	bd 01       	movw	r22, r26
+    260c:	cf 01       	movw	r24, r30
+    260e:	11 24       	eor	r1, r1
+    2610:	08 95       	ret
 
-00002614 <__udivmodqi4>:
-    2614:	99 1b       	sub	r25, r25
-    2616:	79 e0       	ldi	r23, 0x09	; 9
-    2618:	04 c0       	rjmp	.+8      	; 0x2622 <__udivmodqi4_ep>
+00002612 <__udivmodqi4>:
+    2612:	99 1b       	sub	r25, r25
+    2614:	79 e0       	ldi	r23, 0x09	; 9
+    2616:	04 c0       	rjmp	.+8      	; 0x2620 <__udivmodqi4_ep>
 
-0000261a <__udivmodqi4_loop>:
-    261a:	99 1f       	adc	r25, r25
-    261c:	96 17       	cp	r25, r22
-    261e:	08 f0       	brcs	.+2      	; 0x2622 <__udivmodqi4_ep>
-    2620:	96 1b       	sub	r25, r22
+00002618 <__udivmodqi4_loop>:
+    2618:	99 1f       	adc	r25, r25
+    261a:	96 17       	cp	r25, r22
+    261c:	08 f0       	brcs	.+2      	; 0x2620 <__udivmodqi4_ep>
+    261e:	96 1b       	sub	r25, r22
 
-00002622 <__udivmodqi4_ep>:
-    2622:	88 1f       	adc	r24, r24
-    2624:	7a 95       	dec	r23
-    2626:	c9 f7       	brne	.-14     	; 0x261a <__udivmodqi4_loop>
-    2628:	80 95       	com	r24
-    262a:	08 95       	ret
+00002620 <__udivmodqi4_ep>:
+    2620:	88 1f       	adc	r24, r24
+    2622:	7a 95       	dec	r23
+    2624:	c9 f7       	brne	.-14     	; 0x2618 <__udivmodqi4_loop>
+    2626:	80 95       	com	r24
+    2628:	08 95       	ret
 
-0000262c <__udivmodsi4>:
-    262c:	a1 e2       	ldi	r26, 0x21	; 33
-    262e:	1a 2e       	mov	r1, r26
-    2630:	aa 1b       	sub	r26, r26
-    2632:	bb 1b       	sub	r27, r27
-    2634:	fd 01       	movw	r30, r26
-    2636:	0d c0       	rjmp	.+26     	; 0x2652 <__udivmodsi4_ep>
+0000262a <__udivmodsi4>:
+    262a:	a1 e2       	ldi	r26, 0x21	; 33
+    262c:	1a 2e       	mov	r1, r26
+    262e:	aa 1b       	sub	r26, r26
+    2630:	bb 1b       	sub	r27, r27
+    2632:	fd 01       	movw	r30, r26
+    2634:	0d c0       	rjmp	.+26     	; 0x2650 <__udivmodsi4_ep>
 
-00002638 <__udivmodsi4_loop>:
-    2638:	aa 1f       	adc	r26, r26
-    263a:	bb 1f       	adc	r27, r27
-    263c:	ee 1f       	adc	r30, r30
-    263e:	ff 1f       	adc	r31, r31
-    2640:	a2 17       	cp	r26, r18
-    2642:	b3 07       	cpc	r27, r19
-    2644:	e4 07       	cpc	r30, r20
-    2646:	f5 07       	cpc	r31, r21
-    2648:	20 f0       	brcs	.+8      	; 0x2652 <__udivmodsi4_ep>
-    264a:	a2 1b       	sub	r26, r18
-    264c:	b3 0b       	sbc	r27, r19
-    264e:	e4 0b       	sbc	r30, r20
-    2650:	f5 0b       	sbc	r31, r21
+00002636 <__udivmodsi4_loop>:
+    2636:	aa 1f       	adc	r26, r26
+    2638:	bb 1f       	adc	r27, r27
+    263a:	ee 1f       	adc	r30, r30
+    263c:	ff 1f       	adc	r31, r31
+    263e:	a2 17       	cp	r26, r18
+    2640:	b3 07       	cpc	r27, r19
+    2642:	e4 07       	cpc	r30, r20
+    2644:	f5 07       	cpc	r31, r21
+    2646:	20 f0       	brcs	.+8      	; 0x2650 <__udivmodsi4_ep>
+    2648:	a2 1b       	sub	r26, r18
+    264a:	b3 0b       	sbc	r27, r19
+    264c:	e4 0b       	sbc	r30, r20
+    264e:	f5 0b       	sbc	r31, r21
 
-00002652 <__udivmodsi4_ep>:
-    2652:	66 1f       	adc	r22, r22
-    2654:	77 1f       	adc	r23, r23
-    2656:	88 1f       	adc	r24, r24
-    2658:	99 1f       	adc	r25, r25
-    265a:	1a 94       	dec	r1
-    265c:	69 f7       	brne	.-38     	; 0x2638 <__udivmodsi4_loop>
-    265e:	60 95       	com	r22
-    2660:	70 95       	com	r23
-    2662:	80 95       	com	r24
-    2664:	90 95       	com	r25
-    2666:	9b 01       	movw	r18, r22
-    2668:	ac 01       	movw	r20, r24
-    266a:	bd 01       	movw	r22, r26
-    266c:	cf 01       	movw	r24, r30
-    266e:	08 95       	ret
+00002650 <__udivmodsi4_ep>:
+    2650:	66 1f       	adc	r22, r22
+    2652:	77 1f       	adc	r23, r23
+    2654:	88 1f       	adc	r24, r24
+    2656:	99 1f       	adc	r25, r25
+    2658:	1a 94       	dec	r1
+    265a:	69 f7       	brne	.-38     	; 0x2636 <__udivmodsi4_loop>
+    265c:	60 95       	com	r22
+    265e:	70 95       	com	r23
+    2660:	80 95       	com	r24
+    2662:	90 95       	com	r25
+    2664:	9b 01       	movw	r18, r22
+    2666:	ac 01       	movw	r20, r24
+    2668:	bd 01       	movw	r22, r26
+    266a:	cf 01       	movw	r24, r30
+    266c:	08 95       	ret
 
-00002670 <__eerd_block_m328p>:
-    2670:	dc 01       	movw	r26, r24
-    2672:	cb 01       	movw	r24, r22
+0000266e <__eerd_block_m328p>:
+    266e:	dc 01       	movw	r26, r24
+    2670:	cb 01       	movw	r24, r22
 
-00002674 <__eerd_blraw_m328p>:
-    2674:	fc 01       	movw	r30, r24
-    2676:	f9 99       	sbic	0x1f, 1	; 31
-    2678:	fe cf       	rjmp	.-4      	; 0x2676 <__eerd_blraw_m328p+0x2>
-    267a:	06 c0       	rjmp	.+12     	; 0x2688 <__eerd_blraw_m328p+0x14>
-    267c:	f2 bd       	out	0x22, r31	; 34
-    267e:	e1 bd       	out	0x21, r30	; 33
-    2680:	f8 9a       	sbi	0x1f, 0	; 31
-    2682:	31 96       	adiw	r30, 0x01	; 1
-    2684:	00 b4       	in	r0, 0x20	; 32
-    2686:	0d 92       	st	X+, r0
-    2688:	41 50       	subi	r20, 0x01	; 1
-    268a:	50 40       	sbci	r21, 0x00	; 0
-    268c:	b8 f7       	brcc	.-18     	; 0x267c <__eerd_blraw_m328p+0x8>
-    268e:	08 95       	ret
+00002672 <__eerd_blraw_m328p>:
+    2672:	fc 01       	movw	r30, r24
+    2674:	f9 99       	sbic	0x1f, 1	; 31
+    2676:	fe cf       	rjmp	.-4      	; 0x2674 <__eerd_blraw_m328p+0x2>
+    2678:	06 c0       	rjmp	.+12     	; 0x2686 <__eerd_blraw_m328p+0x14>
+    267a:	f2 bd       	out	0x22, r31	; 34
+    267c:	e1 bd       	out	0x21, r30	; 33
+    267e:	f8 9a       	sbi	0x1f, 0	; 31
+    2680:	31 96       	adiw	r30, 0x01	; 1
+    2682:	00 b4       	in	r0, 0x20	; 32
+    2684:	0d 92       	st	X+, r0
+    2686:	41 50       	subi	r20, 0x01	; 1
+    2688:	50 40       	sbci	r21, 0x00	; 0
+    268a:	b8 f7       	brcc	.-18     	; 0x267a <__eerd_blraw_m328p+0x8>
+    268c:	08 95       	ret
 
-00002690 <__eerd_word_m328p>:
-    2690:	a8 e1       	ldi	r26, 0x18	; 24
-    2692:	b0 e0       	ldi	r27, 0x00	; 0
-    2694:	42 e0       	ldi	r20, 0x02	; 2
-    2696:	50 e0       	ldi	r21, 0x00	; 0
-    2698:	0c 94 3a 13 	jmp	0x2674	; 0x2674 <__eerd_blraw_m328p>
+0000268e <__eerd_word_m328p>:
+    268e:	a8 e1       	ldi	r26, 0x18	; 24
+    2690:	b0 e0       	ldi	r27, 0x00	; 0
+    2692:	42 e0       	ldi	r20, 0x02	; 2
+    2694:	50 e0       	ldi	r21, 0x00	; 0
+    2696:	0c 94 39 13 	jmp	0x2672	; 0x2672 <__eerd_blraw_m328p>
 
-0000269c <__eewr_block_m328p>:
-    269c:	dc 01       	movw	r26, r24
-    269e:	cb 01       	movw	r24, r22
-    26a0:	03 c0       	rjmp	.+6      	; 0x26a8 <__eewr_block_m328p+0xc>
-    26a2:	2d 91       	ld	r18, X+
-    26a4:	0e 94 59 13 	call	0x26b2	; 0x26b2 <__eewr_r18_m328p>
-    26a8:	41 50       	subi	r20, 0x01	; 1
-    26aa:	50 40       	sbci	r21, 0x00	; 0
-    26ac:	d0 f7       	brcc	.-12     	; 0x26a2 <__eewr_block_m328p+0x6>
-    26ae:	08 95       	ret
+0000269a <__eewr_block_m328p>:
+    269a:	dc 01       	movw	r26, r24
+    269c:	cb 01       	movw	r24, r22
+    269e:	03 c0       	rjmp	.+6      	; 0x26a6 <__eewr_block_m328p+0xc>
+    26a0:	2d 91       	ld	r18, X+
+    26a2:	0e 94 58 13 	call	0x26b0	; 0x26b0 <__eewr_r18_m328p>
+    26a6:	41 50       	subi	r20, 0x01	; 1
+    26a8:	50 40       	sbci	r21, 0x00	; 0
+    26aa:	d0 f7       	brcc	.-12     	; 0x26a0 <__eewr_block_m328p+0x6>
+    26ac:	08 95       	ret
 
-000026b0 <__eewr_byte_m328p>:
-    26b0:	26 2f       	mov	r18, r22
+000026ae <__eewr_byte_m328p>:
+    26ae:	26 2f       	mov	r18, r22
 
-000026b2 <__eewr_r18_m328p>:
-    26b2:	f9 99       	sbic	0x1f, 1	; 31
-    26b4:	fe cf       	rjmp	.-4      	; 0x26b2 <__eewr_r18_m328p>
-    26b6:	1f ba       	out	0x1f, r1	; 31
-    26b8:	92 bd       	out	0x22, r25	; 34
-    26ba:	81 bd       	out	0x21, r24	; 33
-    26bc:	20 bd       	out	0x20, r18	; 32
-    26be:	0f b6       	in	r0, 0x3f	; 63
-    26c0:	f8 94       	cli
-    26c2:	fa 9a       	sbi	0x1f, 2	; 31
-    26c4:	f9 9a       	sbi	0x1f, 1	; 31
-    26c6:	0f be       	out	0x3f, r0	; 63
-    26c8:	01 96       	adiw	r24, 0x01	; 1
-    26ca:	08 95       	ret
+000026b0 <__eewr_r18_m328p>:
+    26b0:	f9 99       	sbic	0x1f, 1	; 31
+    26b2:	fe cf       	rjmp	.-4      	; 0x26b0 <__eewr_r18_m328p>
+    26b4:	1f ba       	out	0x1f, r1	; 31
+    26b6:	92 bd       	out	0x22, r25	; 34
+    26b8:	81 bd       	out	0x21, r24	; 33
+    26ba:	20 bd       	out	0x20, r18	; 32
+    26bc:	0f b6       	in	r0, 0x3f	; 63
+    26be:	f8 94       	cli
+    26c0:	fa 9a       	sbi	0x1f, 2	; 31
+    26c2:	f9 9a       	sbi	0x1f, 1	; 31
+    26c4:	0f be       	out	0x3f, r0	; 63
+    26c6:	01 96       	adiw	r24, 0x01	; 1
+    26c8:	08 95       	ret
 
-000026cc <__eewr_word_m328p>:
-    26cc:	0e 94 58 13 	call	0x26b0	; 0x26b0 <__eewr_byte_m328p>
-    26d0:	27 2f       	mov	r18, r23
-    26d2:	0c 94 59 13 	jmp	0x26b2	; 0x26b2 <__eewr_r18_m328p>
+000026ca <__eewr_word_m328p>:
+    26ca:	0e 94 57 13 	call	0x26ae	; 0x26ae <__eewr_byte_m328p>
+    26ce:	27 2f       	mov	r18, r23
+    26d0:	0c 94 58 13 	jmp	0x26b0	; 0x26b0 <__eewr_r18_m328p>
 
-000026d6 <_exit>:
-    26d6:	f8 94       	cli
+000026d4 <_exit>:
+    26d4:	f8 94       	cli
 
-000026d8 <__stop_program>:
-    26d8:	ff cf       	rjmp	.-2      	; 0x26d8 <__stop_program>
+000026d6 <__stop_program>:
+    26d6:	ff cf       	rjmp	.-2      	; 0x26d6 <__stop_program>
