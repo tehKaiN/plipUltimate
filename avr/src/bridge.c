@@ -67,6 +67,11 @@ static void trigger_request(void)
 
 // ----- magic packets -----
 
+/**
+ * Enables ethernet communication, also sets MAC address to value specified
+ * in eth frame.
+ * @param buf Pointer to magic packet.
+ */
 static void magic_online(const uint8_t *buf)
 {
 	// NOTE: UART - time_stamp_spc() [MAGIC] online \r\n
@@ -85,6 +90,9 @@ static void magic_online(const uint8_t *buf)
   }
 }
 
+/**
+ * Disables ethernet communication.
+ */
 static void magic_offline(void)
 {
 	// NOTE: UART - time_stamp_spc() [MAGIC] offline
@@ -144,6 +152,7 @@ static uint8_t fill_pkt(uint8_t *buf, uint16_t max_size, uint16_t *size)
  * Handles packet sent by Amiga.
  * There are basically 4 possible packet types, all defined
  * by ETH_TYPE_* defines.
+ * Custom "Magic" packets are defined as topmost EtherType values.
  * @param buf Buffer containing sent data
  * @param size Packet length
  * @return Always PBPROTO_STATUS_OK

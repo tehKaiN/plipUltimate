@@ -21,15 +21,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   8 .debug_abbrev 00001cae  00000000  00000000  00008c99  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   00003286  00000000  00000000  0000a947  2**0
+  9 .debug_line   00003284  00000000  00000000  0000a947  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  000008f0  00000000  00000000  0000dbd0  2**2
+ 10 .debug_frame  000008f0  00000000  00000000  0000dbcc  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    0000140c  00000000  00000000  0000e4c0  2**0
+ 11 .debug_str    0000140c  00000000  00000000  0000e4bc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00002447  00000000  00000000  0000f8cc  2**0
+ 12 .debug_loc    00002447  00000000  00000000  0000f8c8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00000178  00000000  00000000  00011d13  2**0
+ 13 .debug_ranges 00000178  00000000  00000000  00011d0f  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1316,8 +1316,8 @@ static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
      9b8:	9f 4f       	sbci	r25, 0xFF	; 255
      9ba:	59 f5       	brne	.+86     	; 0xa12 <proc_pkt+0x7e>
      9bc:	22 c0       	rjmp	.+68     	; 0xa02 <proc_pkt+0x6e>
-// ----- magic packets -----
-
+ * @param buf Pointer to magic packet.
+ */
 static void magic_online(const uint8_t *buf)
 {
 	// NOTE: UART - time_stamp_spc() [MAGIC] online \r\n
@@ -1354,8 +1354,8 @@ static void magic_online(const uint8_t *buf)
      9ee:	64 e0       	ldi	r22, 0x04	; 4
      9f0:	0e 94 57 0e 	call	0x1cae	; 0x1cae <pio_init>
      9f4:	1a c0       	rjmp	.+52     	; 0xa2a <proc_pkt+0x96>
-}
-
+ * Disables ethernet communication.
+ */
 static void magic_offline(void)
 {
 	// NOTE: UART - time_stamp_spc() [MAGIC] offline
@@ -2407,12 +2407,12 @@ extern void dump_line(const uint8_t *eth_buf, uint16_t size)
   const uint8_t *ip_buf = eth_buf + ETH_HDR_SIZE;
      e4e:	ec 01       	movw	r28, r24
      e50:	2e 96       	adiw	r28, 0x0e	; 14
-#define ETH_TYPE_MAGIC_OFFLINE  0xfffe
-#define ETH_TYPE_MAGIC_LOOPBACK 0xfffd
-
-inline const uint8_t* eth_get_tgt_mac(const uint8_t *pkt) { return pkt + ETH_OFF_TGT_MAC; }
-inline const uint8_t *eth_get_src_mac(const uint8_t *pkt) { return pkt + ETH_OFF_SRC_MAC; }
-inline uint16_t eth_get_pkt_type(const uint8_t *pkt) { return net_get_word(pkt + ETH_OFF_TYPE); }
+ * Returns EtherType field value in given eth frame.
+ * @param pkt Pointer to eth frame.
+ * @return 2-byte EtherType field value.
+ */
+inline uint16_t eth_get_pkt_type(const uint8_t *pkt) {
+	return net_get_word(pkt + ETH_OFF_TYPE);
      e52:	0c 96       	adiw	r24, 0x0c	; 12
      e54:	0e 94 fc 07 	call	0xff8	; 0xff8 <net_get_word>
   uint16_t type = eth_get_pkt_type(eth_buf);
@@ -5954,8 +5954,8 @@ uint8_t pio_util_handle_arp(uint16_t size)
     1fe4:	c8 01       	movw	r24, r16
     1fe6:	b7 01       	movw	r22, r14
     1fe8:	0e 94 75 07 	call	0xeea	; 0xeea <arp_make_reply>
-inline uint8_t  eth_is_ipv4_pkt(const uint8_t *pkt) { return eth_get_pkt_type(pkt) == ETH_TYPE_IPV4; }
-inline void eth_set_pkt_type(uint8_t *pkt, uint16_t type) { net_put_word(pkt + ETH_OFF_TYPE, type); }
+	net_put_word(pkt + ETH_OFF_TYPE, type);
+}
 
 inline void eth_make_bcast(uint8_t *pkt, const uint8_t *my_mac)
 {
