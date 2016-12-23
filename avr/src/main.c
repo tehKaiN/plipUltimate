@@ -62,7 +62,7 @@ uint8_t global_verbose = 0;
  * EEPROM:     21 ( 2.1%)
  *
  * Current sizes after last change:
- * Program: 10230 (31.2%)
+ * Program: 10238 (31.2%)
  * Data: 1696 (82.8%)
  * EEPROM: 21 (2.1%)
  *
@@ -71,12 +71,11 @@ uint8_t global_verbose = 0;
 static void init_hw(void)
 {
 	/// Disable watchdog
-	cli();
 	wdt_disable();
 	sei();
 	/// Setup other HW stuff
-	timer_init();                   // Setup timer
-	par_low_init();                 // Setup parallel interface
+	timer_init();   // Setup timer
+	par_low_init(); // Setup parallel interface
 }
 
 int main(void)

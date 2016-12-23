@@ -34,6 +34,10 @@
 #include "stats.h"
 #include "base/cmd.h"
 
+/**
+ * Packet IO test mode loop.
+ * Used to benchmark Amiga-PlipBox comm.
+ */
 uint8_t pio_test_loop(void)
 {
   uint8_t result = CMD_WORKER_IDLE;
