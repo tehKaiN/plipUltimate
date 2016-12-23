@@ -335,7 +335,7 @@ static inline void enc28j60_disable_broadcast ( void )
   writeRegByte(ERXFCON, ERXFCON_UCEN|ERXFCON_CRCEN/*|ERXFCON_PMEN*/);
 }
 
-static uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
+uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
 {
   spi_init();
   spi_disable_eth();
@@ -429,7 +429,7 @@ static uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
 
 // ---------- exit ----------
 
-static void enc28j60_exit(void)
+void enc28j60_exit(void)
 {
   SetBank(ECON1);
   writeOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_RXEN);
@@ -437,7 +437,7 @@ static void enc28j60_exit(void)
 
 // ---------- control ----------
 
-static uint8_t enc28j60_control(uint8_t control_id, uint8_t value)
+uint8_t enc28j60_control(uint8_t control_id, uint8_t value)
 {
   switch(control_id) {
     case PIO_CONTROL_FLOW:
@@ -458,7 +458,7 @@ static uint8_t enc28j60_control(uint8_t control_id, uint8_t value)
 
 // ---------- status ----------
 
-static uint8_t enc28j60_status(uint8_t status_id, uint8_t *value)
+uint8_t enc28j60_status(uint8_t status_id, uint8_t *value)
 {
   switch(status_id) {
     case PIO_STATUS_VERSION:
@@ -489,7 +489,7 @@ static uint8_t enc28j60_get_status( void )
 
 // ---------- send ----------
 
-static uint8_t enc28j60_send(const uint8_t *data, uint16_t size)
+uint8_t enc28j60_send(const uint8_t *data, uint16_t size)
 {
   // prepare tx buffer write
   writeReg(EWRPT, TXSTART_INIT);
@@ -543,7 +543,7 @@ static uint8_t read_hdr(uint16_t *got_size)
   return header.status;
 }
 
-static uint8_t enc28j60_recv(uint8_t *data, uint16_t max_size, uint16_t *got_size)
+uint8_t enc28j60_recv(uint8_t *data, uint16_t max_size, uint16_t *got_size)
 {
   writeReg(ERDPT, gNextPacketPtr);
 
@@ -573,7 +573,7 @@ static uint8_t enc28j60_recv(uint8_t *data, uint16_t max_size, uint16_t *got_siz
 
 // ---------- has_recv ----------
 
-static uint8_t enc28j60_has_recv(void)
+uint8_t enc28j60_has_recv(void)
 {
   return readRegByte(EPKTCNT);
 }
@@ -676,6 +676,7 @@ uint8_t enc28j60_do_BIST ( void )
 #endif
 
 // ----- pio_dev -----
+/*
 static const uint8_t PROGMEM dev_name[] = "enc28j60";
 const pio_dev_t PROGMEM pio_dev_enc28j60 = {
   .name = dev_name,
@@ -687,3 +688,4 @@ const pio_dev_t PROGMEM pio_dev_enc28j60 = {
   .status_f = enc28j60_status,
   .control_f = enc28j60_control
 };
+*/

@@ -54,6 +54,7 @@ uint8_t global_verbose = 0;
  *   Simplified parallel interface init (Prg: -564 B)
  *   Added SPI SD Card support
  *   Watchdog based on wdt functions (Prg: -24 B)
+ *   Removed Packet IO HAL: (Prg: -190 B, Data: -3 B)
  *   Other minor changes
  *
  * Sizes before UART removal:
@@ -62,8 +63,8 @@ uint8_t global_verbose = 0;
  * EEPROM:     21 ( 2.1%)
  *
  * Current sizes after last change:
- * Program: 10238 (31.2%)
- * Data: 1696 (82.8%)
+ * Program: 10048 (30.7%)
+ * Data: 1693 (82.7%)
  * EEPROM: 21 (2.1%)
  *
  */

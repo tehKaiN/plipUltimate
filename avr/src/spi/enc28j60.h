@@ -27,8 +27,12 @@
 #ifndef ENC28J60_H
 #define ENC28J60_H
 
-#include "../pio_dev.h"
-
-extern const pio_dev_t PROGMEM pio_dev_enc28j60;
+uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags);
+void enc28j60_exit(void);
+uint8_t enc28j60_send(const uint8_t *data, uint16_t size);
+uint8_t enc28j60_recv(uint8_t *data, uint16_t max_size, uint16_t *got_size);
+uint8_t enc28j60_has_recv(void);
+uint8_t enc28j60_status(uint8_t status_id, uint8_t *value);
+uint8_t enc28j60_control(uint8_t control_id, uint8_t value);
 
 #endif
