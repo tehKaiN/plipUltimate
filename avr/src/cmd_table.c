@@ -109,7 +109,7 @@ COMMAND(cmd_param_toggle)
     *val = *val ? 0 : 1;
   } else {
     uint8_t new_val;
-    if(parse_byte(argv[1],&new_val)) {
+    if(utilParseByteHex((char*)argv[1],&new_val)) {
       *val = new_val;
     } else {
       return CMD_PARSE_ERROR;
@@ -140,7 +140,7 @@ COMMAND(cmd_param_word)
     return CMD_PARSE_ERROR;
   } else {
     uint16_t new_val;
-    if(parse_word(argv[1],&new_val)) {
+    if(utilParseWordHex((char*)argv[1],&new_val)) {
       *val = new_val;
     } else {
       return CMD_PARSE_ERROR;
@@ -153,7 +153,7 @@ COMMAND(cmd_param_mac_addr)
 {
   uint8_t mac[6];
 
-  if(net_parse_mac(argv[1], mac)) {
+  if(net_parse_mac((char*)argv[1], mac)) {
     net_copy_mac(mac, param.mac_addr);
     return CMD_OK;
   } else {
@@ -165,7 +165,7 @@ COMMAND(cmd_param_ip_addr)
 {
   uint8_t ip[4];
 
-  if(net_parse_ip(argv[1], ip)) {
+  if(net_parse_ip((char*)argv[1], ip)) {
     net_copy_ip(ip, param.test_ip);
     return CMD_OK;
   } else {

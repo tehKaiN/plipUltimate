@@ -26,35 +26,39 @@
 
 #include "util.h"
 
-// convert to hex
-
-uint8_t nybble_to_hex(uint8_t in)
+/**
+ * Converts nibble (0..15) value to hex char.
+ */
+char utilNibbleToHex(uint8_t ubIn)
 {
-  if(in<10)
-    return '0' + in;
+  if(ubIn < 10)
+    return '0' + ubIn;
   else
-    return 'A' + in - 10;
+    return 'A' + ubIn - 10;
 }
 
-void byte_to_hex(uint8_t in,uint8_t *out)
+/**
+ * Converts byte value to hex chars.
+ */
+void utilByteToHex(uint8_t ubIn, char *pOut)
 {
-  out[0] = nybble_to_hex(in >> 4);
-  out[1] = nybble_to_hex(in & 0xf);
+  pOut[0] = utilNibbleToHex(ubIn >> 4);
+  pOut[1] = utilNibbleToHex(ubIn & 0xf);
 }
 
-void word_to_hex(uint16_t in,uint8_t *out)
+void utilWordToHex(uint16_t uwIn, char *pOut)
 {
-  byte_to_hex((uint8_t)(in>>8),out);
-  byte_to_hex((uint8_t)(in&0xff),out+2);
+  utilByteToHex((uint8_t)(uwIn>>8), pOut);
+  utilByteToHex((uint8_t)(uwIn&0xff), pOut+2);
 }
 
-void dword_to_hex(uint32_t addr,uint8_t *out)
+void utilDwordToHex(uint32_t ulIn, char *pOut)
 {
-  word_to_hex((uint16_t)(addr>>16),out);
-  word_to_hex((uint16_t)(addr&0xffff),out+4);
+  utilWordToHex((uint16_t)(ulIn>>16), pOut);
+  utilWordToHex((uint16_t)(ulIn&0xffff), pOut+4);
 }
 
-void byte_to_dec(uint8_t value, uint8_t *out)
+void utilByteToDec(uint8_t value, uint8_t *out)
 {
   uint8_t h = value / 100;
   uint8_t t = value % 100;
@@ -65,7 +69,7 @@ void byte_to_dec(uint8_t value, uint8_t *out)
   out[2] = '0' + o;
 }
 
-void dword_to_dec(uint32_t value, uint8_t *out, uint8_t num_digits, uint8_t point_pos)
+void utilDwordToDec(uint32_t value, uint8_t *out, uint8_t num_digits, uint8_t point_pos)
 {
 	uint8_t i;
   // start backwards
@@ -87,7 +91,7 @@ void dword_to_dec(uint32_t value, uint8_t *out, uint8_t num_digits, uint8_t poin
 
 // parse
 
-uint8_t parse_nybble(uint8_t c,uint8_t *value)
+uint8_t utilParseNibbleHex(char c,uint8_t *value)
 {
   if((c>='a')&&(c<='f')) {
     *value = c + 10 - 'a';
@@ -105,49 +109,49 @@ uint8_t parse_nybble(uint8_t c,uint8_t *value)
     return 0;
 }
 
-uint8_t parse_byte(const uint8_t *str,uint8_t *value)
+uint8_t utilParseByteHex(const char *str,uint8_t *value)
 {
   uint8_t val;
-  if(!parse_nybble(str[0],&val))
+  if(!utilParseNibbleHex(str[0],&val))
     return 0;
   val <<= 4;
-  if(!parse_nybble(str[1],value))
+  if(!utilParseNibbleHex(str[1],value))
     return 0;
   *value |= val;
   return 1;
 }
 
-uint8_t parse_word(const uint8_t *str,uint16_t *value)
+uint8_t utilParseWordHex(const char *str,uint16_t *value)
 {
   uint8_t val;
-  if(!parse_byte(&str[0],&val))
+  if(!utilParseByteHex(&str[0],&val))
     return 0;
   uint8_t val2;
-  if(!parse_byte(&str[2],&val2))
+  if(!utilParseByteHex(&str[2],&val2))
     return 0;
   *value = (uint16_t)val << 8 | val2;
   return 1;
 }
 
-uint8_t parse_dword(const uint8_t *str,uint32_t *value)
+uint8_t utilParseDwordHex(const char *str,uint32_t *value)
 {
   uint8_t val;
-  if(!parse_byte(&str[0],&val))
+  if(!utilParseByteHex(&str[0],&val))
     return 0;
   uint8_t val2;
-  if(!parse_byte(&str[2],&val2))
+  if(!utilParseByteHex(&str[2],&val2))
     return 0;
   uint8_t val3;
-  if(!parse_byte(&str[4],&val3))
+  if(!utilParseByteHex(&str[4],&val3))
     return 0;
   uint8_t val4;
-  if(!parse_byte(&str[6],&val4))
+  if(!utilParseByteHex(&str[6],&val4))
     return 0;
   *value = (uint32_t)val << 24 | (uint32_t)val2 << 16 | (uint32_t)val3 << 8 | val4;
   return 1;
 }
 
-uint8_t parse_byte_dec(const uint8_t *buf, uint8_t *out)
+uint8_t utilParseByteDec(const char *buf, uint8_t *out)
 {
   uint8_t value = 0;
   uint8_t digits = 0;

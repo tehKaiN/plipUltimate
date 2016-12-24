@@ -75,17 +75,17 @@ void net_dump_mac(const uint8_t *in) {
   int pos = 0;
   uint8_t i;
   for(i=0;i<6;i++) {
-    byte_to_hex(in[i],(uint8_t *)(mac_str+pos));
+    utilByteToHex(in[i], mac_str+pos);
     pos += 3;
   }
   // NOTE: UART - mac_str
 }
 
-uint8_t net_parse_ip(const uint8_t *buf, uint8_t *ip) {
+uint8_t net_parse_ip(const char *buf, uint8_t *ip) {
 	uint8_t i;
   for(i=0;i<4;i++) {
     uint8_t value;
-    uint8_t digits = parse_byte_dec(buf,&value);
+    uint8_t digits = utilParseByteDec(buf,&value);
     if(digits == 0)
       return 0;
     buf += digits + 1;
@@ -94,11 +94,11 @@ uint8_t net_parse_ip(const uint8_t *buf, uint8_t *ip) {
   return 1;
 }
 
-uint8_t net_parse_mac(const uint8_t *buf, uint8_t *mac) {
+uint8_t net_parse_mac(const char *buf, uint8_t *mac) {
 	uint8_t i;
   for(i=0;i<6;i++) {
     uint8_t value;
-    if(!parse_byte(buf, &value)) {
+    if(!utilParseByteHex(buf, &value)) {
       return 0;
     }
     buf += 3;
@@ -111,7 +111,7 @@ void net_dump_ip(const uint8_t *in) {
   uint8_t pos = 0;
   uint8_t i;
   for(i=0;i<4;i++) {
-    byte_to_dec(in[i],(uint8_t *)(ip_str+pos));
+    utilByteToDec(in[i],(uint8_t *)(ip_str+pos));
     pos += 4;
   }
   // NOTE: UART - ip_str

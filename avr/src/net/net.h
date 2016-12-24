@@ -47,8 +47,8 @@ extern void net_put_long(uint8_t *buf, uint32_t value);
 extern void net_dump_mac(const uint8_t *in);
 extern void net_dump_ip(const uint8_t *in);
 
-extern uint8_t net_parse_ip(const uint8_t *buf, uint8_t *ip);
-extern uint8_t net_parse_mac(const uint8_t *buf, uint8_t *mac);
+extern uint8_t net_parse_ip(const char *buf, uint8_t *ip);
+extern uint8_t net_parse_mac(const char *buf, uint8_t *mac);
 
 /* constants */
 extern const uint8_t net_bcast_mac[6];
