@@ -103,10 +103,6 @@
 		<Unit filename="src/net/net.h" />
 		<Unit filename="src/net/tcp.h" />
 		<Unit filename="src/net/udp.h" />
-		<Unit filename="src/par_low.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/par_low.h" />
 		<Unit filename="src/param.c">
 			<Option compilerVar="CC" />
 		</Unit>

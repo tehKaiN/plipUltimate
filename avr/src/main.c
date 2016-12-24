@@ -30,7 +30,6 @@
 #include "base/uart.h"
 #include "base/uartutil.h"
 #include "base/timer.h"
-#include "par_low.h"
 #include "param.h"
 #include "base/cmd.h"
 
@@ -39,6 +38,7 @@
 #include "bridge_test.h"
 #include "bridge.h"
 #include "main.h"
+#include "pinout.h"
 
 uint8_t run_mode = RUN_MODE_BRIDGE;
 uint8_t global_verbose = 0;
@@ -63,20 +63,39 @@ uint8_t global_verbose = 0;
  * EEPROM:     21 ( 2.1%)
  *
  * Current sizes after last change:
- * Program: 10004 (30.5%)
+ * Program: 9992 (30.5%)
  * Data: 1693 (82.7%)
  * EEPROM: 21 (2.1%)
  *
  */
 
+/**
+ * Initilizes AVR hardware.
+ * Parallel interface is configured as follows:
+ * 	NStrobe: input,  pulled high
+ * 	Select:  input,  pulled high
+ * 	Busy:    output, default: 0
+ * 	POut:    input,  pulled high
+ * 	NAck:    output, default: 1
+ */
 static void init_hw(void)
 {
-	/// Disable watchdog
+	// Disable watchdog
 	wdt_disable();
 	sei();
-	/// Setup other HW stuff
-	timer_init();   // Setup timer
-	par_low_init(); // Setup parallel interface
+
+	// Setup timers
+	timer_init();
+
+	// Zero DDR and PORT status
+  PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
+  PAR_STATUS_PORT &= ~PAR_STATUS_MASK;
+
+  // Set them correctly
+  PAR_STATUS_DDR |= BUSY | NACK;
+  PAR_STATUS_PORT |= NSTROBE | SEL | POUT | NACK;
+
+  PAR_DATA_DDR = 0xFF;
 }
 
 int main(void)

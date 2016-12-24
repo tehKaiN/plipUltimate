@@ -29,7 +29,6 @@
 
 #include "global.h"
 #include "pb_proto.h"
-#include "par_low.h"
 #include "base/timer.h"
 #include "stats.h"
 
@@ -94,7 +93,9 @@ uint8_t pb_proto_get_line_status(void) {
  */
 void pb_proto_request_recv(void)
 {
-  par_low_pulse_ack(1);
+  PAR_STATUS_PORT &= ~NACK;
+  _delay_loop_1(1);
+  PAR_STATUS_PORT |= NACK;
   // TODO(KaiN#9): Perhaps should be longer as atmega clk is faster?
   trigger_ts = time_stamp;
 }
