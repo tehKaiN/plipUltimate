@@ -73,7 +73,7 @@ static void trigger_request(void)
  * in eth frame.
  * @param buf Pointer to magic packet.
  */
-static void magic_online(const uint8_t *buf)
+static void bridgeCommOnline(const uint8_t *buf)
 {
 	// NOTE: UART - time_stamp_spc() [MAGIC] online \r\n
   flags |= FLAG_ONLINE | FLAG_FIRST_TRANSFER;
@@ -94,13 +94,13 @@ static void magic_online(const uint8_t *buf)
 /**
  * Disables ethernet communication.
  */
-static void magic_offline(void)
+static void bridgeCommOffline(void)
 {
 	// NOTE: UART - time_stamp_spc() [MAGIC] offline
   flags &= ~FLAG_ONLINE;
 }
 
-static void magic_loopback(uint16_t size)
+static void bridgeLoopback(uint16_t size)
 {
   flags |= FLAG_SEND_MAGIC;
   trigger_request();
@@ -119,23 +119,23 @@ static void request_magic(void)
 
 // the Amiga requests a new packet
 
-static uint8_t fill_pkt(uint8_t *buf, uint16_t max_size, uint16_t *size)
+static uint8_t bridgeFillPacket(uint16_t *pFilledSize)
 {
-  // need to send a magic?
+  // need to send magic packet?
   if((flags & FLAG_SEND_MAGIC) == FLAG_SEND_MAGIC) {
     flags &= ~FLAG_SEND_MAGIC;
 
-    // Build magic packet
-    // Target (bcast) MAC, src (plipbox) MAC, 0xFFFF => size: 14 bytes
-    net_copy_bcast_mac(pkt_buf + ETH_OFF_TGT_MAC);
-    net_copy_mac(param.mac_addr, pkt_buf + ETH_OFF_SRC_MAC);
-    net_put_word(pkt_buf + ETH_OFF_TYPE, ETH_TYPE_MAGIC_ONLINE);
+    // Build magic packet header
+    // Target (bcast) MAC, src (plipbox) MAC, 0xFFFF => pFilledSize: 14 bytes
+    net_copy_bcast_mac(g_pDataBuffer + ETH_OFF_TGT_MAC);
+    net_copy_mac(param.mac_addr, g_pDataBuffer + ETH_OFF_SRC_MAC);
+    net_put_word(g_pDataBuffer + ETH_OFF_TYPE, ETH_TYPE_MAGIC_ONLINE);
 
-    *size = ETH_HDR_SIZE;
+    *pFilledSize = ETH_HDR_SIZE;
   }
   else {
     // pending PIO packet?
-    pio_util_recv_packet(size);
+    pio_util_recv_packet(pFilledSize);
 
     // report first packet transfer
     if(flags & FLAG_FIRST_TRANSFER) {
@@ -154,27 +154,28 @@ static uint8_t fill_pkt(uint8_t *buf, uint16_t max_size, uint16_t *size)
  * There are basically 4 possible packet types, all defined
  * by ETH_TYPE_* defines.
  * Custom "Magic" packets are defined as topmost EtherType values.
- * @param buf Buffer containing sent data
- * @param size Packet length
+ * @param uwSize Packet length
  * @return Always PBPROTO_STATUS_OK
  */
-static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
+static uint8_t bridgeProcessPacket(uint16_t uwSize)
 {
   // get eth type
-  uint16_t eth_type = eth_get_pkt_type(buf);
+  uint16_t eth_type = eth_get_pkt_type(g_pDataBuffer);
   switch(eth_type) {
     case ETH_TYPE_MAGIC_ONLINE:
-      magic_online(buf);
+      bridgeCommOnline(g_pDataBuffer);
       break;
     case ETH_TYPE_MAGIC_OFFLINE:
-      magic_offline();
+      bridgeCommOffline();
       break;
     case ETH_TYPE_MAGIC_LOOPBACK:
-      magic_loopback(size);
+      bridgeLoopback(uwSize);
       break;
+		case ETH_TYPE_MAGIC_CMD:
+			// cmdProcess(size);
     default:
       // send packet via pio
-      pio_util_send_packet(size);
+      pio_util_send_packet(uwSize);
       // if a packet arrived and we are not online then request online state
       if((flags & FLAG_ONLINE)==0) {
         request_magic();
@@ -193,7 +194,7 @@ uint8_t bridge_loop(void)
   // NOTE: UART - time_stamp_spc() [BRIDGE] on\r\n
 
   // Associate protocol fns with given ptrs
-  pb_proto_init(fill_pkt, proc_pkt, pkt_buf, PKT_BUF_SIZE);
+  pb_proto_init(bridgeFillPacket, bridgeProcessPacket);
 
   // Init ENC28j60
   enc28j60_init(param.mac_addr, pio_util_get_init_flags());

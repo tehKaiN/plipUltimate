@@ -26,4 +26,4 @@
 
 #include "pkt_buf.h"
 
-uint8_t pkt_buf[PKT_BUF_SIZE];
+uint8_t g_pDataBuffer[DATABUF_SIZE];

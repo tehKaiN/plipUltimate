@@ -44,23 +44,23 @@ static uint8_t silent_mode;
 
 // ----- Packet Callbacks -----
 
-static uint8_t fill_pkt(uint8_t *buf, uint16_t max_size, uint16_t *size)
+static uint8_t fill_pkt(uint16_t *pFilledSize)
 {
-  *size = param.test_plen;
-  if(*size > max_size) {
+  *pFilledSize = param.test_plen;
+  if(*pFilledSize > DATABUF_SIZE) {
     return PBPROTO_STATUS_PACKET_TOO_LARGE;
   }
 
-  net_copy_mac(net_bcast_mac, buf);
-  net_copy_mac(param.mac_addr, buf+6);
+  net_copy_mac(net_bcast_mac, g_pDataBuffer);
+  net_copy_mac(param.mac_addr, g_pDataBuffer+6);
 
   uint8_t ptype_hi = (uint8_t)(param.test_ptype >> 8);
   uint8_t ptype_lo = (uint8_t)(param.test_ptype & 0xff);
-  buf[12] = ptype_hi;
-  buf[13] = ptype_lo;
+  g_pDataBuffer[12] = ptype_hi;
+  g_pDataBuffer[13] = ptype_lo;
 
-  uint8_t *ptr = buf + 14;
-  uint16_t num = *size - 14;
+  uint8_t *ptr = g_pDataBuffer + 14;
+  uint16_t num = *pFilledSize - 14;
   uint8_t val = 0;
   while(num > 0) {
     *ptr = val;
@@ -72,37 +72,37 @@ static uint8_t fill_pkt(uint8_t *buf, uint16_t max_size, uint16_t *size)
   return PBPROTO_STATUS_OK;
 }
 
-static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
+static uint8_t proc_pkt(uint16_t uwSize)
 {
   uint16_t errors = 0;
 
   // check packet size
-  if(size != param.test_plen) {
+  if(uwSize != param.test_plen) {
     errors = 1;
-    // NOTE: UART - ERR: size\r\n
+    // NOTE: UART - ERR: uwSize\r\n
   }
 
   // +0: check dst mac
-  if(!net_compare_mac(buf, net_bcast_mac)) {
+  if(!net_compare_mac(g_pDataBuffer, net_bcast_mac)) {
     errors++;
     // NOTE: UART - ERR: dst mac\r\n
   }
   // +6: check src mac
-  if(!net_compare_mac(buf+6, param.mac_addr)) {
+  if(!net_compare_mac(g_pDataBuffer+6, param.mac_addr)) {
     errors++;
     // NOTE: UART - ERR: src mac\r\n
   }
   // +12,+13: pkt type
   uint8_t ptype_hi = (uint8_t)(param.test_ptype >> 8);
   uint8_t ptype_lo = (uint8_t)(param.test_ptype & 0xff);
-  if((buf[12] != ptype_hi) || (buf[13] != ptype_lo)) {
+  if((g_pDataBuffer[12] != ptype_hi) || (g_pDataBuffer[13] != ptype_lo)) {
     errors++;
 		// NOTE: UART - ERR: pkt type\r\n
   }
 
   // +14: data
-  const uint8_t *ptr = buf + 14;
-  uint16_t num = size - 14;
+  const uint8_t *ptr = g_pDataBuffer + 14;
+  uint16_t num = uwSize - 14;
   uint8_t val = 0;
   while(num > 0) {
     if(*ptr != val) {
@@ -169,7 +169,7 @@ uint8_t pb_test_loop(void)
   stats_reset();
 
   // setup handlers for pb testing
-  pb_proto_init(fill_pkt, proc_pkt, pkt_buf, PKT_BUF_SIZE);
+  pb_proto_init(fill_pkt, proc_pkt);
   auto_mode = 0;
   toggle_request = 0;
   silent_mode = 0;

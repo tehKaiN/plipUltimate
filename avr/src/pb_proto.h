@@ -60,8 +60,8 @@
 #define PBPROTO_LINE_OK        0x1
 
 // callbacks
-typedef uint8_t (*pb_proto_fill_func)(uint8_t *buf,uint16_t max_size,uint16_t *size);
-typedef uint8_t (*pb_proto_proc_func)(const uint8_t *buf, uint16_t size);
+typedef uint8_t (*pb_proto_fill_func)(uint16_t *uwSize);
+typedef uint8_t (*pb_proto_proc_func)(uint16_t uwSize);
 
 typedef struct {
   uint8_t cmd;		// received pb proto command
@@ -83,7 +83,7 @@ extern uint16_t pb_proto_rx_timeout; // timeout for next byte in 100us
 
 // ----- API -----
 
-extern void pb_proto_init(pb_proto_fill_func fill_func, pb_proto_proc_func proc_func, uint8_t *buf, uint16_t buf_size);
+extern void pb_proto_init(pb_proto_fill_func fill_func, pb_proto_proc_func proc_func);
 extern uint8_t  pb_proto_get_line_status(void);
 extern uint8_t  pb_proto_handle(void); // side effect: fill pb_proto_stat!
 extern void pb_proto_request_recv(void);

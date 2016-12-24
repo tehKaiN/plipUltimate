@@ -29,8 +29,8 @@
 
 #include "global.h"
 
-#define PKT_BUF_SIZE    1514
+#define DATABUF_SIZE    1514
 
-extern uint8_t pkt_buf[PKT_BUF_SIZE];
+extern uint8_t g_pDataBuffer[DATABUF_SIZE];
 
 #endif

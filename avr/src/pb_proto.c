@@ -33,6 +33,7 @@
 #include "stats.h"
 
 #include "base/uartutil.h"
+#include "pkt_buf.h"
 #include "pinout.h"
 
 // define symbolic names for protocol
@@ -41,9 +42,10 @@
 #define GET_REQ         par_low_get_pout
 #define GET_SELECT      par_low_get_select
 
-// Delay loop for recv_burst
-// Should be at least 2us
-// Each loop takes 3 cycles, e.g. arg = 6 takes 18 cycles + overhead
+/**
+ * Delay loop for recv_burst - should be at least 2us
+ * Each loop takes 3 cycles, e.g. arg = 6 takes 18 cycles + overhead
+ */
 #if (F_CPU == 16000000)
 	#define BURST_DELAY _delay_loop_1(6)
 #elif (F_CPU == 20000000UL)
@@ -53,10 +55,8 @@
 #endif
 
 // recv funcs
-static pb_proto_fill_func fill_func;
-static pb_proto_proc_func proc_func;
-static uint8_t *pb_buf;
-static uint16_t pb_buf_size;
+static pb_proto_fill_func packetFillFn;
+static pb_proto_proc_func packetProcessFn;
 static uint32_t trigger_ts;
 
 uint16_t pb_proto_timeout = 5000; // = 500ms in 100us ticks
@@ -66,12 +66,10 @@ pb_proto_stat_t pb_proto_stat;
 
 // ----- Init -----
 
-void pb_proto_init(pb_proto_fill_func ff, pb_proto_proc_func pf, uint8_t *buf, uint16_t buf_size)
+void pb_proto_init(pb_proto_fill_func _packetFillFn, pb_proto_proc_func _packetProcessFn)
 {
-  fill_func = ff;
-  proc_func = pf;
-  pb_buf = buf;
-  pb_buf_size = buf_size;
+  packetFillFn = _packetFillFn;
+  packetProcessFn = _packetProcessFn;
 
   // init signals
   PAR_DATA_DDR = 0x00;
@@ -155,7 +153,7 @@ static uint8_t cmd_send(uint16_t *pReadSize)
   PAR_STATUS_PORT ^= BUSY;
 
   // Check with buffer size
-  if(uwSize > pb_buf_size) {
+  if(uwSize > DATABUF_SIZE) {
     return PBPROTO_STATUS_PACKET_TOO_LARGE;
   }
 
@@ -166,7 +164,7 @@ static uint8_t cmd_send(uint16_t *pReadSize)
 
   // Packet read loop
   uint16_t uwReadSize = 0;
-  uint8_t *ptr = pb_buf;
+  uint8_t *ptr = g_pDataBuffer;
   uint8_t ubPOutWait = 1;
   while(uwSize--) {
     ubStatus = wait_req(ubPOutWait, PBPROTO_STAGE_DATA);
@@ -219,7 +217,7 @@ static uint8_t cmd_recv(uint16_t uwSize, uint16_t *pWriteSize)
 
   // --- data ---
   uint16_t uwWriteSize = 0;
-  const uint8_t *ptr = pb_buf;
+  const uint8_t *ptr = g_pDataBuffer;
   uint8_t ubPOutWait = 1;
   // Original plipbox had following loop operating on words, so size has to be
   // rounded up
@@ -270,14 +268,14 @@ static uint8_t cmd_send_burst(uint16_t *ret_size)
   // delay SET_RAK until burst begin...
 
   // check size
-  if(uwSize > pb_buf_size)
+  if(uwSize > DATABUF_SIZE)
     return PBPROTO_STATUS_PACKET_TOO_LARGE;
 
   // round to even and convert to words
   uint16_t words = (uwSize +1) >> 1;
   uint16_t i;
   uint8_t result = PBPROTO_STATUS_OK;
-  uint8_t *ptr = pb_buf;
+  uint8_t *ptr = g_pDataBuffer;
 
   // ----- burst loop -----
   // BEGIN TIME CRITICAL
@@ -355,7 +353,7 @@ static uint8_t cmd_recv_burst(uint16_t size, uint16_t *ret_size) {
   uint16_t words = (size + 1) >> 1;
   uint8_t result = PBPROTO_STATUS_OK;
   uint16_t i;
-  uint8_t *ptr = pb_buf;
+  uint8_t *ptr = g_pDataBuffer;
 
   // ----- burst loop -----
   // BEGIN TIME CRITICAL
@@ -417,7 +415,7 @@ static uint8_t cmd_recv_burst(uint16_t size, uint16_t *ret_size) {
  * - sets BUSY=1
  * - prepares response for recv
  * - does normal/burst comm with Amiga
- * - waits for SEL=0, then sets BUSY=0
+ * - waits a bit for SEL=0, then sets BUSY=0
  * - processes packet sent by Amiga
  */
 uint8_t pb_proto_handle(void) {
@@ -436,11 +434,10 @@ uint8_t pb_proto_handle(void) {
   // Read command byte
   uint8_t cmd = PAR_DATA_PIN;
 
-  // fill buffer for recv command
-  /// Amiga wants to receive data - prepare
+  // Amiga wants to receive data - prepare
   uint16_t pkt_size = 0;
   if((cmd == PBPROTO_CMD_RECV) || (cmd == PBPROTO_CMD_RECV_BURST)) {
-    uint8_t res = fill_func(pb_buf, pb_buf_size, &pkt_size);
+    uint8_t res = packetFillFn(&pkt_size);
     if(res != PBPROTO_STATUS_OK) {
       ps->status = res;
       return res;
@@ -454,19 +451,19 @@ uint8_t pb_proto_handle(void) {
   // confirm cmd with RAK = 1
   PAR_STATUS_PORT |= BUSY;
 
-  uint16_t ret_size = 0;
+  uint16_t uwParDataSize = 0;
   switch(cmd) {
     case PBPROTO_CMD_RECV:
-      result = cmd_recv(pkt_size, &ret_size);
+      result = cmd_recv(pkt_size, &uwParDataSize);
       break;
     case PBPROTO_CMD_SEND:
-      result = cmd_send(&ret_size);
+      result = cmd_send(&uwParDataSize);
       break;
     case PBPROTO_CMD_RECV_BURST:
-      result = cmd_recv_burst(pkt_size, &ret_size);
+      result = cmd_recv_burst(pkt_size, &uwParDataSize);
       break;
     case PBPROTO_CMD_SEND_BURST:
-      result = cmd_send_burst(&ret_size);
+      result = cmd_send_burst(&uwParDataSize);
       break;
     default:
       result = PBPROTO_STATUS_INVALID_CMD;
@@ -480,22 +477,21 @@ uint8_t pb_proto_handle(void) {
   PAR_STATUS_PORT &= ~BUSY;
 
   // read timer
-  uint16_t delta = timer_hw_get();
+  uint16_t uwTimeDelta = timer_hw_get();
 
-  // process buffer for send command
-  /// Amiga sent data - process it
+  // Amiga sent data - process it
   if(result == PBPROTO_STATUS_OK) {
     if((cmd == PBPROTO_CMD_SEND) || (cmd == PBPROTO_CMD_SEND_BURST)) {
-      result = proc_func(pb_buf, ret_size);
+      result = packetProcessFn(uwParDataSize);
     }
   }
 
   // fill in stats
   ps->cmd = cmd;
   ps->status = result;
-  ps->size = ret_size;
-  ps->delta = delta;
-  ps->rate = timer_hw_calc_rate_kbs(ret_size, delta);
+  ps->size = uwParDataSize;
+  ps->delta = uwTimeDelta;
+  ps->rate = timer_hw_calc_rate_kbs(uwParDataSize, uwTimeDelta);
   ps->ts = ts;
   ps->is_send = (cmd == PBPROTO_CMD_SEND) || (cmd == PBPROTO_CMD_SEND_BURST);
   ps->stats_id = ps->is_send ? STATS_ID_PB_TX : STATS_ID_PB_RX;

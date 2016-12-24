@@ -63,7 +63,7 @@ uint8_t pio_util_recv_packet(uint16_t *pDataSize)
 {
   // Fetch packet from ENC28j60, measure elapsed time
   timer_hw_reset();
-  uint8_t ubRecvResult = enc28j60_recv(pkt_buf, PKT_BUF_SIZE, pDataSize);
+  uint8_t ubRecvResult = enc28j60_recv(g_pDataBuffer, DATABUF_SIZE, pDataSize);
   uint16_t uwTimeDelta = timer_hw_get();
   uint16_t uwDataRate = timer_hw_calc_rate_kbs(*pDataSize, uwTimeDelta);
 
@@ -92,7 +92,7 @@ uint8_t pio_util_recv_packet(uint16_t *pDataSize)
 uint8_t pio_util_send_packet(uint16_t size)
 {
   timer_hw_reset();
-  uint8_t result = enc28j60_send(pkt_buf, size);
+  uint8_t result = enc28j60_send(g_pDataBuffer, size);
   uint16_t delta = timer_hw_get();
 
   uint16_t rate = timer_hw_calc_rate_kbs(size, delta);
@@ -116,7 +116,7 @@ uint8_t pio_util_send_packet(uint16_t size)
 
 uint8_t pio_util_handle_arp(uint16_t size)
 {
-  uint16_t type = eth_get_pkt_type(pkt_buf);
+  uint16_t type = eth_get_pkt_type(g_pDataBuffer);
   if(type != ETH_TYPE_ARP) {
     return 0;
   }
@@ -125,7 +125,7 @@ uint8_t pio_util_handle_arp(uint16_t size)
   }
 
   // payload buf/size
-  uint8_t *pl_buf = pkt_buf + ETH_HDR_SIZE;
+  uint8_t *pl_buf = g_pDataBuffer + ETH_HDR_SIZE;
   uint16_t pl_size = size - ETH_HDR_SIZE;
 
   // is an ARP request
@@ -139,7 +139,7 @@ uint8_t pio_util_handle_arp(uint16_t size)
 
     if(net_compare_ip(tgt_ip, param.test_ip)) {
       arp_make_reply(pl_buf, param.mac_addr, param.test_ip);
-      eth_make_bcast(pkt_buf, param.mac_addr);
+      eth_make_bcast(g_pDataBuffer, param.mac_addr);
       pio_util_send_packet(size);
 
       if(global_verbose) {
@@ -153,7 +153,7 @@ uint8_t pio_util_handle_arp(uint16_t size)
 
 uint8_t pio_util_handle_udp_test(uint16_t size)
 {
-  uint8_t *ip_buf = pkt_buf + ETH_HDR_SIZE;
+  uint8_t *ip_buf = g_pDataBuffer + ETH_HDR_SIZE;
   uint8_t *udp_buf = ip_buf + ip_get_hdr_length(ip_buf);
   const uint8_t *dst_ip = ip_get_tgt_ip(ip_buf);
   uint16_t dst_port = udp_get_tgt_port(udp_buf);
@@ -175,8 +175,8 @@ uint8_t pio_util_handle_udp_test(uint16_t size)
     net_put_word(udp_buf + UDP_TGT_PORT_OFF, src_port);
 
     // flip eth
-    net_copy_mac(pkt_buf + ETH_OFF_SRC_MAC, pkt_buf + ETH_OFF_TGT_MAC);
-    net_copy_mac(param.mac_addr, pkt_buf + ETH_OFF_SRC_MAC);
+    net_copy_mac(g_pDataBuffer + ETH_OFF_SRC_MAC, g_pDataBuffer + ETH_OFF_TGT_MAC);
+    net_copy_mac(param.mac_addr, g_pDataBuffer + ETH_OFF_SRC_MAC);
 
     return 1;
  } else {

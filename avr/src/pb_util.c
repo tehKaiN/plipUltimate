@@ -38,8 +38,10 @@ uint8_t pb_util_handle(void)
 
   // call protocol handler (low level transmit)
   uint8_t status = pb_proto_handle();
-  if(status == PBPROTO_STATUS_IDLE)
-    return PBPROTO_STATUS_IDLE; // Nothing done... return
+  if(status == PBPROTO_STATUS_IDLE) {
+		// Nothing done... return
+    return PBPROTO_STATUS_IDLE;
+	}
 
   if(status == PBPROTO_STATUS_OK) {
 		// Everything went OK

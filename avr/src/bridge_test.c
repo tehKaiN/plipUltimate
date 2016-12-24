@@ -47,17 +47,17 @@ static uint16_t pio_pkt_size;
    this should only happen if we got a packet here from PIO
    in the first place
 */
-static uint8_t fill_pkt(uint8_t *buf, uint16_t max_size, uint16_t *size)
+static uint8_t fill_pkt(uint16_t *pFilledSize)
 {
-  *size = pio_pkt_size;
-  if(*size > max_size) {
+  *pFilledSize = pio_pkt_size;
+  if(*pFilledSize > DATABUF_SIZE) {
     return PBPROTO_STATUS_PACKET_TOO_LARGE;
   }
 
   // in test mode 0 send via internal device loopback
   if(param.test_mode == 0) {
     // switch eth type to magic for loop back
-    net_put_word(buf + ETH_OFF_TYPE, ETH_TYPE_MAGIC_LOOPBACK);
+    net_put_word(g_pDataBuffer + ETH_OFF_TYPE, ETH_TYPE_MAGIC_LOOPBACK);
   }
 
   // consumed packet
@@ -69,10 +69,10 @@ static uint8_t fill_pkt(uint8_t *buf, uint16_t max_size, uint16_t *size)
 /* a SEND command arrvied from Amiga.
    we got our packet back. forward to PIO
 */
-static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
+static uint8_t proc_pkt(uint16_t uwSize)
 {
   // make sure its the expected packet type
-  uint16_t type = net_get_word(pkt_buf + ETH_OFF_TYPE);
+  uint16_t type = net_get_word(g_pDataBuffer + ETH_OFF_TYPE);
 
   // in test mode 0 packet was sent by internal device loopback
   if(param.test_mode == 0) {
@@ -81,7 +81,7 @@ static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
       return PBPROTO_STATUS_OK;
     } else {
       // switch eth type back to IPv4
-      net_put_word(pkt_buf + ETH_OFF_TYPE, ETH_TYPE_IPV4);
+      net_put_word(g_pDataBuffer + ETH_OFF_TYPE, ETH_TYPE_IPV4);
     }
   } else {
     if(type != ETH_TYPE_IPV4) {
@@ -91,7 +91,7 @@ static uint8_t proc_pkt(const uint8_t *buf, uint16_t size)
   }
 
   // send packet via pio
-  pio_util_send_packet(size);
+  pio_util_send_packet(uwSize);
 
   return PBPROTO_STATUS_OK;
 }
@@ -102,7 +102,7 @@ uint8_t bridge_test_loop(void)
 
 	// NOTE: UART - time_stamp_spc [BRIDGE_TEST] on\r\n
 
-  pb_proto_init(fill_pkt, proc_pkt, pkt_buf, PKT_BUF_SIZE);
+  pb_proto_init(fill_pkt, proc_pkt);
   enc28j60_init(param.mac_addr, pio_util_get_init_flags());
   stats_reset();
 
