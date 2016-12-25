@@ -344,7 +344,7 @@ uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
 
   // soft reset cpu
   writeOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET);
-  timer_delay_100us(20); // errata B7/2
+  timerDelay100us(20); // errata B7/2
 
   // wait or error
   uint16_t count = 0;

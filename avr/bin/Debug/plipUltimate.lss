@@ -15,21 +15,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   5 .debug_aranges 00000260  00000000  00000000  00002788  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_pubnames 000007d6  00000000  00000000  000029e8  2**0
+  6 .debug_pubnames 000007d7  00000000  00000000  000029e8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_info   00004cc9  00000000  00000000  000031be  2**0
+  7 .debug_info   00004cc9  00000000  00000000  000031bf  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 0000199d  00000000  00000000  00007e87  2**0
+  8 .debug_abbrev 0000199d  00000000  00000000  00007e88  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   00002f31  00000000  00000000  00009824  2**0
+  9 .debug_line   00002f19  00000000  00000000  00009825  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  00000830  00000000  00000000  0000c758  2**2
+ 10 .debug_frame  00000830  00000000  00000000  0000c740  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    0000130a  00000000  00000000  0000cf88  2**0
+ 11 .debug_str    00001310  00000000  00000000  0000cf70  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00001fb0  00000000  00000000  0000e292  2**0
+ 12 .debug_loc    00001fb0  00000000  00000000  0000e280  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00000178  00000000  00000000  00010242  2**0
+ 13 .debug_ranges 00000178  00000000  00000000  00010230  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -42,11 +42,11 @@ Disassembly of section .text:
       10:	0c 94 f4 01 	jmp	0x3e8	; 0x3e8 <__bad_interrupt>
       14:	0c 94 f4 01 	jmp	0x3e8	; 0x3e8 <__bad_interrupt>
       18:	0c 94 f4 01 	jmp	0x3e8	; 0x3e8 <__bad_interrupt>
-      1c:	0c 94 24 02 	jmp	0x448	; 0x448 <__vector_7>
+      1c:	0c 94 f4 01 	jmp	0x3e8	; 0x3e8 <__bad_interrupt>
       20:	0c 94 f4 01 	jmp	0x3e8	; 0x3e8 <__bad_interrupt>
       24:	0c 94 f4 01 	jmp	0x3e8	; 0x3e8 <__bad_interrupt>
       28:	0c 94 f4 01 	jmp	0x3e8	; 0x3e8 <__bad_interrupt>
-      2c:	0c 94 f4 01 	jmp	0x3e8	; 0x3e8 <__bad_interrupt>
+      2c:	0c 94 20 02 	jmp	0x440	; 0x440 <__vector_11>
       30:	0c 94 f4 01 	jmp	0x3e8	; 0x3e8 <__bad_interrupt>
       34:	0c 94 f4 01 	jmp	0x3e8	; 0x3e8 <__bad_interrupt>
       38:	0c 94 f4 01 	jmp	0x3e8	; 0x3e8 <__bad_interrupt>
@@ -283,117 +283,111 @@ Disassembly of section .text:
 000003e8 <__bad_interrupt>:
      3e8:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
-000003ec <timer_init>:
+000003ec <timerInit>:
 /// 100us is 1/10k of a second
 /// NOTE(KaiN#): time was reduced by 1, should it be?
-#define T2_100us ((F_CPU/8)/10000)
+#define T1_100us F_CPU/10000
 
-void timer_init(void) {
+void timerInit(void) {
   cli();
      3ec:	f8 94       	cli
 
 	/// Set timer 2 to CTC, prescaler 8 & compare value: 100us
-  TCCR2A = _BV(WGM21);  // CTC
-     3ee:	82 e0       	ldi	r24, 0x02	; 2
-     3f0:	80 93 b0 00 	sts	0x00B0, r24
-  TCCR2B = _BV(CS21);   // Prescaler 8
-     3f4:	80 93 b1 00 	sts	0x00B1, r24
-  OCR2A = T2_100us;     // Output compare
-     3f8:	9a ef       	ldi	r25, 0xFA	; 250
-     3fa:	90 93 b3 00 	sts	0x00B3, r25
-  TCNT2  = 0x00;        // Reset timer state
-     3fe:	10 92 b2 00 	sts	0x00B2, r1
-  TIMSK2 = _BV(OCIE2A); // Enable compare interrupt
-     402:	80 93 70 00 	sts	0x0070, r24
-  // ----- TIMER1 (16bit) -----
-  // prescale 64
-  // 16 MHz -> 250 KHz = 4 us timer
+  TCCR1A = _BV(WGM12);  // CTC
+     3ee:	88 e0       	ldi	r24, 0x08	; 8
+     3f0:	80 93 80 00 	sts	0x0080, r24
+  TCCR1B = _BV(CS10);   // Prescaler 1
+     3f4:	81 e0       	ldi	r24, 0x01	; 1
+     3f6:	80 93 81 00 	sts	0x0081, r24
+  OCR1A = T1_100us;     // Output compare
+     3fa:	80 ed       	ldi	r24, 0xD0	; 208
+     3fc:	97 e0       	ldi	r25, 0x07	; 7
+     3fe:	90 93 89 00 	sts	0x0089, r25
+     402:	80 93 88 00 	sts	0x0088, r24
+  TCNT1  = 0;           // Reset timer state
+     406:	10 92 85 00 	sts	0x0085, r1
+     40a:	10 92 84 00 	sts	0x0084, r1
+  TIMSK1 = _BV(OCIE1A); // Enable compare interrupt
+     40e:	82 e0       	ldi	r24, 0x02	; 2
+     410:	80 93 6f 00 	sts	0x006F, r24
 
-  // set to CTC on OCR1A with prescale 8
-  TCCR1A = 0x00;
-     406:	10 92 80 00 	sts	0x0080, r1
-  TCCR1B = _BV(CS11) | _BV(CS10); // prescale 64
-     40a:	83 e0       	ldi	r24, 0x03	; 3
-     40c:	80 93 81 00 	sts	0x0081, r24
-  TCCR1C = 0x00;
-     410:	10 92 82 00 	sts	0x0082, r1
-
-  // reset timer
-  TCNT1 = 0;
-     414:	10 92 85 00 	sts	0x0085, r1
-     418:	10 92 84 00 	sts	0x0084, r1
-
-  timer_100us = 0;
-     41c:	10 92 5b 01 	sts	0x015B, r1
-     420:	10 92 5a 01 	sts	0x015A, r1
-  timer_10ms = 0;
-     424:	10 92 59 01 	sts	0x0159, r1
-     428:	10 92 58 01 	sts	0x0158, r1
-  time_stamp = 0;
-     42c:	10 92 54 01 	sts	0x0154, r1
-     430:	10 92 55 01 	sts	0x0155, r1
-     434:	10 92 56 01 	sts	0x0156, r1
-     438:	10 92 57 01 	sts	0x0157, r1
-  count = 0;
-     43c:	10 92 3d 01 	sts	0x013D, r1
-     440:	10 92 3c 01 	sts	0x013C, r1
+  g_uwTimer100us = 0;
+     414:	10 92 57 01 	sts	0x0157, r1
+     418:	10 92 56 01 	sts	0x0156, r1
+  g_uwTimer10ms = 0;
+     41c:	10 92 55 01 	sts	0x0155, r1
+     420:	10 92 54 01 	sts	0x0154, r1
+  g_uwTimeStamp = 0;
+     424:	10 92 58 01 	sts	0x0158, r1
+     428:	10 92 59 01 	sts	0x0159, r1
+     42c:	10 92 5a 01 	sts	0x015A, r1
+     430:	10 92 5b 01 	sts	0x015B, r1
+  s_uw10msCounter = 0;
+     434:	10 92 3d 01 	sts	0x013D, r1
+     438:	10 92 3c 01 	sts	0x013C, r1
 
   sei();
-     444:	78 94       	sei
+     43c:	78 94       	sei
 }
-     446:	08 95       	ret
+     43e:	08 95       	ret
 
-00000448 <__vector_7>:
+00000440 <__vector_11>:
 
-// timer2 compare A handler
-ISR(T2_vect) {
-     448:	1f 92       	push	r1
-     44a:	0f 92       	push	r0
-     44c:	0f b6       	in	r0, 0x3f	; 63
-     44e:	0f 92       	push	r0
-     450:	11 24       	eor	r1, r1
-     452:	2f 93       	push	r18
-     454:	8f 93       	push	r24
-     456:	9f 93       	push	r25
-     458:	af 93       	push	r26
-     45a:	bf 93       	push	r27
-  ++timer_100us;
-     45c:	80 91 5a 01 	lds	r24, 0x015A
-     460:	90 91 5b 01 	lds	r25, 0x015B
+/**
+ * Timer interrupt handler.
+ * Increments time stamp and time interval vars accordingly.
+ */
+ISR(TIMER1_COMPA_vect) {
+     440:	1f 92       	push	r1
+     442:	0f 92       	push	r0
+     444:	0f b6       	in	r0, 0x3f	; 63
+     446:	0f 92       	push	r0
+     448:	11 24       	eor	r1, r1
+     44a:	2f 93       	push	r18
+     44c:	8f 93       	push	r24
+     44e:	9f 93       	push	r25
+     450:	af 93       	push	r26
+     452:	bf 93       	push	r27
+	TCNT1 = 0; // Reset timer s_uw10msCounterer
+     454:	10 92 85 00 	sts	0x0085, r1
+     458:	10 92 84 00 	sts	0x0084, r1
+  ++g_uwTimer100us;
+     45c:	80 91 56 01 	lds	r24, 0x0156
+     460:	90 91 57 01 	lds	r25, 0x0157
      464:	01 96       	adiw	r24, 0x01	; 1
-     466:	90 93 5b 01 	sts	0x015B, r25
-     46a:	80 93 5a 01 	sts	0x015A, r24
-  ++time_stamp;
-     46e:	80 91 54 01 	lds	r24, 0x0154
-     472:	90 91 55 01 	lds	r25, 0x0155
-     476:	a0 91 56 01 	lds	r26, 0x0156
-     47a:	b0 91 57 01 	lds	r27, 0x0157
+     466:	90 93 57 01 	sts	0x0157, r25
+     46a:	80 93 56 01 	sts	0x0156, r24
+  ++g_uwTimeStamp;
+     46e:	80 91 58 01 	lds	r24, 0x0158
+     472:	90 91 59 01 	lds	r25, 0x0159
+     476:	a0 91 5a 01 	lds	r26, 0x015A
+     47a:	b0 91 5b 01 	lds	r27, 0x015B
      47e:	01 96       	adiw	r24, 0x01	; 1
      480:	a1 1d       	adc	r26, r1
      482:	b1 1d       	adc	r27, r1
-     484:	80 93 54 01 	sts	0x0154, r24
-     488:	90 93 55 01 	sts	0x0155, r25
-     48c:	a0 93 56 01 	sts	0x0156, r26
-     490:	b0 93 57 01 	sts	0x0157, r27
-  ++count;
+     484:	80 93 58 01 	sts	0x0158, r24
+     488:	90 93 59 01 	sts	0x0159, r25
+     48c:	a0 93 5a 01 	sts	0x015A, r26
+     490:	b0 93 5b 01 	sts	0x015B, r27
+  ++s_uw10msCounter;
      494:	80 91 3c 01 	lds	r24, 0x013C
      498:	90 91 3d 01 	lds	r25, 0x013D
      49c:	01 96       	adiw	r24, 0x01	; 1
      49e:	90 93 3d 01 	sts	0x013D, r25
      4a2:	80 93 3c 01 	sts	0x013C, r24
-  if(count >= 1000) {
+  if(s_uw10msCounter >= 1000) {
      4a6:	88 5e       	subi	r24, 0xE8	; 232
      4a8:	93 40       	sbci	r25, 0x03	; 3
-     4aa:	68 f0       	brcs	.+26     	; 0x4c6 <__vector_7+0x7e>
-    count = 0;
+     4aa:	68 f0       	brcs	.+26     	; 0x4c6 <__vector_11+0x86>
+    s_uw10msCounter = 0;
      4ac:	10 92 3d 01 	sts	0x013D, r1
      4b0:	10 92 3c 01 	sts	0x013C, r1
-    timer_10ms++;
-     4b4:	80 91 58 01 	lds	r24, 0x0158
-     4b8:	90 91 59 01 	lds	r25, 0x0159
+    g_uwTimer10ms++;
+     4b4:	80 91 54 01 	lds	r24, 0x0154
+     4b8:	90 91 55 01 	lds	r25, 0x0155
      4bc:	01 96       	adiw	r24, 0x01	; 1
-     4be:	90 93 59 01 	sts	0x0159, r25
-     4c2:	80 93 58 01 	sts	0x0158, r24
+     4be:	90 93 55 01 	sts	0x0155, r25
+     4c2:	80 93 54 01 	sts	0x0154, r24
   }
 }
      4c6:	bf 91       	pop	r27
@@ -407,54 +401,57 @@ ISR(T2_vect) {
      4d6:	1f 90       	pop	r1
      4d8:	18 95       	reti
 
-000004da <timer_delay_10ms>:
+000004da <timerDelay10ms>:
 
 /// Busy-wait for supplied number of 10ms intervals
-void timer_delay_10ms(uint16_t uwIntervalCount) {
+void timerDelay10ms(uint16_t uwCount) {
      4da:	9c 01       	movw	r18, r24
-	timer_10ms=0;
-     4dc:	10 92 59 01 	sts	0x0159, r1
-     4e0:	10 92 58 01 	sts	0x0158, r1
-	while(timer_10ms<uwIntervalCount);
-     4e4:	80 91 58 01 	lds	r24, 0x0158
-     4e8:	90 91 59 01 	lds	r25, 0x0159
+	g_uwTimer10ms=0;
+     4dc:	10 92 55 01 	sts	0x0155, r1
+     4e0:	10 92 54 01 	sts	0x0154, r1
+	while(g_uwTimer10ms<uwCount);
+     4e4:	80 91 54 01 	lds	r24, 0x0154
+     4e8:	90 91 55 01 	lds	r25, 0x0155
      4ec:	82 17       	cp	r24, r18
      4ee:	93 07       	cpc	r25, r19
-     4f0:	c8 f3       	brcs	.-14     	; 0x4e4 <timer_delay_10ms+0xa>
+     4f0:	c8 f3       	brcs	.-14     	; 0x4e4 <timerDelay10ms+0xa>
 }
      4f2:	08 95       	ret
 
-000004f4 <timer_delay_100us>:
+000004f4 <timerDelay100us>:
 
 /// Busy-wait for supplied number of 100us intervals
-void timer_delay_100us(uint16_t uwIntervalCount) {
+void timerDelay100us(uint16_t uwCount) {
      4f4:	9c 01       	movw	r18, r24
-	timer_100us=0;
-     4f6:	10 92 5b 01 	sts	0x015B, r1
-     4fa:	10 92 5a 01 	sts	0x015A, r1
-	while(timer_100us<uwIntervalCount);
-     4fe:	80 91 5a 01 	lds	r24, 0x015A
-     502:	90 91 5b 01 	lds	r25, 0x015B
+	g_uwTimer100us=0;
+     4f6:	10 92 57 01 	sts	0x0157, r1
+     4fa:	10 92 56 01 	sts	0x0156, r1
+	while(g_uwTimer100us<uwCount);
+     4fe:	80 91 56 01 	lds	r24, 0x0156
+     502:	90 91 57 01 	lds	r25, 0x0157
      506:	82 17       	cp	r24, r18
      508:	93 07       	cpc	r25, r19
-     50a:	c8 f3       	brcs	.-14     	; 0x4fe <timer_delay_100us+0xa>
+     50a:	c8 f3       	brcs	.-14     	; 0x4fe <timerDelay100us+0xa>
 }
      50c:	08 95       	ret
 
-0000050e <timer_hw_calc_rate_kbs>:
+0000050e <timerCalculateKbps>:
 
-/// Calculates bitrate based on transferred byte count and elapsed time
-uint16_t timer_hw_calc_rate_kbs(uint16_t bytes, uint16_t delta) {
+// TODO(KaiN#9): timerCalculateKbps() is completely messed up
+/**
+ * Calculates bitrate based on transferred byte count and elapsed time.
+ */
+uint16_t timerCalculateKbps(uint16_t bytes, uint16_t delta) {
      50e:	cf 93       	push	r28
      510:	df 93       	push	r29
      512:	eb 01       	movw	r28, r22
   if(delta != 0) {
      514:	61 15       	cp	r22, r1
      516:	71 05       	cpc	r23, r1
-     518:	19 f4       	brne	.+6      	; 0x520 <timer_hw_calc_rate_kbs+0x12>
+     518:	19 f4       	brne	.+6      	; 0x520 <timerCalculateKbps+0x12>
      51a:	20 e0       	ldi	r18, 0x00	; 0
      51c:	30 e0       	ldi	r19, 0x00	; 0
-     51e:	16 c0       	rjmp	.+44     	; 0x54c <timer_hw_calc_rate_kbs+0x3e>
+     51e:	16 c0       	rjmp	.+44     	; 0x54c <timerCalculateKbps+0x3e>
     uint32_t nom = 1000 * (uint32_t)bytes * 100;
     uint32_t denom = (uint32_t)delta * 4;
     uint32_t rate = nom / denom;
@@ -2444,8 +2441,8 @@ static void init_hw(void)
      e60:	78 94       	sei
 
 	// Setup timers
-	timer_init();
-     e62:	0e 94 f6 01 	call	0x3ec	; 0x3ec <timer_init>
+	timerInit();
+     e62:	0e 94 f6 01 	call	0x3ec	; 0x3ec <timerInit>
 
 	// Zero DDR and PORT status
   PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
@@ -2529,10 +2526,10 @@ static void init_hw(void)
 		}
 
 	// Wait a bit and do a reset
-	timer_delay_10ms(10);
+	timerDelay10ms(10);
      ebe:	8a e0       	ldi	r24, 0x0A	; 10
      ec0:	90 e0       	ldi	r25, 0x00	; 0
-     ec2:	0e 94 6d 02 	call	0x4da	; 0x4da <timer_delay_10ms>
+     ec2:	0e 94 6d 02 	call	0x4da	; 0x4da <timerDelay10ms>
 	wdt_enable(WDTO_15MS);
      ec6:	28 e0       	ldi	r18, 0x08	; 8
      ec8:	88 e1       	ldi	r24, 0x18	; 24
@@ -3535,11 +3532,11 @@ _delay_loop_1(uint8_t __count)
     13a4:	82 60       	ori	r24, 0x02	; 2
     13a6:	80 83       	st	Z, r24
   // TODO(KaiN#9): Perhaps should be longer as atmega clk is faster?
-  trigger_ts = time_stamp;
-    13a8:	80 91 54 01 	lds	r24, 0x0154
-    13ac:	90 91 55 01 	lds	r25, 0x0155
-    13b0:	a0 91 56 01 	lds	r26, 0x0156
-    13b4:	b0 91 57 01 	lds	r27, 0x0157
+  trigger_ts = g_uwTimeStamp;
+    13a8:	80 91 58 01 	lds	r24, 0x0158
+    13ac:	90 91 59 01 	lds	r25, 0x0159
+    13b0:	a0 91 5a 01 	lds	r26, 0x015A
+    13b4:	b0 91 5b 01 	lds	r27, 0x015B
     13b8:	80 93 48 01 	sts	0x0148, r24
     13bc:	90 93 49 01 	sts	0x0149, r25
     13c0:	a0 93 4a 01 	sts	0x014A, r26
@@ -3556,10 +3553,10 @@ _delay_loop_1(uint8_t __count)
 static uint8_t wait_req(uint8_t ubReqValue, uint8_t ubStateFlag) {
     13ca:	78 2f       	mov	r23, r24
   // wait for new REQ value
-  timer_100us = 0;
-    13cc:	10 92 5b 01 	sts	0x015B, r1
-    13d0:	10 92 5a 01 	sts	0x015A, r1
-  while(timer_100us < pb_proto_timeout) {
+  g_uwTimer100us = 0;
+    13cc:	10 92 57 01 	sts	0x0157, r1
+    13d0:	10 92 56 01 	sts	0x0156, r1
+  while(g_uwTimer100us < pb_proto_timeout) {
     13d4:	40 91 3a 01 	lds	r20, 0x013A
     13d8:	50 91 3b 01 	lds	r21, 0x013B
 		uint8_t ubIn = PAR_STATUS_PIN;
@@ -3597,10 +3594,10 @@ static uint8_t wait_req(uint8_t ubReqValue, uint8_t ubStateFlag) {
  */
 static uint8_t wait_req(uint8_t ubReqValue, uint8_t ubStateFlag) {
   // wait for new REQ value
-  timer_100us = 0;
-  while(timer_100us < pb_proto_timeout) {
-    140c:	80 91 5a 01 	lds	r24, 0x015A
-    1410:	90 91 5b 01 	lds	r25, 0x015B
+  g_uwTimer100us = 0;
+  while(g_uwTimer100us < pb_proto_timeout) {
+    140c:	80 91 56 01 	lds	r24, 0x0156
+    1410:	90 91 57 01 	lds	r25, 0x0157
     1414:	84 17       	cp	r24, r20
     1416:	95 07       	cpc	r25, r21
     1418:	20 f3       	brcs	.-56     	; 0x13e2 <wait_req+0x18>
@@ -3695,14 +3692,14 @@ uint8_t pb_proto_handle(void) {
   }
 
   // start timer
-  uint32_t ts = time_stamp;
-    1488:	60 90 54 01 	lds	r6, 0x0154
-    148c:	70 90 55 01 	lds	r7, 0x0155
-    1490:	80 90 56 01 	lds	r8, 0x0156
-    1494:	90 90 57 01 	lds	r9, 0x0157
+  uint32_t ts = g_uwTimeStamp;
+    1488:	60 90 58 01 	lds	r6, 0x0158
+    148c:	70 90 59 01 	lds	r7, 0x0159
+    1490:	80 90 5a 01 	lds	r8, 0x015A
+    1494:	90 90 5b 01 	lds	r9, 0x015B
     1498:	10 92 85 00 	sts	0x0085, r1
     149c:	10 92 84 00 	sts	0x0084, r1
-  timer_hw_reset();
+  timerReset();
 
   // confirm cmd with RAK = 1
   PAR_STATUS_PORT |= BUSY;
@@ -4642,10 +4639,10 @@ uint8_t pb_proto_handle(void) {
 }
 
 static uint8_t wait_sel(uint8_t select_state, uint8_t state_flag) {
-  timer_100us = 0;
-    18d0:	10 92 5b 01 	sts	0x015B, r1
-    18d4:	10 92 5a 01 	sts	0x015A, r1
-  while(timer_100us < pb_proto_timeout) {
+  g_uwTimer100us = 0;
+    18d0:	10 92 57 01 	sts	0x0157, r1
+    18d4:	10 92 56 01 	sts	0x0156, r1
+  while(g_uwTimer100us < pb_proto_timeout) {
     18d8:	20 91 3a 01 	lds	r18, 0x013A
     18dc:	30 91 3b 01 	lds	r19, 0x013B
     if(((PAR_STATUS_PIN & SEL) >> SEL_PIN) == select_state)
@@ -4659,10 +4656,10 @@ static uint8_t wait_sel(uint8_t select_state, uint8_t state_flag) {
 }
 
 static uint8_t wait_sel(uint8_t select_state, uint8_t state_flag) {
-  timer_100us = 0;
-  while(timer_100us < pb_proto_timeout) {
-    18ec:	80 91 5a 01 	lds	r24, 0x015A
-    18f0:	90 91 5b 01 	lds	r25, 0x015B
+  g_uwTimer100us = 0;
+  while(g_uwTimer100us < pb_proto_timeout) {
+    18ec:	80 91 56 01 	lds	r24, 0x0156
+    18f0:	90 91 57 01 	lds	r25, 0x0157
     18f4:	82 17       	cp	r24, r18
     18f6:	93 07       	cpc	r25, r19
     18f8:	b0 f3       	brcs	.-20     	; 0x18e6 <pb_proto_handle+0x4c6>
@@ -4679,9 +4676,9 @@ static uint8_t wait_sel(uint8_t select_state, uint8_t state_flag) {
     1902:	80 83       	st	Z, r24
     1904:	e0 90 84 00 	lds	r14, 0x0084
     1908:	f0 90 85 00 	lds	r15, 0x0085
-
-  // read timer
-  uint16_t uwTimeDelta = timer_hw_get();
+  // Read timer - assuming transfer will be much shorter than 100us
+  // TODO(KaiN#7): is it really that short?
+  uint16_t uwTimeDelta = timerGetState();
 
   // Amiga sent data - process it
   if(result == PBPROTO_STATUS_OK) {
@@ -4724,10 +4721,10 @@ static uint8_t wait_sel(uint8_t select_state, uint8_t state_flag) {
     1944:	fc 92       	st	X, r15
     1946:	ee 92       	st	-X, r14
     1948:	16 97       	sbiw	r26, 0x06	; 6
-  ps->rate = timer_hw_calc_rate_kbs(uwParDataSize, uwTimeDelta);
+  ps->rate = timerCalculateKbps(uwParDataSize, uwTimeDelta);
     194a:	c6 01       	movw	r24, r12
     194c:	b7 01       	movw	r22, r14
-    194e:	0e 94 87 02 	call	0x50e	; 0x50e <timer_hw_calc_rate_kbs>
+    194e:	0e 94 87 02 	call	0x50e	; 0x50e <timerCalculateKbps>
     1952:	f8 01       	movw	r30, r16
     1954:	91 87       	std	Z+9, r25	; 0x09
     1956:	80 87       	std	Z+8, r24	; 0x08
@@ -4823,10 +4820,10 @@ static uint8_t wait_sel(uint8_t select_state, uint8_t state_flag) {
     19fa:	fc 92       	st	X, r15
     19fc:	ee 92       	st	-X, r14
     19fe:	16 97       	sbiw	r26, 0x06	; 6
-  ps->rate = timer_hw_calc_rate_kbs(uwParDataSize, uwTimeDelta);
+  ps->rate = timerCalculateKbps(uwParDataSize, uwTimeDelta);
     1a00:	c6 01       	movw	r24, r12
     1a02:	b7 01       	movw	r22, r14
-    1a04:	0e 94 87 02 	call	0x50e	; 0x50e <timer_hw_calc_rate_kbs>
+    1a04:	0e 94 87 02 	call	0x50e	; 0x50e <timerCalculateKbps>
     1a08:	f8 01       	movw	r30, r16
     1a0a:	91 87       	std	Z+9, r25	; 0x09
     1a0c:	80 87       	std	Z+8, r24	; 0x08
@@ -5578,33 +5575,34 @@ uint8_t pio_util_send_packet(uint16_t size)
     1daa:	cf 93       	push	r28
     1dac:	df 93       	push	r29
     1dae:	ec 01       	movw	r28, r24
-extern void timer_delay_100us(uint16_t timeout);
+extern void timerDelay100us(uint16_t uwCount);
 
 // ----- hardware timer -----
 
 // 16 bit hw timer with 4us resolution
-inline void timer_hw_reset(void) { TCNT1 = 0; }
+inline void timerReset(void) { TCNT1 = 0; }
     1db0:	04 e8       	ldi	r16, 0x84	; 132
     1db2:	10 e0       	ldi	r17, 0x00	; 0
     1db4:	f8 01       	movw	r30, r16
     1db6:	11 82       	std	Z+1, r1	; 0x01
     1db8:	10 82       	st	Z, r1
-  timer_hw_reset();
+  timerReset();
   uint8_t result = enc28j60_send(g_pDataBuffer, size);
     1dba:	8f e7       	ldi	r24, 0x7F	; 127
     1dbc:	91 e0       	ldi	r25, 0x01	; 1
     1dbe:	be 01       	movw	r22, r28
     1dc0:	0e 94 8e 10 	call	0x211c	; 0x211c <enc28j60_send>
     1dc4:	f8 2e       	mov	r15, r24
-inline uint16_t  timer_hw_get(void) { return TCNT1; }
+inline uint16_t  timerGetState(void) { return TCNT1; }
     1dc6:	f8 01       	movw	r30, r16
     1dc8:	60 81       	ld	r22, Z
     1dca:	71 81       	ldd	r23, Z+1	; 0x01
-  uint16_t delta = timer_hw_get();
+  // NOTE(KaiN#7): Is it really that short?
+  uint16_t delta = timerGetState();
 
-  uint16_t rate = timer_hw_calc_rate_kbs(size, delta);
+  uint16_t rate = timerCalculateKbps(size, delta);
     1dcc:	ce 01       	movw	r24, r28
-    1dce:	0e 94 87 02 	call	0x50e	; 0x50e <timer_hw_calc_rate_kbs>
+    1dce:	0e 94 87 02 	call	0x50e	; 0x50e <timerCalculateKbps>
     1dd2:	ac 01       	movw	r20, r24
   if(result == PIO_OK) {
     1dd4:	ff 20       	and	r15, r15
@@ -5614,7 +5612,8 @@ inline uint16_t  timer_hw_get(void) { return TCNT1; }
     1dda:	be 01       	movw	r22, r28
     1ddc:	0e 94 83 12 	call	0x2506	; 0x2506 <stats_update_ok>
     1de0:	07 c0       	rjmp	.+14     	; 0x1df0 <pio_util_send_packet+0x4c>
-  } else {
+  }
+  else {
     stats_get(STATS_ID_PIO_TX)->err++;
     1de2:	e3 e9       	ldi	r30, 0x93	; 147
     1de4:	f7 e0       	ldi	r31, 0x07	; 7
@@ -5763,19 +5762,19 @@ uint8_t pio_util_recv_packet(uint16_t *pDataSize)
     1eaa:	cf 93       	push	r28
     1eac:	df 93       	push	r29
     1eae:	ec 01       	movw	r28, r24
-extern void timer_delay_100us(uint16_t timeout);
+extern void timerDelay100us(uint16_t uwCount);
 
 // ----- hardware timer -----
 
 // 16 bit hw timer with 4us resolution
-inline void timer_hw_reset(void) { TCNT1 = 0; }
+inline void timerReset(void) { TCNT1 = 0; }
     1eb0:	04 e8       	ldi	r16, 0x84	; 132
     1eb2:	10 e0       	ldi	r17, 0x00	; 0
     1eb4:	f8 01       	movw	r30, r16
     1eb6:	11 82       	std	Z+1, r1	; 0x01
     1eb8:	10 82       	st	Z, r1
   // Fetch packet from ENC28j60, measure elapsed time
-  timer_hw_reset();
+  timerReset();
   uint8_t ubRecvResult = enc28j60_recv(g_pDataBuffer, DATABUF_SIZE, pDataSize);
     1eba:	8f e7       	ldi	r24, 0x7F	; 127
     1ebc:	91 e0       	ldi	r25, 0x01	; 1
@@ -5784,15 +5783,15 @@ inline void timer_hw_reset(void) { TCNT1 = 0; }
     1ec2:	ae 01       	movw	r20, r28
     1ec4:	0e 94 df 11 	call	0x23be	; 0x23be <enc28j60_recv>
     1ec8:	f8 2e       	mov	r15, r24
-inline uint16_t  timer_hw_get(void) { return TCNT1; }
+inline uint16_t  timerGetState(void) { return TCNT1; }
     1eca:	f8 01       	movw	r30, r16
     1ecc:	60 81       	ld	r22, Z
     1ece:	71 81       	ldd	r23, Z+1	; 0x01
-  uint16_t uwTimeDelta = timer_hw_get();
-  uint16_t uwDataRate = timer_hw_calc_rate_kbs(*pDataSize, uwTimeDelta);
+  uint16_t uwTimeDelta = timerGetState();
+  uint16_t uwDataRate = timerCalculateKbps(*pDataSize, uwTimeDelta);
     1ed0:	88 81       	ld	r24, Y
     1ed2:	99 81       	ldd	r25, Y+1	; 0x01
-    1ed4:	0e 94 87 02 	call	0x50e	; 0x50e <timer_hw_calc_rate_kbs>
+    1ed4:	0e 94 87 02 	call	0x50e	; 0x50e <timerCalculateKbps>
     1ed8:	ac 01       	movw	r20, r24
 
   if(ubRecvResult == PIO_OK) {
@@ -6407,10 +6406,10 @@ uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
     2206:	60 e0       	ldi	r22, 0x00	; 0
     2208:	4f ef       	ldi	r20, 0xFF	; 255
     220a:	0e 94 a6 0f 	call	0x1f4c	; 0x1f4c <writeOp>
-  timer_delay_100us(20); // errata B7/2
+  timerDelay100us(20); // errata B7/2
     220e:	84 e1       	ldi	r24, 0x14	; 20
     2210:	90 e0       	ldi	r25, 0x00	; 0
-    2212:	0e 94 7a 02 	call	0x4f4	; 0x4f4 <timer_delay_100us>
+    2212:	0e 94 7a 02 	call	0x4f4	; 0x4f4 <timerDelay100us>
     2216:	00 e0       	ldi	r16, 0x00	; 0
     2218:	10 e0       	ldi	r17, 0x00	; 0
     221a:	08 c0       	rjmp	.+16     	; 0x222c <enc28j60_init+0x56>
@@ -6429,7 +6428,7 @@ uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
     2228:	81 e0       	ldi	r24, 0x01	; 1
     222a:	c0 c0       	rjmp	.+384    	; 0x23ac <enc28j60_init+0x1d6>
   writeOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET);
-  timer_delay_100us(20); // errata B7/2
+  timerDelay100us(20); // errata B7/2
 
   // wait or error
   uint16_t count = 0;

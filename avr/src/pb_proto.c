@@ -95,7 +95,7 @@ void pb_proto_request_recv(void)
   _delay_loop_1(1);
   PAR_STATUS_PORT |= NACK;
   // TODO(KaiN#9): Perhaps should be longer as atmega clk is faster?
-  trigger_ts = time_stamp;
+  trigger_ts = g_uwTimeStamp;
 }
 
 // ----- HELPER -----
@@ -108,8 +108,8 @@ void pb_proto_request_recv(void)
  */
 static uint8_t wait_req(uint8_t ubReqValue, uint8_t ubStateFlag) {
   // wait for new REQ value
-  timer_100us = 0;
-  while(timer_100us < pb_proto_timeout) {
+  g_uwTimer100us = 0;
+  while(g_uwTimer100us < pb_proto_timeout) {
 		uint8_t ubIn = PAR_STATUS_PIN;
     uint8_t ubPOut = (ubIn & POUT) >> POUT_PIN;
     if(ubReqValue == ubPOut)
@@ -122,8 +122,8 @@ static uint8_t wait_req(uint8_t ubReqValue, uint8_t ubStateFlag) {
 }
 
 static uint8_t wait_sel(uint8_t select_state, uint8_t state_flag) {
-  timer_100us = 0;
-  while(timer_100us < pb_proto_timeout) {
+  g_uwTimer100us = 0;
+  while(g_uwTimer100us < pb_proto_timeout) {
     if(((PAR_STATUS_PIN & SEL) >> SEL_PIN) == select_state)
       return PBPROTO_STATUS_OK;
   }
@@ -445,8 +445,8 @@ uint8_t pb_proto_handle(void) {
   }
 
   // start timer
-  uint32_t ts = time_stamp;
-  timer_hw_reset();
+  uint32_t ts = g_uwTimeStamp;
+  timerReset();
 
   // confirm cmd with RAK = 1
   PAR_STATUS_PORT |= BUSY;
@@ -476,8 +476,9 @@ uint8_t pb_proto_handle(void) {
   // reset RAK = 0
   PAR_STATUS_PORT &= ~BUSY;
 
-  // read timer
-  uint16_t uwTimeDelta = timer_hw_get();
+  // Read timer - assuming transfer will be much shorter than 100us
+  // TODO(KaiN#7): is it really that short?
+  uint16_t uwTimeDelta = timerGetState();
 
   // Amiga sent data - process it
   if(result == PBPROTO_STATUS_OK) {
@@ -491,7 +492,7 @@ uint8_t pb_proto_handle(void) {
   ps->status = result;
   ps->size = uwParDataSize;
   ps->delta = uwTimeDelta;
-  ps->rate = timer_hw_calc_rate_kbs(uwParDataSize, uwTimeDelta);
+  ps->rate = timerCalculateKbps(uwParDataSize, uwTimeDelta);
   ps->ts = ts;
   ps->is_send = (cmd == PBPROTO_CMD_SEND) || (cmd == PBPROTO_CMD_SEND_BURST);
   ps->stats_id = ps->is_send ? STATS_ID_PB_TX : STATS_ID_PB_RX;

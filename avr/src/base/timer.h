@@ -32,31 +32,31 @@
 #include <avr/io.h>
 
 // init timers
-void timer_init(void);
+void timerInit(void);
 
 // a 100 Hz = 10ms timer
 // 16bit: 0,10ms...~10hours
-extern volatile uint16_t timer_10ms;
+extern volatile uint16_t g_uwTimer10ms;
 
 // a 99.83ms ~ 100ms timer
 // 16bit: 0,100us...6.5s
-extern volatile uint16_t timer_100us;
+extern volatile uint16_t g_uwTimer100us;
 
 // in 100us
-extern volatile uint32_t time_stamp;
+extern volatile uint32_t g_uwTimeStamp;
 
 // busy wait with 10ms timer
-extern void timer_delay_10ms(uint16_t timeout);
+extern void timerDelay10ms(uint16_t uwCount);
 
 // busy wait with 100us timer
-extern void timer_delay_100us(uint16_t timeout);
+extern void timerDelay100us(uint16_t uwCount);
 
 // ----- hardware timer -----
 
 // 16 bit hw timer with 4us resolution
-inline void timer_hw_reset(void) { TCNT1 = 0; }
-inline uint16_t  timer_hw_get(void) { return TCNT1; }
-extern uint16_t timer_hw_calc_rate_kbs(uint16_t bytes, uint16_t delta);
+inline void timerReset(void) { TCNT1 = 0; }
+inline uint16_t  timerGetState(void) { return TCNT1; }
+extern uint16_t timerCalculateKbps(uint16_t bytes, uint16_t delta);
 
 
 #endif

@@ -26,76 +26,71 @@
 
 #include "../global.h"
 
+#include <avr/io.h>
 #include <avr/interrupt.h>
 
-#define T2_vect TIMER2_COMPA_vect
-
-// timer counter
-volatile uint16_t timer_100us; /// Number of 100us intervals passed
-volatile uint16_t timer_10ms;  /// Number of 10-ms intervals passed
-volatile uint32_t time_stamp;  /// Time stamp since beginning of runtime - 1 tick equals 100us
-static uint16_t count;         /// Number of 100us intervals to increment 10-ms count
+// timer s_uw10msCounterer
+volatile uint16_t g_uwTimer100us; ///< Number of 100us intervals passed
+volatile uint16_t g_uwTimer10ms;  ///< Number of 10-ms intervals passed
+volatile uint32_t g_uwTimeStamp;  ///< Time stamp since beginning of runtime.
+                                  ///  1 tick equals 100us.
+static uint16_t s_uw10msCounter;  ///< Number of 100us intervals, stored for
+                                  ///  10-ms s_uw10msCounterer increments
 
 /// 100us is 1/10k of a second
 /// NOTE(KaiN#): time was reduced by 1, should it be?
-#define T2_100us ((F_CPU/8)/10000)
+#define T1_100us F_CPU/10000
 
-void timer_init(void) {
+void timerInit(void) {
   cli();
 
 	/// Set timer 2 to CTC, prescaler 8 & compare value: 100us
-  TCCR2A = _BV(WGM21);  // CTC
-  TCCR2B = _BV(CS21);   // Prescaler 8
-  OCR2A = T2_100us;     // Output compare
-  TCNT2  = 0x00;        // Reset timer state
-  TIMSK2 = _BV(OCIE2A); // Enable compare interrupt
+  TCCR1A = _BV(WGM12);  // CTC
+  TCCR1B = _BV(CS10);   // Prescaler 1
+  OCR1A = T1_100us;     // Output compare
+  TCNT1  = 0;           // Reset timer state
+  TIMSK1 = _BV(OCIE1A); // Enable compare interrupt
 
-	/// Is it used?
-  // ----- TIMER1 (16bit) -----
-  // prescale 64
-  // 16 MHz -> 250 KHz = 4 us timer
-
-  // set to CTC on OCR1A with prescale 8
-  TCCR1A = 0x00;
-  TCCR1B = _BV(CS11) | _BV(CS10); // prescale 64
-  TCCR1C = 0x00;
-
-  // reset timer
-  TCNT1 = 0;
-
-  timer_100us = 0;
-  timer_10ms = 0;
-  time_stamp = 0;
-  count = 0;
+  g_uwTimer100us = 0;
+  g_uwTimer10ms = 0;
+  g_uwTimeStamp = 0;
+  s_uw10msCounter = 0;
 
   sei();
 }
 
-// timer2 compare A handler
-ISR(T2_vect) {
-  ++timer_100us;
-  ++time_stamp;
-  ++count;
-  if(count >= 1000) {
-    count = 0;
-    timer_10ms++;
+/**
+ * Timer interrupt handler.
+ * Increments time stamp and time interval vars accordingly.
+ */
+ISR(TIMER1_COMPA_vect) {
+	TCNT1 = 0; // Reset timer s_uw10msCounterer
+  ++g_uwTimer100us;
+  ++g_uwTimeStamp;
+  ++s_uw10msCounter;
+  if(s_uw10msCounter >= 1000) {
+    s_uw10msCounter = 0;
+    g_uwTimer10ms++;
   }
 }
 
 /// Busy-wait for supplied number of 10ms intervals
-void timer_delay_10ms(uint16_t uwIntervalCount) {
-	timer_10ms=0;
-	while(timer_10ms<uwIntervalCount);
+void timerDelay10ms(uint16_t uwCount) {
+	g_uwTimer10ms=0;
+	while(g_uwTimer10ms<uwCount);
 }
 
 /// Busy-wait for supplied number of 100us intervals
-void timer_delay_100us(uint16_t uwIntervalCount) {
-	timer_100us=0;
-	while(timer_100us<uwIntervalCount);
+void timerDelay100us(uint16_t uwCount) {
+	g_uwTimer100us=0;
+	while(g_uwTimer100us<uwCount);
 }
 
-/// Calculates bitrate based on transferred byte count and elapsed time
-uint16_t timer_hw_calc_rate_kbs(uint16_t bytes, uint16_t delta) {
+// TODO(KaiN#9): timerCalculateKbps() is completely messed up
+/**
+ * Calculates bitrate based on transferred byte count and elapsed time.
+ */
+uint16_t timerCalculateKbps(uint16_t bytes, uint16_t delta) {
   if(delta != 0) {
     uint32_t nom = 1000 * (uint32_t)bytes * 100;
     uint32_t denom = (uint32_t)delta * 4;

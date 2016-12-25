@@ -86,7 +86,7 @@ static void init_hw(void)
 	sei();
 
 	// Setup timers
-	timer_init();
+	timerInit();
 
 	// Zero DDR and PORT status
   PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
@@ -137,7 +137,7 @@ int main(void)
 		}
 
 	// Wait a bit and do a reset
-	timer_delay_10ms(10);
+	timerDelay10ms(10);
 	wdt_enable(WDTO_15MS);
 	while(1);
 

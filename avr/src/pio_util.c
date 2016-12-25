@@ -62,10 +62,10 @@ uint8_t pio_util_get_init_flags()
 uint8_t pio_util_recv_packet(uint16_t *pDataSize)
 {
   // Fetch packet from ENC28j60, measure elapsed time
-  timer_hw_reset();
+  timerReset();
   uint8_t ubRecvResult = enc28j60_recv(g_pDataBuffer, DATABUF_SIZE, pDataSize);
-  uint16_t uwTimeDelta = timer_hw_get();
-  uint16_t uwDataRate = timer_hw_calc_rate_kbs(*pDataSize, uwTimeDelta);
+  uint16_t uwTimeDelta = timerGetState();
+  uint16_t uwDataRate = timerCalculateKbps(*pDataSize, uwTimeDelta);
 
   if(ubRecvResult == PIO_OK) {
 		// Update stats - write new data size & rate
@@ -91,14 +91,16 @@ uint8_t pio_util_recv_packet(uint16_t *pDataSize)
 
 uint8_t pio_util_send_packet(uint16_t size)
 {
-  timer_hw_reset();
+  timerReset();
   uint8_t result = enc28j60_send(g_pDataBuffer, size);
-  uint16_t delta = timer_hw_get();
+  // NOTE(KaiN#7): Is it really that short?
+  uint16_t delta = timerGetState();
 
-  uint16_t rate = timer_hw_calc_rate_kbs(size, delta);
+  uint16_t rate = timerCalculateKbps(size, delta);
   if(result == PIO_OK) {
     stats_update_ok(STATS_ID_PIO_TX, size, rate);
-  } else {
+  }
+  else {
     stats_get(STATS_ID_PIO_TX)->err++;
   }
 
