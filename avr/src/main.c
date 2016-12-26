@@ -39,6 +39,7 @@
 #include "bridge.h"
 #include "main.h"
 #include "pinout.h"
+#include "base/util.h"
 
 uint8_t run_mode = RUN_MODE_BRIDGE;
 uint8_t global_verbose = 0;
@@ -64,7 +65,7 @@ uint8_t global_verbose = 0;
  * EEPROM:     21 ( 2.1%)
  *
  * Current sizes after last change:
- * Program: 9884 (30.2%)
+ * Program: 9894 (30.2%)
  * Data: 1689 (82.5%)
  * EEPROM: 21 (2.1%)
  *
@@ -137,9 +138,9 @@ int main(void)
 		}
 
 	// Wait a bit and do a reset
+	// TODO(KaiN#1): Is delay really required?
 	timerDelay10ms(10);
-	wdt_enable(WDTO_15MS);
-	while(1);
+	utilReset();
 
   return 0;
 }

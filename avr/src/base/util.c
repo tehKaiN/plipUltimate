@@ -25,6 +25,7 @@
  */
 
 #include "util.h"
+#include <avr/wdt.h>
 
 /**
  * Converts nibble (0..15) value to hex char.
@@ -169,4 +170,14 @@ uint8_t utilParseByteDec(const char *buf, uint8_t *out)
     *out = value;
   }
   return digits;
+}
+
+/**
+ * Reboots AVR microcontroller.
+ * Performs watchdog-based AVR reset, resulting in executing bootloader code
+ * in a clean way.
+ */
+void utilReset(void) {
+	wdt_enable(WDTO_15MS);
+	while(1);
 }

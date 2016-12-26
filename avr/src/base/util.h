@@ -58,6 +58,8 @@ extern uint8_t utilParseDwordHex(const char *str,uint32_t *value);
 // parse a decimal byte value
 extern uint8_t utilParseByteDec(const char *buf, uint8_t *out);
 
+extern void utilReset(void);
+
 #ifdef DEBUG
 // ---- stack free -----
 extern void *__heap_start;
