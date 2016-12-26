@@ -65,7 +65,7 @@ uint8_t global_verbose = 0;
  * EEPROM:     21 ( 2.1%)
  *
  * Current sizes after last change:
- * Program: 9900 (30.2%)
+ * Program: 9912 (30.2%)
  * Data: 1689 (82.5%)
  * EEPROM: 21 (2.1%)
  *
@@ -80,8 +80,7 @@ uint8_t global_verbose = 0;
  * 	POut:    input,  pulled high
  * 	NAck:    output, default: 1
  */
-static void init_hw(void)
-{
+static void hwInit(void) {
 	// Disable watchdog
 	wdt_disable();
 	sei();
@@ -98,11 +97,15 @@ static void init_hw(void)
   PAR_STATUS_PORT |= NSTROBE | SEL | POUT | NACK;
 
   PAR_DATA_DDR = 0xFF;
+
+  // Initialize status LED
+  DDRC |= _BV(PC5);
+  PORTC |= _BV(PC5);
 }
 
 int main(void)
 {
-	init_hw();
+	hwInit();
 
 	// Send welcome message
 	// NOTE: UART - \r\nWelcome to plipbox " VERSION " " BUILD_DATE "\r\n
