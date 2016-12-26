@@ -32,7 +32,6 @@
 #include "base/uartutil.h"
 #include "main.h"
 #include "stats.h"
-#include "base/cmd.h"
 #include "pb_util.h"
 #include "pb_proto.h"
 #include "net/net.h"
@@ -96,10 +95,8 @@ static uint8_t proc_pkt(uint16_t uwSize)
   return PBPROTO_STATUS_OK;
 }
 
-uint8_t bridge_test_loop(void)
+void bridge_test_loop(void)
 {
-  uint8_t result = CMD_WORKER_IDLE;
-
 	// NOTE: UART - time_stamp_spc [BRIDGE_TEST] on\r\n
 
   pb_proto_init(fill_pkt, proc_pkt);
@@ -140,6 +137,4 @@ uint8_t bridge_test_loop(void)
   enc28j60_exit();
 
   // NOTE: UART - time_stamp_spc() [BRIDGE_TEST] off\r\n
-
-  return result;
 }

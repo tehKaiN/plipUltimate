@@ -32,7 +32,6 @@
 #include "param.h"
 #include "stats.h"
 #include "main.h"
-#include "base/cmd.h"
 #include "base/timer.h"
 #include "net/net.h"
 #include "pkt_buf.h"
@@ -162,8 +161,7 @@ static void pb_test_worker(void)
   }
 }
 
-uint8_t pb_test_loop(void)
-{
+void pb_test_loop(void) {
 	// NOTE: time_stamp_spc() [PB_TEST] on\r\n
 
   stats_reset();
@@ -175,7 +173,6 @@ uint8_t pb_test_loop(void)
   silent_mode = 0;
 
   // test loop
-  uint8_t result = CMD_WORKER_IDLE;
   while(run_mode == RUN_MODE_PB_TEST) {
     // command line handling
     // NOTE: UART cmd_worker handling was here, reset by loop break
@@ -186,8 +183,6 @@ uint8_t pb_test_loop(void)
   stats_dump(1,0);
 
 	// NOTE: UART - time_stamp_spc() [PB_TEST] off\r\n
-
-  return result;
 }
 
 void pb_test_send_packet(uint8_t silent)

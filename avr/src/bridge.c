@@ -36,13 +36,13 @@
 #include "base/util.h"
 #include "bridge.h"
 #include "main.h"
-#include "base/cmd.h"
 #include "pb_util.h"
 #include "pio_util.h"
 #include "pio.h"
 #include "net/eth.h"
 #include "net/net.h"
 #include "spi/enc28j60.h"
+#include "cmd.h"
 
 #define FLAG_ONLINE         1
 #define FLAG_SEND_MAGIC     2
@@ -172,7 +172,7 @@ static uint8_t bridgeProcessPacket(uint16_t uwSize)
       bridgeLoopback(uwSize);
       break;
 		case ETH_TYPE_MAGIC_CMD:
-			// cmdProcess(size);
+			cmdProcess(uwSize);
     default:
       // send packet via pio
       pio_util_send_packet(uwSize);
@@ -187,10 +187,8 @@ static uint8_t bridgeProcessPacket(uint16_t uwSize)
 
 // ---------- loop ----------
 
-uint8_t bridge_loop(void)
+void bridge_loop(void)
 {
-  uint8_t result = CMD_WORKER_IDLE;
-
   // NOTE: UART - time_stamp_spc() [BRIDGE] on\r\n
 
   // Associate protocol fns with given ptrs
@@ -266,6 +264,4 @@ uint8_t bridge_loop(void)
   enc28j60_exit();
 
 	// NOTE: UART - time_stamp_spc() [BRIDGE] off\r\n
-
-  return result;
 }

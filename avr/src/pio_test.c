@@ -32,16 +32,14 @@
 #include "base/uartutil.h"
 #include "main.h"
 #include "stats.h"
-#include "base/cmd.h"
 #include "spi/enc28j60.h"
 
 /**
  * Packet IO test mode loop.
  * Used to benchmark Amiga-PlipBox comm.
  */
-uint8_t pio_test_loop(void)
+void pio_test_loop(void)
 {
-  uint8_t result = CMD_WORKER_IDLE;
 
   // NOTE: UART - time_stamp_spc() [PIO_TEST] on\r\n
 
@@ -74,6 +72,4 @@ uint8_t pio_test_loop(void)
   enc28j60_exit();
 
 	// NOTE: UART - time_stamp_spc() [PIO_TEST] off\r\n
-
-  return result;
 }

@@ -29,7 +29,7 @@
 
 #include "global.h"
 
-extern uint8_t pb_test_loop(void);
+extern void pb_test_loop(void);
 
 extern void pb_test_toggle_auto(void);
 extern void pb_test_send_packet(uint8_t silent);

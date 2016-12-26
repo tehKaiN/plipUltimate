@@ -29,6 +29,6 @@
 
 #include "global.h"
 
-extern uint8_t bridge_test_loop(void);
+extern void bridge_test_loop(void);
 
 #endif

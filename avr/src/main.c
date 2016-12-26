@@ -31,7 +31,6 @@
 #include "base/uartutil.h"
 #include "base/timer.h"
 #include "param.h"
-#include "base/cmd.h"
 
 #include "pb_test.h"
 #include "pio_test.h"
@@ -57,6 +56,7 @@ uint8_t global_verbose = 0;
  *   Watchdog based on wdt functions (Prg: -24 B)
  *   Removed Packet IO HAL: (Prg: -232 B, Data: -3 B)
  *   Simplified data buffer access (Prg: -100 B, Data: -4 B)
+ *   Added Amiga command interface (Prg: +8 B)
  *   Other minor changes
  *
  * Sizes before UART removal:
@@ -65,7 +65,7 @@ uint8_t global_verbose = 0;
  * EEPROM:     21 ( 2.1%)
  *
  * Current sizes after last change:
- * Program: 9894 (30.2%)
+ * Program: 9900 (30.2%)
  * Data: 1689 (82.5%)
  * EEPROM: 21 (2.1%)
  *
@@ -119,28 +119,23 @@ int main(void)
 	#endif
 
 	// Enter main loop depending on current run mode
-	uint8_t result = CMD_WORKER_IDLE;
-	while(result != CMD_WORKER_RESET)
+	while(1) {
 		switch(run_mode) {
 			case RUN_MODE_PB_TEST:
-				result = pb_test_loop();
+				pb_test_loop();
 				break;
 			case RUN_MODE_PIO_TEST:
-				result = pio_test_loop();
+				pio_test_loop();
 				break;
 			case RUN_MODE_BRIDGE_TEST:
-				result = bridge_test_loop();
+				bridge_test_loop();
 				break;
 			case RUN_MODE_BRIDGE:
 			default:
-				result = bridge_loop();
+				bridge_loop();
 				break;
 		}
-
-	// Wait a bit and do a reset
-	// TODO(KaiN#1): Is delay really required?
-	timerDelay10ms(10);
-	utilReset();
+	}
 
   return 0;
 }
