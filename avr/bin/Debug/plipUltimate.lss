@@ -17,19 +17,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   6 .debug_pubnames 00000806  00000000  00000000  00002a18  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_info   00004dac  00000000  00000000  0000321e  2**0
+  7 .debug_info   00004e15  00000000  00000000  0000321e  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 00001a07  00000000  00000000  00007fca  2**0
+  8 .debug_abbrev 00001a6b  00000000  00000000  00008033  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   00002fcd  00000000  00000000  000099d1  2**0
+  9 .debug_line   00003080  00000000  00000000  00009a9e  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  00000860  00000000  00000000  0000c9a0  2**2
+ 10 .debug_frame  00000860  00000000  00000000  0000cb20  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    00001396  00000000  00000000  0000d200  2**0
+ 11 .debug_str    000013a3  00000000  00000000  0000d380  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    00001fba  00000000  00000000  0000e596  2**0
+ 12 .debug_loc    00001fba  00000000  00000000  0000e723  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00000178  00000000  00000000  00010550  2**0
+ 13 .debug_ranges 00000178  00000000  00000000  000106dd  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1300,6 +1300,12 @@ static uint8_t bridgeProcessPacket(uint16_t uwSize)
      98c:	cf 93       	push	r28
      98e:	df 93       	push	r29
      990:	ec 01       	movw	r28, r24
+ * Returns EtherType field value in given eth frame.
+ * @param pkt Pointer to eth frame.
+ * @return 2-byte EtherType field value.
+ */
+inline uint16_t eth_get_pkt_type(const uint8_t *pkt) {
+	return net_get_word(pkt + ETH_OFF_TYPE);
      992:	8b e8       	ldi	r24, 0x8B	; 139
      994:	91 e0       	ldi	r25, 0x01	; 1
      996:	0e 94 00 08 	call	0x1000	; 0x1000 <net_get_word>
@@ -1446,6 +1452,12 @@ static uint8_t bridgeFillPacket(uint16_t *pFilledSize)
     flags &= ~FLAG_SEND_MAGIC;
      a52:	8d 7f       	andi	r24, 0xFD	; 253
      a54:	80 93 3e 01 	sts	0x013E, r24
+extern const uint8_t net_zero_mac[6];
+extern const uint8_t net_zero_ip[4];
+extern const uint8_t net_ones_ip[4];
+
+/* convenience functions */
+inline void net_copy_bcast_mac(uint8_t *out) { net_copy_mac(net_bcast_mac, out); }
      a58:	0f e7       	ldi	r16, 0x7F	; 127
      a5a:	11 e0       	ldi	r17, 0x01	; 1
      a5c:	80 e0       	ldi	r24, 0x00	; 0
@@ -2431,12 +2443,6 @@ extern void dump_line(const uint8_t *eth_buf, uint16_t size)
   const uint8_t *ip_buf = eth_buf + ETH_HDR_SIZE;
      e5a:	ec 01       	movw	r28, r24
      e5c:	2e 96       	adiw	r28, 0x0e	; 14
- * Returns EtherType field value in given eth frame.
- * @param pkt Pointer to eth frame.
- * @return 2-byte EtherType field value.
- */
-inline uint16_t eth_get_pkt_type(const uint8_t *pkt) {
-	return net_get_word(pkt + ETH_OFF_TYPE);
      e5e:	0c 96       	adiw	r24, 0x0c	; 12
      e60:	0e 94 00 08 	call	0x1000	; 0x1000 <net_get_word>
   uint16_t type = eth_get_pkt_type(eth_buf);

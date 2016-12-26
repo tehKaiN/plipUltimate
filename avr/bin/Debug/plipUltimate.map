@@ -672,81 +672,81 @@ LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  .debug_pubnames
                 0x000007a4       0x62 obj\Debug\src\stats.o
 
-.debug_info     0x00000000     0x4dac
+.debug_info     0x00000000     0x4e15
  *(.debug_info)
  .debug_info    0x00000000      0x1a3 obj\Debug\src\base\timer.o
- .debug_info    0x000001a3      0x41e obj\Debug\src\base\util.o
- .debug_info    0x000005c1      0x485 obj\Debug\src\bridge.o
- .debug_info    0x00000a46      0x2cc obj\Debug\src\bridge_test.o
- .debug_info    0x00000d12      0x116 obj\Debug\src\cmd.o
- .debug_info    0x00000e28      0xa0b obj\Debug\src\cmd_table.o
- .debug_info    0x00001833      0x3da obj\Debug\src\cmdkey_table.o
- .debug_info    0x00001c0d      0x59a obj\Debug\src\dump.o
- .debug_info    0x000021a7       0xae obj\Debug\src\fuse.o
- .debug_info    0x00002255       0xcb obj\Debug\src\main.o
- .debug_info    0x00002320      0x1a9 obj\Debug\src\net\arp.o
- .debug_info    0x000024c9      0x474 obj\Debug\src\net\net.o
- .debug_info    0x0000293d      0x382 obj\Debug\src\param.o
- .debug_info    0x00002cbf      0x7a9 obj\Debug\src\pb_proto.o
- .debug_info    0x00003468      0x478 obj\Debug\src\pb_test.o
- .debug_info    0x000038e0      0x21d obj\Debug\src\pb_util.o
- .debug_info    0x00003afd      0x20d obj\Debug\src\pio_test.o
- .debug_info    0x00003d0a      0x62d obj\Debug\src\pio_util.o
- .debug_info    0x00004337       0x8f obj\Debug\src\pkt_buf.o
- .debug_info    0x000043c6      0x756 obj\Debug\src\spi\enc28j60.o
- .debug_info    0x00004b1c       0x72 obj\Debug\src\spi\spi.o
- .debug_info    0x00004b8e      0x21e obj\Debug\src\stats.o
+ .debug_info    0x000001a3      0x42d obj\Debug\src\base\util.o
+ .debug_info    0x000005d0      0x494 obj\Debug\src\bridge.o
+ .debug_info    0x00000a64      0x2cc obj\Debug\src\bridge_test.o
+ .debug_info    0x00000d30      0x125 obj\Debug\src\cmd.o
+ .debug_info    0x00000e55      0xa1a obj\Debug\src\cmd_table.o
+ .debug_info    0x0000186f      0x3da obj\Debug\src\cmdkey_table.o
+ .debug_info    0x00001c49      0x5a9 obj\Debug\src\dump.o
+ .debug_info    0x000021f2       0xae obj\Debug\src\fuse.o
+ .debug_info    0x000022a0       0xda obj\Debug\src\main.o
+ .debug_info    0x0000237a      0x1a9 obj\Debug\src\net\arp.o
+ .debug_info    0x00002523      0x483 obj\Debug\src\net\net.o
+ .debug_info    0x000029a6      0x382 obj\Debug\src\param.o
+ .debug_info    0x00002d28      0x7a9 obj\Debug\src\pb_proto.o
+ .debug_info    0x000034d1      0x478 obj\Debug\src\pb_test.o
+ .debug_info    0x00003949      0x21d obj\Debug\src\pb_util.o
+ .debug_info    0x00003b66      0x20d obj\Debug\src\pio_test.o
+ .debug_info    0x00003d73      0x62d obj\Debug\src\pio_util.o
+ .debug_info    0x000043a0       0x8f obj\Debug\src\pkt_buf.o
+ .debug_info    0x0000442f      0x756 obj\Debug\src\spi\enc28j60.o
+ .debug_info    0x00004b85       0x72 obj\Debug\src\spi\spi.o
+ .debug_info    0x00004bf7      0x21e obj\Debug\src\stats.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev   0x00000000     0x1a07
+.debug_abbrev   0x00000000     0x1a6b
  *(.debug_abbrev)
  .debug_abbrev  0x00000000       0xd5 obj\Debug\src\base\timer.o
- .debug_abbrev  0x000000d5      0x103 obj\Debug\src\base\util.o
- .debug_abbrev  0x000001d8      0x1d6 obj\Debug\src\bridge.o
- .debug_abbrev  0x000003ae      0x109 obj\Debug\src\bridge_test.o
- .debug_abbrev  0x000004b7       0xb4 obj\Debug\src\cmd.o
- .debug_abbrev  0x0000056b      0x157 obj\Debug\src\cmd_table.o
- .debug_abbrev  0x000006c2       0xe7 obj\Debug\src\cmdkey_table.o
- .debug_abbrev  0x000007a9      0x175 obj\Debug\src\dump.o
- .debug_abbrev  0x0000091e       0x73 obj\Debug\src\fuse.o
- .debug_abbrev  0x00000991       0x88 obj\Debug\src\main.o
- .debug_abbrev  0x00000a19       0xdf obj\Debug\src\net\arp.o
- .debug_abbrev  0x00000af8      0x120 obj\Debug\src\net\net.o
- .debug_abbrev  0x00000c18      0x19a obj\Debug\src\param.o
- .debug_abbrev  0x00000db2      0x2e2 obj\Debug\src\pb_proto.o
- .debug_abbrev  0x00001094      0x17f obj\Debug\src\pb_test.o
- .debug_abbrev  0x00001213      0x10b obj\Debug\src\pb_util.o
- .debug_abbrev  0x0000131e       0xe6 obj\Debug\src\pio_test.o
- .debug_abbrev  0x00001404      0x190 obj\Debug\src\pio_util.o
- .debug_abbrev  0x00001594       0x63 obj\Debug\src\pkt_buf.o
- .debug_abbrev  0x000015f7      0x285 obj\Debug\src\spi\enc28j60.o
- .debug_abbrev  0x0000187c       0x3f obj\Debug\src\spi\spi.o
- .debug_abbrev  0x000018bb      0x14c obj\Debug\src\stats.o
+ .debug_abbrev  0x000000d5      0x11b obj\Debug\src\base\util.o
+ .debug_abbrev  0x000001f0      0x1dd obj\Debug\src\bridge.o
+ .debug_abbrev  0x000003cd      0x109 obj\Debug\src\bridge_test.o
+ .debug_abbrev  0x000004d6       0xbb obj\Debug\src\cmd.o
+ .debug_abbrev  0x00000591      0x15e obj\Debug\src\cmd_table.o
+ .debug_abbrev  0x000006ef       0xe7 obj\Debug\src\cmdkey_table.o
+ .debug_abbrev  0x000007d6      0x17c obj\Debug\src\dump.o
+ .debug_abbrev  0x00000952       0x73 obj\Debug\src\fuse.o
+ .debug_abbrev  0x000009c5       0xa0 obj\Debug\src\main.o
+ .debug_abbrev  0x00000a65       0xdf obj\Debug\src\net\arp.o
+ .debug_abbrev  0x00000b44      0x138 obj\Debug\src\net\net.o
+ .debug_abbrev  0x00000c7c      0x19a obj\Debug\src\param.o
+ .debug_abbrev  0x00000e16      0x2e2 obj\Debug\src\pb_proto.o
+ .debug_abbrev  0x000010f8      0x17f obj\Debug\src\pb_test.o
+ .debug_abbrev  0x00001277      0x10b obj\Debug\src\pb_util.o
+ .debug_abbrev  0x00001382       0xe6 obj\Debug\src\pio_test.o
+ .debug_abbrev  0x00001468      0x190 obj\Debug\src\pio_util.o
+ .debug_abbrev  0x000015f8       0x63 obj\Debug\src\pkt_buf.o
+ .debug_abbrev  0x0000165b      0x285 obj\Debug\src\spi\enc28j60.o
+ .debug_abbrev  0x000018e0       0x3f obj\Debug\src\spi\spi.o
+ .debug_abbrev  0x0000191f      0x14c obj\Debug\src\stats.o
 
-.debug_line     0x00000000     0x2fcd
+.debug_line     0x00000000     0x3080
  *(.debug_line)
  .debug_line    0x00000000      0x1a2 obj\Debug\src\base\timer.o
- .debug_line    0x000001a2      0x309 obj\Debug\src\base\util.o
- .debug_line    0x000004ab      0x2d6 obj\Debug\src\bridge.o
- .debug_line    0x00000781      0x1dd obj\Debug\src\bridge_test.o
- .debug_line    0x0000095e       0xb6 obj\Debug\src\cmd.o
- .debug_line    0x00000a14      0x2b3 obj\Debug\src\cmd_table.o
- .debug_line    0x00000cc7      0x1b5 obj\Debug\src\cmdkey_table.o
- .debug_line    0x00000e7c      0x1fd obj\Debug\src\dump.o
- .debug_line    0x00001079       0x8e obj\Debug\src\fuse.o
- .debug_line    0x00001107      0x10e obj\Debug\src\main.o
- .debug_line    0x00001215      0x11c obj\Debug\src\net\arp.o
- .debug_line    0x00001331      0x277 obj\Debug\src\net\net.o
- .debug_line    0x000015a8      0x200 obj\Debug\src\param.o
- .debug_line    0x000017a8      0x749 obj\Debug\src\pb_proto.o
- .debug_line    0x00001ef1      0x2bd obj\Debug\src\pb_test.o
- .debug_line    0x000021ae      0x116 obj\Debug\src\pb_util.o
- .debug_line    0x000022c4      0x134 obj\Debug\src\pio_test.o
- .debug_line    0x000023f8      0x2d4 obj\Debug\src\pio_util.o
- .debug_line    0x000026cc       0x8f obj\Debug\src\pkt_buf.o
- .debug_line    0x0000275b      0x67d obj\Debug\src\spi\enc28j60.o
- .debug_line    0x00002dd8       0x8f obj\Debug\src\spi\spi.o
- .debug_line    0x00002e67      0x166 obj\Debug\src\stats.o
+ .debug_line    0x000001a2      0x31e obj\Debug\src\base\util.o
+ .debug_line    0x000004c0      0x2e9 obj\Debug\src\bridge.o
+ .debug_line    0x000007a9      0x1dd obj\Debug\src\bridge_test.o
+ .debug_line    0x00000986       0xd0 obj\Debug\src\cmd.o
+ .debug_line    0x00000a56      0x2cd obj\Debug\src\cmd_table.o
+ .debug_line    0x00000d23      0x1b5 obj\Debug\src\cmdkey_table.o
+ .debug_line    0x00000ed8      0x216 obj\Debug\src\dump.o
+ .debug_line    0x000010ee       0x8e obj\Debug\src\fuse.o
+ .debug_line    0x0000117c      0x128 obj\Debug\src\main.o
+ .debug_line    0x000012a4      0x11c obj\Debug\src\net\arp.o
+ .debug_line    0x000013c0      0x29b obj\Debug\src\net\net.o
+ .debug_line    0x0000165b      0x200 obj\Debug\src\param.o
+ .debug_line    0x0000185b      0x749 obj\Debug\src\pb_proto.o
+ .debug_line    0x00001fa4      0x2bd obj\Debug\src\pb_test.o
+ .debug_line    0x00002261      0x116 obj\Debug\src\pb_util.o
+ .debug_line    0x00002377      0x134 obj\Debug\src\pio_test.o
+ .debug_line    0x000024ab      0x2d4 obj\Debug\src\pio_util.o
+ .debug_line    0x0000277f       0x8f obj\Debug\src\pkt_buf.o
+ .debug_line    0x0000280e      0x67d obj\Debug\src\spi\enc28j60.o
+ .debug_line    0x00002e8b       0x8f obj\Debug\src\spi\spi.o
+ .debug_line    0x00002f1a      0x166 obj\Debug\src\stats.o
 
 .debug_frame    0x00000000      0x860
  *(.debug_frame)
@@ -771,51 +771,51 @@ LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
  .debug_frame   0x000007d0       0x20 obj\Debug\src\spi\spi.o
  .debug_frame   0x000007f0       0x70 obj\Debug\src\stats.o
 
-.debug_str      0x00000000     0x1396
+.debug_str      0x00000000     0x13a3
  *(.debug_str)
  .debug_str     0x00000000      0x116 obj\Debug\src\base\timer.o
                                 0x155 (size before relaxing)
- .debug_str     0x00000116      0x110 obj\Debug\src\base\util.o
-                                0x1be (size before relaxing)
- .debug_str     0x00000226      0x1ce obj\Debug\src\bridge.o
-                                0x2bc (size before relaxing)
- .debug_str     0x000003f4       0x42 obj\Debug\src\bridge_test.o
+ .debug_str     0x00000116      0x11d obj\Debug\src\base\util.o
+                                0x1cb (size before relaxing)
+ .debug_str     0x00000233      0x1ce obj\Debug\src\bridge.o
+                                0x2c9 (size before relaxing)
+ .debug_str     0x00000401       0x42 obj\Debug\src\bridge_test.o
                                 0x1d2 (size before relaxing)
- .debug_str     0x00000436       0x7c obj\Debug\src\cmd.o
-                                0x12b (size before relaxing)
- .debug_str     0x000004b2      0x37e obj\Debug\src\cmd_table.o
-                                0x4f5 (size before relaxing)
- .debug_str     0x00000830      0x22e obj\Debug\src\cmdkey_table.o
+ .debug_str     0x00000443       0x7c obj\Debug\src\cmd.o
+                                0x138 (size before relaxing)
+ .debug_str     0x000004bf      0x37e obj\Debug\src\cmd_table.o
+                                0x502 (size before relaxing)
+ .debug_str     0x0000083d      0x22e obj\Debug\src\cmdkey_table.o
                                 0x31c (size before relaxing)
- .debug_str     0x00000a5e      0x163 obj\Debug\src\dump.o
-                                0x285 (size before relaxing)
- .debug_str     0x00000bc1       0x29 obj\Debug\src\fuse.o
+ .debug_str     0x00000a6b      0x163 obj\Debug\src\dump.o
+                                0x292 (size before relaxing)
+ .debug_str     0x00000bce       0x29 obj\Debug\src\fuse.o
                                  0xb9 (size before relaxing)
- .debug_str     0x00000bea       0x18 obj\Debug\src\main.o
-                                 0xc8 (size before relaxing)
- .debug_str     0x00000c02       0x56 obj\Debug\src\net\arp.o
+ .debug_str     0x00000bf7       0x18 obj\Debug\src\main.o
+                                 0xd5 (size before relaxing)
+ .debug_str     0x00000c0f       0x56 obj\Debug\src\net\arp.o
                                 0x12a (size before relaxing)
- .debug_str     0x00000c58       0xbd obj\Debug\src\net\net.o
-                                0x1ac (size before relaxing)
- .debug_str     0x00000d15       0x8c obj\Debug\src\param.o
+ .debug_str     0x00000c65       0xbd obj\Debug\src\net\net.o
+                                0x1b9 (size before relaxing)
+ .debug_str     0x00000d22       0x8c obj\Debug\src\param.o
                                 0x1f5 (size before relaxing)
- .debug_str     0x00000da1      0x1fd obj\Debug\src\pb_proto.o
+ .debug_str     0x00000dae      0x1fd obj\Debug\src\pb_proto.o
                                 0x370 (size before relaxing)
- .debug_str     0x00000f9e       0x86 obj\Debug\src\pb_test.o
+ .debug_str     0x00000fab       0x86 obj\Debug\src\pb_test.o
                                 0x280 (size before relaxing)
- .debug_str     0x00001024       0x27 obj\Debug\src\pb_util.o
+ .debug_str     0x00001031       0x27 obj\Debug\src\pb_util.o
                                 0x153 (size before relaxing)
- .debug_str     0x0000104b       0x1d obj\Debug\src\pio_test.o
+ .debug_str     0x00001058       0x1d obj\Debug\src\pio_test.o
                                 0x15e (size before relaxing)
- .debug_str     0x00001068      0x10a obj\Debug\src\pio_util.o
+ .debug_str     0x00001075      0x10a obj\Debug\src\pio_util.o
                                 0x35a (size before relaxing)
- .debug_str     0x00001172        0xe obj\Debug\src\pkt_buf.o
+ .debug_str     0x0000117f        0xe obj\Debug\src\pkt_buf.o
                                  0xb4 (size before relaxing)
- .debug_str     0x00001180      0x1c8 obj\Debug\src\spi\enc28j60.o
+ .debug_str     0x0000118d      0x1c8 obj\Debug\src\spi\enc28j60.o
                                 0x29f (size before relaxing)
- .debug_str     0x00001348       0x17 obj\Debug\src\spi\spi.o
+ .debug_str     0x00001355       0x17 obj\Debug\src\spi\spi.o
                                  0xa7 (size before relaxing)
- .debug_str     0x0000135f       0x37 obj\Debug\src\stats.o
+ .debug_str     0x0000136c       0x37 obj\Debug\src\stats.o
                                 0x12e (size before relaxing)
 
 .debug_loc      0x00000000     0x1fba

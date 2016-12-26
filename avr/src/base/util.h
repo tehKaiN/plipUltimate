@@ -60,11 +60,13 @@ extern uint8_t utilParseByteDec(const char *buf, uint8_t *out);
 
 extern void utilReset(void);
 
-#ifdef DEBUG
-// ---- stack free -----
 extern void *__heap_start;
-inline uint16_t stack_free(void) { return SP - (uint16_t) &__heap_start; }
-#endif
+/**
+ * Checks how many free bytes are left on stack.
+ * Checks distance between current Stack Pointer position and heap's
+ * start address.
+ */
+inline uint16_t utilStackRemaining(void) { return SP - (uint16_t) &__heap_start; }
 
 #endif
 
