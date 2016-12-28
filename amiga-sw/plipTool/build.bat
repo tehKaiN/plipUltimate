@@ -1,0 +1,1 @@
+vc main.c -c99 -lamiga -o plipTool

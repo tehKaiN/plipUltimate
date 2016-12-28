@@ -10,7 +10,7 @@
 1463509511 d:\prg\_git\plipultimate\avr\src\base\cmd.h
 	"../global.h"
 
-1482252598 d:\prg\_git\plipultimate\avr\src\global.h
+1482775610 d:\prg\_git\plipultimate\avr\src\global.h
 	<stdint.h>
 
 1482576680 d:\prg\_git\plipultimate\avr\src\cmd_table.h
@@ -54,7 +54,7 @@
 	"uartutil.h"
 	"timer.h"
 
-1482749160 d:\prg\_git\plipultimate\avr\src\base\util.h
+1482755437 d:\prg\_git\plipultimate\avr\src\base\util.h
 	<avr/io.h>
 	"../global.h"
 
@@ -69,7 +69,7 @@
 
 1421491558 source:d:\prg\_git\plipultimate\avr\src\board\avrnetio.c
 
-1482580245 source:d:\prg\_git\plipultimate\avr\src\bridge.c
+1482778629 source:d:\prg\_git\plipultimate\avr\src\bridge.c
 	"global.h"
 	"pkt_buf.h"
 	"pb_proto.h"
@@ -81,18 +81,18 @@
 	"base/util.h"
 	"bridge.h"
 	"main.h"
-	"base/cmd.h"
 	"pb_util.h"
 	"pio_util.h"
 	"pio.h"
 	"net/eth.h"
 	"net/net.h"
 	"spi/enc28j60.h"
+	"cmd.h"
 
 1482579163 d:\prg\_git\plipultimate\avr\src\pkt_buf.h
 	"global.h"
 
-1482579810 d:\prg\_git\plipultimate\avr\src\pb_proto.h
+1482774576 d:\prg\_git\plipultimate\avr\src\pb_proto.h
 	"global.h"
 
 1463509959 d:\prg\_git\plipultimate\avr\src\param.h
@@ -105,7 +105,7 @@
 1463509960 d:\prg\_git\plipultimate\avr\src\stats.h
 	"global.h"
 
-1463509951 d:\prg\_git\plipultimate\avr\src\bridge.h
+1482753266 d:\prg\_git\plipultimate\avr\src\bridge.h
 	"global.h"
 
 1463509960 d:\prg\_git\plipultimate\avr\src\main.h
@@ -127,7 +127,7 @@
 1482576748 d:\prg\_git\plipultimate\avr\src\net\net.h
 	"../global.h"
 
-1482580216 source:d:\prg\_git\plipultimate\avr\src\bridge_test.c
+1482774587 source:d:\prg\_git\plipultimate\avr\src\bridge_test.c
 	"bridge_test.h"
 	"pio.h"
 	"pio_util.h"
@@ -135,7 +135,6 @@
 	"base/uartutil.h"
 	"main.h"
 	"stats.h"
-	"base/cmd.h"
 	"pb_util.h"
 	"pb_proto.h"
 	"net/net.h"
@@ -144,7 +143,7 @@
 	"dump.h"
 	"spi/enc28j60.h"
 
-1463509960 d:\prg\_git\plipultimate\avr\src\bridge_test.h
+1482753292 d:\prg\_git\plipultimate\avr\src\bridge_test.h
 	"global.h"
 
 1482576762 source:d:\prg\_git\plipultimate\avr\src\cmd_table.c
@@ -162,7 +161,7 @@
 	"main.h"
 	"base/uartutil.h"
 
-1463509960 d:\prg\_git\plipultimate\avr\src\pb_test.h
+1482753385 d:\prg\_git\plipultimate\avr\src\pb_test.h
 	"global.h"
 
 1464857489 source:d:\prg\_git\plipultimate\avr\src\dump.c
@@ -240,7 +239,7 @@
 	"global.h"
 	<avr/io.h>
 
-1463509960 d:\prg\_git\plipultimate\avr\src\pio_test.h
+1482753418 d:\prg\_git\plipultimate\avr\src\pio_test.h
 	"global.h"
 
 1463509960 source:d:\prg\_git\plipultimate\avr\src\net\arp.c
@@ -268,7 +267,7 @@
 	<avr/pgmspace.h>
 	<string.h>
 
-1482699286 source:d:\prg\_git\plipultimate\avr\src\pb_proto.c
+1482819040 source:d:\prg\_git\plipultimate\avr\src\pb_proto.c
 	<avr/interrupt.h>
 	<util/delay_basic.h>
 	"global.h"
@@ -279,7 +278,7 @@
 	"pkt_buf.h"
 	"pinout.h"
 
-1482580145 source:d:\prg\_git\plipultimate\avr\src\pb_test.c
+1482774585 source:d:\prg\_git\plipultimate\avr\src\pb_test.c
 	"pb_test.h"
 	"base/uartutil.h"
 	"pb_proto.h"
@@ -287,7 +286,6 @@
 	"param.h"
 	"stats.h"
 	"main.h"
-	"base/cmd.h"
 	"base/timer.h"
 	"net/net.h"
 	"pkt_buf.h"
@@ -308,7 +306,7 @@
 	"net/net.h"
 	"enc28j60.h"
 
-1482513917 source:d:\prg\_git\plipultimate\avr\src\pio_test.c
+1482753411 source:d:\prg\_git\plipultimate\avr\src\pio_test.c
 	"pio_test.h"
 	"pio.h"
 	"pio_util.h"
@@ -316,7 +314,6 @@
 	"base/uartutil.h"
 	"main.h"
 	"stats.h"
-	"base/cmd.h"
 	"spi/enc28j60.h"
 
 1482699419 source:d:\prg\_git\plipultimate\avr\src\pio_util.c
@@ -345,7 +342,8 @@
 
 1463503353 d:\prg\_git\plipultimate\avr\pinout.h
 
-1482700455 source:d:\prg\_git\plipultimate\avr\src\spi\enc28j60.c
+1482775696 source:d:\prg\_git\plipultimate\avr\src\spi\enc28j60.c
+	"../global.h"
 	"../base/timer.h"
 	"enc28j60.h"
 	"spi.h"
@@ -362,4 +360,13 @@
 	"spi.h"
 
 1463499753 d:\prg\_git\plipultimate\avr\src\pinout.h
+
+1482752966 d:\prg\_git\plipultimate\avr\src\cmd.h
+	"global.h"
+
+1482753013 source:d:\prg\_git\plipultimate\avr\src\cmd.c
+	"cmd.h"
+	"global.h"
+	"pkt_buf.h"
+	"base/util.h"
 

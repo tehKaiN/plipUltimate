@@ -68,7 +68,7 @@ ISR(TIMER1_COMPA_vect) {
   ++g_uwTimer100us;
   ++g_uwTimeStamp;
   ++s_uw10msCounter;
-  if(s_uw10msCounter >= 1000) {
+  if(s_uw10msCounter >= 100) {
     s_uw10msCounter = 0;
     g_uwTimer10ms++;
   }

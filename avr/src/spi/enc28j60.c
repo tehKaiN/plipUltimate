@@ -10,10 +10,15 @@
 //
 // Adjusted by Christian Vogelgsaang to be Arduino-free C code
 
+#include "../global.h"
 #include "../base/timer.h"
 #include "enc28j60.h"
 #include "spi.h"
 #include "../pio.h"
+
+#ifdef NOENC
+#warning "No ENC28j60 mode! ###################################################"
+#endif
 
 // ENC28J60 Control Registers
 // Control register definitions are a combination of address,
@@ -251,74 +256,102 @@ static uint8_t is_full_duplex;
 static uint8_t rev;
 
 static uint8_t readOp (uint8_t op, uint8_t address) {
-    spi_enable_eth();
-    spi_out(op | (address & ADDR_MASK));
-    if (address & 0x80)
-        spi_out(0x00);
-    uint8_t result = spi_in();
-    spi_disable_eth();
-    return result;
+	#ifdef NOENC
+	return 0;
+	#endif
+	spi_enable_eth();
+	spi_out(op | (address & ADDR_MASK));
+	if (address & 0x80)
+		spi_out(0x00);
+	uint8_t result = spi_in();
+	spi_disable_eth();
+	return result;
 }
 
 static void writeOp (uint8_t op, uint8_t address, uint8_t data) {
-    spi_enable_eth();
-    spi_out(op | (address & ADDR_MASK));
-    spi_out(data);
-    spi_disable_eth();
+	#ifdef NOENC
+	return;
+	#endif
+	spi_enable_eth();
+	spi_out(op | (address & ADDR_MASK));
+	spi_out(data);
+	spi_disable_eth();
 }
 
 static void readBuf(uint16_t len, uint8_t* data) {
-    spi_enable_eth();
-    spi_out(ENC28J60_READ_BUF_MEM);
-    while (len--) {
-        *data++ = spi_in();
-    }
-    spi_disable_eth();
+	#ifdef NOENC
+	return;
+	#endif
+	spi_enable_eth();
+	spi_out(ENC28J60_READ_BUF_MEM);
+	while (len--) {
+		*data++ = spi_in();
+	}
+	spi_disable_eth();
 }
 
 static void SetBank (uint8_t address) {
-    if ((address & BANK_MASK) != Enc28j60Bank) {
-        writeOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_BSEL1|ECON1_BSEL0);
-        Enc28j60Bank = address & BANK_MASK;
-        writeOp(ENC28J60_BIT_FIELD_SET, ECON1, Enc28j60Bank>>5);
-    }
+	#ifdef NOENC
+	return;
+	#endif
+	if ((address & BANK_MASK) != Enc28j60Bank) {
+		writeOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_BSEL1|ECON1_BSEL0);
+		Enc28j60Bank = address & BANK_MASK;
+		writeOp(ENC28J60_BIT_FIELD_SET, ECON1, Enc28j60Bank>>5);
+	}
 }
 
 static uint8_t readRegByte (uint8_t address) {
-    SetBank(address);
-    return readOp(ENC28J60_READ_CTRL_REG, address);
+	#ifdef NOENC
+	return 0;
+	#endif
+	SetBank(address);
+	return readOp(ENC28J60_READ_CTRL_REG, address);
 }
 
 #if 0
 static uint16_t readReg(uint8_t address) {
+	#ifdef NOENC
+	return 0;
+	#endif
 	return readRegByte(address) + (readRegByte(address+1) << 8);
 }
 #endif
 
 static void writeRegByte (uint8_t address, uint8_t data) {
-    SetBank(address);
-    writeOp(ENC28J60_WRITE_CTRL_REG, address, data);
+	#ifdef NOENC
+	return;
+	#endif
+	SetBank(address);
+	writeOp(ENC28J60_WRITE_CTRL_REG, address, data);
 }
 
 static void writeReg(uint8_t address, uint16_t data) {
-    writeRegByte(address, data);
-    writeRegByte(address + 1, data >> 8);
+	#ifdef NOENC
+	return;
+	#endif
+	writeRegByte(address, data);
+	writeRegByte(address + 1, data >> 8);
 }
 
 static uint16_t readPhyByte (uint8_t address) {
-    writeRegByte(MIREGADR, address);
-    writeRegByte(MICMD, MICMD_MIIRD);
-    while (readRegByte(MISTAT) & MISTAT_BUSY)
-        ;
-    writeRegByte(MICMD, 0x00);
-    return readRegByte(MIRD+1);
+	#ifdef NOENC
+	return 0;
+	#endif
+	writeRegByte(MIREGADR, address);
+	writeRegByte(MICMD, MICMD_MIIRD);
+	while (readRegByte(MISTAT) & MISTAT_BUSY);
+	writeRegByte(MICMD, 0x00);
+	return readRegByte(MIRD+1);
 }
 
 static void writePhy (uint8_t address, uint16_t data) {
-    writeRegByte(MIREGADR, address);
-    writeReg(MIWR, data);
-    while (readRegByte(MISTAT) & MISTAT_BUSY)
-        ;
+	#ifdef NOENC
+	return;
+	#endif
+	writeRegByte(MIREGADR, address);
+	writeReg(MIWR, data);
+	while (readRegByte(MISTAT) & MISTAT_BUSY);
 }
 
 // ---------- init ----------
@@ -327,16 +360,25 @@ static void writePhy (uint8_t address, uint16_t data) {
 // With the bit set, broadcast packets are filtered.
 static inline void enc28j60_enable_broadcast ( void )
 {
+	#ifdef NOENC
+	return;
+	#endif
   writeRegByte(ERXFCON, ERXFCON_UCEN|ERXFCON_CRCEN/*|ERXFCON_PMEN*/|ERXFCON_BCEN);
 }
 
 static inline void enc28j60_disable_broadcast ( void )
 {
+	#ifdef NOENC
+	return;
+	#endif
   writeRegByte(ERXFCON, ERXFCON_UCEN|ERXFCON_CRCEN/*|ERXFCON_PMEN*/);
 }
 
 uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
 {
+	#ifdef NOENC
+	return 0;
+	#endif
   spi_init();
   spi_disable_eth();
 
@@ -440,7 +482,10 @@ uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
 
 void enc28j60_exit(void)
 {
-	// Moved notice from pio_exit
+	#ifdef NOENC
+	return;
+	#endif
+	// Moved note from pio_exit
 	// NOTE: UART - time_stamp_spc() pio: exit\r\n
   SetBank(ECON1);
   writeOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_RXEN);
@@ -450,18 +495,21 @@ void enc28j60_exit(void)
 
 uint8_t enc28j60_control(uint8_t control_id, uint8_t value)
 {
+	#ifdef NOENC
+	return 0;
+	#endif
   switch(control_id) {
-    case PIO_CONTROL_FLOW:
-      {
-        uint8_t flag;
-        if(is_full_duplex) {
-          flag = value ? 2 : 3;
-        } else {
-          flag = value ? 1 : 0;
-        }
-        writeRegByte(EFLOCON, flag);
-        return PIO_OK;
-      }
+    case PIO_CONTROL_FLOW: {
+			uint8_t flag;
+			if(is_full_duplex) {
+				flag = value ? 2 : 3;
+			}
+			else {
+				flag = value ? 1 : 0;
+			}
+			writeRegByte(EFLOCON, flag);
+			return PIO_OK;
+		}
     default:
       return PIO_NOT_FOUND;
   }
@@ -471,6 +519,9 @@ uint8_t enc28j60_control(uint8_t control_id, uint8_t value)
 
 uint8_t enc28j60_status(uint8_t status_id, uint8_t *value)
 {
+	#ifdef NOENC
+	return 0;
+	#endif
   switch(status_id) {
     case PIO_STATUS_VERSION:
       *value = rev;
@@ -487,6 +538,9 @@ uint8_t enc28j60_status(uint8_t status_id, uint8_t *value)
 #if 0
 static uint8_t enc28j60_get_status( void )
 {
+	#ifdef NOENC
+	return 0;
+	#endif
   uint8_t val = readRegByte(EIR);
   if(val & EIR_TXERIF) {
     writeOp(ENC28J60_BIT_FIELD_CLR, EIR, EIR_TXERIF);
@@ -502,6 +556,9 @@ static uint8_t enc28j60_get_status( void )
 
 uint8_t enc28j60_send(const uint8_t *data, uint16_t size)
 {
+	#ifdef NOENC
+	return 0;
+	#endif
   // prepare tx buffer write
   writeReg(EWRPT, TXSTART_INIT);
   writeOp(ENC28J60_WRITE_BUF_MEM, 0, 0x00);
@@ -532,6 +589,9 @@ uint8_t enc28j60_send(const uint8_t *data, uint16_t size)
 
 inline static void next_pkt(void)
 {
+	#ifdef NOENC
+	return;
+	#endif
   if (gNextPacketPtr - 1 > RXSTOP_INIT)
       writeReg(ERXRDPT, RXSTOP_INIT);
   else
@@ -541,10 +601,13 @@ inline static void next_pkt(void)
 
 static uint8_t read_hdr(uint16_t *got_size)
 {
+	#ifdef NOENC
+	return 0;
+	#endif
   struct {
-      uint16_t nextPacket;
-      uint16_t byteCount;
-      uint16_t status;
+		uint16_t nextPacket;
+		uint16_t byteCount;
+		uint16_t status;
   } header;
 
   readBuf(sizeof header, (uint8_t*) &header);
@@ -556,6 +619,9 @@ static uint8_t read_hdr(uint16_t *got_size)
 
 uint8_t enc28j60_recv(uint8_t *data, uint16_t max_size, uint16_t *got_size)
 {
+	#ifdef NOENC
+	return 0;
+	#endif
   writeReg(ERDPT, gNextPacketPtr);
 
   // read chip's packet header
@@ -586,6 +652,9 @@ uint8_t enc28j60_recv(uint8_t *data, uint16_t max_size, uint16_t *got_size)
 
 uint8_t enc28j60_has_recv(void)
 {
+	#ifdef NOENC
+	return 0;
+	#endif
   return readRegByte(EPKTCNT);
 }
 
@@ -594,22 +663,31 @@ uint8_t enc28j60_has_recv(void)
 //                  /2011/07/putting-enc28j60-ethernet-controler-in-sleep-mode/
 void enc28j60_power_down( void )
 {
-    writeOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_RXEN);
-    while(readRegByte(ESTAT) & ESTAT_RXBUSY);
-    while(readRegByte(ECON1) & ECON1_TXRTS);
-    writeOp(ENC28J60_BIT_FIELD_SET, ECON2, ECON2_VRPS);
-    writeOp(ENC28J60_BIT_FIELD_SET, ECON2, ECON2_PWRSV);
+	#ifdef NOENC
+	return 0;
+	#endif
+	writeOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_RXEN);
+	while(readRegByte(ESTAT) & ESTAT_RXBUSY);
+	while(readRegByte(ECON1) & ECON1_TXRTS);
+	writeOp(ENC28J60_BIT_FIELD_SET, ECON2, ECON2_VRPS);
+	writeOp(ENC28J60_BIT_FIELD_SET, ECON2, ECON2_PWRSV);
 }
 
 void enc28j60_power_up( void )
 {
-    writeOp(ENC28J60_BIT_FIELD_CLR, ECON2, ECON2_PWRSV);
-    while(!readRegByte(ESTAT) & ESTAT_CLKRDY);
-    writeOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_RXEN);
+	#ifdef NOENC
+	return 0;
+	#endif
+	writeOp(ENC28J60_BIT_FIELD_CLR, ECON2, ECON2_PWRSV);
+	while(!readRegByte(ESTAT) & ESTAT_CLKRDY);
+	writeOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_RXEN);
 }
 
 uint8_t enc28j60_do_BIST ( void )
 {
+	#ifdef NOENC
+	return 0;
+	#endif
 	#define RANDOM_FILL		0b0000
 	#define ADDRESS_FILL	0b0100
 	#define PATTERN_SHIFT	0b1000
@@ -671,7 +749,6 @@ uint8_t enc28j60_do_BIST ( void )
 	// this was undocumented :(
     while (readOp(ENC28J60_READ_CTRL_REG, EBSTCON) & EBSTCON_BISTST);
 	writeOp(ENC28J60_BIT_FIELD_CLR, EBSTCON, EBSTCON_TME);
-
 
 	// now start the actual reading an calculating the checksum until the end is
 	// reached

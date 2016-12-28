@@ -122,6 +122,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/pb_util.h" />
+		<Unit filename="src/pinout.h" />
 		<Unit filename="src/pio.h" />
 		<Unit filename="src/pio_test.c">
 			<Option compilerVar="CC" />

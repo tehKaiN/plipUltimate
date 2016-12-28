@@ -43,6 +43,7 @@
 #include "net/net.h"
 #include "spi/enc28j60.h"
 #include "cmd.h"
+#include "pinout.h"
 
 #define FLAG_ONLINE         1
 #define FLAG_SEND_MAGIC     2
@@ -55,7 +56,7 @@ static void trigger_request(void)
 {
   if(!req_is_pending) {
     req_is_pending = 1;
-    pb_proto_request_recv();
+    parRequestAmiRead();
     if(global_verbose) {
 			// NOTE: UART - time_stamp_spc() REQ\r\n
     }
@@ -207,6 +208,7 @@ void bridge_loop(void)
   uint8_t flow_control = param.flow_ctl;
   uint8_t limit_flow = 0;
   uint8_t ubDisplayPacketInfo = 1;
+  uint8_t ubPacketCount;
   while(run_mode == RUN_MODE_BRIDGE) {
     // NOTE: UART command handling was here
 
@@ -214,7 +216,7 @@ void bridge_loop(void)
     pb_util_handle();
 
     // Handle packets coming from network
-    uint8_t ubPacketCount = enc28j60_has_recv();
+		ubPacketCount = enc28j60_has_recv();
     if(ubPacketCount) {
       if(ubDisplayPacketInfo) {
         // NOTE: UART - time_stamp_spc() FIRST INCOMING!\r\n

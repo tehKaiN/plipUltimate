@@ -188,7 +188,7 @@ void pb_test_loop(void) {
 void pb_test_send_packet(uint8_t silent)
 {
   silent_mode = silent;
-  pb_proto_request_recv();
+  parRequestAmiRead();
 }
 
 void pb_test_toggle_auto(void)

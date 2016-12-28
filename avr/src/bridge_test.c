@@ -126,7 +126,7 @@ void bridge_test_loop(void)
 
             // request receive
             pio_pkt_size = size;
-            pb_proto_request_recv();
+            parRequestAmiRead();
           }
         }
       }

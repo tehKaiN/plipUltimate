@@ -84,8 +84,8 @@ extern uint16_t pb_proto_rx_timeout; // timeout for next byte in 100us
 // ----- API -----
 
 extern void pb_proto_init(pb_proto_fill_func fill_func, pb_proto_proc_func proc_func);
-extern uint8_t  pb_proto_get_line_status(void);
+extern uint8_t  parGetStatusLines(void);
 extern uint8_t  pb_proto_handle(void); // side effect: fill pb_proto_stat!
-extern void pb_proto_request_recv(void);
+extern void parRequestAmiRead(void);
 
 #endif

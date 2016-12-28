@@ -26,6 +26,9 @@
 
 #include "util.h"
 #include <avr/wdt.h>
+#include <avr/interrupt.h>
+#include "../pinout.h"
+#include "timer.h"
 
 /**
  * Converts nibble (0..15) value to hex char.
@@ -178,6 +181,14 @@ uint8_t utilParseByteDec(const char *buf, uint8_t *out)
  * in a clean way.
  */
 void utilReset(void) {
-	wdt_enable(WDTO_15MS);
+	// Indicate reset
+	LED_PIN &= ~LED_STATUS;
+	timerDelay10ms(20);
+	LED_PIN |= LED_STATUS;
+	timerDelay10ms(20);
+
+	// Perform a reset
+	cli();
+	wdt_enable(WDTO_250MS);
 	while(1);
 }

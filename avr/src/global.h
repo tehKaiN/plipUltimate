@@ -39,4 +39,7 @@
 #define F_CPU 20000000UL
 #define CYCLES_PER_US ((F_CPU+500000)/1000000)
 
+/// Uncomment this for no-ENC28j60 dev mode
+//#define NOENC
+
 #endif

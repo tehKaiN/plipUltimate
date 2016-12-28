@@ -16,7 +16,3 @@ int main(void) {
 
     return 0;
 }
-
-// zolty   czerw
-// pomaran braz
-// ziel    czarn

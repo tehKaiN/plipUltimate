@@ -82,7 +82,11 @@ uint8_t global_verbose = 0;
  */
 static void hwInit(void) {
 	// Disable watchdog
-	wdt_disable();
+	cli();
+	wdt_reset();
+	MCUSR=0;
+	WDTCSR|=_BV(WDCE) | _BV(WDE);
+	WDTCSR=0;
 	sei();
 
 	// Setup timers
@@ -99,8 +103,8 @@ static void hwInit(void) {
   PAR_DATA_DDR = 0xFF;
 
   // Initialize status LED
-  DDRC |= _BV(PC5);
-  PORTC |= _BV(PC5);
+  LED_DDR |= LED_STATUS;
+  LED_PIN |= LED_STATUS;
 }
 
 int main(void)
@@ -117,9 +121,7 @@ int main(void)
 	// Display help message
 	// NOTE: UART - Press <return> to enter command mode or <?> for key help\r\n
 
-	#ifdef DEBUG
-		uart_send_free_stack();
-	#endif
+	// uart_send_free_stack();
 
 	// Enter main loop depending on current run mode
 	while(1) {

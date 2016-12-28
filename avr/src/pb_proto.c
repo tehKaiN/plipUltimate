@@ -71,12 +71,12 @@ void pb_proto_init(pb_proto_fill_func _packetFillFn, pb_proto_proc_func _packetP
   packetFillFn = _packetFillFn;
   packetProcessFn = _packetProcessFn;
 
-  // init signals
+  // Set data DDR to input, make BUSY low
   PAR_DATA_DDR = 0x00;
-  PAR_STATUS_PIN &= ~BUSY;
+  PAR_STATUS_PORT &= ~BUSY;
 }
 
-uint8_t pb_proto_get_line_status(void) {
+uint8_t parGetStatusLines(void) {
 	uint8_t ubIn, ubStrobe, ubSelect, ubPOut;
 	ubIn = PAR_STATUS_PIN;
   ubStrobe = (ubIn & NSTROBE) >> POUT_PIN;
@@ -89,7 +89,7 @@ uint8_t pb_proto_get_line_status(void) {
  * Sends data receive request (?) to Amiga.
  * Done as pulse on ACK line.
  */
-void pb_proto_request_recv(void)
+void parRequestAmiRead(void)
 {
   PAR_STATUS_PORT &= ~NACK;
   _delay_loop_1(1);
@@ -106,22 +106,21 @@ void pb_proto_request_recv(void)
  * @param ubStateFlag For debugging purposes. Flag is appended to return value.
  * @return wait result - PBPROTO_STATUS_OK on success, otherwise error occured.
  */
-static uint8_t wait_req(uint8_t ubReqValue, uint8_t ubStateFlag) {
-  // wait for new REQ value
+static uint8_t parWaitForPout(uint8_t ubReqValue, uint8_t ubStateFlag) {
   g_uwTimer100us = 0;
   while(g_uwTimer100us < pb_proto_timeout) {
 		uint8_t ubIn = PAR_STATUS_PIN;
     uint8_t ubPOut = (ubIn & POUT) >> POUT_PIN;
     if(ubReqValue == ubPOut)
       return PBPROTO_STATUS_OK;
-    // during transfer client aborted and removed SEL
+    // During transfer client aborted and removed SEL
     if(!(ubIn & SEL))
       return PBPROTO_STATUS_LOST_SELECT | ubStateFlag;
   }
   return PBPROTO_STATUS_TIMEOUT | ubStateFlag;
 }
 
-static uint8_t wait_sel(uint8_t select_state, uint8_t state_flag) {
+static uint8_t parWaitForSel(uint8_t select_state, uint8_t state_flag) {
   g_uwTimer100us = 0;
   while(g_uwTimer100us < pb_proto_timeout) {
     if(((PAR_STATUS_PIN & SEL) >> SEL_PIN) == select_state)
@@ -133,20 +132,20 @@ static uint8_t wait_sel(uint8_t select_state, uint8_t state_flag) {
 // ---------- Handler ----------
 
 // amiga wants to send a packet
-static uint8_t cmd_send(uint16_t *pReadSize)
+static uint8_t parHandleAmiWrite(uint16_t *pReadSize)
 {
   uint8_t ubStatus;
   uint16_t uwSize;
 
   // --- get size hi ---
-  ubStatus = wait_req(1, PBPROTO_STAGE_SIZE_HI);
+  ubStatus = parWaitForPout(1, PBPROTO_STAGE_SIZE_HI);
   if(ubStatus != PBPROTO_STATUS_OK)
     return ubStatus;
   uwSize = PAR_DATA_PIN << 8;
   PAR_STATUS_PORT &= ~BUSY;
 
   // --- get size lo ---
-  ubStatus = wait_req(0, PBPROTO_STAGE_SIZE_LO);
+  ubStatus = parWaitForPout(0, PBPROTO_STAGE_SIZE_LO);
   if(ubStatus != PBPROTO_STATUS_OK)
     return ubStatus;
   uwSize |= PAR_DATA_PIN;
@@ -167,7 +166,7 @@ static uint8_t cmd_send(uint16_t *pReadSize)
   uint8_t *ptr = g_pDataBuffer;
   uint8_t ubPOutWait = 1;
   while(uwSize--) {
-    ubStatus = wait_req(ubPOutWait, PBPROTO_STAGE_DATA);
+    ubStatus = parWaitForPout(ubPOutWait, PBPROTO_STAGE_DATA);
     if(ubStatus != PBPROTO_STATUS_OK)
       break;
     *(ptr++) = PAR_DATA_PIN;
@@ -191,14 +190,14 @@ static uint8_t cmd_send(uint16_t *pReadSize)
  * then PlipBox sends next byte and alternates BUSY line.
  * Not sure if it matters but BUSY is set contrary to POUT.
  */
-static uint8_t cmd_recv(uint16_t uwSize, uint16_t *pWriteSize)
+static uint8_t parHandleAmiRead(uint16_t uwSize, uint16_t *pWriteSize)
 {
 	uint8_t ubStatus;
 
   PAR_DATA_DDR = 0xFF;
 
   // Send packet size - high part
-  ubStatus = wait_req(1, PBPROTO_STAGE_SIZE_HI);
+  ubStatus = parWaitForPout(1, PBPROTO_STAGE_SIZE_HI);
   if(ubStatus != PBPROTO_STATUS_OK) {
     return ubStatus;
     // NOTE(KaiN): return without DDR switchback
@@ -207,7 +206,7 @@ static uint8_t cmd_recv(uint16_t uwSize, uint16_t *pWriteSize)
   PAR_STATUS_PORT &= ~BUSY;
 
   // Send packet size - low part
-  ubStatus = wait_req(0, PBPROTO_STAGE_SIZE_LO);
+  ubStatus = parWaitForPout(0, PBPROTO_STAGE_SIZE_LO);
   if(ubStatus != PBPROTO_STATUS_OK) {
     return ubStatus;
     // NOTE(KaiN): return without DDR switchback
@@ -224,7 +223,7 @@ static uint8_t cmd_recv(uint16_t uwSize, uint16_t *pWriteSize)
   // TODO(KaiN#9): Make odd transfers safe?
   uwSize = (uwSize+1)&0xFFFE;
   while(uwSize--) {
-    ubStatus = wait_req(ubPOutWait, PBPROTO_STAGE_DATA);
+    ubStatus = parWaitForPout(ubPOutWait, PBPROTO_STAGE_DATA);
     if(ubStatus != PBPROTO_STATUS_OK)
       break;
     PAR_DATA_PORT = *(ptr++);
@@ -235,7 +234,7 @@ static uint8_t cmd_recv(uint16_t uwSize, uint16_t *pWriteSize)
 
   // Final wait
   if(ubStatus == PBPROTO_STATUS_OK)
-    ubStatus = wait_req(1, PBPROTO_STAGE_LAST_DATA);
+    ubStatus = parWaitForPout(1, PBPROTO_STAGE_LAST_DATA);
 
   // [IN]
   PAR_DATA_DDR = 0x00;
@@ -246,13 +245,13 @@ static uint8_t cmd_recv(uint16_t uwSize, uint16_t *pWriteSize)
 
 // ---------- BURST ----------
 
-static uint8_t cmd_send_burst(uint16_t *ret_size)
+static uint8_t parHandleAmiWriteBurst(uint16_t *ret_size)
 {
   uint16_t uwSize;
   uint8_t ubStatus;
 
   // --- packet size hi ---
-  ubStatus = wait_req(1, PBPROTO_STAGE_SIZE_HI);
+  ubStatus = parWaitForPout(1, PBPROTO_STAGE_SIZE_HI);
   if(ubStatus != PBPROTO_STATUS_OK)
     return ubStatus;
 
@@ -260,7 +259,7 @@ static uint8_t cmd_send_burst(uint16_t *ret_size)
   PAR_STATUS_PORT &= ~BUSY;
 
   // --- packet size lo ---
-  ubStatus = wait_req(0, PBPROTO_STAGE_SIZE_LO);
+  ubStatus = parWaitForPout(0, PBPROTO_STAGE_SIZE_LO);
   if(ubStatus != PBPROTO_STATUS_OK)
     return ubStatus;
 
@@ -324,11 +323,11 @@ static uint8_t cmd_send_burst(uint16_t *ret_size)
  * AVR doesn't acknowledge sending next part of data, so Amiga just reads
  * as fast as it can and acks every byte read
  */
-static uint8_t cmd_recv_burst(uint16_t size, uint16_t *ret_size) {
+static uint8_t parHandleAmiReadBurst(uint16_t size, uint16_t *ret_size) {
   uint8_t status;
 
   // --- set packet size hi
-  status = wait_req(1, PBPROTO_STAGE_SIZE_HI);
+  status = parWaitForPout(1, PBPROTO_STAGE_SIZE_HI);
   if(status != PBPROTO_STATUS_OK)
     return status;
 
@@ -337,7 +336,7 @@ static uint8_t cmd_recv_burst(uint16_t size, uint16_t *ret_size) {
 	PAR_STATUS_PORT &= ~BUSY;
 
   // --- set packet size lo ---
-  status = wait_req(0, PBPROTO_STAGE_SIZE_LO);
+  status = parWaitForPout(0, PBPROTO_STAGE_SIZE_LO);
   if(status != PBPROTO_STATUS_OK)
     return status;
 
@@ -345,7 +344,7 @@ static uint8_t cmd_recv_burst(uint16_t size, uint16_t *ret_size) {
 	PAR_STATUS_PORT ^= BUSY;
 
   // --- burst ready? ---
-  status = wait_req(1, PBPROTO_STAGE_DATA);
+  status = parWaitForPout(1, PBPROTO_STAGE_DATA);
   if(status != PBPROTO_STATUS_OK)
     return status;
 
@@ -410,7 +409,7 @@ static uint8_t cmd_recv_burst(uint16_t size, uint16_t *ret_size) {
 /**
  * Handles communication with Amiga.
  * This function does the following:
- * - checks if SEL=1 and REQ=0, if not then aborts
+ * - checks if SEL=1 and POUT=0, if not then aborts
  * - reads send/recv normal/burst byte
  * - sets BUSY=1
  * - prepares response for recv
@@ -425,7 +424,7 @@ uint8_t pb_proto_handle(void) {
   // handle server side of plipbox protocol
   ps->cmd = 0;
 
-  // make sure that SEL == 1 and REQ == 0
+  // make sure that SEL == 1 and POUT == 0
   if(!(PAR_STATUS_PIN & SEL) || (PAR_STATUS_PIN & POUT)) {
     ps->status = PBPROTO_STATUS_IDLE;
     return PBPROTO_STATUS_IDLE;
@@ -448,22 +447,22 @@ uint8_t pb_proto_handle(void) {
   uint32_t ts = g_uwTimeStamp;
   timerReset();
 
-  // confirm cmd with RAK = 1
+  // confirm cmd with BUSY = 1
   PAR_STATUS_PORT |= BUSY;
 
   uint16_t uwParDataSize = 0;
   switch(cmd) {
     case PBPROTO_CMD_RECV:
-      result = cmd_recv(pkt_size, &uwParDataSize);
+      result = parHandleAmiRead(pkt_size, &uwParDataSize);
       break;
     case PBPROTO_CMD_SEND:
-      result = cmd_send(&uwParDataSize);
+      result = parHandleAmiWrite(&uwParDataSize);
       break;
     case PBPROTO_CMD_RECV_BURST:
-      result = cmd_recv_burst(pkt_size, &uwParDataSize);
+      result = parHandleAmiReadBurst(pkt_size, &uwParDataSize);
       break;
     case PBPROTO_CMD_SEND_BURST:
-      result = cmd_send_burst(&uwParDataSize);
+      result = parHandleAmiWriteBurst(&uwParDataSize);
       break;
     default:
       result = PBPROTO_STATUS_INVALID_CMD;
@@ -471,9 +470,9 @@ uint8_t pb_proto_handle(void) {
   }
 
   // wait for SEL == 0
-  wait_sel(0, PBPROTO_STAGE_END_SELECT);
+  parWaitForSel(0, PBPROTO_STAGE_END_SELECT);
 
-  // reset RAK = 0
+  // reset BUSY = 0
   PAR_STATUS_PORT &= ~BUSY;
 
   // Read timer - assuming transfer will be much shorter than 100us

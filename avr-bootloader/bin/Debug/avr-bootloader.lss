@@ -3,23 +3,23 @@ bin\Debug\avr-bootloader.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         000000d6  00007000  00007000  00000054  2**1
+  0 .text         000000e2  00007000  00007000  00000054  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .debug_aranges 00000020  00000000  00000000  0000012a  2**0
+  1 .debug_aranges 00000020  00000000  00000000  00000136  2**0
                   CONTENTS, READONLY, DEBUGGING
-  2 .debug_pubnames 0000001b  00000000  00000000  0000014a  2**0
+  2 .debug_pubnames 0000001b  00000000  00000000  00000156  2**0
                   CONTENTS, READONLY, DEBUGGING
-  3 .debug_info   00000166  00000000  00000000  00000165  2**0
+  3 .debug_info   00000166  00000000  00000000  00000171  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .debug_abbrev 000000d0  00000000  00000000  000002cb  2**0
+  4 .debug_abbrev 000000d0  00000000  00000000  000002d7  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_line   00000161  00000000  00000000  0000039b  2**0
+  5 .debug_line   00000189  00000000  00000000  000003a7  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_frame  00000020  00000000  00000000  000004fc  2**2
+  6 .debug_frame  00000020  00000000  00000000  00000530  2**2
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_str    000000b6  00000000  00000000  0000051c  2**0
+  7 .debug_str    000000b6  00000000  00000000  00000550  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_loc    00000048  00000000  00000000  000005d2  2**0
+  8 .debug_loc    00000048  00000000  00000000  00000606  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -60,101 +60,112 @@ Disassembly of section .text:
     7070:	de bf       	out	0x3e, r29	; 62
     7072:	cd bf       	out	0x3d, r28	; 61
     7074:	0e 94 40 38 	call	0x7080	; 0x7080 <main>
-    7078:	0c 94 69 38 	jmp	0x70d2	; 0x70d2 <_exit>
+    7078:	0c 94 6f 38 	jmp	0x70de	; 0x70de <_exit>
 
 0000707c <__bad_interrupt>:
     707c:	0c 94 00 38 	jmp	0x7000	; 0x7000 <__vectors>
 
 00007080 <main>:
-#include <avr/io.h>
-#define F_CPU 20000000L
+#define F_CPU 20000000
 #include <util/delay.h>
 
 int main(void) {
-	PORTC |= _BV(PC5);
-    7080:	e8 e2       	ldi	r30, 0x28	; 40
-    7082:	f0 e0       	ldi	r31, 0x00	; 0
-    7084:	80 81       	ld	r24, Z
-    7086:	80 62       	ori	r24, 0x20	; 32
-    7088:	80 83       	st	Z, r24
-    708a:	20 e5       	ldi	r18, 0x50	; 80
-    708c:	33 ec       	ldi	r19, 0xC3	; 195
+	// Disable watchdog & interrupts
+	cli();
+    7080:	f8 94       	cli
+	wdt_reset();
+    7082:	a8 95       	wdr
+	MCUSR=0;
+    7084:	14 be       	out	0x34, r1	; 52
+	WDTCSR|=_BV(WDCE) | _BV(WDE);
+    7086:	e0 e6       	ldi	r30, 0x60	; 96
+    7088:	f0 e0       	ldi	r31, 0x00	; 0
+    708a:	80 81       	ld	r24, Z
+    708c:	88 61       	ori	r24, 0x18	; 24
+    708e:	80 83       	st	Z, r24
+	WDTCSR=0;
+    7090:	10 82       	st	Z, r1
+
+	// Let Amiga give me a sign for flashing
+	PORTC = _BV(PC5);
+    7092:	80 e2       	ldi	r24, 0x20	; 32
+    7094:	88 b9       	out	0x08, r24	; 8
+    7096:	20 e3       	ldi	r18, 0x30	; 48
+    7098:	35 e7       	ldi	r19, 0x75	; 117
     milliseconds can be achieved.
  */
 void
 _delay_loop_2(uint16_t __count)
 {
 	__asm__ volatile (
-    708e:	44 ef       	ldi	r20, 0xF4	; 244
-    7090:	51 e0       	ldi	r21, 0x01	; 1
-    7092:	ca 01       	movw	r24, r20
-    7094:	01 97       	sbiw	r24, 0x01	; 1
-    7096:	f1 f7       	brne	.-4      	; 0x7094 <main+0x14>
+    709a:	44 ef       	ldi	r20, 0xF4	; 244
+    709c:	51 e0       	ldi	r21, 0x01	; 1
+    709e:	ca 01       	movw	r24, r20
+    70a0:	01 97       	sbiw	r24, 0x01	; 1
+    70a2:	f1 f7       	brne	.-4      	; 0x70a0 <main+0x20>
 		__ticks = (uint16_t) (__ms * 10.0);
 		while(__ticks)
 		{
 			// wait 1/10 ms
 			_delay_loop_2(((F_CPU) / 4e3) / 10);
 			__ticks --;
-    7098:	21 50       	subi	r18, 0x01	; 1
-    709a:	30 40       	sbci	r19, 0x00	; 0
+    70a4:	21 50       	subi	r18, 0x01	; 1
+    70a6:	30 40       	sbci	r19, 0x00	; 0
 		__ticks = 1;
 	else if (__tmp > 65535)
 	{
 		//	__ticks = requested delay in 1/10 ms
 		__ticks = (uint16_t) (__ms * 10.0);
 		while(__ticks)
-    709c:	d1 f7       	brne	.-12     	; 0x7092 <main+0x12>
-
-	// Let Amiga give me a sign for flashing
-	_delay_ms(5000);
+    70a8:	d1 f7       	brne	.-12     	; 0x709e <main+0x1e>
+	_delay_ms(3000);
 
 	// No response from Ami - exit bootloader
 	DDRC |= _BV(PC5);
-    709e:	e7 e2       	ldi	r30, 0x27	; 39
-    70a0:	f0 e0       	ldi	r31, 0x00	; 0
-    70a2:	80 81       	ld	r24, Z
-    70a4:	80 62       	ori	r24, 0x20	; 32
-    70a6:	80 83       	st	Z, r24
-    70a8:	28 ec       	ldi	r18, 0xC8	; 200
-    70aa:	30 e0       	ldi	r19, 0x00	; 0
-    70ac:	44 ef       	ldi	r20, 0xF4	; 244
-    70ae:	51 e0       	ldi	r21, 0x01	; 1
-    70b0:	ca 01       	movw	r24, r20
-    70b2:	01 97       	sbiw	r24, 0x01	; 1
-    70b4:	f1 f7       	brne	.-4      	; 0x70b2 <main+0x32>
+    70aa:	e7 e2       	ldi	r30, 0x27	; 39
+    70ac:	f0 e0       	ldi	r31, 0x00	; 0
+    70ae:	80 81       	ld	r24, Z
+    70b0:	80 62       	ori	r24, 0x20	; 32
+    70b2:	80 83       	st	Z, r24
+    70b4:	28 ec       	ldi	r18, 0xC8	; 200
+    70b6:	30 e0       	ldi	r19, 0x00	; 0
+    70b8:	44 ef       	ldi	r20, 0xF4	; 244
+    70ba:	51 e0       	ldi	r21, 0x01	; 1
+    70bc:	ca 01       	movw	r24, r20
+    70be:	01 97       	sbiw	r24, 0x01	; 1
+    70c0:	f1 f7       	brne	.-4      	; 0x70be <main+0x3e>
 		{
 			// wait 1/10 ms
 			_delay_loop_2(((F_CPU) / 4e3) / 10);
 			__ticks --;
-    70b6:	21 50       	subi	r18, 0x01	; 1
-    70b8:	30 40       	sbci	r19, 0x00	; 0
+    70c2:	21 50       	subi	r18, 0x01	; 1
+    70c4:	30 40       	sbci	r19, 0x00	; 0
 		__ticks = 1;
 	else if (__tmp > 65535)
 	{
 		//	__ticks = requested delay in 1/10 ms
 		__ticks = (uint16_t) (__ms * 10.0);
 		while(__ticks)
-    70ba:	d1 f7       	brne	.-12     	; 0x70b0 <main+0x30>
+    70c6:	d1 f7       	brne	.-12     	; 0x70bc <main+0x3c>
 	_delay_ms(20);
 	DDRC = 0;
-    70bc:	17 b8       	out	0x07, r1	; 7
+    70c8:	17 b8       	out	0x07, r1	; 7
 	PORTC &= ~_BV(PC5);
-    70be:	e8 e2       	ldi	r30, 0x28	; 40
-    70c0:	f0 e0       	ldi	r31, 0x00	; 0
-    70c2:	80 81       	ld	r24, Z
-    70c4:	8f 7d       	andi	r24, 0xDF	; 223
-    70c6:	80 83       	st	Z, r24
+    70ca:	e8 e2       	ldi	r30, 0x28	; 40
+    70cc:	f0 e0       	ldi	r31, 0x00	; 0
+    70ce:	80 81       	ld	r24, Z
+    70d0:	8f 7d       	andi	r24, 0xDF	; 223
+    70d2:	80 83       	st	Z, r24
 	asm("jmp 0000");
-    70c8:	0c 94 00 00 	jmp	0	; 0x0 <__heap_end>
+    70d4:	0c 94 00 00 	jmp	0	; 0x0 <__heap_end>
 	return 0;
 }
-    70cc:	80 e0       	ldi	r24, 0x00	; 0
-    70ce:	90 e0       	ldi	r25, 0x00	; 0
-    70d0:	08 95       	ret
+    70d8:	80 e0       	ldi	r24, 0x00	; 0
+    70da:	90 e0       	ldi	r25, 0x00	; 0
+    70dc:	08 95       	ret
 
-000070d2 <_exit>:
-    70d2:	f8 94       	cli
+000070de <_exit>:
+    70de:	f8 94       	cli
 
-000070d4 <__stop_program>:
-    70d4:	ff cf       	rjmp	.-2      	; 0x70d4 <__stop_program>
+000070e0 <__stop_program>:
+    70e0:	ff cf       	rjmp	.-2      	; 0x70e0 <__stop_program>

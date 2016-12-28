@@ -34,6 +34,12 @@
 #define POUT_PIN    PC3
 #define SEL_PIN     PC4
 
+/// LED-related defines
+#define LED_DDR        DDRC
+#define LED_PIN        PINC
+#define LED_STATUS_PIN PC5
+#define LED_STATUS     _BV(LED_STATUS_PIN)
+
 #define NSTROBE _BV(NSTROBE_PIN)
 #define NACK    _BV(NACK_PIN)
 #define BUSY    _BV(BUSY_PIN)

@@ -1,7 +1,7 @@
 #include <avr/io.h>
 
 FUSES = {
-    .low = LFUSE_DEFAULT,
-    .high = HFUSE_DEFAULT,
-    .extended = EFUSE_DEFAULT
+    .low = 0xE0,
+    .high = 0xD8,
+    .extended = 0xFC
 };
