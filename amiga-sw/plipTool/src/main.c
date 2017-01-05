@@ -3,6 +3,7 @@
 #include <clib/exec_protos.h>
 #include <clib/misc_protos.h>
 #include <hardware/cia.h>
+#include "ack.h"
 
 struct Library *MiscBase = NULL;
 extern struct CIA ciaa, ciab;
@@ -185,7 +186,7 @@ int main(int lArgCount, char **pArgs) {
 	setbuf(stdout, NULL);
 	printf("plipTool ver. 2016-12-26.\n");
 	
-	if(!parReserve("plipCfg")) {		
+	if(!parReserve("plipTool")) {		
 		return 1;
 	}
 	
