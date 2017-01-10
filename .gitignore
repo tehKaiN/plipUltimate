@@ -4,6 +4,9 @@
 *.obj
 *.elf
 
+# Code::Blocks stuff
+*.layout
+
 # Precompiled Headers
 *.gch
 *.pch
