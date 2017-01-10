@@ -30,14 +30,14 @@
 #include "global.h"
 
 typedef struct _tConfig {
-  uint8_t mac_addr[6];
+  uint8_t mac_addr[6]; ///< Card's MAC address.
 
-  uint8_t flow_ctl;
-  uint8_t full_duplex;
+  uint8_t flow_ctl;    ///< Flow control?
+  uint8_t full_duplex; ///< Ethernet full duplex mode.
 
-  uint16_t test_plen;
-  uint16_t test_ptype;
-  uint8_t test_ip[4];
+  uint16_t test_plen;  ///< Test packet length.
+  uint16_t test_ptype; ///< Test packet EtherType.
+  uint8_t test_ip[4];  ///< Plipbox IP? Used in ARP check.
   uint16_t test_port;
   uint8_t test_mode;
 } tConfig;

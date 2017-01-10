@@ -45,9 +45,14 @@
 #include "cmd.h"
 #include "pinout.h"
 
-#define FLAG_ONLINE         1
-#define FLAG_SEND_MAGIC     2
-#define FLAG_FIRST_TRANSFER 4
+// Set if plipUltimate has its eth online
+#define FLAG_ONLINE            1
+// Set if there is need to send magic packet to Amiga
+#define FLAG_SEND_MAGIC        2
+// Set if first transfer (which?) is yet to be made
+#define FLAG_FIRST_TRANSFER    4
+// Set if there is cmd response pending for Amiga
+#define FLAG_SEND_CMD_RESPONSE 8
 
 static uint8_t flags;
 static uint8_t req_is_pending;
@@ -122,8 +127,8 @@ static void request_magic(void)
 
 static uint8_t bridgeFillPacket(uint16_t *pFilledSize)
 {
-  // need to send magic packet?
   if((flags & FLAG_SEND_MAGIC) == FLAG_SEND_MAGIC) {
+		// Send magic packet to Amiga
     flags &= ~FLAG_SEND_MAGIC;
 
     // Build magic packet header
@@ -134,14 +139,18 @@ static uint8_t bridgeFillPacket(uint16_t *pFilledSize)
 
     *pFilledSize = ETH_HDR_SIZE;
   }
+  else if((flags & FLAG_SEND_CMD_RESPONSE) == FLAG_SEND_CMD_RESPONSE) {
+    // Send CMD response - it's already in buffer
+    *pFilledSize = g_uwCmdResponseSize;
+  }
   else {
-    // pending PIO packet?
+		// Receive packet buffer with data from ENC28j60 if pending
     pio_util_recv_packet(pFilledSize);
 
-    // report first packet transfer
     if(flags & FLAG_FIRST_TRANSFER) {
-      flags &= ~FLAG_FIRST_TRANSFER;
+			// report first packet transfer
       // NOTE: UART - time_stamp_spc() FIRST TRANSFER!\r\n
+      flags &= ~FLAG_FIRST_TRANSFER;
     }
   }
 
@@ -174,6 +183,8 @@ static uint8_t bridgeProcessPacket(uint16_t uwSize)
       break;
 		case ETH_TYPE_MAGIC_CMD:
 			cmdProcess(uwSize);
+			flags |= FLAG_SEND_CMD_RESPONSE;
+			trigger_request();
     default:
       // send packet via pio
       pio_util_send_packet(uwSize);

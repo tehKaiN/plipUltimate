@@ -107,6 +107,11 @@ static void hwInit(void) {
   LED_PIN |= LED_STATUS;
 }
 
+// How I should attach ISP:
+// zolty   czerw
+// pomaran braz
+// ziel    czarn
+
 int main(void)
 {
 	hwInit();

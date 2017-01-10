@@ -15,15 +15,18 @@
 /**
  * Commands implemented by PlipUltimate
  */
-#define CMD_INVALID   0
-#define CMD_REBOOT    1
-#define CMD_GETLOG    2
-#define CMD_GETCONFIG 3
-#define CMD_SETCONFIG 4
-#define CMD_SDINFO    5
-#define CMD_SDREAD    6
-#define CMD_SDWRITE   7
+#define CMD_INVALID    0
+#define CMD_REBOOT     1
+#define CMD_GETLOG     2
+#define CMD_GETCONFIG  3
+#define CMD_SETCONFIG  4
+#define CMD_SDINFO     5
+#define CMD_SDREAD     6
+#define CMD_SDWRITE    7
+#define CMD_RESPONSE 128
 
 extern void cmdProcess(uint16_t uwPacketSize);
+
+extern uint16_t g_uwCmdResponseSize;
 
 #endif // _SRC_CMD_H

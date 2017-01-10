@@ -116,33 +116,39 @@ uint8_t pio_util_send_packet(uint16_t size)
   return result;
 }
 
-uint8_t pio_util_handle_arp(uint16_t size)
+/**
+ * Handles ARP request.
+ * @param uwPacketSize Received ethernet frame size.
+ */
+uint8_t pio_util_handle_arp(uint16_t uwPacketSize)
 {
-  uint16_t type = eth_get_pkt_type(g_pDataBuffer);
-  if(type != ETH_TYPE_ARP) {
+	// Sanity check
+  uint16_t uwEtherType = eth_get_pkt_type(g_pDataBuffer);
+  if(uwEtherType != ETH_TYPE_ARP) {
     return 0;
   }
-  if(size <= ETH_HDR_SIZE) {
+  if(uwPacketSize <= ETH_HDR_SIZE) {
     return 0;
   }
 
-  // payload buf/size
-  uint8_t *pl_buf = g_pDataBuffer + ETH_HDR_SIZE;
-  uint16_t pl_size = size - ETH_HDR_SIZE;
+  // Payload buffer pointer & size
+  uint8_t *pPayloadBuffer = g_pDataBuffer + ETH_HDR_SIZE;
+  uint16_t uwPayloadSize = uwPacketSize - ETH_HDR_SIZE;
 
-  // is an ARP request
-  if(arp_is_ipv4(pl_buf, pl_size) && (arp_get_op(pl_buf) == ARP_REQUEST)) {
-    // is our IP?
-    const uint8_t *tgt_ip = arp_get_tgt_ip(pl_buf);
-
+  // Is it an ARP request?
+  if(
+		arp_is_ipv4(pPayloadBuffer, uwPayloadSize) &&
+		arp_get_op(pPayloadBuffer) == ARP_REQUEST
+	) {
+    // Is plipbox being searched?
+    const uint8_t *pTargetIp = arp_get_tgt_ip(pPayloadBuffer);
     if(global_verbose) {
-			// NOTE: UART - time_stamp_spc() ARP REQ: IP=tgt_ip\r\n
+			// NOTE: UART - time_stamp_spc() ARP REQ: IP=pTargetIp\r\n
     }
-
-    if(net_compare_ip(tgt_ip, g_sConfig.test_ip)) {
-      arp_make_reply(pl_buf, g_sConfig.mac_addr, g_sConfig.test_ip);
+    if(net_compare_ip(pTargetIp, g_sConfig.test_ip)) {
+      arp_make_reply(pPayloadBuffer, g_sConfig.mac_addr, g_sConfig.test_ip);
       eth_make_bcast(g_pDataBuffer, g_sConfig.mac_addr);
-      pio_util_send_packet(size);
+      pio_util_send_packet(uwPacketSize);
 
       if(global_verbose) {
 				// NOTE: UART - time_stamp_spc ARP RELPY!\r\n

@@ -1,7 +1,12 @@
 #include "cmd.h"
+#include <string.h>
 #include "global.h"
 #include "pkt_buf.h"
 #include "base/util.h"
+#include "net/eth.h"
+#include "param.h"
+
+uint16_t g_uwCmdResponseSize;
 
 // Local fn decls
 static void cmdReboot(void);
@@ -18,6 +23,7 @@ static void cmdSdWrite(void);
  */
 void cmdProcess(uint16_t uwPacketSize) {
 	uint8_t ubCmdType = g_pDataBuffer[0];
+	g_pDataBuffer[0] |= CMD_RESPONSE;
 	switch(ubCmdType) {
 		case CMD_REBOOT:    cmdReboot();    return;
 		case CMD_GETLOG:    cmdGetLog();    return;
@@ -38,7 +44,8 @@ static void cmdGetLog(void) {
 }
 
 static void cmdGetConfig(void) {
-	// TODO(KaiN#9): implement cmdGetConfig()
+	memcpy(&g_pDataBuffer[ETH_HDR_SIZE], &g_sConfig, sizeof(tConfig));
+	g_uwCmdResponseSize = ETH_HDR_SIZE + sizeof(tConfig);
 }
 
 static void cmdSetConfig(void) {
