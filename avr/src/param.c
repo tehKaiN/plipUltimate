@@ -35,14 +35,14 @@
 #include <string.h>
 
 // current memory RAM param
-param_t param;
+tConfig g_sConfig;
 
 // eeprom param
-param_t eeprom_param EEMEM;
-uint16_t eeprom_crc16 EEMEM;
+tConfig s_sEepromConfig EEMEM;
+uint16_t s_uwEepromCrc EEMEM;
 
 // default
-static const param_t PROGMEM default_param = {
+static const tConfig PROGMEM sc_sDefaultConfig = {
   .mac_addr = { 0x1a,0x11,0xaf,0xa0,0x47,0x11},
 
   .flow_ctl = 0,
@@ -85,12 +85,12 @@ void param_dump(void)
 }
 
 // build check sum for parameter block
-static uint16_t calc_crc16(param_t *p)
+static uint16_t calc_crc16(tConfig *p)
 {
   uint16_t crc16 = 0xffff;
   uint8_t *data = (uint8_t *)p;
   uint16_t i;
-  for(i=0;i<sizeof(param_t);i++) {
+  for(i=0;i<sizeof(tConfig);i++) {
     crc16 = _crc16_update(crc16,*data);
     data++;
   }
@@ -104,11 +104,11 @@ uint8_t param_save(void)
     return PARAM_EEPROM_NOT_READY;
 
   // write current param to eeprom
-  eeprom_write_block(&param,&eeprom_param,sizeof(param_t));
+  eeprom_write_block(&g_sConfig,&s_sEepromConfig,sizeof(tConfig));
 
   // calc current parameter crc
-  uint16_t crc16 = calc_crc16(&param);
-  eeprom_write_word(&eeprom_crc16,crc16);
+  uint16_t crc16 = calc_crc16(&g_sConfig);
+  eeprom_write_word(&s_uwEepromCrc,crc16);
 
   return PARAM_OK;
 }
@@ -120,11 +120,11 @@ uint8_t param_load(void)
     return PARAM_EEPROM_NOT_READY;
 
   // read param
-  eeprom_read_block(&param,&eeprom_param,sizeof(param_t));
+  eeprom_read_block(&g_sConfig,&s_sEepromConfig,sizeof(tConfig));
 
   // read crc16
-  uint16_t crc16 = eeprom_read_word(&eeprom_crc16);
-  uint16_t my_crc16 = calc_crc16(&param);
+  uint16_t crc16 = eeprom_read_word(&s_uwEepromCrc);
+  uint16_t my_crc16 = calc_crc16(&g_sConfig);
   if(crc16 != my_crc16) {
     param_reset();
     return PARAM_EEPROM_CRC_MISMATCH;
@@ -137,9 +137,9 @@ void param_reset(void)
 {
 	uint8_t i;
   // restore default param
-  uint8_t *out = (uint8_t *)&param;
-  const uint8_t *in = (const uint8_t *)&default_param;
-  for(i=0;i<sizeof(param_t);i++) {
+  uint8_t *out = (uint8_t *)&g_sConfig;
+  const uint8_t *in = (const uint8_t *)&sc_sDefaultConfig;
+  for(i=0;i<sizeof(tConfig);i++) {
     *(out++) = pgm_read_byte_near(in++);
   }
 }

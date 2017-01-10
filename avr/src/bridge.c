@@ -81,14 +81,14 @@ static void bridgeCommOnline(const uint8_t *buf)
 
   // validate mac address and if it does not match then reconfigure PIO
   const uint8_t *src_mac = eth_get_src_mac(buf);
-  if(!net_compare_mac(param.mac_addr, src_mac)) {
+  if(!net_compare_mac(g_sConfig.mac_addr, src_mac)) {
     // update mac param and save
-    net_copy_mac(src_mac, param.mac_addr);
+    net_copy_mac(src_mac, g_sConfig.mac_addr);
     param_save();
 
     // re-configure PIO
     enc28j60_exit();
-    enc28j60_init(param.mac_addr, PIO_INIT_BROAD_CAST);
+    enc28j60_init(g_sConfig.mac_addr, PIO_INIT_BROAD_CAST);
   }
 }
 
@@ -129,7 +129,7 @@ static uint8_t bridgeFillPacket(uint16_t *pFilledSize)
     // Build magic packet header
     // Target (bcast) MAC, src (plipbox) MAC, 0xFFFF => pFilledSize: 14 bytes
     net_copy_bcast_mac(g_pDataBuffer + ETH_OFF_TGT_MAC);
-    net_copy_mac(param.mac_addr, g_pDataBuffer + ETH_OFF_SRC_MAC);
+    net_copy_mac(g_sConfig.mac_addr, g_pDataBuffer + ETH_OFF_SRC_MAC);
     net_put_word(g_pDataBuffer + ETH_OFF_TYPE, ETH_TYPE_MAGIC_ONLINE);
 
     *pFilledSize = ETH_HDR_SIZE;
@@ -196,7 +196,7 @@ void bridge_loop(void)
   pb_proto_init(bridgeFillPacket, bridgeProcessPacket);
 
   // Init ENC28j60
-  enc28j60_init(param.mac_addr, pio_util_get_init_flags());
+  enc28j60_init(g_sConfig.mac_addr, pio_util_get_init_flags());
 
   // Reset stats
   stats_reset();
@@ -205,7 +205,7 @@ void bridge_loop(void)
   flags = 0;
   req_is_pending = 0;
 
-  uint8_t flow_control = param.flow_ctl;
+  uint8_t flow_control = g_sConfig.flow_ctl;
   uint8_t limit_flow = 0;
   uint8_t ubDisplayPacketInfo = 1;
   uint8_t ubPacketCount;

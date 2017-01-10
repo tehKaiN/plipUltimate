@@ -19,13 +19,13 @@ static void cmdSdWrite(void);
 void cmdProcess(uint16_t uwPacketSize) {
 	uint8_t ubCmdType = g_pDataBuffer[0];
 	switch(ubCmdType) {
-		case CMD_REBOOT: cmdReboot(); return;
-		case CMD_GETLOG: cmdGetLog(); return;
+		case CMD_REBOOT:    cmdReboot();    return;
+		case CMD_GETLOG:    cmdGetLog();    return;
 		case CMD_GETCONFIG: cmdGetConfig(); return;
 		case CMD_SETCONFIG: cmdSetConfig(); return;
-		case CMD_SDINFO: cmdGetSdInfo(); return;
-		case CMD_SDREAD: cmdSdRead(); return;
-		case CMD_SDWRITE: cmdSdWrite(); return;
+		case CMD_SDINFO:    cmdGetSdInfo(); return;
+		case CMD_SDREAD:    cmdSdRead();    return;
+		case CMD_SDWRITE:   cmdSdWrite();   return;
 	}
 }
 

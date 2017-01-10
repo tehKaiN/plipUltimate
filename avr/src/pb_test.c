@@ -45,16 +45,16 @@ static uint8_t silent_mode;
 
 static uint8_t fill_pkt(uint16_t *pFilledSize)
 {
-  *pFilledSize = param.test_plen;
+  *pFilledSize = g_sConfig.test_plen;
   if(*pFilledSize > DATABUF_SIZE) {
     return PBPROTO_STATUS_PACKET_TOO_LARGE;
   }
 
   net_copy_mac(net_bcast_mac, g_pDataBuffer);
-  net_copy_mac(param.mac_addr, g_pDataBuffer+6);
+  net_copy_mac(g_sConfig.mac_addr, g_pDataBuffer+6);
 
-  uint8_t ptype_hi = (uint8_t)(param.test_ptype >> 8);
-  uint8_t ptype_lo = (uint8_t)(param.test_ptype & 0xff);
+  uint8_t ptype_hi = (uint8_t)(g_sConfig.test_ptype >> 8);
+  uint8_t ptype_lo = (uint8_t)(g_sConfig.test_ptype & 0xff);
   g_pDataBuffer[12] = ptype_hi;
   g_pDataBuffer[13] = ptype_lo;
 
@@ -76,7 +76,7 @@ static uint8_t proc_pkt(uint16_t uwSize)
   uint16_t errors = 0;
 
   // check packet size
-  if(uwSize != param.test_plen) {
+  if(uwSize != g_sConfig.test_plen) {
     errors = 1;
     // NOTE: UART - ERR: uwSize\r\n
   }
@@ -87,13 +87,13 @@ static uint8_t proc_pkt(uint16_t uwSize)
     // NOTE: UART - ERR: dst mac\r\n
   }
   // +6: check src mac
-  if(!net_compare_mac(g_pDataBuffer+6, param.mac_addr)) {
+  if(!net_compare_mac(g_pDataBuffer+6, g_sConfig.mac_addr)) {
     errors++;
     // NOTE: UART - ERR: src mac\r\n
   }
   // +12,+13: pkt type
-  uint8_t ptype_hi = (uint8_t)(param.test_ptype >> 8);
-  uint8_t ptype_lo = (uint8_t)(param.test_ptype & 0xff);
+  uint8_t ptype_hi = (uint8_t)(g_sConfig.test_ptype >> 8);
+  uint8_t ptype_lo = (uint8_t)(g_sConfig.test_ptype & 0xff);
   if((g_pDataBuffer[12] != ptype_hi) || (g_pDataBuffer[13] != ptype_lo)) {
     errors++;
 		// NOTE: UART - ERR: pkt type\r\n

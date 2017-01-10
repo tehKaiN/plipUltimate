@@ -29,7 +29,7 @@
 
 #include "global.h"
 
-typedef struct {
+typedef struct _tConfig {
   uint8_t mac_addr[6];
 
   uint8_t flow_ctl;
@@ -40,9 +40,9 @@ typedef struct {
   uint8_t test_ip[4];
   uint16_t test_port;
   uint8_t test_mode;
-} param_t;
+} tConfig;
 
-extern param_t param;
+extern tConfig g_sConfig;
 
 // param result
 #define PARAM_OK                  0

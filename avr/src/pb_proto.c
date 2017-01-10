@@ -86,16 +86,18 @@ uint8_t parGetStatusLines(void) {
 }
 
 /**
- * Sends data receive request (?) to Amiga.
- * Done as pulse on ACK line.
+ * Sends information to Amiga that data is ready.
+ * Done as 1ms pulse on ACK line.
  */
 void parRequestAmiRead(void)
 {
   PAR_STATUS_PORT &= ~NACK;
-  _delay_loop_1(1);
+  timerDelay100us(10);
   PAR_STATUS_PORT |= NACK;
-  // TODO(KaiN#9): Perhaps should be longer as atmega clk is faster?
   trigger_ts = g_uwTimeStamp;
+  /* NOTE(KaiN#1): I've prolonged /ACK pulse to 1ms instead of 6 avr cycles.
+   *               Perhaps could be shorter?
+   */
 }
 
 // ----- HELPER -----

@@ -89,14 +89,14 @@ COMMAND(cmd_param_toggle)
 
   if(group == 't') {
     switch(type) {
-      case 'm': val = &param.test_mode; break;
+      case 'm': val = &g_sConfig.test_mode; break;
       default: return CMD_PARSE_ERROR;
     }
   }
   else if(group == 'f') {
     switch(type) {
-      case 'd': val = &param.full_duplex; result = CMD_OK_RESTART; break;
-      case 'c': val = &param.flow_ctl; result = CMD_OK_RESTART; break;
+      case 'd': val = &g_sConfig.full_duplex; result = CMD_OK_RESTART; break;
+      case 'c': val = &g_sConfig.flow_ctl; result = CMD_OK_RESTART; break;
       default: return CMD_PARSE_ERROR;
     }
   }
@@ -126,9 +126,9 @@ COMMAND(cmd_param_word)
 
   if(group == 't') {
     switch(type) {
-      case 'l': val = &param.test_plen; break;
-      case 't': val = &param.test_ptype; break;
-      case 'p': val = &param.test_port; break;
+      case 'l': val = &g_sConfig.test_plen; break;
+      case 't': val = &g_sConfig.test_ptype; break;
+      case 'p': val = &g_sConfig.test_port; break;
       default: return CMD_PARSE_ERROR;
     }
   }
@@ -154,7 +154,7 @@ COMMAND(cmd_param_mac_addr)
   uint8_t mac[6];
 
   if(net_parse_mac((char*)argv[1], mac)) {
-    net_copy_mac(mac, param.mac_addr);
+    net_copy_mac(mac, g_sConfig.mac_addr);
     return CMD_OK;
   } else {
     return CMD_PARSE_ERROR;
@@ -166,7 +166,7 @@ COMMAND(cmd_param_ip_addr)
   uint8_t ip[4];
 
   if(net_parse_ip((char*)argv[1], ip)) {
-    net_copy_ip(ip, param.test_ip);
+    net_copy_ip(ip, g_sConfig.test_ip);
     return CMD_OK;
   } else {
     return CMD_PARSE_ERROR;

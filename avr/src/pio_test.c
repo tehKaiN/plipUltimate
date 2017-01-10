@@ -43,7 +43,7 @@ void pio_test_loop(void)
 
   // NOTE: UART - time_stamp_spc() [PIO_TEST] on\r\n
 
-  enc28j60_init(param.mac_addr, pio_util_get_init_flags());
+  enc28j60_init(g_sConfig.mac_addr, pio_util_get_init_flags());
   stats_reset();
 
   while(run_mode == RUN_MODE_PIO_TEST) {

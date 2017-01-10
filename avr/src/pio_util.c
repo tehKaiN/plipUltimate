@@ -45,10 +45,10 @@ uint8_t pio_util_get_init_flags()
 {
   uint8_t flags = PIO_INIT_BROAD_CAST;
 
-  if(param.flow_ctl) {
+  if(g_sConfig.flow_ctl) {
     flags |= PIO_INIT_FLOW_CONTROL;
   }
-  if(param.full_duplex) {
+  if(g_sConfig.full_duplex) {
     flags |= PIO_INIT_FULL_DUPLEX;
   }
 
@@ -139,9 +139,9 @@ uint8_t pio_util_handle_arp(uint16_t size)
 			// NOTE: UART - time_stamp_spc() ARP REQ: IP=tgt_ip\r\n
     }
 
-    if(net_compare_ip(tgt_ip, param.test_ip)) {
-      arp_make_reply(pl_buf, param.mac_addr, param.test_ip);
-      eth_make_bcast(g_pDataBuffer, param.mac_addr);
+    if(net_compare_ip(tgt_ip, g_sConfig.test_ip)) {
+      arp_make_reply(pl_buf, g_sConfig.mac_addr, g_sConfig.test_ip);
+      eth_make_bcast(g_pDataBuffer, g_sConfig.mac_addr);
       pio_util_send_packet(size);
 
       if(global_verbose) {
@@ -162,7 +162,7 @@ uint8_t pio_util_handle_udp_test(uint16_t size)
   const uint8_t *data_ptr = udp_get_data_ptr(udp_buf);
 
   // for us?
-  if(net_compare_ip(param.test_ip, dst_ip) && (dst_port == param.test_port)) {
+  if(net_compare_ip(g_sConfig.test_ip, dst_ip) && (dst_port == g_sConfig.test_port)) {
     if(global_verbose) {
 			// NOTE: UART - time_stamp_spc() UDP: hex_byte(*data_ptr)\r\n
     }
@@ -171,14 +171,14 @@ uint8_t pio_util_handle_udp_test(uint16_t size)
     // flip IP/UDP
     const uint8_t *src_ip = ip_get_src_ip(ip_buf);
     net_copy_ip(src_ip, ip_buf + 16); // set tgt ip
-    net_copy_ip(param.test_ip, ip_buf + 12); // set src ip
+    net_copy_ip(g_sConfig.test_ip, ip_buf + 12); // set src ip
     uint16_t src_port = udp_get_src_port(udp_buf);
     net_put_word(udp_buf + UDP_SRC_PORT_OFF, dst_port);
     net_put_word(udp_buf + UDP_TGT_PORT_OFF, src_port);
 
     // flip eth
     net_copy_mac(g_pDataBuffer + ETH_OFF_SRC_MAC, g_pDataBuffer + ETH_OFF_TGT_MAC);
-    net_copy_mac(param.mac_addr, g_pDataBuffer + ETH_OFF_SRC_MAC);
+    net_copy_mac(g_sConfig.mac_addr, g_pDataBuffer + ETH_OFF_SRC_MAC);
 
     return 1;
  } else {

@@ -54,7 +54,7 @@ static uint8_t fill_pkt(uint16_t *pFilledSize)
   }
 
   // in test mode 0 send via internal device loopback
-  if(param.test_mode == 0) {
+  if(g_sConfig.test_mode == 0) {
     // switch eth type to magic for loop back
     net_put_word(g_pDataBuffer + ETH_OFF_TYPE, ETH_TYPE_MAGIC_LOOPBACK);
   }
@@ -74,7 +74,7 @@ static uint8_t proc_pkt(uint16_t uwSize)
   uint16_t type = net_get_word(g_pDataBuffer + ETH_OFF_TYPE);
 
   // in test mode 0 packet was sent by internal device loopback
-  if(param.test_mode == 0) {
+  if(g_sConfig.test_mode == 0) {
     if(type != ETH_TYPE_MAGIC_LOOPBACK) {
 			// NOTE: UART - NO MAGIC!!\r\n
       return PBPROTO_STATUS_OK;
@@ -100,7 +100,7 @@ void bridge_test_loop(void)
 	// NOTE: UART - time_stamp_spc [BRIDGE_TEST] on\r\n
 
   pb_proto_init(fill_pkt, proc_pkt);
-  enc28j60_init(param.mac_addr, pio_util_get_init_flags());
+  enc28j60_init(g_sConfig.mac_addr, pio_util_get_init_flags());
   stats_reset();
 
   while(run_mode == RUN_MODE_BRIDGE_TEST) {
