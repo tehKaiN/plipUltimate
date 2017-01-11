@@ -1,6 +1,6 @@
 #include <exec/types.h>
 
-extern UBYTE g_ubAckEdge; ///< ACK edge detection state.
+extern volatile UBYTE g_ubAckEdge; ///< ACK edge detection state.
 
 /**
  *  Reserves parallel ACK interrupt.

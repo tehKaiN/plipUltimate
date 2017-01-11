@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <resources/misc.h>
 #include <clib/exec_protos.h>
 #include <clib/misc_protos.h>
@@ -45,6 +46,9 @@ extern struct CIA ciaa, ciab;
  */
 #define CMD_INVALID 0
 #define CMD_RESET 1
+#define CMD_GETCONFIG 3
+#define CMD_SETCONFIG  4
+#define CMD_RESPONSE 128
 
 /**
  *  Transmission types:
@@ -58,8 +62,17 @@ extern struct CIA ciaa, ciab;
 #define PBPROTO_CMD_SEND_BURST 0x33
 #define PBPROTO_CMD_RECV_BURST 0x44
 
+UBYTE s_pRecvBfr[1600];
+UWORD s_uwRecvSize;
+
 const UBYTE s_pResetCmd[14] = {
 	CMD_RESET, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0,
+	ETH_TYPE_MAGIC_CMD>>8, ETH_TYPE_MAGIC_CMD&0xFF
+};
+
+const UBYTE s_pGetConfigCmd[14] = {
+	CMD_GETCONFIG, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0,
 	ETH_TYPE_MAGIC_CMD>>8, ETH_TYPE_MAGIC_CMD&0xFF
 };
@@ -135,7 +148,50 @@ void plipSend(const UBYTE *pData, UWORD uwSize) {
 	}
 	
 	// Make all pins low
-	PAR_DATA_VAL = 0;
+	PAR_DATA_DDR = 0x00;
+	PAR_STATUS_VAL &= ~PAR_STATUS_MASK;
+}
+
+void plipRecv(void) {
+	UWORD i;
+	UBYTE ubDoHiPout;
+	
+	s_uwRecvSize = 0;
+	
+	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;             // Clear status DDR
+	PAR_STATUS_DDR |= _BV(PAR_POUT) | _BV(PAR_SEL); // Set status DDR
+	PAR_STATUS_VAL &= ~PAR_STATUS_MASK;             // Clear status pins
+	
+	PAR_DATA_DDR = 0xFF;             // Set data DDR to output
+	PAR_DATA_VAL = PBPROTO_CMD_RECV; // Send recv request cmd
+	PAR_STATUS_VAL |= _BV(PAR_SEL);  // Trigger plip
+	waitBusyHi();                    // Wait for plip ack
+	PAR_DATA_DDR = 0x00;               // Set data DDR to input
+	
+	PAR_STATUS_VAL |= _BV(PAR_POUT);   // Let plip know that we're ready for more
+	waitBusyLo();                      // Wait for BUSY change
+	s_uwRecvSize |= PAR_DATA_VAL << 8; // Read new byte
+	
+	PAR_STATUS_VAL &= ~_BV(PAR_POUT);
+	waitBusyHi();
+	s_uwRecvSize |= PAR_DATA_VAL;
+	
+	ubDoHiPout = 1;
+	for(i = 0; i != s_uwRecvSize; ++i) {
+		if(ubDoHiPout) {
+			PAR_STATUS_VAL |= _BV(PAR_POUT);
+			waitBusyLo();
+			ubDoHiPout = 0;
+		}
+		else {
+			PAR_STATUS_VAL &= ~_BV(PAR_POUT);
+			waitBusyHi();
+			ubDoHiPout = 1;
+		}
+		s_pRecvBfr[i] = PAR_DATA_VAL;
+	}
+	
+	// Make all pins low
 	PAR_STATUS_VAL &= ~PAR_STATUS_MASK;
 }
 
@@ -178,6 +234,45 @@ void plipReset(void) {
 	printf("OK\n");
 }
 
+UBYTE plipGetConfig(void) {
+	UWORD uwTimeout = 1;
+	
+	// Reset ACK edge detection
+	g_ubAckEdge = 0;
+	
+	// Send config request
+	printf("Requesting plip config...");
+	plipSend(s_pGetConfigCmd, 14);
+	printf("OK\n");
+	
+	// Wait for plip's reaction
+	while(!g_ubAckEdge && !uwTimeout)
+		++uwTimeout;
+	
+	if(!g_ubAckEdge) {
+		// Edge not detected
+		printf("ERR: No response from plip!\n");
+		return 0;
+	}
+	
+	// Receive data from plip
+	plipRecv();
+	if(s_pRecvBfr[0] != CMD_GETCONFIG | CMD_RESPONSE) {
+		printf(
+			"ERR: Wrong response from plip, got %hu, expected %hu",
+			s_pRecvBfr[0], CMD_GETCONFIG | CMD_RESPONSE
+		);
+		return 0;
+	}
+
+	printf("Received config from plip, size: %u", s_uwRecvSize);
+	// Fill config struct
+	
+	
+	return 1;
+	
+}
+
 void printUsage(void) {
 	
 }
@@ -193,10 +288,15 @@ int main(int lArgCount, char **pArgs) {
 	if(lArgCount < 2) {
 		printf("ERR: no commands specified\n");
 		printUsage();
+		parFree();
+		return 0;
 	}
-	else {
-		// TODO: determine commands
+
+	if(!strcmp(pArgs[1], "reboot")) {
 		plipReset();
+	}
+	else if(!strcmp(pArgs[1], "getconfig")) {
+		plipGetConfig();
 	}
 	
 	parFree();

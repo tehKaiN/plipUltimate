@@ -5,7 +5,7 @@
 #include <hardware/cia.h>
 #include <exec/interrupts.h>
 
-UBYTE g_ubAckEdge;
+volatile UBYTE g_ubAckEdge;
 struct CIABase *s_pCiaBase;
 struct Interrupt *s_pInt;
 
@@ -35,7 +35,7 @@ UBYTE ackReserve(void) {
 	s_pInt->is_Node.ln_Type = NT_INTERRUPT;
 	s_pInt->is_Node.ln_Pri  = 0;
 	s_pInt->is_Node.ln_Name = "plipTool";
-	s_pInt->is_Data         = (APTR)&s_pInt;
+	s_pInt->is_Data         = (APTR)&g_ubAckEdge;
 	s_pInt->is_Code         = (APTR)ackIntServer;
 	
 	// Register int
