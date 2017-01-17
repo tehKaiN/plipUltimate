@@ -124,7 +124,7 @@ void waitBusyLo(void) {
 
 void dataDump(const UBYTE *pData, const UWORD uwDataSize) {
 	UWORD i;
-	printf("Data size: %u\n", uwDataSize);
+	printf("Data size: %u", uwDataSize);
 	for(i = 0; i != uwDataSize; ++i) {
 		if(!(i % 10))
 			putc('\n', stdout);
@@ -132,6 +132,7 @@ void dataDump(const UBYTE *pData, const UWORD uwDataSize) {
 			putc(' ', stdout);
 		printf("%02x", pData[i]);
 	}
+	putc('\n', stdout);
 }
 
 /**
@@ -190,19 +191,22 @@ void plipRecv(void) {
 	PAR_STATUS_DDR |= _BV(PAR_POUT) | _BV(PAR_SEL); // Set status DDR
 	PAR_STATUS_VAL &= ~PAR_STATUS_MASK;             // Clear status pins
 	
+	// Send recv request
 	PAR_DATA_DDR = 0xFF;             // Set data DDR to output
 	PAR_DATA_VAL = PBPROTO_CMD_RECV; // Send recv request cmd
 	PAR_STATUS_VAL |= _BV(PAR_SEL);  // Trigger plip
 	waitBusyHi();                    // Wait for plip ack
+	
+	// Receive data
 	PAR_DATA_DDR = 0x00;               // Set data DDR to input
 	
 	PAR_STATUS_VAL |= _BV(PAR_POUT);   // Let plip know that we're ready for more
 	waitBusyLo();                      // Wait for BUSY change
-	s_uwRecvSize |= PAR_DATA_VAL << 8; // Read new byte
+	s_uwRecvSize |= PAR_DATA_VAL << 8; // Read upper size byte
 	
 	PAR_STATUS_VAL &= ~_BV(PAR_POUT);
 	waitBusyHi();
-	s_uwRecvSize |= PAR_DATA_VAL;
+	s_uwRecvSize |= PAR_DATA_VAL;      // Read lower size byte
 	
 	ubDoHiPout = 1;
 	for(i = 0; i != s_uwRecvSize; ++i) {
@@ -287,16 +291,17 @@ UBYTE plipGetConfig(void) {
 	plipRecv();
 	dataDump(s_pRecvBfr, s_uwRecvSize); // DEBUG
 	
-	if(s_pRecvBfr[0] != CMD_GETCONFIG | CMD_RESPONSE) {
+	if(s_pRecvBfr[0] != (CMD_GETCONFIG | CMD_RESPONSE)) {
 		printf(
 			"ERR: Wrong response from plip, got %hu, expected %hu\n",
 			s_pRecvBfr[0], CMD_GETCONFIG | CMD_RESPONSE
 		);
 		return 0;
 	}
+	puts("Received config from plip");
 	printf(
-		"Received config from plip, packet size: %u, struct size: %d\n",
-		s_uwRecvSize, s_uwRecvSize-14
+		"packet size: %u, struct data size: %d, Ami struct size: %lu\n",
+		s_uwRecvSize, s_uwRecvSize-14, sizeof(tConfig)
 	);
 
 	tConfig *pConfig = (tConfig*)&s_pRecvBfr[14];

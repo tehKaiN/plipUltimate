@@ -186,6 +186,7 @@ static uint8_t bridgeProcessPacket(uint16_t uwSize)
 			s_ubFlags |= FLAG_SEND_CMD_RESPONSE;
 			req_is_pending = 0;
 			trigger_request();
+			break;
     default:
       // send packet via pio
       pio_util_send_packet(uwSize);
