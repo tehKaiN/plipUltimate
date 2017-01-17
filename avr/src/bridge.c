@@ -184,6 +184,7 @@ static uint8_t bridgeProcessPacket(uint16_t uwSize)
 		case ETH_TYPE_MAGIC_CMD:
 			cmdProcess(uwSize);
 			flags |= FLAG_SEND_CMD_RESPONSE;
+			req_is_pending = 0;
 			trigger_request();
     default:
       // send packet via pio
