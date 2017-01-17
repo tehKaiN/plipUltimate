@@ -5,6 +5,7 @@
 #include <clib/misc_protos.h>
 #include <hardware/cia.h>
 #include "ack.h"
+#include "buildver.h"
 
 struct Library *MiscBase = NULL;
 extern struct CIA ciaa, ciab;
@@ -311,7 +312,7 @@ UBYTE plipGetConfig(void) {
 		pConfig->full_duplex ? "enabled" : "disabled"
 	);
 	printf(
-		"Test IP: %hu.%hu%.hu%hu\n",
+		"Test IP: %hu.%hu%.hu.%hu\n",
 		pConfig->test_ip[0], pConfig->test_ip[1],
 		pConfig->test_ip[2], pConfig->test_ip[3]
 	);
@@ -326,7 +327,7 @@ void printUsage(void) {
 
 int main(int lArgCount, char **pArgs) {
 	setbuf(stdout, NULL);
-	printf("plipTool ver. 2016-12-26.\n");
+	printf("plipTool ver. %d.%d.%d.\n", BUILD_YEAR, BUILD_MONTH, BUILD_DAY);
 	
 	if(!parReserve("plipTool")) {		
 		return 1;
