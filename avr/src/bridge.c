@@ -54,7 +54,7 @@
 // Set if there is cmd response pending for Amiga
 #define FLAG_SEND_CMD_RESPONSE 8
 
-static uint8_t flags;
+uint8_t s_ubFlags;
 static uint8_t req_is_pending;
 
 static void trigger_request(void)
@@ -82,7 +82,7 @@ static void trigger_request(void)
 static void bridgeCommOnline(const uint8_t *buf)
 {
 	// NOTE: UART - time_stamp_spc() [MAGIC] online \r\n
-  flags |= FLAG_ONLINE | FLAG_FIRST_TRANSFER;
+  s_ubFlags |= FLAG_ONLINE | FLAG_FIRST_TRANSFER;
 
   // validate mac address and if it does not match then reconfigure PIO
   const uint8_t *src_mac = eth_get_src_mac(buf);
@@ -103,12 +103,12 @@ static void bridgeCommOnline(const uint8_t *buf)
 static void bridgeCommOffline(void)
 {
 	// NOTE: UART - time_stamp_spc() [MAGIC] offline
-  flags &= ~FLAG_ONLINE;
+  s_ubFlags &= ~FLAG_ONLINE;
 }
 
 static void bridgeLoopback(uint16_t size)
 {
-  flags |= FLAG_SEND_MAGIC;
+  s_ubFlags |= FLAG_SEND_MAGIC;
   trigger_request();
 }
 
@@ -117,7 +117,7 @@ static void request_magic(void)
 	// NOTE: UART - time_stamp_spc() [MAGIC] request\r\n
 
   // request receive
-  flags |= FLAG_SEND_MAGIC | FLAG_FIRST_TRANSFER;
+  s_ubFlags |= FLAG_SEND_MAGIC | FLAG_FIRST_TRANSFER;
   trigger_request();
 }
 
@@ -127,9 +127,9 @@ static void request_magic(void)
 
 static uint8_t bridgeFillPacket(uint16_t *pFilledSize)
 {
-  if((flags & FLAG_SEND_MAGIC) == FLAG_SEND_MAGIC) {
+  if((s_ubFlags & FLAG_SEND_MAGIC) == FLAG_SEND_MAGIC) {
 		// Send magic packet to Amiga
-    flags &= ~FLAG_SEND_MAGIC;
+    s_ubFlags &= ~FLAG_SEND_MAGIC;
 
     // Build magic packet header
     // Target (bcast) MAC, src (plipbox) MAC, 0xFFFF => pFilledSize: 14 bytes
@@ -139,7 +139,7 @@ static uint8_t bridgeFillPacket(uint16_t *pFilledSize)
 
     *pFilledSize = ETH_HDR_SIZE;
   }
-  else if((flags & FLAG_SEND_CMD_RESPONSE) == FLAG_SEND_CMD_RESPONSE) {
+  else if((s_ubFlags & FLAG_SEND_CMD_RESPONSE) == FLAG_SEND_CMD_RESPONSE) {
     // Send CMD response - it's already in buffer
     *pFilledSize = g_uwCmdResponseSize;
   }
@@ -147,10 +147,10 @@ static uint8_t bridgeFillPacket(uint16_t *pFilledSize)
 		// Receive packet buffer with data from ENC28j60 if pending
     pio_util_recv_packet(pFilledSize);
 
-    if(flags & FLAG_FIRST_TRANSFER) {
+    if(s_ubFlags & FLAG_FIRST_TRANSFER) {
 			// report first packet transfer
       // NOTE: UART - time_stamp_spc() FIRST TRANSFER!\r\n
-      flags &= ~FLAG_FIRST_TRANSFER;
+      s_ubFlags &= ~FLAG_FIRST_TRANSFER;
     }
   }
 
@@ -183,14 +183,14 @@ static uint8_t bridgeProcessPacket(uint16_t uwSize)
       break;
 		case ETH_TYPE_MAGIC_CMD:
 			cmdProcess(uwSize);
-			flags |= FLAG_SEND_CMD_RESPONSE;
+			s_ubFlags |= FLAG_SEND_CMD_RESPONSE;
 			req_is_pending = 0;
 			trigger_request();
     default:
       // send packet via pio
       pio_util_send_packet(uwSize);
       // if a packet arrived and we are not online then request online state
-      if((flags & FLAG_ONLINE)==0) {
+      if((s_ubFlags & FLAG_ONLINE)==0) {
         request_magic();
       }
       break;
@@ -214,7 +214,7 @@ void bridge_loop(void)
   stats_reset();
 
   // Reset flags & request state
-  flags = 0;
+  s_ubFlags = 0;
   req_is_pending = 0;
 
   uint8_t flow_control = g_sConfig.flow_ctl;
@@ -235,7 +235,7 @@ void bridge_loop(void)
         ubDisplayPacketInfo = 0;
       }
 
-      if(flags & FLAG_ONLINE) {
+      if(s_ubFlags & FLAG_ONLINE) {
 				// Comm online: let Amiga know about new packet
         trigger_request();
       }
