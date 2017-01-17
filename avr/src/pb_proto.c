@@ -89,15 +89,11 @@ uint8_t parGetStatusLines(void) {
  * Sends information to Amiga that data is ready.
  * Done as 1ms pulse on ACK line.
  */
-void parRequestAmiRead(void)
-{
+void parRequestAmiRead(void) {
   PAR_STATUS_PORT &= ~NACK;
   timerDelay100us(20);
   PAR_STATUS_PORT |= NACK;
   trigger_ts = g_uwTimeStamp;
-  /* NOTE(KaiN#1): I've prolonged /ACK pulse to 2ms instead of 6 avr cycles.
-   *               Perhaps could be shorter?
-   */
 }
 
 // ----- HELPER -----
