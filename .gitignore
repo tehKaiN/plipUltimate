@@ -6,6 +6,7 @@
 
 # Code::Blocks stuff
 *.layout
+*.cscope_file_list
 
 # Precompiled Headers
 *.gch
