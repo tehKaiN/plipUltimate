@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "par.h"
+#include "ack.h"
 
 /**
  *  Transmission types:
@@ -72,11 +73,15 @@ void dataRecv(void) {
 void dataSend(const UBYTE *pData, UWORD uwSize) {
 	UWORD i;
 	
+	// Reset ACK edge detection
+	g_ubAckEdge = 0;
+	
 	PAR_DATA_DDR = 0xFF;                            // Set data DDR
 	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;             // Clear status DDR
 	PAR_STATUS_DDR |= _BV(PAR_POUT) | _BV(PAR_SEL); // Set status DDR
 	PAR_STATUS_VAL &= ~PAR_STATUS_MASK;             // Clear status pins
 	
+	// Send send request
 	PAR_DATA_VAL = PBPROTO_CMD_SEND;
 	PAR_STATUS_VAL |= _BV(PAR_SEL);
 	parWaitBusyHi();

@@ -29,6 +29,10 @@
 
 #include "global.h"
 
+/**
+ * Main config struct.
+ * This struct must be 16-bit aligned to reflect Amiga arch
+ */
 typedef struct _tConfig {
   uint8_t mac_addr[6]; ///< Card's MAC address.
 
@@ -39,6 +43,7 @@ typedef struct _tConfig {
   uint16_t test_ptype; ///< Test packet EtherType.
   uint8_t test_ip[4];  ///< Plipbox IP? Used in ARP check.
   uint16_t test_port;
+  uint8_t zzPad;
   uint8_t test_mode;
 } tConfig;
 

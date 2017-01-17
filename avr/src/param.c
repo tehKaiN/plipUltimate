@@ -34,6 +34,8 @@
 #include <avr/pgmspace.h>
 #include <string.h>
 
+//TODO(KaiN#7): Inverse config function return value logic
+
 // current memory RAM param
 tConfig g_sConfig;
 

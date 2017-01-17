@@ -5,92 +5,33 @@
 #include "buildver.h"
 #include "data.h"
 #include "par.h"
+#include "cmd.h"
 
-/**
- *  Magic EtherType value
- */
-#define ETH_TYPE_MAGIC_CMD 0xfffc
-
-/**
- *  PlipUltimate command types
- */
-#define CMD_INVALID 0
-#define CMD_RESET 1
-#define CMD_GETCONFIG 3
-#define CMD_SETCONFIG  4
-#define CMD_RESPONSE 128
-
-typedef struct _tConfig {
-  UBYTE mac_addr[6]; ///< Card's MAC address.
-
-  UBYTE flow_ctl;    ///< Flow control?
-  UBYTE full_duplex; ///< Ethernet full duplex mode.
-
-  UWORD test_plen;   ///< Test packet length.
-  UWORD test_ptype;  ///< Test packet EtherType.
-  UBYTE test_ip[4];  ///< Plipbox IP? Used in ARP check.
-  UWORD test_port;
-  UBYTE test_mode;
-} tConfig;
-
-const UBYTE s_pResetCmd[14] = {
-	CMD_RESET, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0,
-	ETH_TYPE_MAGIC_CMD>>8, ETH_TYPE_MAGIC_CMD&0xFF
-};
-
-const UBYTE s_pGetConfigCmd[14] = {
-	CMD_GETCONFIG, 0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0, 0,
-	ETH_TYPE_MAGIC_CMD>>8, ETH_TYPE_MAGIC_CMD&0xFF
-};
-
-void plipReset(void) {
-	printf("Sending CMD_RESET...");
-	dataSend(s_pResetCmd, 14);
-	printf("OK\n");
+void printUsage(void) {
+	
 }
 
-UBYTE plipGetConfig(void) {
-	UWORD uwTimeout = 1;
-	
-	// Reset ACK edge detection
-	g_ubAckEdge = 0;
-	
-	// Send config request
-	printf("Requesting plip config...");
-	dataSend(s_pGetConfigCmd, 14);
-	printf("OK\n");
-	
-	// Wait for plip's reaction
-	while(!g_ubAckEdge && !uwTimeout)
-		++uwTimeout;
-	
-	if(!g_ubAckEdge) {
-		// Edge not detected
-		printf("ERR: No response from plip!\n");
+UBYTE parseMac(tConfig *pConfig, char *szMac) {
+	UWORD uwA, uwB, uwC, uwD, uwE, uwF;
+	if(strlen(szMac) != 6*2+5)
 		return 0;
-	}
-	
-	// Receive data from plip
-	dataRecv();
-	dataDump(g_pRecvBfr, g_uwRecvSize); // DEBUG
-	
-	if(g_pRecvBfr[0] != (CMD_GETCONFIG | CMD_RESPONSE)) {
-		printf(
-			"ERR: Wrong response from plip, got %hu, expected %hu\n",
-			g_pRecvBfr[0], CMD_GETCONFIG | CMD_RESPONSE
-		);
+	if(
+		sscanf(
+			szMac, "%hx:%hx:%hx:%hx:%hx:%hx", &uwA, &uwB, &uwC, &uwD, &uwE, &uwF
+		) < 6
+	)
 		return 0;
-	}
-	puts("Received config from plip");
-	printf(
-		"packet size: %u, struct data size: %d, Ami struct size: %lu\n",
-		g_uwRecvSize, g_uwRecvSize-14, sizeof(tConfig)
-	);
+	pConfig->mac_addr[0] = uwA;
+	pConfig->mac_addr[1] = uwB;
+	pConfig->mac_addr[2] = uwC;
+	pConfig->mac_addr[3] = uwD;
+	pConfig->mac_addr[4] = uwE;
+	pConfig->mac_addr[5] = uwF;
+	
+	return 1;
+}
 
-	tConfig *pConfig = (tConfig*)&g_pRecvBfr[14];
-	// Display struct
+void configDisplay(tConfig *pConfig) {
 	printf(
 		"MAC addr: %02x:%02x:%02x:%02x:%02x:%02x\n",
 		pConfig->mac_addr[0], pConfig->mac_addr[1], pConfig->mac_addr[2],
@@ -102,16 +43,10 @@ UBYTE plipGetConfig(void) {
 		pConfig->full_duplex ? "enabled" : "disabled"
 	);
 	printf(
-		"Test IP: %hu.%hu%.hu.%hu\n",
+		"Test IP: %hu.%hu.%hu.%hu\n",
 		pConfig->test_ip[0], pConfig->test_ip[1],
 		pConfig->test_ip[2], pConfig->test_ip[3]
 	);
-	
-	return 1;
-}
-
-void printUsage(void) {
-	
 }
 
 int main(int lArgCount, char **pArgs) {
@@ -135,10 +70,38 @@ int main(int lArgCount, char **pArgs) {
 	}
 
 	if(!strcmp(pArgs[1], "reboot")) {
-		plipReset();
+		cmdReset();
 	}
-	else if(!strcmp(pArgs[1], "getconfig")) {
-		plipGetConfig();
+	else if(!strcmp(pArgs[1], "config")) {
+		tConfig sConfig;
+		if(!cmdConfigGet(&sConfig)) {
+			printf("ERR: Read config error");
+		}
+		else {
+			if(lArgCount == 2) {
+				configDisplay(&sConfig);
+			}
+			else {
+				UBYTE i, ubErr, ubWriteType;
+				ubWriteType = WRITE_TYPE_CURRENT;
+				
+				ubErr = 0;
+				for(i = 2; i != lArgCount; ++i) {
+					if(!strcmp(pArgs[i], "default"))
+						ubWriteType = WRITE_TYPE_DEFAULT;
+					else if(!strcmp(pArgs[i], "mac")) {
+						if(!parseMac(&sConfig, pArgs[i+1])) {
+							printf("ERR: Invalid MAC address\n");
+							ubErr = 1;
+							break;
+						}
+						++i;
+					}
+				}
+				if(!ubErr)
+					cmdConfigSet(&sConfig, ubWriteType);
+			}
+		}
 	}
 	
 	ackFree();

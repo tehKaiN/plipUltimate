@@ -5,6 +5,17 @@
 #include "base/util.h"
 #include "net/eth.h"
 #include "param.h"
+#include "spi/enc28j60.h"
+#include "pio_util.h"
+
+/**
+ * Config write types.
+ *  WRITE_TYPE_CURRENT - write into config stored in RAM
+ *  WRITE_TYPE_DEFAULT - write into config stored in ROM
+ */
+#define WRITE_TYPE_INVALID 0
+#define WRITE_TYPE_CURRENT 1
+#define WRITE_TYPE_DEFAULT 2
 
 uint16_t g_uwCmdResponseSize;
 
@@ -49,7 +60,32 @@ static void cmdGetConfig(void) {
 }
 
 static void cmdSetConfig(void) {
-	// TODO(KaiN#9): implement cmdSetConfig()
+	uint8_t ubResult = 1;
+
+	if(
+		g_pDataBuffer[1] != WRITE_TYPE_CURRENT &&
+		g_pDataBuffer[1] != WRITE_TYPE_DEFAULT
+	) {
+		ubResult |= 0b10;
+	}
+	else {
+		// Update current config
+		memcpy(&g_sConfig, &g_pDataBuffer[ETH_HDR_SIZE], sizeof(tConfig));
+
+		// Update ROM config
+		if(g_pDataBuffer[1] == WRITE_TYPE_DEFAULT) {
+			if(param_save())
+				ubResult |= 0b100;
+		}
+
+		// Reconfigure plip
+		enc28j60_exit();
+		enc28j60_init(g_sConfig.mac_addr, pio_util_get_init_flags());
+	}
+
+	// Prepare response
+	g_pDataBuffer[1] = ubResult;
+	g_uwCmdResponseSize = ETH_HDR_SIZE;
 }
 
 static void cmdGetSdInfo(void) {

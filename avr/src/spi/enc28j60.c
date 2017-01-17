@@ -374,6 +374,7 @@ static inline void enc28j60_disable_broadcast ( void )
   writeRegByte(ERXFCON, ERXFCON_UCEN|ERXFCON_CRCEN/*|ERXFCON_PMEN*/);
 }
 
+// TODO(KaiN#1): merge flags with pio_util_get_init_flags()?
 uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
 {
 	#ifdef NOENC
