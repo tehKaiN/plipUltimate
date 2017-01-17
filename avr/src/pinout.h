@@ -36,7 +36,7 @@
 
 /// LED-related defines
 #define LED_DDR        DDRC
-#define LED_PIN        PINC
+#define LED_PORT       PORTC
 #define LED_STATUS_PIN PC5
 #define LED_STATUS     _BV(LED_STATUS_PIN)
 

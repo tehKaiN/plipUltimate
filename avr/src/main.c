@@ -104,7 +104,7 @@ static void hwInit(void) {
 
   // Initialize status LED
   LED_DDR |= LED_STATUS;
-  LED_PIN |= LED_STATUS;
+  LED_PORT |= LED_STATUS;
 }
 
 // How I should attach ISP:

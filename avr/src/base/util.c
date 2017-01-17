@@ -182,9 +182,9 @@ uint8_t utilParseByteDec(const char *buf, uint8_t *out)
  */
 void utilReset(void) {
 	// Indicate reset
-	LED_PIN &= ~LED_STATUS;
+	LED_PORT &= ~LED_STATUS;
 	timerDelay10ms(20);
-	LED_PIN |= LED_STATUS;
+	LED_PORT |= LED_STATUS;
 	timerDelay10ms(20);
 
 	// Perform a reset
