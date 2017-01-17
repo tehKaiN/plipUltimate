@@ -92,10 +92,10 @@ uint8_t parGetStatusLines(void) {
 void parRequestAmiRead(void)
 {
   PAR_STATUS_PORT &= ~NACK;
-  timerDelay100us(10);
+  timerDelay100us(20);
   PAR_STATUS_PORT |= NACK;
   trigger_ts = g_uwTimeStamp;
-  /* NOTE(KaiN#1): I've prolonged /ACK pulse to 1ms instead of 6 avr cycles.
+  /* NOTE(KaiN#1): I've prolonged /ACK pulse to 2ms instead of 6 avr cycles.
    *               Perhaps could be shorter?
    */
 }

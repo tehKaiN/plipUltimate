@@ -8,6 +8,7 @@
 volatile UBYTE g_ubAckEdge;
 struct CIABase *s_pCiaBase;
 struct Interrupt *s_pInt;
+WORD s_wICRMask;
 
 /**
  *  Parallel port ACK Interrupt handler.
@@ -49,10 +50,21 @@ UBYTE ackReserve(void) {
 		return 0;
 	}
 	
+	// Get current CIA int mask
+	s_wICRMask = AbleICR((struct Library*)s_pCiaBase, 0);
+	// Reset CIA ACK int
+	SetICR((struct Library*)s_pCiaBase, CIAICRF_FLG);
+	// Enable CIA ACK int
+	AbleICR((struct Library*)s_pCiaBase, CIAICRF_SETCLR | CIAICRF_FLG);
+	
 	return 1;
 }
 
 void ackFree(void) {
+	// Disable CIA ACK int
+	AbleICR((struct Library*)s_pCiaBase, CIAICRF_FLG);
+	// Remove CIA ACK int vector
 	RemICRVector((struct Library*)s_pCiaBase, CIAICRB_FLG, s_pInt);
+	// Mem cleanup
 	FreeMem(s_pInt, sizeof(struct Interrupt));
 }

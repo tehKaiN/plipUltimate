@@ -62,7 +62,21 @@ extern struct CIA ciaa, ciab;
 #define PBPROTO_CMD_SEND_BURST 0x33
 #define PBPROTO_CMD_RECV_BURST 0x44
 
-UBYTE s_pRecvBfr[1600];
+typedef struct _tConfig {
+  UBYTE mac_addr[6]; ///< Card's MAC address.
+
+  UBYTE flow_ctl;    ///< Flow control?
+  UBYTE full_duplex; ///< Ethernet full duplex mode.
+
+  UWORD test_plen;  ///< Test packet length.
+  UWORD test_ptype; ///< Test packet EtherType.
+  UBYTE test_ip[4];  ///< Plipbox IP? Used in ARP check.
+  UWORD test_port;
+  UBYTE test_mode;
+} tConfig;
+
+#define RECV_BFR_SIZE 1600
+UBYTE s_pRecvBfr[RECV_BFR_SIZE];
 UWORD s_uwRecvSize;
 
 const UBYTE s_pResetCmd[14] = {
@@ -104,6 +118,18 @@ void waitBusyLo(void) {
 	
 	if(!uwTimeout) {
 		printf("ERR: waitBusyLo timeout!\n");
+	}
+}
+
+void dataDump(const UBYTE *pData, const UWORD uwDataSize) {
+	UWORD i;
+	printf("Data size: %u\n", uwDataSize);
+	for(i = 0; i != uwDataSize; ++i) {
+		if(!(i % 10))
+			putc('\n', stdout);
+		else
+			putc(' ', stdout);
+		printf("%02x", pData[i]);
 	}
 }
 
@@ -157,6 +183,7 @@ void plipRecv(void) {
 	UBYTE ubDoHiPout;
 	
 	s_uwRecvSize = 0;
+	memset(s_pRecvBfr, 0, RECV_BFR_SIZE);// DEBUG
 	
 	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;             // Clear status DDR
 	PAR_STATUS_DDR |= _BV(PAR_POUT) | _BV(PAR_SEL); // Set status DDR
@@ -257,17 +284,37 @@ UBYTE plipGetConfig(void) {
 	
 	// Receive data from plip
 	plipRecv();
+	dataDump(s_pRecvBfr, s_uwRecvSize); // DEBUG
+	
 	if(s_pRecvBfr[0] != CMD_GETCONFIG | CMD_RESPONSE) {
 		printf(
-			"ERR: Wrong response from plip, got %hu, expected %hu",
+			"ERR: Wrong response from plip, got %hu, expected %hu\n",
 			s_pRecvBfr[0], CMD_GETCONFIG | CMD_RESPONSE
 		);
 		return 0;
 	}
+	printf(
+		"Received config from plip, packet size: %u, struct size: %d\n",
+		s_uwRecvSize, s_uwRecvSize-14
+	);
 
-	printf("Received config from plip, size: %u", s_uwRecvSize);
-	// Fill config struct
-	
+	tConfig *pConfig = (tConfig*)&s_pRecvBfr[14];
+	// Display struct
+	printf(
+		"MAC addr: %02x:%02x:%02x:%02x:%02x:%02x\n",
+		pConfig->mac_addr[0], pConfig->mac_addr[1], pConfig->mac_addr[2],
+		pConfig->mac_addr[3], pConfig->mac_addr[4], pConfig->mac_addr[5]
+	);
+	printf("Flow control: %s\n", pConfig->flow_ctl ? "enabled" : "disabled");
+	printf(
+		"Ethernet full duplex: %s\n",
+		pConfig->full_duplex ? "enabled" : "disabled"
+	);
+	printf(
+		"Test IP: %hu.%hu%.hu%hu\n",
+		pConfig->test_ip[0], pConfig->test_ip[1],
+		pConfig->test_ip[2], pConfig->test_ip[3]
+	);
 	
 	return 1;
 	
@@ -284,10 +331,15 @@ int main(int lArgCount, char **pArgs) {
 	if(!parReserve("plipTool")) {		
 		return 1;
 	}
+	if(!ackReserve()) {
+		parFree();
+		return 1;
+	}
 	
 	if(lArgCount < 2) {
 		printf("ERR: no commands specified\n");
 		printUsage();
+		ackFree();
 		parFree();
 		return 0;
 	}
@@ -299,6 +351,7 @@ int main(int lArgCount, char **pArgs) {
 		plipGetConfig();
 	}
 	
+	ackFree();
 	parFree();
 	
 	return 0;
