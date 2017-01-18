@@ -25,6 +25,9 @@
 				<Compiler>
 					<Add option="-Os" />
 				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
 			</Target>
 			<Environment>
 				<Variable name="BOOTSTART" value="0x7000" />
@@ -51,6 +54,7 @@
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="pinout.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
