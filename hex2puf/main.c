@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #define BOOT_PAGE_WORD_SIZE 64
 #define BOOT_PAGE_BYTE_SIZE (BOOT_PAGE_WORD_SIZE*2)
@@ -7,10 +8,14 @@
 #define BOOT_RWW_PAGE_COUNT (BOOT_PAGE_COUNT - BOOT_NRWW_PAGE_COUNT)
 
 int main(int lArgCount, char *pArgs[]) {
-	FILE *pHexFile;
+	FILE *pHexFile, *pPuf;
 	unsigned char pFirmware[BOOT_PAGE_BYTE_SIZE * BOOT_RWW_PAGE_COUNT];
 	char szDataHexes[34+1];
 	unsigned short int uwLine, uwSize, uwByteAddr, uwType, i;
+	char bWhiteSpace;
+	unsigned short int *pFirmwareWords;
+	unsigned char ubPage, ubRealPages;
+	char szPufPath[255];
 	
 	pHexFile = fopen(pArgs[1], "r");
 	if(!pHexFile) {
@@ -45,21 +50,21 @@ int main(int lArgCount, char *pArgs[]) {
 		}
 
 		// Skip newline chars
-		char c;
 		do {
-			c = fgetc(pHexFile);
-		} while(c <= 32);
+			bWhiteSpace = fgetc(pHexFile);
+		} while(bWhiteSpace <= 32);
 		++uwLine;
 	}
 	fclose(pHexFile);
 	
 	// Convert endianness
-	unsigned short int *pFirmwareWords = (unsigned short int *)pFirmware;
+	pFirmwareWords = (unsigned short int *)pFirmware;
 	for(i = 0; i != BOOT_PAGE_WORD_SIZE*BOOT_RWW_PAGE_COUNT; ++i)
 		pFirmwareWords[i] = (pFirmwareWords[i] >> 8) | ((pFirmwareWords[i] & 0xFF) << 8);
 	
-	unsigned char ubPage, ubRealPages;
-	FILE *pPuf = fopen("test.puf", "wb");
+	strcpy(szPufPath, pArgs[1]);
+	memcpy(&szPufPath[strlen(szPufPath)-4], ".puf", 4);
+	pPuf = fopen(szPufPath, "wb");
 	fwrite(&ubRealPages, 1, 1, pPuf); // Make space for page count
 	// Count non-empty pages
 	ubRealPages = 0;
