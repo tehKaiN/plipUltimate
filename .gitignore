@@ -30,3 +30,6 @@
 #hex2puf test files
 hex2puf/*.hex
 hex2puf/*.puf
+
+#plipTool test files
+amiga-sw/plipTool/*.puf
