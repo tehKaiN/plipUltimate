@@ -143,11 +143,11 @@ int main(void) {
 
 		// Program page on flash & wait for Ami read
 		bootFlashPage();
-//		PAR_DATA_DDR = 0xFF;
-//		PAR_DATA_PORT = ubFlashResult;
-//		waitForStatusPin(NSTROBE, 0);
-//		PAR_DATA_PORT = 0;
-//		PAR_DATA_DDR = 0;
+
+		// Let Ami know that bootloader is ready for more
+		PAR_STATUS_PORT |= NACK;
+		_delay_ms(2);
+		PAR_STATUS_PORT &= ~NACK;
 	}
 	bootExit();
 	return 0;

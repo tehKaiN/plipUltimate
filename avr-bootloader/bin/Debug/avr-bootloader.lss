@@ -3,27 +3,27 @@ bin\Debug\avr-bootloader.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000304  00007000  00007000  00000074  2**1
+  0 .text         00000316  00007000  00007000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .bss          00000081  00800100  00800100  00000378  2**0
+  1 .bss          00000081  00800100  00800100  0000038a  2**0
                   ALLOC
-  2 .debug_aranges 00000020  00000000  00000000  00000378  2**0
+  2 .debug_aranges 00000020  00000000  00000000  0000038a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  3 .debug_pubnames 00000089  00000000  00000000  00000398  2**0
+  3 .debug_pubnames 00000089  00000000  00000000  000003aa  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .debug_info   00000373  00000000  00000000  00000421  2**0
+  4 .debug_info   000003aa  00000000  00000000  00000433  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_abbrev 00000181  00000000  00000000  00000794  2**0
+  5 .debug_abbrev 00000190  00000000  00000000  000007dd  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_line   00000363  00000000  00000000  00000915  2**0
+  6 .debug_line   00000381  00000000  00000000  0000096d  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_frame  00000060  00000000  00000000  00000c78  2**2
+  7 .debug_frame  00000060  00000000  00000000  00000cf0  2**2
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_str    0000018c  00000000  00000000  00000cd8  2**0
+  8 .debug_str    0000018c  00000000  00000000  00000d50  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_loc    00000100  00000000  00000000  00000e64  2**0
+  9 .debug_loc    00000118  00000000  00000000  00000edc  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_ranges 000000c0  00000000  00000000  00000f64  2**0
+ 10 .debug_ranges 000000c0  00000000  00000000  00000ff4  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -78,7 +78,7 @@ Disassembly of section .text:
     7080:	b1 07       	cpc	r27, r17
     7082:	e1 f7       	brne	.-8      	; 0x707c <.do_clear_bss_loop>
     7084:	0e 94 32 39 	call	0x7264	; 0x7264 <main>
-    7088:	0c 94 80 39 	jmp	0x7300	; 0x7300 <_exit>
+    7088:	0c 94 89 39 	jmp	0x7312	; 0x7312 <_exit>
 
 0000708c <__bad_interrupt>:
     708c:	0c 94 00 38 	jmp	0x7000	; 0x7000 <__vectors>
@@ -566,7 +566,7 @@ int main(void) {
     72d6:	88 83       	st	Y, r24
 		if(ubRequest != CMD_SEND_BOOT)
     72d8:	98 38       	cpi	r25, 0x88	; 136
-    72da:	39 f4       	brne	.+14     	; 0x72ea <main+0x86>
+    72da:	81 f4       	brne	.+32     	; 0x72fc <main+0x98>
 			break;
 		// Read page from Ami
 		if(!bootReadPageFromAmi())
@@ -578,28 +578,38 @@ int main(void) {
 		// Program page on flash & wait for Ami read
 		bootFlashPage();
     72e4:	0e 94 dd 38 	call	0x71ba	; 0x71ba <bootFlashPage>
-    72e8:	e8 cf       	rjmp	.-48     	; 0x72ba <main+0x56>
-//		PAR_DATA_PORT = ubFlashResult;
-//		waitForStatusPin(NSTROBE, 0);
-//		PAR_DATA_PORT = 0;
-//		PAR_DATA_DDR = 0;
+
+		// Let Ami know that bootloader is ready for more
+		PAR_STATUS_PORT |= NACK;
+    72e8:	88 81       	ld	r24, Y
+    72ea:	82 60       	ori	r24, 0x02	; 2
+    72ec:	88 83       	st	Y, r24
+    72ee:	c7 01       	movw	r24, r14
+    72f0:	01 97       	sbiw	r24, 0x01	; 1
+    72f2:	f1 f7       	brne	.-4      	; 0x72f0 <main+0x8c>
+		_delay_ms(2);
+		PAR_STATUS_PORT &= ~NACK;
+    72f4:	88 81       	ld	r24, Y
+    72f6:	8d 7f       	andi	r24, 0xFD	; 253
+    72f8:	88 83       	st	Y, r24
+    72fa:	df cf       	rjmp	.-66     	; 0x72ba <main+0x56>
 	}
 	bootExit();
-    72ea:	0e 94 6a 38 	call	0x70d4	; 0x70d4 <bootExit>
+    72fc:	0e 94 6a 38 	call	0x70d4	; 0x70d4 <bootExit>
 	return 0;
 }
-    72ee:	80 e0       	ldi	r24, 0x00	; 0
-    72f0:	90 e0       	ldi	r25, 0x00	; 0
-    72f2:	df 91       	pop	r29
-    72f4:	cf 91       	pop	r28
-    72f6:	1f 91       	pop	r17
-    72f8:	0f 91       	pop	r16
-    72fa:	ff 90       	pop	r15
-    72fc:	ef 90       	pop	r14
-    72fe:	08 95       	ret
+    7300:	80 e0       	ldi	r24, 0x00	; 0
+    7302:	90 e0       	ldi	r25, 0x00	; 0
+    7304:	df 91       	pop	r29
+    7306:	cf 91       	pop	r28
+    7308:	1f 91       	pop	r17
+    730a:	0f 91       	pop	r16
+    730c:	ff 90       	pop	r15
+    730e:	ef 90       	pop	r14
+    7310:	08 95       	ret
 
-00007300 <_exit>:
-    7300:	f8 94       	cli
+00007312 <_exit>:
+    7312:	f8 94       	cli
 
-00007302 <__stop_program>:
-    7302:	ff cf       	rjmp	.-2      	; 0x7302 <__stop_program>
+00007314 <__stop_program>:
+    7314:	ff cf       	rjmp	.-2      	; 0x7314 <__stop_program>

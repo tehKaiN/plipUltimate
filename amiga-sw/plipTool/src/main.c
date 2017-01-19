@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <clib/exec_protos.h>
@@ -6,6 +7,16 @@
 #include "data.h"
 #include "par.h"
 #include "cmd.h"
+
+#define BOOT_PAGE_BYTE_SIZE 128
+#define BOOT_PAGE_COUNT 256
+#define BOOT_NRWW_PAGE_COUNT 32
+#define BOOT_RWW_PAGE_COUNT (BOOT_PAGE_COUNT - BOOT_NRWW_PAGE_COUNT)
+
+typedef struct _tPage {
+	UBYTE ubIdx;
+	UBYTE pData[BOOT_PAGE_BYTE_SIZE];
+} tPage;
 
 void printUsage(void) {
 	
@@ -50,7 +61,6 @@ void configDisplay(tConfig *pConfig) {
 }
 
 int main(int lArgCount, char **pArgs) {
-	setbuf(stdout, NULL);
 	printf("plipTool ver. %d.%d.%d.\n", BUILD_YEAR, BUILD_MONTH, BUILD_DAY);
 	
 	if(!parReserve("plipTool")) {		
@@ -103,7 +113,100 @@ int main(int lArgCount, char **pArgs) {
 			}
 		}
 	}
-	
+	else if(!strcmp(pArgs[1], "flash")) {
+		UBYTE ubPageCount, i;
+		FILE *pPufFile;
+		tPage *pPages;
+		
+		if(lArgCount < 3)
+			printf("ERR: No PUF file specified\n");
+		else {
+			pPufFile = fopen(pArgs[2], "rb");
+			if(!pPufFile)
+				printf("ERR: couldn't open PUF file: %s", pArgs[2]);
+			else {
+				// Read all pages from file
+				fread(&ubPageCount, 1, 1, pPufFile);
+				pPages = malloc(sizeof(tPage)*ubPageCount);
+				printf("Reading %u pages...\n", ubPageCount);
+				for(i = 0; i != ubPageCount; ++i) {
+					fread(&pPages[i].ubIdx, 1, 1, pPufFile);
+					fread(&pPages[i].pData, BOOT_PAGE_BYTE_SIZE, 1, pPufFile);
+					printf("Read page %u\n", i);
+				}
+				
+				// Send pages to Ami
+				cmdReset();
+				PAR_STATUS_DDR &= ~PAR_POUT;
+				PAR_STATUS_DDR |= PAR_BUSY;
+				ULONG ulTimer = 7000000;
+				while(ulTimer && !(PAR_STATUS_VAL & PAR_POUT))
+					--ulTimer;
+				if(!ulTimer) {
+					printf("ERR: Boot loader doesn't respond\n");
+				}
+				else {
+					UBYTE ubDoHiPout, ubByte;
+					
+					// Make BUSY pulse to confirm flash mode
+					PAR_STATUS_VAL |= PAR_BUSY;
+					PAR_STATUS_VAL &= ~PAR_BUSY;
+					
+					// Switch DDR to normal
+					PAR_STATUS_DDR &= ~PAR_BUSY;
+					PAR_STATUS_DDR |= PAR_POUT;
+					
+					PAR_DATA_DDR = 0xFF;
+					for(i = 0; i != ubPageCount; ++i) {
+						// Clear ACK detection
+						g_ubAckEdge = 0;
+						
+						// Send page write request
+						PAR_DATA_VAL = PBPROTO_CMD_SEND_BOOT;
+						PAR_STATUS_VAL |= PAR_SEL;
+						parWaitBusyHi();
+						
+						// Send page number
+						PAR_DATA_VAL = pPages[i].ubIdx;
+						PAR_STATUS_VAL |= PAR_POUT;
+						parWaitBusyLo();
+						
+						// Send page bytes
+						ubDoHiPout = 0;
+						for(ubByte = 0; ubByte != BOOT_PAGE_BYTE_SIZE; ++ubByte) {
+							PAR_DATA_VAL = pPages[i].pData[ubByte];
+							if(ubDoHiPout) {
+								PAR_STATUS_VAL |= PAR_POUT;
+								parWaitBusyLo();
+								ubDoHiPout = 0;
+							}
+							else {
+								PAR_STATUS_VAL &= ~PAR_POUT;
+								parWaitBusyHi();
+								ubDoHiPout = 1;
+							}
+						}
+						
+						// Finish page with POUT and SEL low
+						PAR_STATUS_VAL &= ~(PAR_POUT|PAR_SEL);
+						PAR_DATA_VAL = 0;
+						
+						// Wait for ACK
+						ulTimer = 7000000;
+						while(ulTimer && !g_ubAckEdge)
+							--ulTimer;
+						if(!g_ubAckEdge) {
+							printf("ERR: No response from plip after sending page number %u\n", i);
+							break;
+						}
+					}
+					printf("plipUltimate flashed!\n");
+				}
+				
+				free(pPufFile);
+			}
+		}
+	}
 	ackFree();
 	parFree();
 	

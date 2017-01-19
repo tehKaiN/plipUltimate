@@ -3,9 +3,12 @@
 
 #include <clib/exec_protos.h>
 
+#define PBPROTO_CMD_SEND_BOOT  0x88
+
 #define RECV_BFR_SIZE 1600
 extern UBYTE g_pRecvBfr[RECV_BFR_SIZE];
 extern UWORD g_uwRecvSize;
+
 
 void dataRecv(void);
 void dataSend(const UBYTE *pData, UWORD uwSize);
