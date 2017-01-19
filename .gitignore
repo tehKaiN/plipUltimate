@@ -26,3 +26,7 @@
 
 # Debug files
 *.dSYM/
+
+#hex2puf test files
+hex2puf/*.hex
+hex2puf/*.puf
