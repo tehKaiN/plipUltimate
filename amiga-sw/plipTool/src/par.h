@@ -23,19 +23,22 @@ extern struct CIA ciaa, ciab;
  *  	ACK (in): hi-state triggers interrupt
  */
  
+#define _BV(x)          (1 << x)
 #define PAR_STATUS_DDR  ciab.ciaddra
 #define PAR_STATUS_MASK (1|2|4)
 #define PAR_STATUS_VAL  ciab.ciapra
 #define PAR_DATA_DDR    ciaa.ciaddrb
 #define PAR_DATA_VAL    ciaa.ciaprb
-#define PAR_BUSY        0
-#define PAR_POUT        1
-#define PAR_SEL         2
-#define _BV(x)          (1 << x)
+#define PAR_BUSY_PIN    0
+#define PAR_POUT_PIN    1
+#define PAR_SEL_PIN     2
+#define PAR_BUSY        _BV(PAR_BUSY_PIN)
+#define PAR_POUT        _BV(PAR_POUT_PIN)
+#define PAR_SEL         _BV(PAR_SEL_PIN)
 
 UBYTE parReserve(char *szOwnerName);
 void parFree(void);
-void parWaitBusyHi(void);
-void parWaitBusyLo(void);
+UBYTE parWaitBusy(UBYTE ubVal);
+void parMakeLow(void);
 
 #endif // GUARD_PAR_H

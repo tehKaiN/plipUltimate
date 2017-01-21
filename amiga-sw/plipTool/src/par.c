@@ -6,6 +6,19 @@
 struct Library *MiscBase = NULL;
 
 /**
+ *  Makes all parallel pins low.
+ *  Plip data lines aren't pulled down, so to prevent floating state Ami must
+ *  pull pins low whenever possible.
+ */
+void parMakeLow(void) {
+	// Make all pins low
+	PAR_STATUS_DDR |= PAR_STATUS_MASK;
+	PAR_STATUS_VAL &= ~PAR_STATUS_MASK;
+	PAR_DATA_DDR = 0xFF;
+	PAR_DATA_VAL = 0;
+}
+
+/**
  *  Reserves parallel port for exclusive usage.
  *  Based on C example from http://wiki.amigaos.net/wiki/Misc_Resource
  *  @param szOwnerName Pointer to app name string
@@ -34,37 +47,23 @@ UBYTE parReserve(char *szOwnerName) {
 }
 
 void parFree(void) {
+	parMakeLow();
 	FreeMiscResource(MR_PARALLELPORT);
 	FreeMiscResource(MR_PARALLELBITS);
 }
 
-void parWaitBusyHi(void) {
+UBYTE parWaitBusy(UBYTE ubVal) {
 	volatile UBYTE ubBusy;
 	UWORD uwTimeout;
 	
 	uwTimeout = 1;
 	do {
-		ubBusy = PAR_STATUS_VAL & _BV(PAR_BUSY);
+		ubBusy = ((PAR_STATUS_VAL & PAR_BUSY) != 0);
 		++uwTimeout;
-	} while(!ubBusy && uwTimeout);
+	} while(ubBusy != ubVal && uwTimeout);
 	
-	if(!uwTimeout) {
-		printf("ERR: waitBusyHi timeout!\n");
-	}
+	if(ubBusy == ubVal)
+		return 1;
+	printf("ERR: BUSY=%u timeout!\n",ubVal);
+	return 0;
 }
-
-void parWaitBusyLo(void) {
-	volatile UBYTE ubBusy;
-	UWORD uwTimeout;
-	
-	uwTimeout = 1;
-	do {
-		ubBusy = PAR_STATUS_VAL & _BV(PAR_BUSY);
-		++uwTimeout;
-	} while(ubBusy && uwTimeout);
-	
-	if(!uwTimeout) {
-		printf("ERR: waitBusyLo timeout!\n");
-	}
-}
-

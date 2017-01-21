@@ -22,23 +22,51 @@ uint8_t g_ubPageIdx;
  */
 #define CMD_SEND_BOOT 0x88
 
+/**
+ * Waits approximately 2s for given status pin value.
+ * @param ubStatusPin Pin number to monitor.
+ * @param ubValue     Desired pin value. 1 for high, 0 for low.
+ * @return 1 if monitored pin reaches its desired state, otherwise 0.
+ */
 uint8_t waitForStatusPin(uint8_t ubStatusPin, uint8_t ubValue) {
 	uint16_t uwCounter = 0;
-	while((uwCounter < 1000)) {
+	while(uwCounter < 20000) {
 		if(((PAR_STATUS_PIN >> ubStatusPin) & 1) == ubValue)
 			return 1;
 		++uwCounter;
-		_delay_us(1000);
+		_delay_us(100);
 	}
 	return 0;
 }
 
-void bootExit(void) {
-	LED_DDR |= _BV(PC5);
-	_delay_ms(20);
-	LED_DDR = 0;
+/**
+ * Blinks status LED a given number of times.
+ * Each blink takes 1 second. A series of blinks is preceeded and followed by
+ * 1 second of low state.
+ * @param ubCount Blink count.
+ */
+void blink(uint8_t ubCount) {
+	LED_PORT &= ~LED_STATUS;
+	_delay_ms(1000);
+	while(ubCount--) {
+		LED_PORT |= LED_STATUS;
+		_delay_ms(500);
+		LED_PORT &= ~LED_STATUS;
+		_delay_ms(500);
+	}
+	_delay_ms(1000);
+}
+
+/**
+ * Exits bootloader with given result code.
+ * Result code is indicated by status LED.
+ * @param ubCode Result code.
+ */
+void bootExit(uint8_t ubCode) {
+	LED_DDR |= LED_STATUS;
+	blink(ubCode);
 	LED_PORT = 0;
-	_delay_ms(20);
+	LED_DDR = 0;
 	asm("jmp 0000");
 }
 
@@ -106,6 +134,8 @@ void bootFlashPage(void) {
 }
 
 int main(void) {
+	volatile uint8_t ubRequest;
+
 	// Disable watchdog & interrupts
 	cli();
 	wdt_reset();
@@ -113,33 +143,47 @@ int main(void) {
 	WDTCSR|=_BV(WDCE) | _BV(WDE);
 	WDTCSR=0;
 
-	// Bootloader ready for flashing - set POUT hi for 1 second and wait for SEL
-	LED_PORT = _BV(PC5);
-	PAR_STATUS_DDR = POUT;
-	PAR_STATUS_PORT = POUT;
+	// Reset everything
+	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
+	PAR_STATUS_PORT &= ~PAR_STATUS_MASK;
+	PAR_DATA_DDR = 0;
+	PAR_DATA_PORT = 0;
 
-	// Exit bootloader if Ami doesn't respond
-	if(!waitForStatusPin(BUSY_PIN, 1))
-		bootExit();
+	// Boot blink
+	LED_PORT |= LED_STATUS;
+	_delay_ms(100);
+	LED_PORT &= ~LED_STATUS;
 
-	PAR_STATUS_PORT = 0;
-	PAR_STATUS_DDR = BUSY | NACK;
-	uint8_t ubRequest;
+	// Bootloader ready for flashing - set POUT hi and wait for BUSY
+	PAR_STATUS_DDR |= POUT;
+	PAR_STATUS_PORT |= POUT;
+	// Doesn't work, wtf
+	// Should react to plipTool: cmd.c line
+	if(!waitForStatusPin(BUSY_PIN, 1) || PAR_DATA_PIN != 0xFF)
+		bootExit(1);
+
+	// Set DDR as in regular read transfer
+	PAR_STATUS_PORT &= ~PAR_STATUS_MASK;
+	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
+	PAR_STATUS_DDR |= BUSY | NACK;
 	while(1) {
-		// Wait for request from Ami
-		if((PAR_STATUS_PORT & SEL) && !(PAR_STATUS_PORT & POUT)) {
-			_delay_ms(2);
-			continue;
-		}
-
-		// Abort if request is not flash-related
+		// Wait for read request from Ami
+		if(!waitForStatusPin(SEL_PIN, 1))
+			bootExit(3);
+		PAR_DATA_DDR = 0;
 		ubRequest = PAR_DATA_PIN;
 		PAR_STATUS_PORT |= BUSY;
-		if(ubRequest != CMD_SEND_BOOT)
-			break;
+
+		// Abort if request is not flash-related
+		if(PAR_DATA_PIN == 0xFF)
+			bootExit(2);
+		if(PAR_DATA_PIN != CMD_SEND_BOOT)
+			bootExit(PAR_DATA_PIN); // 4
+		bootExit(2);
+
 		// Read page from Ami
 		if(!bootReadPageFromAmi())
-			continue;
+			bootExit(5);
 
 		// Program page on flash & wait for Ami read
 		bootFlashPage();
@@ -149,6 +193,6 @@ int main(void) {
 		_delay_ms(2);
 		PAR_STATUS_PORT &= ~NACK;
 	}
-	bootExit();
+	bootExit(8);
 	return 0;
 }

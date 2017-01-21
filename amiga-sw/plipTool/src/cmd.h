@@ -2,6 +2,7 @@
 #define GUARD_CMD_H
 
 #include <clib/exec_protos.h>
+#include "main.h"
 
 /**
  *  Config write types.
@@ -30,6 +31,7 @@ typedef struct _tConfig {
 } tConfig;
 
 void cmdReset(void);
+UBYTE cmdFlash(tPage *pPages, UBYTE ubPageCount);
 UBYTE cmdConfigGet(tConfig *pConfig);
 void cmdConfigSet(tConfig *pConfig, UBYTE ubWriteType);
 UBYTE cmdReadResponse(UBYTE ubResponseCode);

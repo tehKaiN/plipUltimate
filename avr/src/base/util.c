@@ -181,12 +181,6 @@ uint8_t utilParseByteDec(const char *buf, uint8_t *out)
  * in a clean way.
  */
 void utilReset(void) {
-	// Indicate reset
-	LED_PORT &= ~LED_STATUS;
-	timerDelay10ms(20);
-	LED_PORT |= LED_STATUS;
-	timerDelay10ms(20);
-
 	// Perform a reset
 	cli();
 	wdt_enable(WDTO_250MS);

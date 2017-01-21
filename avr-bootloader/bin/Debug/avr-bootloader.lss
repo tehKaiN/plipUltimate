@@ -3,27 +3,27 @@ bin\Debug\avr-bootloader.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .text         00000316  00007000  00007000  00000074  2**1
+  0 .text         00000400  00007000  00007000  00000074  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .bss          00000081  00800100  00800100  0000038a  2**0
+  1 .bss          00000081  00800100  00800100  00000474  2**0
                   ALLOC
-  2 .debug_aranges 00000020  00000000  00000000  0000038a  2**0
+  2 .debug_aranges 00000020  00000000  00000000  00000474  2**0
                   CONTENTS, READONLY, DEBUGGING
-  3 .debug_pubnames 00000089  00000000  00000000  000003aa  2**0
+  3 .debug_pubnames 00000093  00000000  00000000  00000494  2**0
                   CONTENTS, READONLY, DEBUGGING
-  4 .debug_info   000003aa  00000000  00000000  00000433  2**0
+  4 .debug_info   00000481  00000000  00000000  00000527  2**0
                   CONTENTS, READONLY, DEBUGGING
-  5 .debug_abbrev 00000190  00000000  00000000  000007dd  2**0
+  5 .debug_abbrev 00000197  00000000  00000000  000009a8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_line   00000381  00000000  00000000  0000096d  2**0
+  6 .debug_line   00000484  00000000  00000000  00000b3f  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_frame  00000060  00000000  00000000  00000cf0  2**2
+  7 .debug_frame  00000070  00000000  00000000  00000fc4  2**2
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_str    0000018c  00000000  00000000  00000d50  2**0
+  8 .debug_str    000001a1  00000000  00000000  00001034  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_loc    00000118  00000000  00000000  00000edc  2**0
+  9 .debug_loc    0000024e  00000000  00000000  000011d5  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_ranges 000000c0  00000000  00000000  00000ff4  2**0
+ 10 .debug_ranges 00000108  00000000  00000000  00001423  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -77,24 +77,24 @@ Disassembly of section .text:
     707e:	a1 38       	cpi	r26, 0x81	; 129
     7080:	b1 07       	cpc	r27, r17
     7082:	e1 f7       	brne	.-8      	; 0x707c <.do_clear_bss_loop>
-    7084:	0e 94 32 39 	call	0x7264	; 0x7264 <main>
-    7088:	0c 94 89 39 	jmp	0x7312	; 0x7312 <_exit>
+    7084:	0e 94 60 39 	call	0x72c0	; 0x72c0 <main>
+    7088:	0c 94 fe 39 	jmp	0x73fc	; 0x73fc <_exit>
 
 0000708c <__bad_interrupt>:
     708c:	0c 94 00 38 	jmp	0x7000	; 0x7000 <__vectors>
 
 00007090 <waitForStatusPin>:
-/**
- * Boot write mode to differentiate from regular plip operation
+ * Waits approximately 2s for given status pin value.
+ * @param ubStatusPin Pin number to monitor.
+ * @param ubValue     Desired pin value. 1 for high, 0 for low.
+ * @return 1 if monitored pin reaches its desired state, otherwise 0.
  */
-#define CMD_SEND_BOOT 0x88
-
 uint8_t waitForStatusPin(uint8_t ubStatusPin, uint8_t ubValue) {
     7090:	a8 2f       	mov	r26, r24
     7092:	20 e0       	ldi	r18, 0x00	; 0
     7094:	30 e0       	ldi	r19, 0x00	; 0
 	uint16_t uwCounter = 0;
-	while((uwCounter < 1000)) {
+	while(uwCounter < 20000) {
 		if(((PAR_STATUS_PIN >> ubStatusPin) & 1) == ubValue)
     7096:	e6 e2       	ldi	r30, 0x26	; 38
     7098:	f0 e0       	ldi	r31, 0x00	; 0
@@ -105,8 +105,8 @@ void
 _delay_loop_2(uint16_t __count)
 {
 	__asm__ volatile (
-    709c:	48 e8       	ldi	r20, 0x88	; 136
-    709e:	53 e1       	ldi	r21, 0x13	; 19
+    709c:	44 ef       	ldi	r20, 0xF4	; 244
+    709e:	51 e0       	ldi	r21, 0x01	; 1
     70a0:	80 81       	ld	r24, Z
     70a2:	90 e0       	ldi	r25, 0x00	; 0
     70a4:	0a 2e       	mov	r0, r26
@@ -129,68 +129,72 @@ _delay_loop_2(uint16_t __count)
     70c2:	ca 01       	movw	r24, r20
     70c4:	01 97       	sbiw	r24, 0x01	; 1
     70c6:	f1 f7       	brne	.-4      	; 0x70c4 <waitForStatusPin+0x34>
+ * @param ubValue     Desired pin value. 1 for high, 0 for low.
+ * @return 1 if monitored pin reaches its desired state, otherwise 0.
  */
-#define CMD_SEND_BOOT 0x88
-
 uint8_t waitForStatusPin(uint8_t ubStatusPin, uint8_t ubValue) {
 	uint16_t uwCounter = 0;
-	while((uwCounter < 1000)) {
-    70c8:	83 e0       	ldi	r24, 0x03	; 3
-    70ca:	28 3e       	cpi	r18, 0xE8	; 232
+	while(uwCounter < 20000) {
+    70c8:	8e e4       	ldi	r24, 0x4E	; 78
+    70ca:	20 32       	cpi	r18, 0x20	; 32
     70cc:	38 07       	cpc	r19, r24
     70ce:	41 f7       	brne	.-48     	; 0x70a0 <waitForStatusPin+0x10>
     70d0:	80 e0       	ldi	r24, 0x00	; 0
 			return 1;
 		++uwCounter;
-		_delay_us(1000);
+		_delay_us(100);
 	}
 	return 0;
 }
     70d2:	08 95       	ret
 
-000070d4 <bootExit>:
-
-void bootExit(void) {
-	LED_DDR |= _BV(PC5);
-    70d4:	e7 e2       	ldi	r30, 0x27	; 39
-    70d6:	f0 e0       	ldi	r31, 0x00	; 0
-    70d8:	80 81       	ld	r24, Z
-    70da:	80 62       	ori	r24, 0x20	; 32
-    70dc:	80 83       	st	Z, r24
-    70de:	28 ec       	ldi	r18, 0xC8	; 200
-    70e0:	30 e0       	ldi	r19, 0x00	; 0
-    70e2:	44 ef       	ldi	r20, 0xF4	; 244
-    70e4:	51 e0       	ldi	r21, 0x01	; 1
-    70e6:	ca 01       	movw	r24, r20
-    70e8:	01 97       	sbiw	r24, 0x01	; 1
-    70ea:	f1 f7       	brne	.-4      	; 0x70e8 <bootExit+0x14>
+000070d4 <blink>:
+ * Blinks status LED a given number of times.
+ * Each blink takes 1 second. A series of blinks is preceeded and followed by
+ * 1 second of low state.
+ * @param ubCount Blink count.
+ */
+void blink(uint8_t ubCount) {
+    70d4:	68 2f       	mov	r22, r24
+	LED_PORT &= ~LED_STATUS;
+    70d6:	e8 e2       	ldi	r30, 0x28	; 40
+    70d8:	f0 e0       	ldi	r31, 0x00	; 0
+    70da:	80 81       	ld	r24, Z
+    70dc:	8f 7d       	andi	r24, 0xDF	; 223
+    70de:	80 83       	st	Z, r24
+    70e0:	20 e1       	ldi	r18, 0x10	; 16
+    70e2:	37 e2       	ldi	r19, 0x27	; 39
+    70e4:	44 ef       	ldi	r20, 0xF4	; 244
+    70e6:	51 e0       	ldi	r21, 0x01	; 1
+    70e8:	ca 01       	movw	r24, r20
+    70ea:	01 97       	sbiw	r24, 0x01	; 1
+    70ec:	f1 f7       	brne	.-4      	; 0x70ea <blink+0x16>
 		__ticks = (uint16_t) (__ms * 10.0);
 		while(__ticks)
 		{
 			// wait 1/10 ms
 			_delay_loop_2(((F_CPU) / 4e3) / 10);
 			__ticks --;
-    70ec:	21 50       	subi	r18, 0x01	; 1
-    70ee:	30 40       	sbci	r19, 0x00	; 0
+    70ee:	21 50       	subi	r18, 0x01	; 1
+    70f0:	30 40       	sbci	r19, 0x00	; 0
 		__ticks = 1;
 	else if (__tmp > 65535)
 	{
 		//	__ticks = requested delay in 1/10 ms
 		__ticks = (uint16_t) (__ms * 10.0);
 		while(__ticks)
-    70f0:	d1 f7       	brne	.-12     	; 0x70e6 <bootExit+0x12>
-	_delay_ms(20);
-	LED_DDR = 0;
-    70f2:	17 b8       	out	0x07, r1	; 7
-	LED_PORT = 0;
-    70f4:	18 b8       	out	0x08, r1	; 8
-    70f6:	28 ec       	ldi	r18, 0xC8	; 200
-    70f8:	30 e0       	ldi	r19, 0x00	; 0
-    70fa:	44 ef       	ldi	r20, 0xF4	; 244
-    70fc:	51 e0       	ldi	r21, 0x01	; 1
+    70f2:	d1 f7       	brne	.-12     	; 0x70e8 <blink+0x14>
+    70f4:	16 c0       	rjmp	.+44     	; 0x7122 <blink+0x4e>
+	_delay_ms(1000);
+	while(ubCount--) {
+		LED_PORT |= LED_STATUS;
+    70f6:	80 81       	ld	r24, Z
+    70f8:	80 62       	ori	r24, 0x20	; 32
+    70fa:	80 83       	st	Z, r24
+    70fc:	9d 01       	movw	r18, r26
     70fe:	ca 01       	movw	r24, r20
     7100:	01 97       	sbiw	r24, 0x01	; 1
-    7102:	f1 f7       	brne	.-4      	; 0x7100 <bootExit+0x2c>
+    7102:	f1 f7       	brne	.-4      	; 0x7100 <blink+0x2c>
 		{
 			// wait 1/10 ms
 			_delay_loop_2(((F_CPU) / 4e3) / 10);
@@ -203,413 +207,593 @@ void bootExit(void) {
 		//	__ticks = requested delay in 1/10 ms
 		__ticks = (uint16_t) (__ms * 10.0);
 		while(__ticks)
-    7108:	d1 f7       	brne	.-12     	; 0x70fe <bootExit+0x2a>
-	_delay_ms(20);
-	asm("jmp 0000");
-    710a:	0c 94 00 00 	jmp	0	; 0x0 <__heap_end>
+    7108:	d1 f7       	brne	.-12     	; 0x70fe <blink+0x2a>
+		_delay_ms(500);
+		LED_PORT &= ~LED_STATUS;
+    710a:	80 81       	ld	r24, Z
+    710c:	8f 7d       	andi	r24, 0xDF	; 223
+    710e:	80 83       	st	Z, r24
+    7110:	9d 01       	movw	r18, r26
+    7112:	ca 01       	movw	r24, r20
+    7114:	01 97       	sbiw	r24, 0x01	; 1
+    7116:	f1 f7       	brne	.-4      	; 0x7114 <blink+0x40>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+    7118:	21 50       	subi	r18, 0x01	; 1
+    711a:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+    711c:	d1 f7       	brne	.-12     	; 0x7112 <blink+0x3e>
+    711e:	61 50       	subi	r22, 0x01	; 1
+    7120:	06 c0       	rjmp	.+12     	; 0x712e <blink+0x5a>
+ */
+void blink(uint8_t ubCount) {
+	LED_PORT &= ~LED_STATUS;
+	_delay_ms(1000);
+	while(ubCount--) {
+		LED_PORT |= LED_STATUS;
+    7122:	e8 e2       	ldi	r30, 0x28	; 40
+    7124:	f0 e0       	ldi	r31, 0x00	; 0
+    7126:	a8 e8       	ldi	r26, 0x88	; 136
+    7128:	b3 e1       	ldi	r27, 0x13	; 19
+    712a:	44 ef       	ldi	r20, 0xF4	; 244
+    712c:	51 e0       	ldi	r21, 0x01	; 1
+ * @param ubCount Blink count.
+ */
+void blink(uint8_t ubCount) {
+	LED_PORT &= ~LED_STATUS;
+	_delay_ms(1000);
+	while(ubCount--) {
+    712e:	66 23       	and	r22, r22
+    7130:	11 f7       	brne	.-60     	; 0x70f6 <blink+0x22>
+    7132:	20 e1       	ldi	r18, 0x10	; 16
+    7134:	37 e2       	ldi	r19, 0x27	; 39
+    7136:	44 ef       	ldi	r20, 0xF4	; 244
+    7138:	51 e0       	ldi	r21, 0x01	; 1
+    713a:	ca 01       	movw	r24, r20
+    713c:	01 97       	sbiw	r24, 0x01	; 1
+    713e:	f1 f7       	brne	.-4      	; 0x713c <blink+0x68>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+    7140:	21 50       	subi	r18, 0x01	; 1
+    7142:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+    7144:	d1 f7       	brne	.-12     	; 0x713a <blink+0x66>
+		_delay_ms(500);
+		LED_PORT &= ~LED_STATUS;
+		_delay_ms(500);
+	}
+	_delay_ms(1000);
 }
-    710e:	08 95       	ret
+    7146:	08 95       	ret
 
-00007110 <bootReadPageFromAmi>:
+00007148 <bootExit>:
+/**
+ * Exits bootloader with given result code.
+ * Result code is indicated by status LED.
+ * @param ubCode Result code.
+ */
+void bootExit(uint8_t ubCode) {
+    7148:	0f 93       	push	r16
+    714a:	1f 93       	push	r17
+	LED_DDR |= LED_STATUS;
+    714c:	07 e2       	ldi	r16, 0x27	; 39
+    714e:	10 e0       	ldi	r17, 0x00	; 0
+    7150:	f8 01       	movw	r30, r16
+    7152:	90 81       	ld	r25, Z
+    7154:	90 62       	ori	r25, 0x20	; 32
+    7156:	90 83       	st	Z, r25
+	blink(ubCode);
+    7158:	0e 94 6a 38 	call	0x70d4	; 0x70d4 <blink>
+	LED_PORT = 0;
+    715c:	18 b8       	out	0x08, r1	; 8
+	LED_DDR = 0;
+    715e:	f8 01       	movw	r30, r16
+    7160:	10 82       	st	Z, r1
+	asm("jmp 0000");
+    7162:	0c 94 00 00 	jmp	0	; 0x0 <__heap_end>
+}
+    7166:	1f 91       	pop	r17
+    7168:	0f 91       	pop	r16
+    716a:	08 95       	ret
+
+0000716c <bootReadPageFromAmi>:
  * - next, 128 bytes are sent by Ami, each of them confirmed by alternating POUT
  *   state, which is followed by Plip read confirm by alternating BUSY.
  * After successful sending, last POUT state should be high, but Ami is expected
  * to set it low afterwards.
  */
 uint8_t bootReadPageFromAmi(void) {
-    7110:	9f 92       	push	r9
-    7112:	af 92       	push	r10
-    7114:	bf 92       	push	r11
-    7116:	cf 92       	push	r12
-    7118:	df 92       	push	r13
-    711a:	ef 92       	push	r14
-    711c:	ff 92       	push	r15
-    711e:	0f 93       	push	r16
-    7120:	1f 93       	push	r17
-    7122:	cf 93       	push	r28
-    7124:	df 93       	push	r29
+    716c:	9f 92       	push	r9
+    716e:	af 92       	push	r10
+    7170:	bf 92       	push	r11
+    7172:	cf 92       	push	r12
+    7174:	df 92       	push	r13
+    7176:	ef 92       	push	r14
+    7178:	ff 92       	push	r15
+    717a:	0f 93       	push	r16
+    717c:	1f 93       	push	r17
+    717e:	cf 93       	push	r28
+    7180:	df 93       	push	r29
   uint8_t *pPageByteBfr = (uint8_t*)g_pPageBuffer;
   uint8_t ubPOutWait = 0;
   uint8_t i;
 
 	// Read page idx
   if(!waitForStatusPin(POUT_PIN, 1)) // Wait for ready state from Ami
-    7126:	83 e0       	ldi	r24, 0x03	; 3
-    7128:	61 e0       	ldi	r22, 0x01	; 1
-    712a:	0e 94 48 38 	call	0x7090	; 0x7090 <waitForStatusPin>
-    712e:	88 23       	and	r24, r24
-    7130:	b9 f1       	breq	.+110    	; 0x71a0 <bootReadPageFromAmi+0x90>
+    7182:	83 e0       	ldi	r24, 0x03	; 3
+    7184:	61 e0       	ldi	r22, 0x01	; 1
+    7186:	0e 94 48 38 	call	0x7090	; 0x7090 <waitForStatusPin>
+    718a:	88 23       	and	r24, r24
+    718c:	b9 f1       	breq	.+110    	; 0x71fc <bootReadPageFromAmi+0x90>
 		return 0;
   g_ubPageIdx = PAR_DATA_PIN;        // Read byte
-    7132:	89 b1       	in	r24, 0x09	; 9
-    7134:	80 93 80 01 	sts	0x0180, r24
+    718e:	89 b1       	in	r24, 0x09	; 9
+    7190:	80 93 80 01 	sts	0x0180, r24
   PAR_STATUS_PORT &= ~BUSY;          // Confirm read
-    7138:	e8 e2       	ldi	r30, 0x28	; 40
-    713a:	f0 e0       	ldi	r31, 0x00	; 0
-    713c:	80 81       	ld	r24, Z
-    713e:	8b 7f       	andi	r24, 0xFB	; 251
-    7140:	80 83       	st	Z, r24
-    7142:	c0 e0       	ldi	r28, 0x00	; 0
-    7144:	d1 e0       	ldi	r29, 0x01	; 1
-    7146:	10 e0       	ldi	r17, 0x00	; 0
+    7194:	e8 e2       	ldi	r30, 0x28	; 40
+    7196:	f0 e0       	ldi	r31, 0x00	; 0
+    7198:	80 81       	ld	r24, Z
+    719a:	8b 7f       	andi	r24, 0xFB	; 251
+    719c:	80 83       	st	Z, r24
+    719e:	c0 e0       	ldi	r28, 0x00	; 0
+    71a0:	d1 e0       	ldi	r29, 0x01	; 1
+    71a2:	10 e0       	ldi	r17, 0x00	; 0
 
   // Read page bytes
   for(i = 0; i != BOOT_PAGE_BYTE_SIZE; ++i) {
     if(!waitForStatusPin(POUT_PIN, ubPOutWait))
       return 0;
     pPageByteBfr[i] = PAR_DATA_PIN;
-    7148:	0f 2e       	mov	r0, r31
-    714a:	f9 e2       	ldi	r31, 0x29	; 41
-    714c:	af 2e       	mov	r10, r31
-    714e:	bb 24       	eor	r11, r11
-    7150:	f0 2d       	mov	r31, r0
+    71a4:	0f 2e       	mov	r0, r31
+    71a6:	f9 e2       	ldi	r31, 0x29	; 41
+    71a8:	af 2e       	mov	r10, r31
+    71aa:	bb 24       	eor	r11, r11
+    71ac:	f0 2d       	mov	r31, r0
     PAR_STATUS_PORT ^= BUSY;
-    7152:	0f 2e       	mov	r0, r31
-    7154:	f8 e2       	ldi	r31, 0x28	; 40
-    7156:	ef 2e       	mov	r14, r31
-    7158:	ff 24       	eor	r15, r15
-    715a:	f0 2d       	mov	r31, r0
-    715c:	99 24       	eor	r9, r9
-    715e:	68 94       	set
-    7160:	92 f8       	bld	r9, 2
+    71ae:	0f 2e       	mov	r0, r31
+    71b0:	f8 e2       	ldi	r31, 0x28	; 40
+    71b2:	ef 2e       	mov	r14, r31
+    71b4:	ff 24       	eor	r15, r15
+    71b6:	f0 2d       	mov	r31, r0
+    71b8:	99 24       	eor	r9, r9
+    71ba:	68 94       	set
+    71bc:	92 f8       	bld	r9, 2
 		return 0;
   g_ubPageIdx = PAR_DATA_PIN;        // Read byte
   PAR_STATUS_PORT &= ~BUSY;          // Confirm read
 
   // Read page bytes
   for(i = 0; i != BOOT_PAGE_BYTE_SIZE; ++i) {
-    7162:	0f 2e       	mov	r0, r31
-    7164:	f0 e8       	ldi	r31, 0x80	; 128
-    7166:	cf 2e       	mov	r12, r31
-    7168:	f1 e0       	ldi	r31, 0x01	; 1
-    716a:	df 2e       	mov	r13, r31
-    716c:	f0 2d       	mov	r31, r0
+    71be:	0f 2e       	mov	r0, r31
+    71c0:	f0 e8       	ldi	r31, 0x80	; 128
+    71c2:	cf 2e       	mov	r12, r31
+    71c4:	f1 e0       	ldi	r31, 0x01	; 1
+    71c6:	df 2e       	mov	r13, r31
+    71c8:	f0 2d       	mov	r31, r0
     if(!waitForStatusPin(POUT_PIN, ubPOutWait))
       return 0;
     pPageByteBfr[i] = PAR_DATA_PIN;
     PAR_STATUS_PORT ^= BUSY;
     ubPOutWait ^= 1;
-    716e:	01 e0       	ldi	r16, 0x01	; 1
+    71ca:	01 e0       	ldi	r16, 0x01	; 1
   g_ubPageIdx = PAR_DATA_PIN;        // Read byte
   PAR_STATUS_PORT &= ~BUSY;          // Confirm read
 
   // Read page bytes
   for(i = 0; i != BOOT_PAGE_BYTE_SIZE; ++i) {
     if(!waitForStatusPin(POUT_PIN, ubPOutWait))
-    7170:	83 e0       	ldi	r24, 0x03	; 3
-    7172:	61 2f       	mov	r22, r17
-    7174:	0e 94 48 38 	call	0x7090	; 0x7090 <waitForStatusPin>
-    7178:	88 23       	and	r24, r24
-    717a:	91 f0       	breq	.+36     	; 0x71a0 <bootReadPageFromAmi+0x90>
+    71cc:	83 e0       	ldi	r24, 0x03	; 3
+    71ce:	61 2f       	mov	r22, r17
+    71d0:	0e 94 48 38 	call	0x7090	; 0x7090 <waitForStatusPin>
+    71d4:	88 23       	and	r24, r24
+    71d6:	91 f0       	breq	.+36     	; 0x71fc <bootReadPageFromAmi+0x90>
       return 0;
     pPageByteBfr[i] = PAR_DATA_PIN;
-    717c:	f5 01       	movw	r30, r10
-    717e:	80 81       	ld	r24, Z
-    7180:	89 93       	st	Y+, r24
+    71d8:	f5 01       	movw	r30, r10
+    71da:	80 81       	ld	r24, Z
+    71dc:	89 93       	st	Y+, r24
     PAR_STATUS_PORT ^= BUSY;
-    7182:	f7 01       	movw	r30, r14
-    7184:	80 81       	ld	r24, Z
-    7186:	89 25       	eor	r24, r9
-    7188:	80 83       	st	Z, r24
+    71de:	f7 01       	movw	r30, r14
+    71e0:	80 81       	ld	r24, Z
+    71e2:	89 25       	eor	r24, r9
+    71e4:	80 83       	st	Z, r24
 		return 0;
   g_ubPageIdx = PAR_DATA_PIN;        // Read byte
   PAR_STATUS_PORT &= ~BUSY;          // Confirm read
 
   // Read page bytes
   for(i = 0; i != BOOT_PAGE_BYTE_SIZE; ++i) {
-    718a:	cc 15       	cp	r28, r12
-    718c:	dd 05       	cpc	r29, r13
-    718e:	11 f0       	breq	.+4      	; 0x7194 <bootReadPageFromAmi+0x84>
+    71e6:	cc 15       	cp	r28, r12
+    71e8:	dd 05       	cpc	r29, r13
+    71ea:	11 f0       	breq	.+4      	; 0x71f0 <bootReadPageFromAmi+0x84>
     if(!waitForStatusPin(POUT_PIN, ubPOutWait))
       return 0;
     pPageByteBfr[i] = PAR_DATA_PIN;
     PAR_STATUS_PORT ^= BUSY;
     ubPOutWait ^= 1;
-    7190:	10 27       	eor	r17, r16
-    7192:	ee cf       	rjmp	.-36     	; 0x7170 <bootReadPageFromAmi+0x60>
+    71ec:	10 27       	eor	r17, r16
+    71ee:	ee cf       	rjmp	.-36     	; 0x71cc <bootReadPageFromAmi+0x60>
 	}
 
 	waitForStatusPin(POUT_PIN, 0);
-    7194:	83 e0       	ldi	r24, 0x03	; 3
-    7196:	60 e0       	ldi	r22, 0x00	; 0
-    7198:	0e 94 48 38 	call	0x7090	; 0x7090 <waitForStatusPin>
-    719c:	81 e0       	ldi	r24, 0x01	; 1
-    719e:	01 c0       	rjmp	.+2      	; 0x71a2 <bootReadPageFromAmi+0x92>
+    71f0:	83 e0       	ldi	r24, 0x03	; 3
+    71f2:	60 e0       	ldi	r22, 0x00	; 0
+    71f4:	0e 94 48 38 	call	0x7090	; 0x7090 <waitForStatusPin>
+    71f8:	81 e0       	ldi	r24, 0x01	; 1
+    71fa:	01 c0       	rjmp	.+2      	; 0x71fe <bootReadPageFromAmi+0x92>
   return 1;
-    71a0:	80 e0       	ldi	r24, 0x00	; 0
+    71fc:	80 e0       	ldi	r24, 0x00	; 0
 }
-    71a2:	df 91       	pop	r29
-    71a4:	cf 91       	pop	r28
-    71a6:	1f 91       	pop	r17
-    71a8:	0f 91       	pop	r16
-    71aa:	ff 90       	pop	r15
-    71ac:	ef 90       	pop	r14
-    71ae:	df 90       	pop	r13
-    71b0:	cf 90       	pop	r12
-    71b2:	bf 90       	pop	r11
-    71b4:	af 90       	pop	r10
-    71b6:	9f 90       	pop	r9
-    71b8:	08 95       	ret
+    71fe:	df 91       	pop	r29
+    7200:	cf 91       	pop	r28
+    7202:	1f 91       	pop	r17
+    7204:	0f 91       	pop	r16
+    7206:	ff 90       	pop	r15
+    7208:	ef 90       	pop	r14
+    720a:	df 90       	pop	r13
+    720c:	cf 90       	pop	r12
+    720e:	bf 90       	pop	r11
+    7210:	af 90       	pop	r10
+    7212:	9f 90       	pop	r9
+    7214:	08 95       	ret
 
-000071ba <bootFlashPage>:
+00007216 <bootFlashPage>:
 	uint8_t ubSreg;
 	uint32_t ulPageAddr;
 	uint8_t i;
 
 	// Disable interrupts
 	ubSreg = SREG;
-    71ba:	8f b7       	in	r24, 0x3f	; 63
+    7216:	8f b7       	in	r24, 0x3f	; 63
 	cli();
-    71bc:	f8 94       	cli
+    7218:	f8 94       	cli
 
 	// Calculate page address
 	ulPageAddr = g_ubPageIdx * BOOT_PAGE_BYTE_SIZE;
-    71be:	90 91 80 01 	lds	r25, 0x0180
+    721a:	90 91 80 01 	lds	r25, 0x0180
 
 	// Erase page & wait for completion
   boot_page_erase_safe(ulPageAddr);
-    71c2:	e7 e5       	ldi	r30, 0x57	; 87
-    71c4:	f0 e0       	ldi	r31, 0x00	; 0
-    71c6:	80 81       	ld	r24, Z
-    71c8:	80 fd       	sbrc	r24, 0
-    71ca:	fd cf       	rjmp	.-6      	; 0x71c6 <bootFlashPage+0xc>
-    71cc:	ef e3       	ldi	r30, 0x3F	; 63
-    71ce:	f0 e0       	ldi	r31, 0x00	; 0
-    71d0:	80 81       	ld	r24, Z
-    71d2:	81 fd       	sbrc	r24, 1
-    71d4:	fd cf       	rjmp	.-6      	; 0x71d0 <bootFlashPage+0x16>
-    71d6:	89 2f       	mov	r24, r25
-    71d8:	90 e0       	ldi	r25, 0x00	; 0
-    71da:	ac 01       	movw	r20, r24
-    71dc:	56 95       	lsr	r21
-    71de:	54 2f       	mov	r21, r20
-    71e0:	44 27       	eor	r20, r20
-    71e2:	57 95       	ror	r21
-    71e4:	47 95       	ror	r20
-    71e6:	83 e0       	ldi	r24, 0x03	; 3
-    71e8:	fa 01       	movw	r30, r20
-    71ea:	80 93 57 00 	sts	0x0057, r24
-    71ee:	e8 95       	spm
+    721e:	e7 e5       	ldi	r30, 0x57	; 87
+    7220:	f0 e0       	ldi	r31, 0x00	; 0
+    7222:	80 81       	ld	r24, Z
+    7224:	80 fd       	sbrc	r24, 0
+    7226:	fd cf       	rjmp	.-6      	; 0x7222 <bootFlashPage+0xc>
+    7228:	ef e3       	ldi	r30, 0x3F	; 63
+    722a:	f0 e0       	ldi	r31, 0x00	; 0
+    722c:	80 81       	ld	r24, Z
+    722e:	81 fd       	sbrc	r24, 1
+    7230:	fd cf       	rjmp	.-6      	; 0x722c <bootFlashPage+0x16>
+    7232:	89 2f       	mov	r24, r25
+    7234:	90 e0       	ldi	r25, 0x00	; 0
+    7236:	ac 01       	movw	r20, r24
+    7238:	56 95       	lsr	r21
+    723a:	54 2f       	mov	r21, r20
+    723c:	44 27       	eor	r20, r20
+    723e:	57 95       	ror	r21
+    7240:	47 95       	ror	r20
+    7242:	83 e0       	ldi	r24, 0x03	; 3
+    7244:	fa 01       	movw	r30, r20
+    7246:	80 93 57 00 	sts	0x0057, r24
+    724a:	e8 95       	spm
   boot_spm_busy_wait();
-    71f0:	e7 e5       	ldi	r30, 0x57	; 87
-    71f2:	f0 e0       	ldi	r31, 0x00	; 0
-    71f4:	80 81       	ld	r24, Z
-    71f6:	80 fd       	sbrc	r24, 0
-    71f8:	fd cf       	rjmp	.-6      	; 0x71f4 <bootFlashPage+0x3a>
-    71fa:	a0 e0       	ldi	r26, 0x00	; 0
-    71fc:	b1 e0       	ldi	r27, 0x01	; 1
-    71fe:	20 e0       	ldi	r18, 0x00	; 0
-    7200:	30 e0       	ldi	r19, 0x00	; 0
+    724c:	e7 e5       	ldi	r30, 0x57	; 87
+    724e:	f0 e0       	ldi	r31, 0x00	; 0
+    7250:	80 81       	ld	r24, Z
+    7252:	80 fd       	sbrc	r24, 0
+    7254:	fd cf       	rjmp	.-6      	; 0x7250 <bootFlashPage+0x3a>
+    7256:	a0 e0       	ldi	r26, 0x00	; 0
+    7258:	b1 e0       	ldi	r27, 0x01	; 1
+    725a:	20 e0       	ldi	r18, 0x00	; 0
+    725c:	30 e0       	ldi	r19, 0x00	; 0
 
   // Fill page buffer
   for(i = 0; i != BOOT_PAGE_WORD_SIZE; ++i)
 		boot_page_fill(ulPageAddr + (i<<1), g_pPageBuffer[i]);
-    7202:	61 e0       	ldi	r22, 0x01	; 1
-    7204:	f9 01       	movw	r30, r18
-    7206:	ee 0f       	add	r30, r30
-    7208:	ff 1f       	adc	r31, r31
-    720a:	e4 0f       	add	r30, r20
-    720c:	f5 1f       	adc	r31, r21
-    720e:	8d 91       	ld	r24, X+
-    7210:	9d 91       	ld	r25, X+
-    7212:	0c 01       	movw	r0, r24
-    7214:	60 93 57 00 	sts	0x0057, r22
-    7218:	e8 95       	spm
-    721a:	11 24       	eor	r1, r1
-    721c:	2f 5f       	subi	r18, 0xFF	; 255
-    721e:	3f 4f       	sbci	r19, 0xFF	; 255
+    725e:	61 e0       	ldi	r22, 0x01	; 1
+    7260:	f9 01       	movw	r30, r18
+    7262:	ee 0f       	add	r30, r30
+    7264:	ff 1f       	adc	r31, r31
+    7266:	e4 0f       	add	r30, r20
+    7268:	f5 1f       	adc	r31, r21
+    726a:	8d 91       	ld	r24, X+
+    726c:	9d 91       	ld	r25, X+
+    726e:	0c 01       	movw	r0, r24
+    7270:	60 93 57 00 	sts	0x0057, r22
+    7274:	e8 95       	spm
+    7276:	11 24       	eor	r1, r1
+    7278:	2f 5f       	subi	r18, 0xFF	; 255
+    727a:	3f 4f       	sbci	r19, 0xFF	; 255
 	// Erase page & wait for completion
   boot_page_erase_safe(ulPageAddr);
   boot_spm_busy_wait();
 
   // Fill page buffer
   for(i = 0; i != BOOT_PAGE_WORD_SIZE; ++i)
-    7220:	20 34       	cpi	r18, 0x40	; 64
-    7222:	31 05       	cpc	r19, r1
-    7224:	79 f7       	brne	.-34     	; 0x7204 <bootFlashPage+0x4a>
+    727c:	20 34       	cpi	r18, 0x40	; 64
+    727e:	31 05       	cpc	r19, r1
+    7280:	79 f7       	brne	.-34     	; 0x7260 <bootFlashPage+0x4a>
 		boot_page_fill(ulPageAddr + (i<<1), g_pPageBuffer[i]);
 
   // Write page
   boot_page_write_safe(ulPageAddr);
-    7226:	e7 e5       	ldi	r30, 0x57	; 87
-    7228:	f0 e0       	ldi	r31, 0x00	; 0
-    722a:	80 81       	ld	r24, Z
-    722c:	80 fd       	sbrc	r24, 0
-    722e:	fd cf       	rjmp	.-6      	; 0x722a <bootFlashPage+0x70>
-    7230:	ef e3       	ldi	r30, 0x3F	; 63
-    7232:	f0 e0       	ldi	r31, 0x00	; 0
-    7234:	80 81       	ld	r24, Z
-    7236:	81 fd       	sbrc	r24, 1
-    7238:	fd cf       	rjmp	.-6      	; 0x7234 <bootFlashPage+0x7a>
-    723a:	85 e0       	ldi	r24, 0x05	; 5
-    723c:	fa 01       	movw	r30, r20
-    723e:	80 93 57 00 	sts	0x0057, r24
-    7242:	e8 95       	spm
+    7282:	e7 e5       	ldi	r30, 0x57	; 87
+    7284:	f0 e0       	ldi	r31, 0x00	; 0
+    7286:	80 81       	ld	r24, Z
+    7288:	80 fd       	sbrc	r24, 0
+    728a:	fd cf       	rjmp	.-6      	; 0x7286 <bootFlashPage+0x70>
+    728c:	ef e3       	ldi	r30, 0x3F	; 63
+    728e:	f0 e0       	ldi	r31, 0x00	; 0
+    7290:	80 81       	ld	r24, Z
+    7292:	81 fd       	sbrc	r24, 1
+    7294:	fd cf       	rjmp	.-6      	; 0x7290 <bootFlashPage+0x7a>
+    7296:	85 e0       	ldi	r24, 0x05	; 5
+    7298:	fa 01       	movw	r30, r20
+    729a:	80 93 57 00 	sts	0x0057, r24
+    729e:	e8 95       	spm
 	boot_rww_enable_safe();
-    7244:	e7 e5       	ldi	r30, 0x57	; 87
-    7246:	f0 e0       	ldi	r31, 0x00	; 0
-    7248:	80 81       	ld	r24, Z
-    724a:	80 fd       	sbrc	r24, 0
-    724c:	fd cf       	rjmp	.-6      	; 0x7248 <bootFlashPage+0x8e>
-    724e:	ef e3       	ldi	r30, 0x3F	; 63
-    7250:	f0 e0       	ldi	r31, 0x00	; 0
-    7252:	80 81       	ld	r24, Z
-    7254:	81 fd       	sbrc	r24, 1
-    7256:	fd cf       	rjmp	.-6      	; 0x7252 <bootFlashPage+0x98>
-    7258:	81 e1       	ldi	r24, 0x11	; 17
-    725a:	80 93 57 00 	sts	0x0057, r24
-    725e:	e8 95       	spm
+    72a0:	e7 e5       	ldi	r30, 0x57	; 87
+    72a2:	f0 e0       	ldi	r31, 0x00	; 0
+    72a4:	80 81       	ld	r24, Z
+    72a6:	80 fd       	sbrc	r24, 0
+    72a8:	fd cf       	rjmp	.-6      	; 0x72a4 <bootFlashPage+0x8e>
+    72aa:	ef e3       	ldi	r30, 0x3F	; 63
+    72ac:	f0 e0       	ldi	r31, 0x00	; 0
+    72ae:	80 81       	ld	r24, Z
+    72b0:	81 fd       	sbrc	r24, 1
+    72b2:	fd cf       	rjmp	.-6      	; 0x72ae <bootFlashPage+0x98>
+    72b4:	81 e1       	ldi	r24, 0x11	; 17
+    72b6:	80 93 57 00 	sts	0x0057, r24
+    72ba:	e8 95       	spm
   ubSreg = SREG;
-    7260:	8f b7       	in	r24, 0x3f	; 63
+    72bc:	8f b7       	in	r24, 0x3f	; 63
 }
-    7262:	08 95       	ret
+    72be:	08 95       	ret
 
-00007264 <main>:
+000072c0 <main>:
 
 int main(void) {
-    7264:	ef 92       	push	r14
-    7266:	ff 92       	push	r15
-    7268:	0f 93       	push	r16
-    726a:	1f 93       	push	r17
-    726c:	cf 93       	push	r28
-    726e:	df 93       	push	r29
+    72c0:	af 92       	push	r10
+    72c2:	bf 92       	push	r11
+    72c4:	cf 92       	push	r12
+    72c6:	df 92       	push	r13
+    72c8:	ef 92       	push	r14
+    72ca:	ff 92       	push	r15
+    72cc:	0f 93       	push	r16
+    72ce:	1f 93       	push	r17
+    72d0:	df 93       	push	r29
+    72d2:	cf 93       	push	r28
+    72d4:	0f 92       	push	r0
+    72d6:	cd b7       	in	r28, 0x3d	; 61
+    72d8:	de b7       	in	r29, 0x3e	; 62
+	volatile uint8_t ubRequest;
+
 	// Disable watchdog & interrupts
 	cli();
-    7270:	f8 94       	cli
+    72da:	f8 94       	cli
 	wdt_reset();
-    7272:	a8 95       	wdr
+    72dc:	a8 95       	wdr
 	MCUSR=0;
-    7274:	14 be       	out	0x34, r1	; 52
+    72de:	14 be       	out	0x34, r1	; 52
 	WDTCSR|=_BV(WDCE) | _BV(WDE);
-    7276:	e0 e6       	ldi	r30, 0x60	; 96
-    7278:	f0 e0       	ldi	r31, 0x00	; 0
-    727a:	80 81       	ld	r24, Z
-    727c:	88 61       	ori	r24, 0x18	; 24
-    727e:	80 83       	st	Z, r24
+    72e0:	e0 e6       	ldi	r30, 0x60	; 96
+    72e2:	f0 e0       	ldi	r31, 0x00	; 0
+    72e4:	80 81       	ld	r24, Z
+    72e6:	88 61       	ori	r24, 0x18	; 24
+    72e8:	80 83       	st	Z, r24
 	WDTCSR=0;
-    7280:	10 82       	st	Z, r1
+    72ea:	10 82       	st	Z, r1
 
-	// Bootloader ready for flashing - set POUT hi for 1 second and wait for SEL
-	LED_PORT = _BV(PC5);
-    7282:	e8 e2       	ldi	r30, 0x28	; 40
-    7284:	f0 e0       	ldi	r31, 0x00	; 0
-    7286:	80 e2       	ldi	r24, 0x20	; 32
-    7288:	80 83       	st	Z, r24
-	PAR_STATUS_DDR = POUT;
-    728a:	88 e0       	ldi	r24, 0x08	; 8
-    728c:	87 b9       	out	0x07, r24	; 7
-	PAR_STATUS_PORT = POUT;
-    728e:	80 83       	st	Z, r24
+	// Reset everything
+	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
+    72ec:	e7 e2       	ldi	r30, 0x27	; 39
+    72ee:	f0 e0       	ldi	r31, 0x00	; 0
+    72f0:	80 81       	ld	r24, Z
+    72f2:	80 7e       	andi	r24, 0xE0	; 224
+    72f4:	80 83       	st	Z, r24
+	PAR_STATUS_PORT &= ~PAR_STATUS_MASK;
+    72f6:	e8 e2       	ldi	r30, 0x28	; 40
+    72f8:	f0 e0       	ldi	r31, 0x00	; 0
+    72fa:	80 81       	ld	r24, Z
+    72fc:	80 7e       	andi	r24, 0xE0	; 224
+    72fe:	80 83       	st	Z, r24
+	PAR_DATA_DDR = 0;
+    7300:	1a b8       	out	0x0a, r1	; 10
+	PAR_DATA_PORT = 0;
+    7302:	1b b8       	out	0x0b, r1	; 11
 
-	// Exit bootloader if Ami doesn't respond
-	if(!waitForStatusPin(BUSY_PIN, 1))
-    7290:	82 e0       	ldi	r24, 0x02	; 2
-    7292:	61 e0       	ldi	r22, 0x01	; 1
-    7294:	0e 94 48 38 	call	0x7090	; 0x7090 <waitForStatusPin>
-    7298:	88 23       	and	r24, r24
-    729a:	11 f4       	brne	.+4      	; 0x72a0 <main+0x3c>
-		bootExit();
-    729c:	0e 94 6a 38 	call	0x70d4	; 0x70d4 <bootExit>
+	// Boot blink
+	LED_PORT |= LED_STATUS;
+    7304:	80 81       	ld	r24, Z
+    7306:	80 62       	ori	r24, 0x20	; 32
+    7308:	80 83       	st	Z, r24
+    730a:	28 ee       	ldi	r18, 0xE8	; 232
+    730c:	33 e0       	ldi	r19, 0x03	; 3
+    730e:	44 ef       	ldi	r20, 0xF4	; 244
+    7310:	51 e0       	ldi	r21, 0x01	; 1
+    7312:	ca 01       	movw	r24, r20
+    7314:	01 97       	sbiw	r24, 0x01	; 1
+    7316:	f1 f7       	brne	.-4      	; 0x7314 <main+0x54>
+		{
+			// wait 1/10 ms
+			_delay_loop_2(((F_CPU) / 4e3) / 10);
+			__ticks --;
+    7318:	21 50       	subi	r18, 0x01	; 1
+    731a:	30 40       	sbci	r19, 0x00	; 0
+		__ticks = 1;
+	else if (__tmp > 65535)
+	{
+		//	__ticks = requested delay in 1/10 ms
+		__ticks = (uint16_t) (__ms * 10.0);
+		while(__ticks)
+    731c:	d1 f7       	brne	.-12     	; 0x7312 <main+0x52>
+	_delay_ms(100);
+	LED_PORT &= ~LED_STATUS;
+    731e:	e8 e2       	ldi	r30, 0x28	; 40
+    7320:	f0 e0       	ldi	r31, 0x00	; 0
+    7322:	80 81       	ld	r24, Z
+    7324:	8f 7d       	andi	r24, 0xDF	; 223
+    7326:	80 83       	st	Z, r24
 
-	PAR_STATUS_PORT = 0;
-    72a0:	18 b8       	out	0x08, r1	; 8
-	PAR_STATUS_DDR = BUSY | NACK;
-    72a2:	86 e0       	ldi	r24, 0x06	; 6
-    72a4:	87 b9       	out	0x07, r24	; 7
-	uint8_t ubRequest;
+	// Bootloader ready for flashing - set POUT hi and wait for BUSY
+	PAR_STATUS_DDR |= POUT;
+    7328:	a7 e2       	ldi	r26, 0x27	; 39
+    732a:	b0 e0       	ldi	r27, 0x00	; 0
+    732c:	8c 91       	ld	r24, X
+    732e:	88 60       	ori	r24, 0x08	; 8
+    7330:	8c 93       	st	X, r24
+	PAR_STATUS_PORT |= POUT;
+    7332:	80 81       	ld	r24, Z
+    7334:	88 60       	ori	r24, 0x08	; 8
+    7336:	80 83       	st	Z, r24
+	if(!waitForStatusPin(BUSY_PIN, 1) || PAR_DATA_PIN != 0xFF)
+    7338:	82 e0       	ldi	r24, 0x02	; 2
+    733a:	61 e0       	ldi	r22, 0x01	; 1
+    733c:	0e 94 48 38 	call	0x7090	; 0x7090 <waitForStatusPin>
+    7340:	88 23       	and	r24, r24
+    7342:	19 f0       	breq	.+6      	; 0x734a <main+0x8a>
+    7344:	89 b1       	in	r24, 0x09	; 9
+    7346:	8f 3f       	cpi	r24, 0xFF	; 255
+    7348:	19 f0       	breq	.+6      	; 0x7350 <main+0x90>
+		bootExit(1);
+    734a:	81 e0       	ldi	r24, 0x01	; 1
+    734c:	0e 94 a4 38 	call	0x7148	; 0x7148 <bootExit>
+
+	// Set DDR as in regular read transfer
+	PAR_STATUS_PORT &= ~PAR_STATUS_MASK;
+    7350:	e8 e2       	ldi	r30, 0x28	; 40
+    7352:	f0 e0       	ldi	r31, 0x00	; 0
+    7354:	80 81       	ld	r24, Z
+    7356:	80 7e       	andi	r24, 0xE0	; 224
+    7358:	80 83       	st	Z, r24
+	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
+    735a:	e7 e2       	ldi	r30, 0x27	; 39
+    735c:	f0 e0       	ldi	r31, 0x00	; 0
+    735e:	80 81       	ld	r24, Z
+    7360:	80 7e       	andi	r24, 0xE0	; 224
+    7362:	80 83       	st	Z, r24
+	PAR_STATUS_DDR |= BUSY | NACK;
+    7364:	80 81       	ld	r24, Z
+    7366:	86 60       	ori	r24, 0x06	; 6
+    7368:	80 83       	st	Z, r24
 	while(1) {
-		// Wait for request from Ami
-		if((PAR_STATUS_PORT & SEL) && !(PAR_STATUS_PORT & POUT)) {
-    72a6:	c8 e2       	ldi	r28, 0x28	; 40
-    72a8:	d0 e0       	ldi	r29, 0x00	; 0
-    72aa:	0f 2e       	mov	r0, r31
-    72ac:	f0 e1       	ldi	r31, 0x10	; 16
-    72ae:	ef 2e       	mov	r14, r31
-    72b0:	f7 e2       	ldi	r31, 0x27	; 39
-    72b2:	ff 2e       	mov	r15, r31
-    72b4:	f0 2d       	mov	r31, r0
-			_delay_ms(2);
-			continue;
-		}
-
-		// Abort if request is not flash-related
+		// Wait for read request from Ami
+		if(!waitForStatusPin(SEL_PIN, 1))
+			bootExit(3);
+		PAR_DATA_DDR = 0;
+    736a:	0f 2e       	mov	r0, r31
+    736c:	fa e2       	ldi	r31, 0x2A	; 42
+    736e:	af 2e       	mov	r10, r31
+    7370:	bb 24       	eor	r11, r11
+    7372:	f0 2d       	mov	r31, r0
 		ubRequest = PAR_DATA_PIN;
-    72b6:	09 e2       	ldi	r16, 0x29	; 41
-    72b8:	10 e0       	ldi	r17, 0x00	; 0
-	PAR_STATUS_PORT = 0;
-	PAR_STATUS_DDR = BUSY | NACK;
-	uint8_t ubRequest;
-	while(1) {
-		// Wait for request from Ami
-		if((PAR_STATUS_PORT & SEL) && !(PAR_STATUS_PORT & POUT)) {
-    72ba:	88 81       	ld	r24, Y
-    72bc:	84 ff       	sbrs	r24, 4
-    72be:	07 c0       	rjmp	.+14     	; 0x72ce <main+0x6a>
-    72c0:	88 81       	ld	r24, Y
-    72c2:	83 fd       	sbrc	r24, 3
-    72c4:	04 c0       	rjmp	.+8      	; 0x72ce <main+0x6a>
-    72c6:	c7 01       	movw	r24, r14
-    72c8:	01 97       	sbiw	r24, 0x01	; 1
-    72ca:	f1 f7       	brne	.-4      	; 0x72c8 <main+0x64>
-    72cc:	f6 cf       	rjmp	.-20     	; 0x72ba <main+0x56>
-			_delay_ms(2);
-			continue;
-		}
-
-		// Abort if request is not flash-related
-		ubRequest = PAR_DATA_PIN;
-    72ce:	f8 01       	movw	r30, r16
-    72d0:	90 81       	ld	r25, Z
+    7374:	0f 2e       	mov	r0, r31
+    7376:	f9 e2       	ldi	r31, 0x29	; 41
+    7378:	ef 2e       	mov	r14, r31
+    737a:	ff 24       	eor	r15, r15
+    737c:	f0 2d       	mov	r31, r0
 		PAR_STATUS_PORT |= BUSY;
-    72d2:	88 81       	ld	r24, Y
-    72d4:	84 60       	ori	r24, 0x04	; 4
-    72d6:	88 83       	st	Y, r24
-		if(ubRequest != CMD_SEND_BOOT)
-    72d8:	98 38       	cpi	r25, 0x88	; 136
-    72da:	81 f4       	brne	.+32     	; 0x72fc <main+0x98>
-			break;
+    737e:	08 e2       	ldi	r16, 0x28	; 40
+    7380:	10 e0       	ldi	r17, 0x00	; 0
+    7382:	0f 2e       	mov	r0, r31
+    7384:	f0 e1       	ldi	r31, 0x10	; 16
+    7386:	cf 2e       	mov	r12, r31
+    7388:	f7 e2       	ldi	r31, 0x27	; 39
+    738a:	df 2e       	mov	r13, r31
+    738c:	f0 2d       	mov	r31, r0
+	PAR_STATUS_PORT &= ~PAR_STATUS_MASK;
+	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
+	PAR_STATUS_DDR |= BUSY | NACK;
+	while(1) {
+		// Wait for read request from Ami
+		if(!waitForStatusPin(SEL_PIN, 1))
+    738e:	84 e0       	ldi	r24, 0x04	; 4
+    7390:	61 e0       	ldi	r22, 0x01	; 1
+    7392:	0e 94 48 38 	call	0x7090	; 0x7090 <waitForStatusPin>
+    7396:	88 23       	and	r24, r24
+    7398:	19 f4       	brne	.+6      	; 0x73a0 <main+0xe0>
+			bootExit(3);
+    739a:	83 e0       	ldi	r24, 0x03	; 3
+    739c:	0e 94 a4 38 	call	0x7148	; 0x7148 <bootExit>
+		PAR_DATA_DDR = 0;
+    73a0:	f5 01       	movw	r30, r10
+    73a2:	10 82       	st	Z, r1
+		ubRequest = PAR_DATA_PIN;
+    73a4:	f7 01       	movw	r30, r14
+    73a6:	80 81       	ld	r24, Z
+    73a8:	89 83       	std	Y+1, r24	; 0x01
+		PAR_STATUS_PORT |= BUSY;
+    73aa:	f8 01       	movw	r30, r16
+    73ac:	80 81       	ld	r24, Z
+    73ae:	84 60       	ori	r24, 0x04	; 4
+    73b0:	80 83       	st	Z, r24
+
+		// Abort if request is not flash-related
+		if(PAR_DATA_PIN == 0xFF)
+    73b2:	f7 01       	movw	r30, r14
+    73b4:	80 81       	ld	r24, Z
+    73b6:	8f 3f       	cpi	r24, 0xFF	; 255
+    73b8:	19 f4       	brne	.+6      	; 0x73c0 <main+0x100>
+			bootExit(2);
+    73ba:	82 e0       	ldi	r24, 0x02	; 2
+    73bc:	0e 94 a4 38 	call	0x7148	; 0x7148 <bootExit>
+		if(PAR_DATA_PIN != CMD_SEND_BOOT)
+    73c0:	f7 01       	movw	r30, r14
+    73c2:	80 81       	ld	r24, Z
+    73c4:	88 38       	cpi	r24, 0x88	; 136
+    73c6:	19 f0       	breq	.+6      	; 0x73ce <main+0x10e>
+			bootExit(PAR_DATA_PIN); // 4
+    73c8:	80 81       	ld	r24, Z
+    73ca:	0e 94 a4 38 	call	0x7148	; 0x7148 <bootExit>
+		bootExit(2);
+    73ce:	82 e0       	ldi	r24, 0x02	; 2
+    73d0:	0e 94 a4 38 	call	0x7148	; 0x7148 <bootExit>
+
 		// Read page from Ami
 		if(!bootReadPageFromAmi())
-    72dc:	0e 94 88 38 	call	0x7110	; 0x7110 <bootReadPageFromAmi>
-    72e0:	88 23       	and	r24, r24
-    72e2:	59 f3       	breq	.-42     	; 0x72ba <main+0x56>
-			continue;
+    73d4:	0e 94 b6 38 	call	0x716c	; 0x716c <bootReadPageFromAmi>
+    73d8:	88 23       	and	r24, r24
+    73da:	19 f4       	brne	.+6      	; 0x73e2 <main+0x122>
+			bootExit(5);
+    73dc:	85 e0       	ldi	r24, 0x05	; 5
+    73de:	0e 94 a4 38 	call	0x7148	; 0x7148 <bootExit>
 
 		// Program page on flash & wait for Ami read
 		bootFlashPage();
-    72e4:	0e 94 dd 38 	call	0x71ba	; 0x71ba <bootFlashPage>
+    73e2:	0e 94 0b 39 	call	0x7216	; 0x7216 <bootFlashPage>
 
 		// Let Ami know that bootloader is ready for more
 		PAR_STATUS_PORT |= NACK;
-    72e8:	88 81       	ld	r24, Y
-    72ea:	82 60       	ori	r24, 0x02	; 2
-    72ec:	88 83       	st	Y, r24
-    72ee:	c7 01       	movw	r24, r14
-    72f0:	01 97       	sbiw	r24, 0x01	; 1
-    72f2:	f1 f7       	brne	.-4      	; 0x72f0 <main+0x8c>
+    73e6:	f8 01       	movw	r30, r16
+    73e8:	80 81       	ld	r24, Z
+    73ea:	82 60       	ori	r24, 0x02	; 2
+    73ec:	80 83       	st	Z, r24
+    73ee:	c6 01       	movw	r24, r12
+    73f0:	01 97       	sbiw	r24, 0x01	; 1
+    73f2:	f1 f7       	brne	.-4      	; 0x73f0 <main+0x130>
 		_delay_ms(2);
 		PAR_STATUS_PORT &= ~NACK;
-    72f4:	88 81       	ld	r24, Y
-    72f6:	8d 7f       	andi	r24, 0xFD	; 253
-    72f8:	88 83       	st	Y, r24
-    72fa:	df cf       	rjmp	.-66     	; 0x72ba <main+0x56>
-	}
-	bootExit();
-    72fc:	0e 94 6a 38 	call	0x70d4	; 0x70d4 <bootExit>
-	return 0;
-}
-    7300:	80 e0       	ldi	r24, 0x00	; 0
-    7302:	90 e0       	ldi	r25, 0x00	; 0
-    7304:	df 91       	pop	r29
-    7306:	cf 91       	pop	r28
-    7308:	1f 91       	pop	r17
-    730a:	0f 91       	pop	r16
-    730c:	ff 90       	pop	r15
-    730e:	ef 90       	pop	r14
-    7310:	08 95       	ret
+    73f4:	80 81       	ld	r24, Z
+    73f6:	8d 7f       	andi	r24, 0xFD	; 253
+    73f8:	80 83       	st	Z, r24
+    73fa:	c9 cf       	rjmp	.-110    	; 0x738e <main+0xce>
 
-00007312 <_exit>:
-    7312:	f8 94       	cli
+000073fc <_exit>:
+    73fc:	f8 94       	cli
 
-00007314 <__stop_program>:
-    7314:	ff cf       	rjmp	.-2      	; 0x7314 <__stop_program>
+000073fe <__stop_program>:
+    73fe:	ff cf       	rjmp	.-2      	; 0x73fe <__stop_program>
