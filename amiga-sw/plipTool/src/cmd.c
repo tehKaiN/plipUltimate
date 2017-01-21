@@ -4,6 +4,7 @@
 #include "ack.h"
 #include "data.h"
 #include "par.h"
+#include "timer.h"
 
 /**
  *  Magic EtherType value
@@ -62,45 +63,55 @@ void cmdReset(void) {
 UBYTE cmdFlash(tPage *pPages, UBYTE ubPageCount) {
 	ULONG ulTimer;
 	UBYTE i, ubDoHiPout, ubByte;
-	
+		
 	// Reset to enter boot mode
 	cmdReset();
 	
-	// Wait for signal from plip that it's in boot mode
-	PAR_STATUS_DDR &= ~PAR_POUT;
-	ulTimer = 7000000;
-	while(ulTimer && !(PAR_STATUS_VAL & PAR_POUT))
-		--ulTimer;
-	if(!ulTimer) {
-		printf("ERR: Boot loader doesn't respond\n");
-		goto sendFail;
-	}
-	
-	// Make BUSY pulse to confirm flash mode
-	PAR_DATA_DDR = 0xFF;
-	PAR_DATA_VAL = 0xFF;
-	PAR_STATUS_DDR |= PAR_BUSY;
-	PAR_STATUS_VAL |= PAR_BUSY;
-	PAR_STATUS_VAL &= ~PAR_BUSY;	
-	
-	// Let BUSY go down to prevent false hi busy detection later
-	ulTimer = 20000; // ~one CIA cycle (1,42ms)
-	while(ulTimer--);
-	
-	// Switch DDR to sending in regular way
-	PAR_DATA_DDR = 0x00;
 	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
 	PAR_STATUS_DDR |= PAR_POUT | PAR_SEL;
+	PAR_DATA_DDR = 0xFF;
+	PAR_DATA_VAL = 0x00;
 	
+	// Plip takes ~65ms to wake up
+	timerDelayMs(70);
+
+	// Do a bootloader handshake: PApAPApAPApA
+	printf("Handshaking bootloader: ");
+	for(i = 0; i != 3; ++i) {
+		// POut hi
+		g_ubAckEdge = 0;
+		PAR_STATUS_VAL |= PAR_POUT;
+		putc('P', stdout);
+		
+		// Wait for Ack edge
+		ulTimer = 100000;
+		while(--ulTimer && !g_ubAckEdge);
+		if(!ulTimer)
+			goto sendFail;
+		putc('A', stdout);
+		
+		// POut lo
+		g_ubAckEdge = 0;
+		PAR_STATUS_VAL &= ~PAR_POUT;
+		putc('p', stdout);
+		
+		// Wait for Ack edge
+		ulTimer = 100000;
+		while(--ulTimer && !g_ubAckEdge);
+		if(!ulTimer)
+			goto sendFail;
+		putc('A', stdout);
+	}
+	printf(" OK\n");
+		
 	for(i = 0; i != ubPageCount; ++i) {
 		// Clear ACK detection
 		g_ubAckEdge = 0;
 		
 		// Send page write request
 		PAR_DATA_VAL = PBPROTO_CMD_SEND_FLASH;
-		ulTimer = 20000; // ~one CIA cycle (1,42ms)
-		while(ulTimer--);
 		PAR_STATUS_VAL |= PAR_SEL;
+				
 		if(!parWaitBusy(1))
 			goto sendFail;
 		
@@ -114,17 +125,17 @@ UBYTE cmdFlash(tPage *pPages, UBYTE ubPageCount) {
 		ubDoHiPout = 0;
 		for(ubByte = 0; ubByte != BOOT_PAGE_BYTE_SIZE; ++ubByte) {
 			PAR_DATA_VAL = pPages[i].pData[ubByte];
-			if(ubDoHiPout) {
-				PAR_STATUS_VAL |= PAR_POUT;
-				if(!parWaitBusy(0))
-					goto sendFail;
-				ubDoHiPout = 0;
-			}
-			else {
+			if(!ubDoHiPout) {
 				PAR_STATUS_VAL &= ~PAR_POUT;
 				if(!parWaitBusy(1))
 					goto sendFail;
 				ubDoHiPout = 1;
+			}
+			else {
+				PAR_STATUS_VAL |= PAR_POUT;
+				if(!parWaitBusy(0))
+					goto sendFail;
+				ubDoHiPout = 0;
 			}
 		}
 		
@@ -133,7 +144,7 @@ UBYTE cmdFlash(tPage *pPages, UBYTE ubPageCount) {
 		PAR_DATA_VAL = 0;
 		
 		// Wait for ACK
-		ulTimer = 7000000;
+		ulTimer = 100000;
 		while(ulTimer && !g_ubAckEdge)
 			--ulTimer;
 		if(!g_ubAckEdge) {

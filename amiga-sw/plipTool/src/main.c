@@ -7,6 +7,7 @@
 #include "data.h"
 #include "par.h"
 #include "cmd.h"
+#include "timer.h"
 
 void printUsage(void) {
 	printf("TODO: usage\n");
@@ -52,7 +53,8 @@ void configDisplay(tConfig *pConfig) {
 
 int main(int lArgCount, char **pArgs) {
 	printf("plipTool ver. %d.%d.%d.\n", BUILD_YEAR, BUILD_MONTH, BUILD_DAY);
-	
+	timerCreate();
+		
 	if(!parReserve("plipTool")) {		
 		return 1;
 	}
@@ -136,8 +138,10 @@ int main(int lArgCount, char **pArgs) {
 			}
 		}
 	}
+		
 	ackFree();
 	parFree();
+	timerDestroy();
 	
 	return 0;
 }

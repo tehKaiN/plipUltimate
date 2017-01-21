@@ -135,6 +135,7 @@ void bootFlashPage(void) {
 
 int main(void) {
 	volatile uint8_t ubRequest;
+	uint8_t i;
 
 	// Disable watchdog & interrupts
 	cli();
@@ -143,43 +144,35 @@ int main(void) {
 	WDTCSR|=_BV(WDCE) | _BV(WDE);
 	WDTCSR=0;
 
-	// Reset everything
-	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
-	PAR_STATUS_PORT &= ~PAR_STATUS_MASK;
+	// Set DDR & pullups
+	PAR_STATUS_DDR |= NACK | BUSY;
+  PAR_STATUS_PORT |= NSTROBE | SEL | POUT | NACK;
 	PAR_DATA_DDR = 0;
-	PAR_DATA_PORT = 0;
 
-	// Boot blink
-	LED_PORT |= LED_STATUS;
-	_delay_ms(100);
-	LED_PORT &= ~LED_STATUS;
+	// Do a bootloader handshake to init programming
+	for(i = 0; i != 3; ++i) {
+		if(!waitForStatusPin(POUT_PIN, 1))
+			bootExit(1);
+		PAR_STATUS_PORT &= ~NACK;
+		_delay_ms(5);
+		PAR_STATUS_PORT |= NACK;
+		if(!waitForStatusPin(POUT_PIN, 0))
+			bootExit(1);
+		PAR_STATUS_PORT &= ~NACK;
+		_delay_ms(5);
+		PAR_STATUS_PORT |= NACK;
+	}
 
-	// Bootloader ready for flashing - set POUT hi and wait for BUSY
-	PAR_STATUS_DDR |= POUT;
-	PAR_STATUS_PORT |= POUT;
-	// Doesn't work, wtf
-	// Should react to plipTool: cmd.c line
-	if(!waitForStatusPin(BUSY_PIN, 1) || PAR_DATA_PIN != 0xFF)
-		bootExit(1);
-
-	// Set DDR as in regular read transfer
-	PAR_STATUS_PORT &= ~PAR_STATUS_MASK;
-	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
-	PAR_STATUS_DDR |= BUSY | NACK;
 	while(1) {
 		// Wait for read request from Ami
 		if(!waitForStatusPin(SEL_PIN, 1))
 			bootExit(3);
-		PAR_DATA_DDR = 0;
 		ubRequest = PAR_DATA_PIN;
 		PAR_STATUS_PORT |= BUSY;
 
 		// Abort if request is not flash-related
-		if(PAR_DATA_PIN == 0xFF)
-			bootExit(2);
-		if(PAR_DATA_PIN != CMD_SEND_BOOT)
-			bootExit(PAR_DATA_PIN); // 4
-		bootExit(2);
+		if(ubRequest != CMD_SEND_BOOT)
+			bootExit(4); // 4
 
 		// Read page from Ami
 		if(!bootReadPageFromAmi())

@@ -10,7 +10,7 @@
 unsigned char s_pFirmware[BOOT_PAGE_BYTE_SIZE * BOOT_RWW_PAGE_COUNT];
 int main(int lArgCount, char *pArgs[]) {
 	FILE *pHexFile, *pPuf;
-	char szDataHexes[34+1];
+	char szDataHexes[256];
 	unsigned short int uwLine, uwSize, uwByteAddr, uwType, i;
 	char bWhiteSpace;
 	unsigned short int *pFirmwareWords;
@@ -28,7 +28,7 @@ int main(int lArgCount, char *pArgs[]) {
 	fgetc(pHexFile); // Omit first char
 	while(!feof(pHexFile)) {
 		fscanf(pHexFile, "%2hx%4hx%2hx", &uwSize, &uwByteAddr, &uwType);
-		fgets(szDataHexes, 34+1, pHexFile);
+		fgets(szDataHexes, uwSize*2+2+1, pHexFile);
 		if(uwType == 1) {
 			// printf("Reached EOF record!\n");
 			break;
@@ -39,14 +39,16 @@ int main(int lArgCount, char *pArgs[]) {
 			return 1;
 		}
 		if(uwByteAddr+uwSize > BOOT_PAGE_BYTE_SIZE * BOOT_RWW_PAGE_COUNT) {
-			printf("ERR: address out of range: %u, max: %d", uwByteAddr, BOOT_PAGE_BYTE_SIZE * BOOT_RWW_PAGE_COUNT);
-			fclose(pHexFile);
-			return 1;
+			printf(
+				"WARN: address out of range: %u, max: %d\n",
+				uwByteAddr, BOOT_PAGE_BYTE_SIZE * BOOT_RWW_PAGE_COUNT
+			);
 		}
-		
-		// Put read data into firmware buffer
-		for(i = 0; i != uwSize; ++i) {
-			sscanf(&szDataHexes[2*i], "%2hhx", (char*)&s_pFirmware[uwByteAddr + i]);
+		else {			
+			// Put read data into firmware buffer
+			for(i = 0; i != uwSize; ++i) {
+				sscanf(&szDataHexes[2*i], "%2hhx", (char*)&s_pFirmware[uwByteAddr + i]);
+			}
 		}
 
 		// Skip newline chars
@@ -58,9 +60,9 @@ int main(int lArgCount, char *pArgs[]) {
 	fclose(pHexFile);
 	
 	// Convert endianness
-	pFirmwareWords = (unsigned short int *)s_pFirmware;
-	for(i = 0; i != BOOT_PAGE_WORD_SIZE*BOOT_RWW_PAGE_COUNT; ++i)
-		pFirmwareWords[i] = (pFirmwareWords[i] >> 8) | ((pFirmwareWords[i] & 0xFF) << 8);
+	// pFirmwareWords = (unsigned short int *)s_pFirmware;
+	// for(i = 0; i != BOOT_PAGE_WORD_SIZE*BOOT_RWW_PAGE_COUNT; ++i)
+		// pFirmwareWords[i] = (pFirmwareWords[i] >> 8) | ((pFirmwareWords[i] & 0xFF) << 8);
 	
 	strcpy(szPufPath, pArgs[1]);
 	memcpy(&szPufPath[strlen(szPufPath)-4], ".puf", 4);
