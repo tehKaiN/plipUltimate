@@ -35,7 +35,6 @@
 #include "base/util.h"
 #include "bridge.h"
 #include "main.h"
-#include "pb_util.h"
 #include "pio_util.h"
 #include "pio.h"
 #include "net/eth.h"
@@ -223,7 +222,7 @@ void bridgeLoop(void)
     // NOTE: UART command handling was here
 
     // Calls pb_proto_handle - this is where PAR communication is done
-    pb_util_handle();
+    pb_proto_handle();
 
     // Handle packets coming from network
 		ubPacketCount = enc28j60_has_recv();

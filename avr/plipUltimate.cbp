@@ -66,10 +66,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/bridge.h" />
-		<Unit filename="src/bridge_test.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/bridge_test.h" />
 		<Unit filename="src/cmd.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -82,10 +78,6 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/cmdkey_table.h" />
-		<Unit filename="src/dump.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/dump.h" />
 		<Unit filename="src/fuse.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -114,20 +106,8 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/pb_proto.h" />
-		<Unit filename="src/pb_test.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/pb_test.h" />
-		<Unit filename="src/pb_util.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/pb_util.h" />
 		<Unit filename="src/pinout.h" />
 		<Unit filename="src/pio.h" />
-		<Unit filename="src/pio_test.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/pio_test.h" />
 		<Unit filename="src/pio_util.c">
 			<Option compilerVar="CC" />
 		</Unit>

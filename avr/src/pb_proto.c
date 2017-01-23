@@ -448,6 +448,7 @@ uint8_t pb_proto_handle(void) {
     uint8_t res = bridgeFillPacket(&pkt_size);
     if(res != PBPROTO_STATUS_OK) {
       ps->status = res;
+			stats_get(ps->stats_id)->err++;
       return res;
     }
   }
@@ -490,9 +491,8 @@ uint8_t pb_proto_handle(void) {
 
   // Amiga sent data - process it
   if(result == PBPROTO_STATUS_OK) {
-    if((cmd == PBPROTO_CMD_SEND) || (cmd == PBPROTO_CMD_SEND_BURST)) {
+    if((cmd == PBPROTO_CMD_SEND) || (cmd == PBPROTO_CMD_SEND_BURST))
       result = bridgeProcessPacket(uwParDataSize);
-    }
   }
 
   // fill in stats
@@ -505,5 +505,11 @@ uint8_t pb_proto_handle(void) {
   ps->is_send = (cmd == PBPROTO_CMD_SEND) || (cmd == PBPROTO_CMD_SEND_BURST);
   ps->stats_id = ps->is_send ? STATS_ID_PB_TX : STATS_ID_PB_RX;
   ps->recv_delta = ps->is_send ? 0 : (uint16_t)(ps->ts - trigger_ts);
+
+	if(result == PBPROTO_STATUS_OK)
+		stats_update_ok(ps->stats_id, ps->size, ps->rate);
+	else
+    stats_get(ps->stats_id)->err++;
+
   return result;
 }
