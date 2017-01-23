@@ -27,18 +27,11 @@
 #include "cmdkey_table.h"
 
 #include "stats.h"
-#include "main.h"
 #include "base/uartutil.h"
 
 COMMAND_KEY(cmd_dump_stats)
 {
   stats_dump_all();
-}
-
-COMMAND_KEY(cmd_toggle_verbose)
-{
-  g_ubVerboseMode = !g_ubVerboseMode;
-  // NOTE: UART - VERBOSE: global_verbose ? "ON\r\n" : "OFF\r\n"
 }
 
 CMDKEY_HELP(cmd_enter_bridge_mode, "enter bridge mode");
@@ -54,6 +47,5 @@ CMDKEY_HELP(cmd_toggle_auto_mode, "toggle auto send (pbtest mode)");
 
 const cmdkey_table_t PROGMEM cmdkey_table[] = {
   CMDKEY_ENTRY('s', cmd_dump_stats),
-  CMDKEY_ENTRY('v', cmd_toggle_verbose),
   { 0,0 }
 };

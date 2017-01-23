@@ -1,0 +1,1005 @@
+Archive member included because of file (symbol)
+
+d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
+                              obj\Debug\src\base\timer.o (__mulsi3)
+d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+                              obj\Debug\src\base\util.o (__udivmodqi4)
+d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+                              obj\Debug\src\base\timer.o (__udivmodsi4)
+d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                              d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o (exit)
+d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+                              obj\Debug\src\net\net.o (__do_copy_data)
+d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+                              obj\Debug\src\base\timer.o (__do_clear_bss)
+d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_block_atmega328p.o)
+                              obj\Debug\src\param.o (__eerd_block_m328p)
+d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_word_atmega328p.o)
+                              obj\Debug\src\param.o (__eerd_word_m328p)
+d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_block_atmega328p.o)
+                              obj\Debug\src\param.o (__eewr_block_m328p)
+d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_byte_atmega328p.o)
+                              d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_block_atmega328p.o) (__eewr_r18_m328p)
+d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_word_atmega328p.o)
+                              obj\Debug\src\param.o (__eewr_word_m328p)
+
+Allocating common symbols
+Common symbol       size              file
+
+g_uwCmdResponseSize
+                    0x2               obj\Debug\src\cmd.o
+pb_proto_stat       0x10              obj\Debug\src\pb_proto.o
+s_ubFlags           0x1               obj\Debug\src\bridge.o
+g_uwTimer10ms       0x2               obj\Debug\src\base\timer.o
+g_pDataBuffer       0x5ea             obj\Debug\src\pkt_buf.o
+stats               0x30              obj\Debug\src\stats.o
+g_uwTimer100us      0x2               obj\Debug\src\base\timer.o
+g_uwTimeStamp       0x4               obj\Debug\src\base\timer.o
+g_sConfig           0x14              obj\Debug\src\param.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+text             0x00000000         0x00020000         xr
+data             0x00800060         0x0000ffa0         rw !x
+eeprom           0x00810000         0x00010000         rw !x
+fuse             0x00820000         0x00000400         rw !x
+lock             0x00830000         0x00000400         rw !x
+signature        0x00840000         0x00000400         rw !x
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+Address of section .data set to 0x800100
+LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+LOAD obj\Debug\src\base\timer.o
+LOAD obj\Debug\src\base\util.o
+LOAD obj\Debug\src\bridge.o
+LOAD obj\Debug\src\cmd.o
+LOAD obj\Debug\src\cmd_table.o
+LOAD obj\Debug\src\cmdkey_table.o
+LOAD obj\Debug\src\fuse.o
+LOAD obj\Debug\src\main.o
+LOAD obj\Debug\src\net\arp.o
+LOAD obj\Debug\src\net\net.o
+LOAD obj\Debug\src\param.o
+LOAD obj\Debug\src\pb_proto.o
+LOAD obj\Debug\src\pio_util.o
+LOAD obj\Debug\src\pkt_buf.o
+LOAD obj\Debug\src\spi\enc28j60.o
+LOAD obj\Debug\src\spi\spi.o
+LOAD obj\Debug\src\stats.o
+LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
+LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libm.a
+LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
+LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a
+LOAD d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a
+
+.hash
+ *(.hash)
+
+.dynsym
+ *(.dynsym)
+
+.dynstr
+ *(.dynstr)
+
+.gnu.version
+ *(.gnu.version)
+
+.gnu.version_d
+ *(.gnu.version_d)
+
+.gnu.version_r
+ *(.gnu.version_r)
+
+.rel.init
+ *(.rel.init)
+
+.rela.init
+ *(.rela.init)
+
+.rel.text
+ *(.rel.text)
+ *(.rel.text.*)
+ *(.rel.gnu.linkonce.t*)
+
+.rela.text
+ *(.rela.text)
+ *(.rela.text.*)
+ *(.rela.gnu.linkonce.t*)
+
+.rel.fini
+ *(.rel.fini)
+
+.rela.fini
+ *(.rela.fini)
+
+.rel.rodata
+ *(.rel.rodata)
+ *(.rel.rodata.*)
+ *(.rel.gnu.linkonce.r*)
+
+.rela.rodata
+ *(.rela.rodata)
+ *(.rela.rodata.*)
+ *(.rela.gnu.linkonce.r*)
+
+.rel.data
+ *(.rel.data)
+ *(.rel.data.*)
+ *(.rel.gnu.linkonce.d*)
+
+.rela.data
+ *(.rela.data)
+ *(.rela.data.*)
+ *(.rela.gnu.linkonce.d*)
+
+.rel.ctors
+ *(.rel.ctors)
+
+.rela.ctors
+ *(.rela.ctors)
+
+.rel.dtors
+ *(.rel.dtors)
+
+.rela.dtors
+ *(.rela.dtors)
+
+.rel.got
+ *(.rel.got)
+
+.rela.got
+ *(.rela.got)
+
+.rel.bss
+ *(.rel.bss)
+
+.rela.bss
+ *(.rela.bss)
+
+.rel.plt
+ *(.rel.plt)
+
+.rela.plt
+ *(.rela.plt)
+
+.text           0x00000000     0x1b52
+ *(.vectors)
+ .vectors       0x00000000       0x68 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+                0x00000000                __vectors
+                0x00000000                __vector_default
+ *(.vectors)
+ *(.progmem.gcc*)
+ *(.progmem*)
+ .progmem.data  0x00000068      0x17c obj\Debug\src\cmd_table.o
+                0x00000068                cmd_table
+ .progmem.data  0x000001e4       0x1a obj\Debug\src\cmdkey_table.o
+                0x000001e4                cmdkey_table
+ .progmem.data  0x000001fe       0x14 obj\Debug\src\param.o
+                0x00000212                . = ALIGN (0x2)
+                0x00000212                __trampolines_start = .
+ *(.trampolines)
+ .trampolines   0x00000212        0x0 linker stubs
+ *(.trampolines*)
+                0x00000212                __trampolines_end = .
+ *(.jumptables)
+ *(.jumptables*)
+ *(.lowtext)
+ *(.lowtext*)
+                0x00000212                __ctors_start = .
+ *(.ctors)
+                0x00000212                __ctors_end = .
+                0x00000212                __dtors_start = .
+ *(.dtors)
+                0x00000212                __dtors_end = .
+ SORT(*)(.ctors)
+ SORT(*)(.dtors)
+ *(.init0)
+ .init0         0x00000212        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+                0x00000212                __init
+ *(.init0)
+ *(.init1)
+ *(.init1)
+ *(.init2)
+ .init2         0x00000212        0xc d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+ *(.init2)
+ *(.init3)
+ *(.init3)
+ *(.init4)
+ .init4         0x0000021e       0x16 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+                0x0000021e                __do_copy_data
+ .init4         0x00000234       0x10 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+                0x00000234                __do_clear_bss
+ *(.init4)
+ *(.init5)
+ *(.init5)
+ *(.init6)
+ *(.init6)
+ *(.init7)
+ *(.init7)
+ *(.init8)
+ *(.init8)
+ *(.init9)
+ .init9         0x00000244        0x8 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+ *(.init9)
+ *(.text)
+ .text          0x0000024c        0x4 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+                0x0000024c                __vector_22
+                0x0000024c                __vector_1
+                0x0000024c                __vector_24
+                0x0000024c                __vector_12
+                0x0000024c                __bad_interrupt
+                0x0000024c                __vector_6
+                0x0000024c                __vector_3
+                0x0000024c                __vector_23
+                0x0000024c                __vector_25
+                0x0000024c                __vector_13
+                0x0000024c                __vector_17
+                0x0000024c                __vector_19
+                0x0000024c                __vector_7
+                0x0000024c                __vector_5
+                0x0000024c                __vector_4
+                0x0000024c                __vector_9
+                0x0000024c                __vector_2
+                0x0000024c                __vector_21
+                0x0000024c                __vector_15
+                0x0000024c                __vector_8
+                0x0000024c                __vector_14
+                0x0000024c                __vector_10
+                0x0000024c                __vector_16
+                0x0000024c                __vector_18
+                0x0000024c                __vector_20
+ .text          0x00000250      0x166 obj\Debug\src\base\timer.o
+                0x00000354                timerDelay100us
+                0x0000033a                timerDelay10ms
+                0x000002a4                __vector_11
+                0x00000250                timerInit
+                0x0000036e                timerCalculateKbps
+ .text          0x000003b6      0x368 obj\Debug\src\base\util.o
+                0x000003ec                utilWordToHex
+                0x0000050e                utilParseNibbleHex
+                0x00000474                utilDwordToDec
+                0x000003b6                utilNibbleToHex
+                0x00000410                utilDwordToHex
+                0x00000704                utilReset
+                0x00000542                utilParseByteHex
+                0x000003c2                utilByteToHex
+                0x000006d4                utilParseByteDec
+                0x000005a0                utilParseWordHex
+                0x00000600                utilParseDwordHex
+                0x00000446                utilByteToDec
+ .text          0x0000071e      0x1ee obj\Debug\src\bridge.o
+                0x000007be                bridgeProcessPacket
+                0x00000732                bridgeLoop
+                0x0000088c                bridgeFillPacket
+ .text          0x0000090c       0x9e obj\Debug\src\cmd.o
+                0x0000090c                cmdProcess
+ .text          0x000009aa      0x1b0 obj\Debug\src\cmd_table.o
+ .text          0x00000b5a        0x6 obj\Debug\src\cmdkey_table.o
+ .text          0x00000b60        0x0 obj\Debug\src\fuse.o
+ .text          0x00000b60       0x3a obj\Debug\src\main.o
+                0x00000b60                main
+ .text          0x00000b9a       0xce obj\Debug\src\net\arp.o
+                0x00000b9a                arp_make_reply
+                0x00000c16                arp_is_ipv4
+ .text          0x00000c68      0x29e obj\Debug\src\net\net.o
+                0x00000c68                net_copy_mac
+                0x00000dde                net_parse_mac
+                0x00000d1e                net_put_long
+                0x00000d6c                net_compare_ip
+                0x00000e50                net_parse_ip
+                0x00000cbc                net_put_word
+                0x00000d40                net_compare_mac
+                0x00000ec6                net_dump_mac
+                0x00000ca8                net_get_word
+                0x00000cc4                net_get_long
+                0x00000d98                net_dump_ip
+                0x00000c86                net_copy_ip
+ .text          0x00000f06      0x100 obj\Debug\src\param.o
+                0x00000f50                param_reset
+                0x00000fd0                param_save
+                0x00000fc2                param_init
+                0x00000f6e                param_load
+ .text          0x00001006      0x72e obj\Debug\src\pb_proto.o
+                0x000010a8                pb_proto_handle
+                0x00001006                parInit
+                0x000016ee                parRequestAmiRead
+                0x0000102a                parGetStatusLines
+ .text          0x00001734      0x256 obj\Debug\src\pio_util.o
+                0x0000174e                pio_util_handle_udp_test
+                0x00001828                pio_util_send_packet
+                0x00001928                pio_util_recv_packet
+                0x00001734                pio_util_get_init_flags
+                0x00001882                pio_util_handle_arp
+ .text          0x0000198a        0x0 obj\Debug\src\pkt_buf.o
+ .text          0x0000198a       0x1a obj\Debug\src\spi\enc28j60.o
+                0x0000198e                enc28j60_exit
+                0x0000198a                enc28j60_init
+                0x00001994                enc28j60_status
+                0x00001990                enc28j60_control
+                0x0000199c                enc28j60_recv
+                0x000019a0                enc28j60_has_recv
+                0x00001998                enc28j60_send
+ .text          0x000019a4       0x2a obj\Debug\src\spi\spi.o
+                0x000019a4                spi_init
+ .text          0x000019ce       0x80 obj\Debug\src\stats.o
+                0x00001a4a                stats_dump_all
+                0x000019f8                stats_update_ok
+                0x00001a4c                stats_dump
+                0x000019ce                stats_reset
+ .text          0x00001a4e        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
+ .text          0x00001a4e        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+ .text          0x00001a4e        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+ .text          0x00001a4e        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text          0x00001a4e        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text          0x00001a4e        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .text          0x00001a4e        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_block_atmega328p.o)
+ .text          0x00001a4e        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_word_atmega328p.o)
+ .text          0x00001a4e        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_block_atmega328p.o)
+ .text          0x00001a4e        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_byte_atmega328p.o)
+ .text          0x00001a4e        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_word_atmega328p.o)
+                0x00001a4e                . = ALIGN (0x2)
+ *(.text.*)
+ .text.libgcc   0x00001a4e       0x3e d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
+                0x00001a4e                __mulsi3
+ .text.libgcc   0x00001a8c       0x18 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+                0x00001a8c                __udivmodqi4
+ .text.libgcc   0x00001aa4       0x44 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+                0x00001aa4                __udivmodsi4
+ .text.libgcc   0x00001ae8        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .text.libgcc   0x00001ae8        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .text.libgcc   0x00001ae8        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .text.avr-libc
+                0x00001ae8       0x20 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_block_atmega328p.o)
+                0x00001ae8                __eerd_block_m328p
+                0x00001aec                __eerd_blraw_m328p
+ .text.avr-libc
+                0x00001b08        0xc d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_word_atmega328p.o)
+                0x00001b08                __eerd_word_m328p
+ .text.avr-libc
+                0x00001b14       0x14 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_block_atmega328p.o)
+                0x00001b14                __eewr_block_m328p
+ .text.avr-libc
+                0x00001b28       0x1c d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_byte_atmega328p.o)
+                0x00001b28                __eewr_byte_m328p
+                0x00001b2a                __eewr_r18_m328p
+ .text.avr-libc
+                0x00001b44        0xa d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_word_atmega328p.o)
+                0x00001b44                __eewr_word_m328p
+                0x00001b4e                . = ALIGN (0x2)
+ *(.fini9)
+ .fini9         0x00001b4e        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                0x00001b4e                exit
+                0x00001b4e                _exit
+ *(.fini9)
+ *(.fini8)
+ *(.fini8)
+ *(.fini7)
+ *(.fini7)
+ *(.fini6)
+ *(.fini6)
+ *(.fini5)
+ *(.fini5)
+ *(.fini4)
+ *(.fini4)
+ *(.fini3)
+ *(.fini3)
+ *(.fini2)
+ *(.fini2)
+ *(.fini1)
+ *(.fini1)
+ *(.fini0)
+ .fini0         0x00001b4e        0x4 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ *(.fini0)
+                0x00001b52                _etext = .
+
+.data           0x00800100       0x3c load address 0x00001b52
+                0x00800100                PROVIDE (__data_start, .)
+ *(.data)
+ .data          0x00800100        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+ .data          0x00800100        0x0 obj\Debug\src\base\timer.o
+ .data          0x00800100        0x0 obj\Debug\src\base\util.o
+ .data          0x00800100        0x0 obj\Debug\src\bridge.o
+ .data          0x00800100        0x0 obj\Debug\src\cmd.o
+ .data          0x00800100        0x0 obj\Debug\src\cmd_table.o
+ .data          0x00800100        0x0 obj\Debug\src\cmdkey_table.o
+ .data          0x00800100        0x0 obj\Debug\src\fuse.o
+ .data          0x00800100        0x0 obj\Debug\src\main.o
+ .data          0x00800100        0x0 obj\Debug\src\net\arp.o
+ .data          0x00800100       0x3a obj\Debug\src\net\net.o
+                0x00800110                net_ones_ip
+                0x0080010c                net_zero_ip
+                0x00800106                net_zero_mac
+                0x00800100                net_bcast_mac
+ .data          0x0080013a        0x0 obj\Debug\src\param.o
+ .data          0x0080013a        0x2 obj\Debug\src\pb_proto.o
+                0x0080013a                pb_proto_timeout
+ .data          0x0080013c        0x0 obj\Debug\src\pio_util.o
+ .data          0x0080013c        0x0 obj\Debug\src\pkt_buf.o
+ .data          0x0080013c        0x0 obj\Debug\src\spi\enc28j60.o
+ .data          0x0080013c        0x0 obj\Debug\src\spi\spi.o
+ .data          0x0080013c        0x0 obj\Debug\src\stats.o
+ .data          0x0080013c        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
+ .data          0x0080013c        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+ .data          0x0080013c        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+ .data          0x0080013c        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .data          0x0080013c        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .data          0x0080013c        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .data          0x0080013c        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_block_atmega328p.o)
+ .data          0x0080013c        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_word_atmega328p.o)
+ .data          0x0080013c        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_block_atmega328p.o)
+ .data          0x0080013c        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_byte_atmega328p.o)
+ .data          0x0080013c        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_word_atmega328p.o)
+ *(.data*)
+ *(.rodata)
+ *(.rodata*)
+ *(.gnu.linkonce.d*)
+                0x0080013c                . = ALIGN (0x2)
+                0x0080013c                _edata = .
+                0x0080013c                PROVIDE (__data_end, .)
+
+.bss            0x0080013c      0x651
+                0x0080013c                PROVIDE (__bss_start, .)
+ *(.bss)
+ .bss           0x0080013c        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+ .bss           0x0080013c        0x2 obj\Debug\src\base\timer.o
+ .bss           0x0080013e        0x0 obj\Debug\src\base\util.o
+ .bss           0x0080013e        0x1 obj\Debug\src\bridge.o
+ .bss           0x0080013f        0x0 obj\Debug\src\cmd.o
+ .bss           0x0080013f        0x0 obj\Debug\src\cmd_table.o
+ .bss           0x0080013f        0x0 obj\Debug\src\cmdkey_table.o
+ .bss           0x0080013f        0x0 obj\Debug\src\fuse.o
+ .bss           0x0080013f        0x1 obj\Debug\src\main.o
+                0x0080013f                g_ubVerboseMode
+ .bss           0x00800140        0x0 obj\Debug\src\net\arp.o
+ .bss           0x00800140        0x0 obj\Debug\src\net\net.o
+ .bss           0x00800140        0x0 obj\Debug\src\param.o
+ .bss           0x00800140        0x4 obj\Debug\src\pb_proto.o
+ .bss           0x00800144        0x0 obj\Debug\src\pio_util.o
+ .bss           0x00800144        0x0 obj\Debug\src\pkt_buf.o
+ .bss           0x00800144        0x0 obj\Debug\src\spi\enc28j60.o
+ .bss           0x00800144        0x0 obj\Debug\src\spi\spi.o
+ .bss           0x00800144        0x0 obj\Debug\src\stats.o
+ .bss           0x00800144        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
+ .bss           0x00800144        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+ .bss           0x00800144        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+ .bss           0x00800144        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+ .bss           0x00800144        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+ .bss           0x00800144        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+ .bss           0x00800144        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_block_atmega328p.o)
+ .bss           0x00800144        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_word_atmega328p.o)
+ .bss           0x00800144        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_block_atmega328p.o)
+ .bss           0x00800144        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_byte_atmega328p.o)
+ .bss           0x00800144        0x0 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_word_atmega328p.o)
+ *(.bss*)
+ *(COMMON)
+ COMMON         0x00800144        0x8 obj\Debug\src\base\timer.o
+                0x00800144                g_uwTimer10ms
+                0x00800146                g_uwTimer100us
+                0x00800148                g_uwTimeStamp
+ COMMON         0x0080014c        0x1 obj\Debug\src\bridge.o
+                0x0080014c                s_ubFlags
+ COMMON         0x0080014d        0x2 obj\Debug\src\cmd.o
+                0x0080014d                g_uwCmdResponseSize
+ COMMON         0x0080014f       0x14 obj\Debug\src\param.o
+                0x0080014f                g_sConfig
+ COMMON         0x00800163       0x10 obj\Debug\src\pb_proto.o
+                0x00800163                pb_proto_stat
+ COMMON         0x00800173      0x5ea obj\Debug\src\pkt_buf.o
+                0x00800173                g_pDataBuffer
+ COMMON         0x0080075d       0x30 obj\Debug\src\stats.o
+                0x0080075d                stats
+                0x0080078d                PROVIDE (__bss_end, .)
+                0x00001b52                __data_load_start = LOADADDR (.data)
+                0x00001b8e                __data_load_end = (__data_load_start + SIZEOF (.data))
+
+.noinit         0x0080078d        0x0
+                0x0080078d                PROVIDE (__noinit_start, .)
+ *(.noinit*)
+                0x0080078d                PROVIDE (__noinit_end, .)
+                0x0080078d                _end = .
+                0x0080078d                PROVIDE (__heap_start, .)
+
+.eeprom         0x00810000       0x16
+ *(.eeprom*)
+ .eeprom        0x00810000       0x16 obj\Debug\src\param.o
+                0x00810000                s_sEepromConfig
+                0x00810014                s_uwEepromCrc
+                0x00810016                __eeprom_end = .
+
+.fuse           0x00820000        0x3
+ *(.fuse)
+ .fuse          0x00820000        0x3 obj\Debug\src\fuse.o
+                0x00820000                __fuse
+ *(.lfuse)
+ *(.hfuse)
+ *(.efuse)
+
+.lock
+ *(.lock*)
+
+.signature
+ *(.signature*)
+
+.stab
+ *(.stab)
+
+.stabstr
+ *(.stabstr)
+
+.stab.excl
+ *(.stab.excl)
+
+.stab.exclstr
+ *(.stab.exclstr)
+
+.stab.index
+ *(.stab.index)
+
+.stab.indexstr
+ *(.stab.indexstr)
+
+.comment
+ *(.comment)
+
+.debug
+ *(.debug)
+
+.line
+ *(.line)
+
+.debug_srcinfo
+ *(.debug_srcinfo)
+
+.debug_sfnames
+ *(.debug_sfnames)
+
+.debug_aranges  0x00000000      0x1e0
+ *(.debug_aranges)
+ .debug_aranges
+                0x00000000       0x20 obj\Debug\src\base\timer.o
+ .debug_aranges
+                0x00000020       0x20 obj\Debug\src\base\util.o
+ .debug_aranges
+                0x00000040       0x20 obj\Debug\src\bridge.o
+ .debug_aranges
+                0x00000060       0x20 obj\Debug\src\cmd.o
+ .debug_aranges
+                0x00000080       0x20 obj\Debug\src\cmd_table.o
+ .debug_aranges
+                0x000000a0       0x20 obj\Debug\src\cmdkey_table.o
+ .debug_aranges
+                0x000000c0       0x20 obj\Debug\src\main.o
+ .debug_aranges
+                0x000000e0       0x20 obj\Debug\src\net\arp.o
+ .debug_aranges
+                0x00000100       0x20 obj\Debug\src\net\net.o
+ .debug_aranges
+                0x00000120       0x20 obj\Debug\src\param.o
+ .debug_aranges
+                0x00000140       0x20 obj\Debug\src\pb_proto.o
+ .debug_aranges
+                0x00000160       0x20 obj\Debug\src\pio_util.o
+ .debug_aranges
+                0x00000180       0x20 obj\Debug\src\spi\enc28j60.o
+ .debug_aranges
+                0x000001a0       0x20 obj\Debug\src\spi\spi.o
+ .debug_aranges
+                0x000001c0       0x20 obj\Debug\src\stats.o
+
+.debug_pubnames
+                0x00000000      0x6fa
+ *(.debug_pubnames)
+ .debug_pubnames
+                0x00000000       0xa5 obj\Debug\src\base\timer.o
+ .debug_pubnames
+                0x000000a5       0xfc obj\Debug\src\base\util.o
+ .debug_pubnames
+                0x000001a1       0x5c obj\Debug\src\bridge.o
+ .debug_pubnames
+                0x000001fd       0x39 obj\Debug\src\cmd.o
+ .debug_pubnames
+                0x00000236       0x20 obj\Debug\src\cmd_table.o
+ .debug_pubnames
+                0x00000256       0x23 obj\Debug\src\cmdkey_table.o
+ .debug_pubnames
+                0x00000279       0x1d obj\Debug\src\fuse.o
+ .debug_pubnames
+                0x00000296       0x2f obj\Debug\src\main.o
+ .debug_pubnames
+                0x000002c5       0x35 obj\Debug\src\net\arp.o
+ .debug_pubnames
+                0x000002fa      0x125 obj\Debug\src\net\net.o
+ .debug_pubnames
+                0x0000041f       0x83 obj\Debug\src\param.o
+ .debug_pubnames
+                0x000004a2       0x85 obj\Debug\src\pb_proto.o
+ .debug_pubnames
+                0x00000527       0x95 obj\Debug\src\pio_util.o
+ .debug_pubnames
+                0x000005bc       0x24 obj\Debug\src\pkt_buf.o
+ .debug_pubnames
+                0x000005e0       0x99 obj\Debug\src\spi\enc28j60.o
+ .debug_pubnames
+                0x00000679       0x1f obj\Debug\src\spi\spi.o
+ .debug_pubnames
+                0x00000698       0x62 obj\Debug\src\stats.o
+
+.debug_info     0x00000000     0x36f8
+ *(.debug_info)
+ .debug_info    0x00000000      0x1a3 obj\Debug\src\base\timer.o
+ .debug_info    0x000001a3      0x42d obj\Debug\src\base\util.o
+ .debug_info    0x000005d0      0x48e obj\Debug\src\bridge.o
+ .debug_info    0x00000a5e      0x284 obj\Debug\src\cmd.o
+ .debug_info    0x00000ce2      0x8d5 obj\Debug\src\cmd_table.o
+ .debug_info    0x000015b7      0x303 obj\Debug\src\cmdkey_table.o
+ .debug_info    0x000018ba       0xae obj\Debug\src\fuse.o
+ .debug_info    0x00001968       0xab obj\Debug\src\main.o
+ .debug_info    0x00001a13      0x1a9 obj\Debug\src\net\arp.o
+ .debug_info    0x00001bbc      0x483 obj\Debug\src\net\net.o
+ .debug_info    0x0000203f      0x380 obj\Debug\src\param.o
+ .debug_info    0x000023bf      0x754 obj\Debug\src\pb_proto.o
+ .debug_info    0x00002b13      0x632 obj\Debug\src\pio_util.o
+ .debug_info    0x00003145       0x8f obj\Debug\src\pkt_buf.o
+ .debug_info    0x000031d4      0x294 obj\Debug\src\spi\enc28j60.o
+ .debug_info    0x00003468       0x72 obj\Debug\src\spi\spi.o
+ .debug_info    0x000034da      0x21e obj\Debug\src\stats.o
+ *(.gnu.linkonce.wi.*)
+
+.debug_abbrev   0x00000000     0x1367
+ *(.debug_abbrev)
+ .debug_abbrev  0x00000000       0xd5 obj\Debug\src\base\timer.o
+ .debug_abbrev  0x000000d5      0x11b obj\Debug\src\base\util.o
+ .debug_abbrev  0x000001f0      0x1f6 obj\Debug\src\bridge.o
+ .debug_abbrev  0x000003e6      0x139 obj\Debug\src\cmd.o
+ .debug_abbrev  0x0000051f      0x16d obj\Debug\src\cmd_table.o
+ .debug_abbrev  0x0000068c       0xf6 obj\Debug\src\cmdkey_table.o
+ .debug_abbrev  0x00000782       0x73 obj\Debug\src\fuse.o
+ .debug_abbrev  0x000007f5       0x80 obj\Debug\src\main.o
+ .debug_abbrev  0x00000875       0xdf obj\Debug\src\net\arp.o
+ .debug_abbrev  0x00000954      0x138 obj\Debug\src\net\net.o
+ .debug_abbrev  0x00000a8c      0x19c obj\Debug\src\param.o
+ .debug_abbrev  0x00000c28      0x2e1 obj\Debug\src\pb_proto.o
+ .debug_abbrev  0x00000f09      0x19f obj\Debug\src\pio_util.o
+ .debug_abbrev  0x000010a8       0x63 obj\Debug\src\pkt_buf.o
+ .debug_abbrev  0x0000110b       0xd1 obj\Debug\src\spi\enc28j60.o
+ .debug_abbrev  0x000011dc       0x3f obj\Debug\src\spi\spi.o
+ .debug_abbrev  0x0000121b      0x14c obj\Debug\src\stats.o
+
+.debug_line     0x00000000     0x2168
+ *(.debug_line)
+ .debug_line    0x00000000      0x1a2 obj\Debug\src\base\timer.o
+ .debug_line    0x000001a2      0x326 obj\Debug\src\base\util.o
+ .debug_line    0x000004c8      0x2ee obj\Debug\src\bridge.o
+ .debug_line    0x000007b6      0x15d obj\Debug\src\cmd.o
+ .debug_line    0x00000913      0x259 obj\Debug\src\cmd_table.o
+ .debug_line    0x00000b6c       0xd0 obj\Debug\src\cmdkey_table.o
+ .debug_line    0x00000c3c       0x8e obj\Debug\src\fuse.o
+ .debug_line    0x00000cca      0x10e obj\Debug\src\main.o
+ .debug_line    0x00000dd8      0x11c obj\Debug\src\net\arp.o
+ .debug_line    0x00000ef4      0x29b obj\Debug\src\net\net.o
+ .debug_line    0x0000118f      0x1f0 obj\Debug\src\param.o
+ .debug_line    0x0000137f      0x794 obj\Debug\src\pb_proto.o
+ .debug_line    0x00001b13      0x2ca obj\Debug\src\pio_util.o
+ .debug_line    0x00001ddd       0x8f obj\Debug\src\pkt_buf.o
+ .debug_line    0x00001e6c      0x107 obj\Debug\src\spi\enc28j60.o
+ .debug_line    0x00001f73       0x8f obj\Debug\src\spi\spi.o
+ .debug_line    0x00002002      0x166 obj\Debug\src\stats.o
+
+.debug_frame    0x00000000      0x5a0
+ *(.debug_frame)
+ .debug_frame   0x00000000       0x60 obj\Debug\src\base\timer.o
+ .debug_frame   0x00000060       0xd0 obj\Debug\src\base\util.o
+ .debug_frame   0x00000130       0x50 obj\Debug\src\bridge.o
+ .debug_frame   0x00000180       0x20 obj\Debug\src\cmd.o
+ .debug_frame   0x000001a0       0x90 obj\Debug\src\cmd_table.o
+ .debug_frame   0x00000230       0x20 obj\Debug\src\cmdkey_table.o
+ .debug_frame   0x00000250       0x20 obj\Debug\src\main.o
+ .debug_frame   0x00000270       0x30 obj\Debug\src\net\arp.o
+ .debug_frame   0x000002a0       0xd0 obj\Debug\src\net\net.o
+ .debug_frame   0x00000370       0x60 obj\Debug\src\param.o
+ .debug_frame   0x000003d0       0x60 obj\Debug\src\pb_proto.o
+ .debug_frame   0x00000430       0x60 obj\Debug\src\pio_util.o
+ .debug_frame   0x00000490       0x80 obj\Debug\src\spi\enc28j60.o
+ .debug_frame   0x00000510       0x20 obj\Debug\src\spi\spi.o
+ .debug_frame   0x00000530       0x70 obj\Debug\src\stats.o
+
+.debug_str      0x00000000     0x1169
+ *(.debug_str)
+ .debug_str     0x00000000      0x116 obj\Debug\src\base\timer.o
+                                0x155 (size before relaxing)
+ .debug_str     0x00000116      0x11d obj\Debug\src\base\util.o
+                                0x1cb (size before relaxing)
+ .debug_str     0x00000233      0x1f8 obj\Debug\src\bridge.o
+                                0x2e5 (size before relaxing)
+ .debug_str     0x0000042b       0x85 obj\Debug\src\cmd.o
+                                0x1f8 (size before relaxing)
+ .debug_str     0x000004b0      0x3a5 obj\Debug\src\cmd_table.o
+                                0x537 (size before relaxing)
+ .debug_str     0x00000855      0x246 obj\Debug\src\cmdkey_table.o
+                                0x31c (size before relaxing)
+ .debug_str     0x00000a9b       0x29 obj\Debug\src\fuse.o
+                                 0xb9 (size before relaxing)
+ .debug_str     0x00000ac4       0x20 obj\Debug\src\main.o
+                                 0xc5 (size before relaxing)
+ .debug_str     0x00000ae4       0x56 obj\Debug\src\net\arp.o
+                                0x12a (size before relaxing)
+ .debug_str     0x00000b3a       0xbd obj\Debug\src\net\net.o
+                                0x1b9 (size before relaxing)
+ .debug_str     0x00000bf7       0x9f obj\Debug\src\param.o
+                                0x205 (size before relaxing)
+ .debug_str     0x00000c96      0x211 obj\Debug\src\pb_proto.o
+                                0x332 (size before relaxing)
+ .debug_str     0x00000ea7      0x17c obj\Debug\src\pio_util.o
+                                0x383 (size before relaxing)
+ .debug_str     0x00001023        0xe obj\Debug\src\pkt_buf.o
+                                 0xb4 (size before relaxing)
+ .debug_str     0x00001031       0xe0 obj\Debug\src\spi\enc28j60.o
+                                0x1ab (size before relaxing)
+ .debug_str     0x00001111       0x17 obj\Debug\src\spi\spi.o
+                                 0xa7 (size before relaxing)
+ .debug_str     0x00001128       0x41 obj\Debug\src\stats.o
+                                0x12e (size before relaxing)
+
+.debug_loc      0x00000000     0x18bd
+ *(.debug_loc)
+ .debug_loc     0x00000000       0xfe obj\Debug\src\base\timer.o
+ .debug_loc     0x000000fe      0x5b7 obj\Debug\src\base\util.o
+ .debug_loc     0x000006b5       0xd1 obj\Debug\src\bridge.o
+ .debug_loc     0x00000786       0x75 obj\Debug\src\cmd.o
+ .debug_loc     0x000007fb      0x356 obj\Debug\src\cmd_table.o
+ .debug_loc     0x00000b51      0x108 obj\Debug\src\net\arp.o
+ .debug_loc     0x00000c59      0x2d3 obj\Debug\src\net\net.o
+ .debug_loc     0x00000f2c       0x9b obj\Debug\src\param.o
+ .debug_loc     0x00000fc7      0x695 obj\Debug\src\pb_proto.o
+ .debug_loc     0x0000165c      0x19c obj\Debug\src\pio_util.o
+ .debug_loc     0x000017f8       0x6e obj\Debug\src\spi\enc28j60.o
+ .debug_loc     0x00001866       0x57 obj\Debug\src\stats.o
+
+.debug_macinfo
+ *(.debug_macinfo)
+OUTPUT(bin\Debug\plipUltimate.elf elf32-avr)
+LOAD linker stubs
+
+.debug_ranges   0x00000000      0x138
+ .debug_ranges  0x00000000       0x18 obj\Debug\src\base\util.o
+ .debug_ranges  0x00000018       0x30 obj\Debug\src\bridge.o
+ .debug_ranges  0x00000048       0x20 obj\Debug\src\cmd.o
+ .debug_ranges  0x00000068       0x30 obj\Debug\src\net\net.o
+ .debug_ranges  0x00000098       0xa0 obj\Debug\src\pb_proto.o
+
+Cross Reference Table
+
+Symbol                                            File
+__bad_interrupt                                   d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__bss_end                                         d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+__bss_start                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+__data_end                                        d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+__data_load_start                                 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+__data_start                                      d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+__do_clear_bss                                    d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_clear_bss.o)
+                                                  obj\Debug\src\stats.o
+                                                  obj\Debug\src\pkt_buf.o
+                                                  obj\Debug\src\pb_proto.o
+                                                  obj\Debug\src\param.o
+                                                  obj\Debug\src\main.o
+                                                  obj\Debug\src\cmd.o
+                                                  obj\Debug\src\bridge.o
+                                                  obj\Debug\src\base\timer.o
+__do_copy_data                                    d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_copy_data.o)
+                                                  obj\Debug\src\pb_proto.o
+                                                  obj\Debug\src\net\net.o
+__eerd_block_m328p                                d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_block_atmega328p.o)
+                                                  obj\Debug\src\param.o
+__eerd_blraw_m328p                                d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_block_atmega328p.o)
+                                                  d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_word_atmega328p.o)
+__eerd_word_m328p                                 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eerd_word_atmega328p.o)
+                                                  obj\Debug\src\param.o
+__eewr_block_m328p                                d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_block_atmega328p.o)
+                                                  obj\Debug\src\param.o
+__eewr_byte_m328p                                 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_byte_atmega328p.o)
+                                                  d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_word_atmega328p.o)
+__eewr_r18_m328p                                  d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_byte_atmega328p.o)
+                                                  d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_word_atmega328p.o)
+                                                  d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_block_atmega328p.o)
+__eewr_word_m328p                                 d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5\libc.a(eewr_word_atmega328p.o)
+                                                  obj\Debug\src\param.o
+__fuse                                            obj\Debug\src\fuse.o
+__heap_end                                        d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__init                                            d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__mulsi3                                          d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_mulsi3.o)
+                                                  obj\Debug\src\base\timer.o
+__stack                                           d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__udivmodqi4                                      d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodqi4.o)
+                                                  obj\Debug\src\base\util.o
+__udivmodsi4                                      d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_udivmodsi4.o)
+                                                  obj\Debug\src\base\util.o
+                                                  obj\Debug\src\base\timer.o
+__vector_1                                        d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_10                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_11                                       obj\Debug\src\base\timer.o
+                                                  d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_12                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_13                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_14                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_15                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_16                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_17                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_18                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_19                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_2                                        d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_20                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_21                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_22                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_23                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_24                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_25                                       d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_3                                        d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_4                                        d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_5                                        d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_6                                        d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_7                                        d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_8                                        d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_9                                        d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vector_default                                  d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+__vectors                                         d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+_exit                                             d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+arp_is_ipv4                                       obj\Debug\src\net\arp.o
+                                                  obj\Debug\src\pio_util.o
+arp_make_reply                                    obj\Debug\src\net\arp.o
+                                                  obj\Debug\src\pio_util.o
+bridgeFillPacket                                  obj\Debug\src\bridge.o
+                                                  obj\Debug\src\pb_proto.o
+bridgeLoop                                        obj\Debug\src\bridge.o
+                                                  obj\Debug\src\main.o
+bridgeProcessPacket                               obj\Debug\src\bridge.o
+                                                  obj\Debug\src\pb_proto.o
+cmdProcess                                        obj\Debug\src\cmd.o
+                                                  obj\Debug\src\bridge.o
+cmd_table                                         obj\Debug\src\cmd_table.o
+cmdkey_table                                      obj\Debug\src\cmdkey_table.o
+enc28j60_control                                  obj\Debug\src\spi\enc28j60.o
+                                                  obj\Debug\src\bridge.o
+enc28j60_exit                                     obj\Debug\src\spi\enc28j60.o
+                                                  obj\Debug\src\cmd.o
+                                                  obj\Debug\src\bridge.o
+enc28j60_has_recv                                 obj\Debug\src\spi\enc28j60.o
+                                                  obj\Debug\src\bridge.o
+enc28j60_init                                     obj\Debug\src\spi\enc28j60.o
+                                                  obj\Debug\src\cmd.o
+                                                  obj\Debug\src\bridge.o
+enc28j60_recv                                     obj\Debug\src\spi\enc28j60.o
+                                                  obj\Debug\src\pio_util.o
+enc28j60_send                                     obj\Debug\src\spi\enc28j60.o
+                                                  obj\Debug\src\pio_util.o
+enc28j60_status                                   obj\Debug\src\spi\enc28j60.o
+exit                                              d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/avr5\libgcc.a(_exit.o)
+                                                  d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+g_pDataBuffer                                     obj\Debug\src\pkt_buf.o
+                                                  obj\Debug\src\pio_util.o
+                                                  obj\Debug\src\pb_proto.o
+                                                  obj\Debug\src\cmd.o
+                                                  obj\Debug\src\bridge.o
+g_sConfig                                         obj\Debug\src\pio_util.o
+                                                  obj\Debug\src\param.o
+                                                  obj\Debug\src\cmd_table.o
+                                                  obj\Debug\src\cmd.o
+                                                  obj\Debug\src\bridge.o
+g_ubVerboseMode                                   obj\Debug\src\main.o
+g_uwCmdResponseSize                               obj\Debug\src\cmd.o
+                                                  obj\Debug\src\bridge.o
+g_uwTimeStamp                                     obj\Debug\src\pb_proto.o
+                                                  obj\Debug\src\base\timer.o
+g_uwTimer100us                                    obj\Debug\src\pb_proto.o
+                                                  obj\Debug\src\base\timer.o
+g_uwTimer10ms                                     obj\Debug\src\base\timer.o
+main                                              obj\Debug\src\main.o
+                                                  d:/prg/kompilatory/winavr/bin/../lib/gcc/avr/4.3.3/../../../../avr/lib/avr5/crtm328p.o
+net_bcast_mac                                     obj\Debug\src\net\net.o
+                                                  obj\Debug\src\pio_util.o
+                                                  obj\Debug\src\bridge.o
+net_compare_ip                                    obj\Debug\src\net\net.o
+                                                  obj\Debug\src\pio_util.o
+net_compare_mac                                   obj\Debug\src\net\net.o
+                                                  obj\Debug\src\bridge.o
+net_copy_ip                                       obj\Debug\src\net\net.o
+                                                  obj\Debug\src\pio_util.o
+                                                  obj\Debug\src\net\arp.o
+                                                  obj\Debug\src\cmd_table.o
+net_copy_mac                                      obj\Debug\src\net\net.o
+                                                  obj\Debug\src\pio_util.o
+                                                  obj\Debug\src\net\arp.o
+                                                  obj\Debug\src\cmd_table.o
+                                                  obj\Debug\src\bridge.o
+net_dump_ip                                       obj\Debug\src\net\net.o
+net_dump_mac                                      obj\Debug\src\net\net.o
+net_get_long                                      obj\Debug\src\net\net.o
+net_get_word                                      obj\Debug\src\net\net.o
+                                                  obj\Debug\src\pio_util.o
+                                                  obj\Debug\src\net\arp.o
+                                                  obj\Debug\src\bridge.o
+net_ones_ip                                       obj\Debug\src\net\net.o
+net_parse_ip                                      obj\Debug\src\net\net.o
+                                                  obj\Debug\src\cmd_table.o
+net_parse_mac                                     obj\Debug\src\net\net.o
+                                                  obj\Debug\src\cmd_table.o
+net_put_long                                      obj\Debug\src\net\net.o
+net_put_word                                      obj\Debug\src\net\net.o
+                                                  obj\Debug\src\pio_util.o
+                                                  obj\Debug\src\net\arp.o
+                                                  obj\Debug\src\bridge.o
+net_zero_ip                                       obj\Debug\src\net\net.o
+net_zero_mac                                      obj\Debug\src\net\net.o
+parGetStatusLines                                 obj\Debug\src\pb_proto.o
+parInit                                           obj\Debug\src\pb_proto.o
+                                                  obj\Debug\src\bridge.o
+parRequestAmiRead                                 obj\Debug\src\pb_proto.o
+                                                  obj\Debug\src\bridge.o
+param_init                                        obj\Debug\src\param.o
+                                                  obj\Debug\src\main.o
+param_load                                        obj\Debug\src\param.o
+                                                  obj\Debug\src\cmd_table.o
+param_reset                                       obj\Debug\src\param.o
+                                                  obj\Debug\src\cmd_table.o
+param_save                                        obj\Debug\src\param.o
+                                                  obj\Debug\src\cmd.o
+                                                  obj\Debug\src\bridge.o
+pb_proto_handle                                   obj\Debug\src\pb_proto.o
+                                                  obj\Debug\src\bridge.o
+pb_proto_stat                                     obj\Debug\src\pb_proto.o
+pb_proto_timeout                                  obj\Debug\src\pb_proto.o
+pio_util_get_init_flags                           obj\Debug\src\pio_util.o
+                                                  obj\Debug\src\cmd.o
+                                                  obj\Debug\src\bridge.o
+pio_util_handle_arp                               obj\Debug\src\pio_util.o
+pio_util_handle_udp_test                          obj\Debug\src\pio_util.o
+pio_util_recv_packet                              obj\Debug\src\pio_util.o
+                                                  obj\Debug\src\bridge.o
+pio_util_send_packet                              obj\Debug\src\pio_util.o
+                                                  obj\Debug\src\bridge.o
+s_sEepromConfig                                   obj\Debug\src\param.o
+s_ubFlags                                         obj\Debug\src\bridge.o
+s_uwEepromCrc                                     obj\Debug\src\param.o
+spi_init                                          obj\Debug\src\spi\spi.o
+stats                                             obj\Debug\src\stats.o
+                                                  obj\Debug\src\pio_util.o
+                                                  obj\Debug\src\pb_proto.o
+stats_dump                                        obj\Debug\src\stats.o
+stats_dump_all                                    obj\Debug\src\stats.o
+                                                  obj\Debug\src\cmdkey_table.o
+                                                  obj\Debug\src\cmd_table.o
+stats_reset                                       obj\Debug\src\stats.o
+                                                  obj\Debug\src\cmd_table.o
+                                                  obj\Debug\src\bridge.o
+stats_update_ok                                   obj\Debug\src\stats.o
+                                                  obj\Debug\src\pio_util.o
+                                                  obj\Debug\src\pb_proto.o
+timerCalculateKbps                                obj\Debug\src\base\timer.o
+                                                  obj\Debug\src\pio_util.o
+                                                  obj\Debug\src\pb_proto.o
+timerDelay100us                                   obj\Debug\src\base\timer.o
+                                                  obj\Debug\src\pb_proto.o
+timerDelay10ms                                    obj\Debug\src\base\timer.o
+timerInit                                         obj\Debug\src\base\timer.o
+                                                  obj\Debug\src\main.o
+utilByteToDec                                     obj\Debug\src\base\util.o
+                                                  obj\Debug\src\net\net.o
+utilByteToHex                                     obj\Debug\src\base\util.o
+                                                  obj\Debug\src\net\net.o
+utilDwordToDec                                    obj\Debug\src\base\util.o
+utilDwordToHex                                    obj\Debug\src\base\util.o
+utilNibbleToHex                                   obj\Debug\src\base\util.o
+utilParseByteDec                                  obj\Debug\src\base\util.o
+                                                  obj\Debug\src\net\net.o
+utilParseByteHex                                  obj\Debug\src\base\util.o
+                                                  obj\Debug\src\net\net.o
+                                                  obj\Debug\src\cmd_table.o
+utilParseDwordHex                                 obj\Debug\src\base\util.o
+utilParseNibbleHex                                obj\Debug\src\base\util.o
+utilParseWordHex                                  obj\Debug\src\base\util.o
+                                                  obj\Debug\src\cmd_table.o
+utilReset                                         obj\Debug\src\base\util.o
+                                                  obj\Debug\src\cmd.o
+utilWordToHex                                     obj\Debug\src\base\util.o

@@ -33,7 +33,6 @@
 #include "param.h"
 
 #include "bridge.h"
-#include "main.h"
 #include "pinout.h"
 #include "base/util.h"
 

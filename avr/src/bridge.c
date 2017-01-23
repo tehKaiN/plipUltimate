@@ -34,7 +34,6 @@
 #include "stats.h"
 #include "base/util.h"
 #include "bridge.h"
-#include "main.h"
 #include "pio_util.h"
 #include "pio.h"
 #include "net/eth.h"
@@ -60,13 +59,6 @@ static void bridgeRequestResponseRead(void)
   if(!req_is_pending) {
     req_is_pending = 1;
     parRequestAmiRead();
-    if(g_ubVerboseMode) {
-			// NOTE: UART - time_stamp_spc() REQ\r\n
-    }
-  } else {
-    if(g_ubVerboseMode) {
-			// NOTE: UART - time_stamp_spc() REQ IGN\r\n
-    }
   }
 }
 
@@ -252,9 +244,6 @@ void bridgeLoop(void)
         if(!ubPacketCount) {
           enc28j60_control(PIO_CONTROL_FLOW, 0);
           limit_flow = 0;
-          if(g_ubVerboseMode) {
-						// NOTE: UART - time_stamp_spc() FLOW off\r\n
-          }
         }
       }
       // no flow limit
@@ -263,9 +252,6 @@ void bridgeLoop(void)
         if(ubPacketCount) {
           enc28j60_control(PIO_CONTROL_FLOW, 1);
           limit_flow = 1;
-          if(g_ubVerboseMode) {
-						// NOTE: UART - time_stamp_spc() FLOW on\r\n
-          }
         }
       }
     }
