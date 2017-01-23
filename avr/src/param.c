@@ -57,35 +57,6 @@ static const tConfig PROGMEM sc_sDefaultConfig = {
   .test_mode = 0
 };
 
-static void dump_byte(PGM_P str, const uint8_t val)
-{
-	// NOTE: UART - str hex_byte(val) \r\n
-}
-
-static void dump_word(PGM_P str, const uint16_t val)
-{
-	// NOTE: UART - str, hex_word(val) \r\n
-}
-
-// dump all params
-void param_dump(void)
-{
-  // mac address
-  // NOTE: UART - m: mac address, param.mac_addr \r\n
-
-  // options
-  // NOTE: UART - \r\n fd: full duplex param.full_duplex
-  // NOTE: UART - \r\n fc: flow control param.flow_ctl
-
-  // test
-	// NOTE: UART - \r\n tl: packet len param.test_plen
-	// NOTE: UART - \r\n tt: packet type param.test_ptype
-	// NOTE: UART - \r\n ti: ip address param.test_ip
-	// NOTE: UART - \r\n tp: udp port param.test_port
-	// NOTE: UART - \r\n tm: test mode param.test_mode
-	// NOTE: UART - \r\n
-}
-
 // build check sum for parameter block
 static uint16_t calc_crc16(tConfig *p)
 {

@@ -32,38 +32,6 @@
 #include "param.h"
 #include "stats.h"
 
-COMMAND(cmd_quit)
-{
-  return CMD_QUIT;
-}
-
-COMMAND(cmd_device_reset)
-{
-  return CMD_RESET;
-}
-
-COMMAND(cmd_version)
-{
-	// NOTE: UART - VERSION BUILD_DATE\r\n
-  return CMD_OK;
-}
-
-COMMAND(cmd_param_dump)
-{
-  param_dump();
-  return CMD_OK;
-}
-
-COMMAND(cmd_param_save)
-{
-  uint8_t result = param_save();
-  if(result == PARAM_OK) {
-    return CMD_OK;
-  } else {
-    return CMD_MASK_ERROR | result;
-  }
-}
-
 COMMAND(cmd_param_load)
 {
   uint8_t result = param_load();
@@ -210,12 +178,7 @@ CMD_NAME("tm", cmd_gen_tm, "test mode [0|1]" );
 
 // ----- Entries -----
 const cmd_table_t PROGMEM cmd_table[] = {
-  CMD_ENTRY(cmd_quit),
-  CMD_ENTRY(cmd_device_reset),
-  CMD_ENTRY(cmd_version),
   // param
-  CMD_ENTRY(cmd_param_dump),
-  CMD_ENTRY(cmd_param_save),
   CMD_ENTRY(cmd_param_load),
   CMD_ENTRY(cmd_param_reset),
   // stats

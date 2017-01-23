@@ -29,7 +29,6 @@
 #include "pb_proto.h"
 #include "base/timer.h"
 #include "stats.h"
-#include "dump.h"
 #include "main.h"
 
 uint8_t pb_util_handle(void)
@@ -47,13 +46,9 @@ uint8_t pb_util_handle(void)
 		// Everything went OK
     // Update stats
     stats_update_ok(ps->stats_id, ps->size, ps->rate);
-    if(global_verbose)
-      dump_pb_cmd(ps); // In interactive (verbose) mode show result
   }
   else {
 		// PB proto failed with an error
-    // Dump error
-    dump_pb_cmd(ps);
     // Update stats
     stats_get(ps->stats_id)->err++;
   }

@@ -76,7 +76,7 @@ uint8_t pio_util_recv_packet(uint16_t *pDataSize)
     stats_get(STATS_ID_PIO_RX)->err++;
   }
 
-  if(global_verbose) {
+  if(g_ubVerboseMode) {
 		// NOTE: UART - time_stamp_spc() pio rx:
     if(ubRecvResult == PIO_OK) {
       // speed & size
@@ -104,7 +104,7 @@ uint8_t pio_util_send_packet(uint16_t size)
     stats_get(STATS_ID_PIO_TX)->err++;
   }
 
-  if(global_verbose) {
+  if(g_ubVerboseMode) {
 		// NOTE: UART - time_stamp_spc() pio tx:
     if(result == PIO_OK) {
       // speed
@@ -142,7 +142,7 @@ uint8_t pio_util_handle_arp(uint16_t uwPacketSize)
 	) {
     // Is plipbox being searched?
     const uint8_t *pTargetIp = arp_get_tgt_ip(pPayloadBuffer);
-    if(global_verbose) {
+    if(g_ubVerboseMode) {
 			// NOTE: UART - time_stamp_spc() ARP REQ: IP=pTargetIp\r\n
     }
     if(net_compare_ip(pTargetIp, g_sConfig.test_ip)) {
@@ -150,7 +150,7 @@ uint8_t pio_util_handle_arp(uint16_t uwPacketSize)
       eth_make_bcast(g_pDataBuffer, g_sConfig.mac_addr);
       pio_util_send_packet(uwPacketSize);
 
-      if(global_verbose) {
+      if(g_ubVerboseMode) {
 				// NOTE: UART - time_stamp_spc ARP RELPY!\r\n
       }
     }
@@ -169,7 +169,7 @@ uint8_t pio_util_handle_udp_test(uint16_t size)
 
   // for us?
   if(net_compare_ip(g_sConfig.test_ip, dst_ip) && (dst_port == g_sConfig.test_port)) {
-    if(global_verbose) {
+    if(g_ubVerboseMode) {
 			// NOTE: UART - time_stamp_spc() UDP: hex_byte(*data_ptr)\r\n
     }
 

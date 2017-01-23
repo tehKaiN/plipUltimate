@@ -27,29 +27,29 @@
 #ifndef PINOUT_H
 #define PINOUT_H
 
-/// Parallel status bits
-#define NSTROBE_PIN PC0
-#define NACK_PIN    PC1
-#define BUSY_PIN    PC2
-#define POUT_PIN    PC3
-#define SEL_PIN     PC4
-
 /// LED-related defines
 #define LED_DDR        DDRC
 #define LED_PORT       PORTC
 #define LED_STATUS_PIN PC5
 #define LED_STATUS     _BV(LED_STATUS_PIN)
 
-#define NSTROBE _BV(NSTROBE_PIN)
-#define NACK    _BV(NACK_PIN)
-#define BUSY    _BV(BUSY_PIN)
-#define POUT    _BV(POUT_PIN)
-#define SEL     _BV(SEL_PIN)
+/// Parallel status bits
+#define PAR_NSTROBE_PIN PC0
+#define PAR_NACK_PIN    PC1
+#define PAR_BUSY_PIN    PC2
+#define PAR_POUT_PIN    PC3
+#define PAR_SEL_PIN     PC4
+
+#define PAR_NSTROBE _BV(PAR_NSTROBE_PIN)
+#define PAR_NACK    _BV(PAR_NACK_PIN)
+#define PAR_BUSY    _BV(PAR_BUSY_PIN)
+#define PAR_POUT    _BV(PAR_POUT_PIN)
+#define PAR_SEL     _BV(PAR_SEL_PIN)
 
 #define PAR_STATUS_PORT PORTC
 #define PAR_STATUS_DDR DDRC
 #define PAR_STATUS_PIN PINC
-#define PAR_STATUS_MASK (NSTROBE | NACK | BUSY | POUT | SEL)
+#define PAR_STATUS_MASK (PAR_NSTROBE | PAR_NACK | PAR_BUSY | PAR_POUT | PAR_SEL)
 
 /// Parallel data bits
 #define PAR_DATA_PORT PORTD

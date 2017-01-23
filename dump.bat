@@ -1,0 +1,1 @@
+avrdude -V -p m328p -c arduino -b 19200 -PCOM3 -Uflash:r:flashdump.bin:i

@@ -35,6 +35,7 @@
 #include "base/uartutil.h"
 #include "pkt_buf.h"
 #include "pinout.h"
+#include "bridge.h"
 
 // define symbolic names for protocol
 #define SET_RAK         par_low_set_busy_hi
@@ -55,8 +56,6 @@
 #endif
 
 // recv funcs
-static pb_proto_fill_func packetFillFn;
-static pb_proto_proc_func packetProcessFn;
 static uint32_t trigger_ts;
 
 uint16_t pb_proto_timeout = 5000; // = 500ms in 100us ticks
@@ -66,22 +65,34 @@ pb_proto_stat_t pb_proto_stat;
 
 // ----- Init -----
 
-void pb_proto_init(pb_proto_fill_func _packetFillFn, pb_proto_proc_func _packetProcessFn)
-{
-  packetFillFn = _packetFillFn;
-  packetProcessFn = _packetProcessFn;
+/**
+ * Initializes parallel port.
+ * Parallel interface is configured as follows:
+ * 	NStrobe: input,  pulled high
+ * 	Select:  input,  pulled high
+ * 	Busy:    output, default: 0
+ * 	POut:    input,  pulled high
+ * 	NAck:    output, default: 1
+ */
+void parInit(void) {
+	// Zero DDR and PORT status
+  PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
+  PAR_STATUS_PORT &= ~PAR_STATUS_MASK;
 
-  // Set data DDR to input, make BUSY low
+  // Set them correctly
+  PAR_STATUS_DDR |= PAR_BUSY | PAR_NACK;
+  PAR_STATUS_PORT |= PAR_NSTROBE | PAR_SEL | PAR_POUT | PAR_NACK;
+
+  // Set data DDR to input
   PAR_DATA_DDR = 0x00;
-  PAR_STATUS_PORT &= ~BUSY;
 }
 
 uint8_t parGetStatusLines(void) {
 	uint8_t ubIn, ubStrobe, ubSelect, ubPOut;
 	ubIn = PAR_STATUS_PIN;
-  ubStrobe = (ubIn & NSTROBE) >> POUT_PIN;
-  ubSelect = (ubIn & SEL)     >> SEL_PIN;
-  ubPOut   = (ubIn & POUT)    >> NSTROBE_PIN;
+  ubStrobe = (ubIn & PAR_NSTROBE) >> PAR_POUT_PIN;
+  ubSelect = (ubIn & PAR_SEL)     >> PAR_SEL_PIN;
+  ubPOut   = (ubIn & PAR_POUT)    >> PAR_NSTROBE_PIN;
   return ((ubPOut << 2) | (ubSelect << 1) | ubStrobe);
 }
 
@@ -90,9 +101,9 @@ uint8_t parGetStatusLines(void) {
  * Done as 1ms pulse on ACK line.
  */
 void parRequestAmiRead(void) {
-  PAR_STATUS_PORT &= ~NACK;
+  PAR_STATUS_PORT &= ~PAR_NACK;
   timerDelay100us(20);
-  PAR_STATUS_PORT |= NACK;
+  PAR_STATUS_PORT |= PAR_NACK;
   trigger_ts = g_uwTimeStamp;
 }
 
@@ -108,11 +119,11 @@ static uint8_t parWaitForPout(uint8_t ubReqValue, uint8_t ubStateFlag) {
   g_uwTimer100us = 0;
   while(g_uwTimer100us < pb_proto_timeout) {
 		uint8_t ubIn = PAR_STATUS_PIN;
-    uint8_t ubPOut = (ubIn & POUT) >> POUT_PIN;
+    uint8_t ubPOut = (ubIn & PAR_POUT) >> PAR_POUT_PIN;
     if(ubReqValue == ubPOut)
       return PBPROTO_STATUS_OK;
     // During transfer client aborted and removed SEL
-    if(!(ubIn & SEL))
+    if(!(ubIn & PAR_SEL))
       return PBPROTO_STATUS_LOST_SELECT | ubStateFlag;
   }
   return PBPROTO_STATUS_TIMEOUT | ubStateFlag;
@@ -121,7 +132,7 @@ static uint8_t parWaitForPout(uint8_t ubReqValue, uint8_t ubStateFlag) {
 static uint8_t parWaitForSel(uint8_t select_state, uint8_t state_flag) {
   g_uwTimer100us = 0;
   while(g_uwTimer100us < pb_proto_timeout) {
-    if(((PAR_STATUS_PIN & SEL) >> SEL_PIN) == select_state)
+    if(((PAR_STATUS_PIN & PAR_SEL) >> PAR_SEL_PIN) == select_state)
       return PBPROTO_STATUS_OK;
   }
   return PBPROTO_STATUS_TIMEOUT | state_flag;
@@ -140,14 +151,14 @@ static uint8_t parHandleAmiWrite(uint16_t *pReadSize)
   if(ubStatus != PBPROTO_STATUS_OK)
     return ubStatus;
   uwSize = PAR_DATA_PIN << 8;
-  PAR_STATUS_PORT &= ~BUSY;
+  PAR_STATUS_PORT &= ~PAR_BUSY;
 
   // --- get size lo ---
   ubStatus = parWaitForPout(0, PBPROTO_STAGE_SIZE_LO);
   if(ubStatus != PBPROTO_STATUS_OK)
     return ubStatus;
   uwSize |= PAR_DATA_PIN;
-  PAR_STATUS_PORT ^= BUSY;
+  PAR_STATUS_PORT ^= PAR_BUSY;
 
   // Check with buffer size
   if(uwSize > DATABUF_SIZE) {
@@ -168,7 +179,7 @@ static uint8_t parHandleAmiWrite(uint16_t *pReadSize)
     if(ubStatus != PBPROTO_STATUS_OK)
       break;
     *(ptr++) = PAR_DATA_PIN;
-    PAR_STATUS_PORT ^= BUSY;
+    PAR_STATUS_PORT ^= PAR_BUSY;
     ubPOutWait ^= 1;
     uwReadSize++;
 	}
@@ -201,7 +212,7 @@ static uint8_t parHandleAmiRead(uint16_t uwSize, uint16_t *pWriteSize)
     // NOTE(KaiN): return without DDR switchback
   }
   PAR_DATA_PORT = uwSize >> 8;
-  PAR_STATUS_PORT &= ~BUSY;
+  PAR_STATUS_PORT &= ~PAR_BUSY;
 
   // Send packet size - low part
   ubStatus = parWaitForPout(0, PBPROTO_STAGE_SIZE_LO);
@@ -210,7 +221,7 @@ static uint8_t parHandleAmiRead(uint16_t uwSize, uint16_t *pWriteSize)
     // NOTE(KaiN): return without DDR switchback
   }
   PAR_DATA_PORT = uwSize & 0xFF;
-  PAR_STATUS_PORT |= BUSY;
+  PAR_STATUS_PORT |= PAR_BUSY;
 
   // --- data ---
   uint16_t uwWriteSize = 0;
@@ -225,7 +236,7 @@ static uint8_t parHandleAmiRead(uint16_t uwSize, uint16_t *pWriteSize)
     if(ubStatus != PBPROTO_STATUS_OK)
       break;
     PAR_DATA_PORT = *(ptr++);
-    PAR_STATUS_PORT ^= BUSY;
+    PAR_STATUS_PORT ^= PAR_BUSY;
     ++uwWriteSize;
     ubPOutWait ^= 1;
   }
@@ -254,7 +265,7 @@ static uint8_t parHandleAmiWriteBurst(uint16_t *ret_size)
     return ubStatus;
 
   uwSize = PAR_DATA_PIN << 8;
-  PAR_STATUS_PORT &= ~BUSY;
+  PAR_STATUS_PORT &= ~PAR_BUSY;
 
   // --- packet size lo ---
   ubStatus = parWaitForPout(0, PBPROTO_STAGE_SIZE_LO);
@@ -277,17 +288,17 @@ static uint8_t parHandleAmiWriteBurst(uint16_t *ret_size)
   // ----- burst loop -----
   // BEGIN TIME CRITICAL
   cli();
-  PAR_STATUS_PORT ^= BUSY; // trigger start of burst
+  PAR_STATUS_PORT ^= PAR_BUSY; // trigger start of burst
   for(i=0;i<words;i++) {
     // wait REQ == 1
-    while(!(PAR_STATUS_PIN & POUT) && (PAR_STATUS_PIN & SEL))
-		if(!(PAR_STATUS_PIN & SEL))
+    while(!(PAR_STATUS_PIN & PAR_POUT) && (PAR_STATUS_PIN & PAR_SEL))
+		if(!(PAR_STATUS_PIN & PAR_SEL))
 			break;
     *(ptr++) = PAR_DATA_PIN;
 
     // wait REQ == 0
-    while((PAR_STATUS_PIN & POUT) && (PAR_STATUS_PIN & SEL))
-		if(!(PAR_STATUS_PIN & SEL))
+    while((PAR_STATUS_PIN & PAR_POUT) && (PAR_STATUS_PIN & PAR_SEL))
+		if(!(PAR_STATUS_PIN & PAR_SEL))
 			break;
     *(ptr++) = PAR_DATA_PIN;
   }
@@ -296,21 +307,21 @@ static uint8_t parHandleAmiWriteBurst(uint16_t *ret_size)
 
   do {
 		// Wait for POUT == 1
-		while(!(PAR_STATUS_PIN & POUT) && (PAR_STATUS_PIN & SEL));
-		if(!(PAR_STATUS_PIN & SEL))
+		while(!(PAR_STATUS_PIN & PAR_POUT) && (PAR_STATUS_PIN & PAR_SEL));
+		if(!(PAR_STATUS_PIN & PAR_SEL))
 			continue;
 
-		PAR_STATUS_PORT ^= BUSY;
+		PAR_STATUS_PORT ^= PAR_BUSY;
 		// Wait for POUT == 0
-		while((PAR_STATUS_PIN & POUT) && (PAR_STATUS_PIN & SEL));
-  } while(!(PAR_STATUS_PIN & SEL));
+		while((PAR_STATUS_PIN & PAR_POUT) && (PAR_STATUS_PIN & PAR_SEL));
+  } while(!(PAR_STATUS_PIN & PAR_SEL));
 
   // error?
   if(i<words)
     result = PBPROTO_STATUS_TIMEOUT | PBPROTO_STAGE_DATA;
 
   // final ACK
-	PAR_STATUS_PORT ^= BUSY;
+	PAR_STATUS_PORT ^= PAR_BUSY;
 
   *ret_size = i << 1;
   return result;
@@ -331,7 +342,7 @@ static uint8_t parHandleAmiReadBurst(uint16_t size, uint16_t *ret_size) {
 
 	PAR_DATA_DDR = 0xFF;
 	PAR_DATA_PORT = size >> 8;
-	PAR_STATUS_PORT &= ~BUSY;
+	PAR_STATUS_PORT &= ~PAR_BUSY;
 
   // --- set packet size lo ---
   status = parWaitForPout(0, PBPROTO_STAGE_SIZE_LO);
@@ -339,7 +350,7 @@ static uint8_t parHandleAmiReadBurst(uint16_t size, uint16_t *ret_size) {
     return status;
 
 	PAR_DATA_PORT = size & 0xFF;
-	PAR_STATUS_PORT ^= BUSY;
+	PAR_STATUS_PORT ^= PAR_BUSY;
 
   // --- burst ready? ---
   status = parWaitForPout(1, PBPROTO_STAGE_DATA);
@@ -355,22 +366,22 @@ static uint8_t parHandleAmiReadBurst(uint16_t size, uint16_t *ret_size) {
   // ----- burst loop -----
   // BEGIN TIME CRITICAL
   cli();
-	PAR_STATUS_PORT ^= BUSY;
+	PAR_STATUS_PORT ^= PAR_BUSY;
   for(i=0;i<words;i++) {
     BURST_DELAY;
     PAR_DATA_PORT = *(ptr++);
 
     // wait REQ == 0
-    while((PAR_STATUS_PIN & POUT) && (PAR_STATUS_PIN & SEL));
-		if(!(PAR_STATUS_PIN & SEL))
+    while((PAR_STATUS_PIN & PAR_POUT) && (PAR_STATUS_PIN & PAR_SEL));
+		if(!(PAR_STATUS_PIN & PAR_SEL))
 			break;
 
     BURST_DELAY;
     PAR_DATA_PORT = *(ptr++);
 
     // wait REQ == 1
-    while(!(PAR_STATUS_PIN & POUT) && (PAR_STATUS_PIN & SEL));
-		if(!(PAR_STATUS_PIN & SEL))
+    while(!(PAR_STATUS_PIN & PAR_POUT) && (PAR_STATUS_PIN & PAR_SEL));
+		if(!(PAR_STATUS_PIN & PAR_SEL))
 			break;
   }
   recv_burst_exit:
@@ -379,15 +390,15 @@ static uint8_t parHandleAmiReadBurst(uint16_t size, uint16_t *ret_size) {
 
 	// TODO(KaiN#9): WTF with label/goto
   // final wait REQ == 0
-  while(PAR_STATUS_PIN & POUT)
-    if(!(PAR_STATUS_PIN & SEL))
+  while(PAR_STATUS_PIN & PAR_POUT)
+    if(!(PAR_STATUS_PIN & PAR_SEL))
 			goto recv_burst_exit;
 
-	PAR_STATUS_PORT |= BUSY;
+	PAR_STATUS_PORT |= PAR_BUSY;
 
   // final wait REQ == 1
-  while(!(PAR_STATUS_PIN & POUT))
-    if(!(PAR_STATUS_PIN & SEL))
+  while(!(PAR_STATUS_PIN & PAR_POUT))
+    if(!(PAR_STATUS_PIN & PAR_SEL))
 			goto recv_burst_exit;
 
   // error?
@@ -395,7 +406,7 @@ static uint8_t parHandleAmiReadBurst(uint16_t size, uint16_t *ret_size) {
     result = PBPROTO_STATUS_TIMEOUT | PBPROTO_STAGE_DATA;
 
   // final ACK
-	PAR_STATUS_PORT &= ~BUSY;
+	PAR_STATUS_PORT &= ~PAR_BUSY;
 
   // [IN]
   PAR_DATA_DDR = 0x00;
@@ -423,7 +434,7 @@ uint8_t pb_proto_handle(void) {
   ps->cmd = 0;
 
   // make sure that SEL == 1 and POUT == 0
-  if(!(PAR_STATUS_PIN & SEL) || (PAR_STATUS_PIN & POUT)) {
+  if(!(PAR_STATUS_PIN & PAR_SEL) || (PAR_STATUS_PIN & PAR_POUT)) {
     ps->status = PBPROTO_STATUS_IDLE;
     return PBPROTO_STATUS_IDLE;
   }
@@ -434,7 +445,7 @@ uint8_t pb_proto_handle(void) {
   // Amiga wants to receive data - prepare
   uint16_t pkt_size = 0;
   if((cmd == PBPROTO_CMD_RECV) || (cmd == PBPROTO_CMD_RECV_BURST)) {
-    uint8_t res = packetFillFn(&pkt_size);
+    uint8_t res = bridgeFillPacket(&pkt_size);
     if(res != PBPROTO_STATUS_OK) {
       ps->status = res;
       return res;
@@ -446,7 +457,7 @@ uint8_t pb_proto_handle(void) {
   timerReset();
 
   // confirm cmd with BUSY = 1
-  PAR_STATUS_PORT |= BUSY;
+  PAR_STATUS_PORT |= PAR_BUSY;
 
   uint16_t uwParDataSize = 0;
   switch(cmd) {
@@ -471,7 +482,7 @@ uint8_t pb_proto_handle(void) {
   parWaitForSel(0, PBPROTO_STAGE_END_SELECT);
 
   // reset BUSY = 0
-  PAR_STATUS_PORT &= ~BUSY;
+  PAR_STATUS_PORT &= ~PAR_BUSY;
 
   // Read timer - assuming transfer will be much shorter than 100us
   // TODO(KaiN#7): is it really that short?
@@ -480,7 +491,7 @@ uint8_t pb_proto_handle(void) {
   // Amiga sent data - process it
   if(result == PBPROTO_STATUS_OK) {
     if((cmd == PBPROTO_CMD_SEND) || (cmd == PBPROTO_CMD_SEND_BURST)) {
-      result = packetProcessFn(uwParDataSize);
+      result = bridgeProcessPacket(uwParDataSize);
     }
   }
 

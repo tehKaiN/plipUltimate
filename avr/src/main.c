@@ -32,16 +32,12 @@
 #include "base/timer.h"
 #include "param.h"
 
-#include "pb_test.h"
-#include "pio_test.h"
-#include "bridge_test.h"
 #include "bridge.h"
 #include "main.h"
 #include "pinout.h"
 #include "base/util.h"
 
-uint8_t run_mode = RUN_MODE_BRIDGE;
-uint8_t global_verbose = 0;
+uint8_t g_ubVerboseMode = 0;
 
 /**
  * ORIGINAL:
@@ -71,16 +67,8 @@ uint8_t global_verbose = 0;
  *
  */
 
-/**
- * Initilizes AVR hardware.
- * Parallel interface is configured as follows:
- * 	NStrobe: input,  pulled high
- * 	Select:  input,  pulled high
- * 	Busy:    output, default: 0
- * 	POut:    input,  pulled high
- * 	NAck:    output, default: 1
- */
-static void hwInit(void) {
+int main(void)
+{
 	// Disable watchdog
 	cli();
 	wdt_reset();
@@ -92,60 +80,15 @@ static void hwInit(void) {
 	// Setup timers
 	timerInit();
 
-	// Zero DDR and PORT status
-  PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
-  PAR_STATUS_PORT &= ~PAR_STATUS_MASK;
-
-  // Set them correctly
-  PAR_STATUS_DDR |= BUSY | NACK;
-  PAR_STATUS_PORT |= NSTROBE | SEL | POUT | NACK;
-
-  PAR_DATA_DDR = 0xFF;
-
   // Initialize status LED
   LED_DDR |= LED_STATUS;
   LED_PORT |= LED_STATUS;
-}
 
-// How I should attach ISP:
-// zolty   czerw
-// pomaran braz
-// ziel    czarn
-
-int main(void)
-{
-	hwInit();
-
-	// Send welcome message
-	// NOTE: UART - \r\nWelcome to plipbox " VERSION " " BUILD_DATE "\r\n
-
-	// Load & display parameters (config)
+	// Load config
 	param_init();
-	param_dump();
 
-	// Display help message
-	// NOTE: UART - Press <return> to enter command mode or <?> for key help\r\n
-
-	// uart_send_free_stack();
-
-	// Enter main loop depending on current run mode
-	while(1) {
-		switch(run_mode) {
-			case RUN_MODE_PB_TEST:
-				pb_test_loop();
-				break;
-			case RUN_MODE_PIO_TEST:
-				pio_test_loop();
-				break;
-			case RUN_MODE_BRIDGE_TEST:
-				bridge_test_loop();
-				break;
-			case RUN_MODE_BRIDGE:
-			default:
-				bridge_loop();
-				break;
-		}
-	}
+	// Do the main loop
+	bridgeLoop();
 
   return 0;
 }

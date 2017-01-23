@@ -30,7 +30,6 @@
 #include "pb_proto.h"
 #include "base/uartutil.h"
 #include "param.h"
-#include "dump.h"
 #include "base/timer.h"
 #include "stats.h"
 #include "base/util.h"
@@ -57,16 +56,16 @@
 uint8_t s_ubFlags;
 static uint8_t req_is_pending;
 
-static void trigger_request(void)
+static void bridgeRequestResponseRead(void)
 {
   if(!req_is_pending) {
     req_is_pending = 1;
     parRequestAmiRead();
-    if(global_verbose) {
+    if(g_ubVerboseMode) {
 			// NOTE: UART - time_stamp_spc() REQ\r\n
     }
   } else {
-    if(global_verbose) {
+    if(g_ubVerboseMode) {
 			// NOTE: UART - time_stamp_spc() REQ IGN\r\n
     }
   }
@@ -109,7 +108,7 @@ static void bridgeCommOffline(void)
 static void bridgeLoopback(uint16_t size)
 {
   s_ubFlags |= FLAG_SEND_MAGIC;
-  trigger_request();
+  bridgeRequestResponseRead();
 }
 
 static void request_magic(void)
@@ -118,15 +117,14 @@ static void request_magic(void)
 
   // request receive
   s_ubFlags |= FLAG_SEND_MAGIC | FLAG_FIRST_TRANSFER;
-  trigger_request();
+  bridgeRequestResponseRead();
 }
 
 // ----- packet callbacks -----
 
 // the Amiga requests a new packet
 
-static uint8_t bridgeFillPacket(uint16_t *pFilledSize)
-{
+uint8_t bridgeFillPacket(uint16_t *pFilledSize) {
   if((s_ubFlags & FLAG_SEND_MAGIC) == FLAG_SEND_MAGIC) {
 		// Send magic packet to Amiga
     s_ubFlags &= ~FLAG_SEND_MAGIC;
@@ -167,8 +165,7 @@ static uint8_t bridgeFillPacket(uint16_t *pFilledSize)
  * @param uwSize Packet length
  * @return Always PBPROTO_STATUS_OK
  */
-static uint8_t bridgeProcessPacket(uint16_t uwSize)
-{
+uint8_t bridgeProcessPacket(uint16_t uwSize) {
   // get eth type
   uint16_t eth_type = eth_get_pkt_type(g_pDataBuffer);
   switch(eth_type) {
@@ -185,7 +182,7 @@ static uint8_t bridgeProcessPacket(uint16_t uwSize)
 			cmdProcess(uwSize);
 			s_ubFlags |= FLAG_SEND_CMD_RESPONSE;
 			req_is_pending = 0;
-			trigger_request();
+			bridgeRequestResponseRead();
 			break;
     default:
       // send packet via pio
@@ -199,14 +196,14 @@ static uint8_t bridgeProcessPacket(uint16_t uwSize)
   return PBPROTO_STATUS_OK;
 }
 
-// ---------- loop ----------
-
-void bridge_loop(void)
+/**
+ * Main plip loop.
+ * Monitors parallel port and ENC28J60 traffic.
+ */
+void bridgeLoop(void)
 {
-  // NOTE: UART - time_stamp_spc() [BRIDGE] on\r\n
-
   // Associate protocol fns with given ptrs
-  pb_proto_init(bridgeFillPacket, bridgeProcessPacket);
+  parInit();
 
   // Init ENC28j60
   enc28j60_init(g_sConfig.mac_addr, pio_util_get_init_flags());
@@ -222,7 +219,7 @@ void bridge_loop(void)
   uint8_t limit_flow = 0;
   uint8_t ubDisplayPacketInfo = 1;
   uint8_t ubPacketCount;
-  while(run_mode == RUN_MODE_BRIDGE) {
+  while(1) {
     // NOTE: UART command handling was here
 
     // Calls pb_proto_handle - this is where PAR communication is done
@@ -238,7 +235,7 @@ void bridge_loop(void)
 
       if(s_ubFlags & FLAG_ONLINE) {
 				// Comm online: let Amiga know about new packet
-        trigger_request();
+        bridgeRequestResponseRead();
       }
       else {
 				// Comm offline: read packet from ENC28j60 and drop it
@@ -256,7 +253,7 @@ void bridge_loop(void)
         if(!ubPacketCount) {
           enc28j60_control(PIO_CONTROL_FLOW, 0);
           limit_flow = 0;
-          if(global_verbose) {
+          if(g_ubVerboseMode) {
 						// NOTE: UART - time_stamp_spc() FLOW off\r\n
           }
         }
@@ -267,16 +264,11 @@ void bridge_loop(void)
         if(ubPacketCount) {
           enc28j60_control(PIO_CONTROL_FLOW, 1);
           limit_flow = 1;
-          if(global_verbose) {
+          if(g_ubVerboseMode) {
 						// NOTE: UART - time_stamp_spc() FLOW on\r\n
           }
         }
       }
     }
   }
-
-  stats_dump_all();
-  enc28j60_exit();
-
-	// NOTE: UART - time_stamp_spc() [BRIDGE] off\r\n
 }

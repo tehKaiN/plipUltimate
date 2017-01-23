@@ -29,6 +29,8 @@
 
 #include "global.h"
 
-extern void bridge_loop(void);
+void bridgeLoop(void);
+uint8_t bridgeFillPacket(uint16_t *pFilledSize);
+uint8_t bridgeProcessPacket(uint16_t uwSize);
 
 #endif

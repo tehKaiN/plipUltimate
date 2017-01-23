@@ -29,14 +29,7 @@
 
 #include "global.h"
 
-#define RUN_MODE_BRIDGE 		0
-#define RUN_MODE_BRIDGE_TEST	1
-#define RUN_MODE_PB_TEST 		2
-#define RUN_MODE_PIO_TEST 		3
-
-
 /* access run mode for command keys */
-extern uint8_t run_mode;
-extern uint8_t global_verbose;
+extern uint8_t g_ubVerboseMode;
 
 #endif
