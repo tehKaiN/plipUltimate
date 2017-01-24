@@ -3,33 +3,33 @@ bin\Debug\plipUltimate.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         0000003c  00800100  00001b52  00001c26  2**0
+  0 .data         0000003c  00800100  000019d2  00001aa6  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         00001b52  00000000  00000000  000000d4  2**1
+  1 .text         000019d2  00000000  00000000  000000d4  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          00000651  0080013c  0080013c  00001c62  2**0
+  2 .bss          00000651  0080013c  0080013c  00001ae2  2**0
                   ALLOC
-  3 .eeprom       00000016  00810000  00810000  00001c62  2**0
+  3 .eeprom       00000016  00810000  00810000  00001ae2  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  4 .fuse         00000003  00820000  00820000  00001c78  2**0
+  4 .fuse         00000003  00820000  00820000  00001af8  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  5 .debug_aranges 000001e0  00000000  00000000  00001c7b  2**0
+  5 .debug_aranges 000001e0  00000000  00000000  00001afb  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_pubnames 000006fa  00000000  00000000  00001e5b  2**0
+  6 .debug_pubnames 000006c5  00000000  00000000  00001cdb  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_info   000036f8  00000000  00000000  00002555  2**0
+  7 .debug_info   00003445  00000000  00000000  000023a0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_abbrev 00001367  00000000  00000000  00005c4d  2**0
+  8 .debug_abbrev 0000130a  00000000  00000000  000057e5  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_line   00002168  00000000  00000000  00006fb4  2**0
+  9 .debug_line   00002059  00000000  00000000  00006aef  2**0
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_frame  000005a0  00000000  00000000  0000911c  2**2
+ 10 .debug_frame  00000580  00000000  00000000  00008b48  2**2
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_str    00001169  00000000  00000000  000096bc  2**0
+ 11 .debug_str    00001060  00000000  00000000  000090c8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_loc    000018bd  00000000  00000000  0000a825  2**0
+ 12 .debug_loc    00001835  00000000  00000000  0000a128  2**0
                   CONTENTS, READONLY, DEBUGGING
- 13 .debug_ranges 00000138  00000000  00000000  0000c0e2  2**0
+ 13 .debug_ranges 00000138  00000000  00000000  0000b95d  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -173,8 +173,8 @@ Disassembly of section .text:
      21e:	11 e0       	ldi	r17, 0x01	; 1
      220:	a0 e0       	ldi	r26, 0x00	; 0
      222:	b1 e0       	ldi	r27, 0x01	; 1
-     224:	e2 e5       	ldi	r30, 0x52	; 82
-     226:	fb e1       	ldi	r31, 0x1B	; 27
+     224:	e2 ed       	ldi	r30, 0xD2	; 210
+     226:	f9 e1       	ldi	r31, 0x19	; 25
      228:	02 c0       	rjmp	.+4      	; 0x22e <.do_copy_data_start>
 
 0000022a <.do_copy_data_loop>:
@@ -200,7 +200,7 @@ Disassembly of section .text:
      240:	b1 07       	cpc	r27, r17
      242:	e1 f7       	brne	.-8      	; 0x23c <.do_clear_bss_loop>
      244:	0e 94 b0 05 	call	0xb60	; 0xb60 <main>
-     248:	0c 94 a7 0d 	jmp	0x1b4e	; 0x1b4e <_exit>
+     248:	0c 94 e7 0c 	jmp	0x19ce	; 0x19ce <_exit>
 
 0000024c <__bad_interrupt>:
      24c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
@@ -383,7 +383,7 @@ uint16_t timerCalculateKbps(uint16_t bytes, uint16_t delta) {
      388:	36 e8       	ldi	r19, 0x86	; 134
      38a:	41 e0       	ldi	r20, 0x01	; 1
      38c:	50 e0       	ldi	r21, 0x00	; 0
-     38e:	0e 94 27 0d 	call	0x1a4e	; 0x1a4e <__mulsi3>
+     38e:	0e 94 67 0c 	call	0x18ce	; 0x18ce <__mulsi3>
      392:	9e 01       	movw	r18, r28
      394:	40 e0       	ldi	r20, 0x00	; 0
      396:	50 e0       	ldi	r21, 0x00	; 0
@@ -395,7 +395,7 @@ uint16_t timerCalculateKbps(uint16_t bytes, uint16_t delta) {
      3a2:	33 1f       	adc	r19, r19
      3a4:	44 1f       	adc	r20, r20
      3a6:	55 1f       	adc	r21, r21
-     3a8:	0e 94 52 0d 	call	0x1aa4	; 0x1aa4 <__udivmodsi4>
+     3a8:	0e 94 92 0c 	call	0x1924	; 0x1924 <__udivmodsi4>
   }
 	else
 		return 0;
@@ -520,24 +520,24 @@ void utilByteToDec(uint8_t value, uint8_t *out)
   uint8_t h = value / 100;
   uint8_t t = value % 100;
      44a:	64 e6       	ldi	r22, 0x64	; 100
-     44c:	0e 94 46 0d 	call	0x1a8c	; 0x1a8c <__udivmodqi4>
+     44c:	0e 94 86 0c 	call	0x190c	; 0x190c <__udivmodqi4>
      450:	39 2f       	mov	r19, r25
   uint8_t o = t % 10;
   t = t / 10;
   out[0] = '0' + h;
      452:	82 2f       	mov	r24, r18
-     454:	0e 94 46 0d 	call	0x1a8c	; 0x1a8c <__udivmodqi4>
+     454:	0e 94 86 0c 	call	0x190c	; 0x190c <__udivmodqi4>
      458:	80 5d       	subi	r24, 0xD0	; 208
      45a:	80 83       	st	Z, r24
   out[1] = '0' + t;
      45c:	83 2f       	mov	r24, r19
      45e:	6a e0       	ldi	r22, 0x0A	; 10
-     460:	0e 94 46 0d 	call	0x1a8c	; 0x1a8c <__udivmodqi4>
+     460:	0e 94 86 0c 	call	0x190c	; 0x190c <__udivmodqi4>
      464:	80 5d       	subi	r24, 0xD0	; 208
      466:	81 83       	std	Z+1, r24	; 0x01
   out[2] = '0' + o;
      468:	83 2f       	mov	r24, r19
-     46a:	0e 94 46 0d 	call	0x1a8c	; 0x1a8c <__udivmodqi4>
+     46a:	0e 94 86 0c 	call	0x190c	; 0x190c <__udivmodqi4>
      46e:	90 5d       	subi	r25, 0xD0	; 208
      470:	92 83       	std	Z+2, r25	; 0x02
 }
@@ -610,7 +610,7 @@ void utilDwordToDec(uint32_t value, uint8_t *out, uint8_t num_digits, uint8_t po
      4c4:	30 e0       	ldi	r19, 0x00	; 0
      4c6:	40 e0       	ldi	r20, 0x00	; 0
      4c8:	50 e0       	ldi	r21, 0x00	; 0
-     4ca:	0e 94 52 0d 	call	0x1aa4	; 0x1aa4 <__udivmodsi4>
+     4ca:	0e 94 92 0c 	call	0x1924	; 0x1924 <__udivmodsi4>
      4ce:	60 5d       	subi	r22, 0xD0	; 208
      4d0:	68 83       	st	Y, r22
   // start backwards
@@ -638,7 +638,7 @@ void utilDwordToDec(uint32_t value, uint8_t *out, uint8_t num_digits, uint8_t po
      4e4:	30 e0       	ldi	r19, 0x00	; 0
      4e6:	40 e0       	ldi	r20, 0x00	; 0
      4e8:	50 e0       	ldi	r21, 0x00	; 0
-     4ea:	0e 94 52 0d 	call	0x1aa4	; 0x1aa4 <__udivmodsi4>
+     4ea:	0e 94 92 0c 	call	0x1924	; 0x1924 <__udivmodsi4>
      4ee:	c2 2e       	mov	r12, r18
      4f0:	d3 2e       	mov	r13, r19
      4f2:	e4 2e       	mov	r14, r20
@@ -1075,11 +1075,11 @@ void bridgeLoop(void)
      750:	0f e4       	ldi	r16, 0x4F	; 79
      752:	11 e0       	ldi	r17, 0x01	; 1
      754:	c8 01       	movw	r24, r16
-     756:	0e 94 c5 0c 	call	0x198a	; 0x198a <enc28j60_init>
+     756:	0e 94 05 0c 	call	0x180a	; 0x180a <enc28j60_init>
 
   // Reset stats
   stats_reset();
-     75a:	0e 94 e7 0c 	call	0x19ce	; 0x19ce <stats_reset>
+     75a:	0e 94 27 0c 	call	0x184e	; 0x184e <stats_reset>
 
   // Reset flags & request state
   s_ubFlags = 0;
@@ -1111,7 +1111,7 @@ void bridgeLoop(void)
 
     // Handle packets coming from network
 		ubPacketCount = enc28j60_has_recv();
-     778:	0e 94 d0 0c 	call	0x19a0	; 0x19a0 <enc28j60_has_recv>
+     778:	0e 94 10 0c 	call	0x1820	; 0x1820 <enc28j60_has_recv>
      77c:	08 2f       	mov	r16, r24
     if(ubPacketCount) {
      77e:	88 23       	and	r24, r24
@@ -1135,7 +1135,7 @@ void bridgeLoop(void)
         uint16_t size;
         pio_util_recv_packet(&size);
      790:	c6 01       	movw	r24, r12
-     792:	0e 94 94 0c 	call	0x1928	; 0x1928 <pio_util_recv_packet>
+     792:	0e 94 d4 0b 	call	0x17a8	; 0x17a8 <pio_util_recv_packet>
         // NOTE: UART - time_stamp_spc() OFFLINE DROP: hex_word(size)\r\n
       }
     }
@@ -1155,7 +1155,7 @@ void bridgeLoop(void)
           enc28j60_control(PIO_CONTROL_FLOW, 0);
      7a2:	80 e0       	ldi	r24, 0x00	; 0
      7a4:	60 e0       	ldi	r22, 0x00	; 0
-     7a6:	0e 94 c8 0c 	call	0x1990	; 0x1990 <enc28j60_control>
+     7a6:	0e 94 08 0c 	call	0x1810	; 0x1810 <enc28j60_control>
      7aa:	10 e0       	ldi	r17, 0x00	; 0
      7ac:	e3 cf       	rjmp	.-58     	; 0x774 <bridgeLoop+0x42>
         }
@@ -1169,7 +1169,7 @@ void bridgeLoop(void)
           enc28j60_control(PIO_CONTROL_FLOW, 1);
      7b2:	80 e0       	ldi	r24, 0x00	; 0
      7b4:	61 e0       	ldi	r22, 0x01	; 1
-     7b6:	0e 94 c8 0c 	call	0x1990	; 0x1990 <enc28j60_control>
+     7b6:	0e 94 08 0c 	call	0x1810	; 0x1810 <enc28j60_control>
      7ba:	11 e0       	ldi	r17, 0x01	; 1
      7bc:	db cf       	rjmp	.-74     	; 0x774 <bridgeLoop+0x42>
 
@@ -1250,11 +1250,11 @@ static void bridgeCommOnline(const uint8_t *buf)
 
     // re-configure PIO
     enc28j60_exit();
-     824:	0e 94 c7 0c 	call	0x198e	; 0x198e <enc28j60_exit>
+     824:	0e 94 07 0c 	call	0x180e	; 0x180e <enc28j60_exit>
     enc28j60_init(g_sConfig.mac_addr, PIO_INIT_BROAD_CAST);
      828:	c8 01       	movw	r24, r16
      82a:	64 e0       	ldi	r22, 0x04	; 4
-     82c:	0e 94 c5 0c 	call	0x198a	; 0x198a <enc28j60_init>
+     82c:	0e 94 05 0c 	call	0x180a	; 0x180a <enc28j60_init>
      830:	27 c0       	rjmp	.+78     	; 0x880 <bridgeProcessPacket+0xc2>
  * Disables ethernet communication.
  */
@@ -1299,7 +1299,7 @@ static void bridgeLoopback(uint16_t size)
       // send packet via pio
       pio_util_send_packet(uwSize);
      868:	ce 01       	movw	r24, r28
-     86a:	0e 94 14 0c 	call	0x1828	; 0x1828 <pio_util_send_packet>
+     86a:	0e 94 a7 0b 	call	0x174e	; 0x174e <pio_util_send_packet>
       // if a packet arrived and we are not online then request online state
       if((s_ubFlags & FLAG_ONLINE)==0) {
      86e:	80 91 4c 01 	lds	r24, 0x014C
@@ -1400,7 +1400,7 @@ inline void net_copy_bcast_mac(uint8_t *out) { net_copy_mac(net_bcast_mac, out);
 		// Receive packet buffer with data from ENC28j60 if pending
     pio_util_recv_packet(pFilledSize);
      8e8:	ce 01       	movw	r24, r28
-     8ea:	0e 94 94 0c 	call	0x1928	; 0x1928 <pio_util_recv_packet>
+     8ea:	0e 94 d4 0b 	call	0x17a8	; 0x17a8 <pio_util_recv_packet>
 
     if(s_ubFlags & FLAG_FIRST_TRANSFER) {
      8ee:	80 91 4c 01 	lds	r24, 0x014C
@@ -1524,13 +1524,13 @@ static void cmdSetConfig(void) {
 
 		// Reconfigure plip
 		enc28j60_exit();
-     984:	0e 94 c7 0c 	call	0x198e	; 0x198e <enc28j60_exit>
+     984:	0e 94 07 0c 	call	0x180e	; 0x180e <enc28j60_exit>
 		enc28j60_init(g_sConfig.mac_addr, pio_util_get_init_flags());
      988:	0e 94 9a 0b 	call	0x1734	; 0x1734 <pio_util_get_init_flags>
      98c:	68 2f       	mov	r22, r24
      98e:	8f e4       	ldi	r24, 0x4F	; 79
      990:	91 e0       	ldi	r25, 0x01	; 1
-     992:	0e 94 c5 0c 	call	0x198a	; 0x198a <enc28j60_init>
+     992:	0e 94 05 0c 	call	0x180a	; 0x180a <enc28j60_init>
 	}
 
 	// Prepare response
@@ -1854,7 +1854,7 @@ COMMAND(cmd_param_mac_addr)
 COMMAND(cmd_stats_reset)
 {
   stats_reset();
-     b38:	0e 94 e7 0c 	call	0x19ce	; 0x19ce <stats_reset>
+     b38:	0e 94 27 0c 	call	0x184e	; 0x184e <stats_reset>
   return CMD_OK;
 }
      b3c:	80 e0       	ldi	r24, 0x00	; 0
@@ -1867,7 +1867,7 @@ COMMAND(cmd_stats_reset)
 COMMAND(cmd_stats_dump)
 {
   stats_dump_all();
-     b40:	0e 94 25 0d 	call	0x1a4a	; 0x1a4a <stats_dump_all>
+     b40:	0e 94 65 0c 	call	0x18ca	; 0x18ca <stats_dump_all>
   return CMD_OK;
 }
      b44:	80 e0       	ldi	r24, 0x00	; 0
@@ -1911,7 +1911,7 @@ COMMAND(cmd_param_load)
 COMMAND_KEY(cmd_dump_stats)
 {
   stats_dump_all();
-     b5a:	0e 94 25 0d 	call	0x1a4a	; 0x1a4a <stats_dump_all>
+     b5a:	0e 94 65 0c 	call	0x18ca	; 0x18ca <stats_dump_all>
 }
      b5e:	08 95       	ret
 
@@ -2778,13 +2778,13 @@ uint8_t param_load(void)
      f8e:	70 e0       	ldi	r23, 0x00	; 0
      f90:	44 e1       	ldi	r20, 0x14	; 20
      f92:	50 e0       	ldi	r21, 0x00	; 0
-     f94:	0e 94 74 0d 	call	0x1ae8	; 0x1ae8 <__eerd_block_m328p>
+     f94:	0e 94 b4 0c 	call	0x1968	; 0x1968 <__eerd_block_m328p>
 
   // read crc16
   uint16_t crc16 = eeprom_read_word(&s_uwEepromCrc);
      f98:	84 e1       	ldi	r24, 0x14	; 20
      f9a:	90 e0       	ldi	r25, 0x00	; 0
-     f9c:	0e 94 84 0d 	call	0x1b08	; 0x1b08 <__eerd_word_m328p>
+     f9c:	0e 94 c4 0c 	call	0x1988	; 0x1988 <__eerd_word_m328p>
      fa0:	8c 01       	movw	r16, r24
   uint16_t my_crc16 = calc_crc16(&g_sConfig);
      fa2:	c7 01       	movw	r24, r14
@@ -2849,7 +2849,7 @@ uint8_t param_save(void)
      fe4:	70 e0       	ldi	r23, 0x00	; 0
      fe6:	44 e1       	ldi	r20, 0x14	; 20
      fe8:	50 e0       	ldi	r21, 0x00	; 0
-     fea:	0e 94 8a 0d 	call	0x1b14	; 0x1b14 <__eewr_block_m328p>
+     fea:	0e 94 ca 0c 	call	0x1994	; 0x1994 <__eewr_block_m328p>
 
   // calc current parameter crc
   uint16_t crc16 = calc_crc16(&g_sConfig);
@@ -2859,7 +2859,7 @@ uint8_t param_save(void)
   eeprom_write_word(&s_uwEepromCrc,crc16);
      ff6:	84 e1       	ldi	r24, 0x14	; 20
      ff8:	90 e0       	ldi	r25, 0x00	; 0
-     ffa:	0e 94 a2 0d 	call	0x1b44	; 0x1b44 <__eewr_word_m328p>
+     ffa:	0e 94 e2 0c 	call	0x19c4	; 0x19c4 <__eewr_word_m328p>
      ffe:	80 e0       	ldi	r24, 0x00	; 0
 
   return PARAM_OK;
@@ -4191,7 +4191,7 @@ static uint8_t parWaitForSel(uint8_t select_state, uint8_t state_flag) {
     165c:	45 81       	ldd	r20, Z+5	; 0x05
     165e:	56 81       	ldd	r21, Z+6	; 0x06
     1660:	80 81       	ld	r24, Z
-    1662:	0e 94 fc 0c 	call	0x19f8	; 0x19f8 <stats_update_ok>
+    1662:	0e 94 3c 0c 	call	0x1878	; 0x1878 <stats_update_ok>
     1666:	21 e0       	ldi	r18, 0x01	; 1
     1668:	0e c0       	rjmp	.+28     	; 0x1686 <pb_proto_handle+0x5de>
     166a:	e0 91 66 01 	lds	r30, 0x0166
@@ -4341,817 +4341,537 @@ uint8_t pio_util_get_init_flags()
     174a:	89 2f       	mov	r24, r25
     174c:	08 95       	ret
 
-0000174e <pio_util_handle_udp_test>:
-
-  return 1;
-}
-
-uint8_t pio_util_handle_udp_test(uint16_t size)
-{
-    174e:	8f 92       	push	r8
-    1750:	9f 92       	push	r9
-    1752:	af 92       	push	r10
-    1754:	bf 92       	push	r11
-    1756:	cf 92       	push	r12
-    1758:	df 92       	push	r13
-    175a:	ef 92       	push	r14
-    175c:	ff 92       	push	r15
-    175e:	0f 93       	push	r16
-    1760:	1f 93       	push	r17
-    1762:	cf 93       	push	r28
-    1764:	df 93       	push	r29
-  uint8_t *ip_buf = g_pDataBuffer + ETH_HDR_SIZE;
-  uint8_t *udp_buf = ip_buf + ip_get_hdr_length(ip_buf);
-    1766:	01 e8       	ldi	r16, 0x81	; 129
-    1768:	11 e0       	ldi	r17, 0x01	; 1
-    176a:	f8 01       	movw	r30, r16
-    176c:	80 81       	ld	r24, Z
-    176e:	88 0f       	add	r24, r24
-    1770:	88 0f       	add	r24, r24
-    1772:	8c 73       	andi	r24, 0x3C	; 60
-    1774:	58 01       	movw	r10, r16
-    1776:	a8 0e       	add	r10, r24
-    1778:	b1 1c       	adc	r11, r1
-#define UDP_CHECKSUM_OFF  6
-#define UDP_DATA_OFF      8
-
-inline const uint8_t *udp_get_data_ptr(const uint8_t *udp_buf) { return udp_buf + UDP_DATA_OFF; }
-inline uint16_t  udp_get_src_port(const uint8_t *udp_buf) { return net_get_word(udp_buf + UDP_SRC_PORT_OFF); }
-inline uint16_t  udp_get_tgt_port(const uint8_t *udp_buf) { return net_get_word(udp_buf + UDP_TGT_PORT_OFF); }
-    177a:	c5 01       	movw	r24, r10
-    177c:	02 96       	adiw	r24, 0x02	; 2
-    177e:	0e 94 54 06 	call	0xca8	; 0xca8 <net_get_word>
-    1782:	ec 01       	movw	r28, r24
-  const uint8_t *dst_ip = ip_get_tgt_ip(ip_buf);
-  uint16_t dst_port = udp_get_tgt_port(udp_buf);
-  const uint8_t *data_ptr = udp_get_data_ptr(udp_buf);
-
-  // for us?
-  if(net_compare_ip(g_sConfig.test_ip, dst_ip) && (dst_port == g_sConfig.test_port)) {
-    1784:	00 5f       	subi	r16, 0xF0	; 240
-    1786:	1f 4f       	sbci	r17, 0xFF	; 255
-    1788:	8b e5       	ldi	r24, 0x5B	; 91
-    178a:	91 e0       	ldi	r25, 0x01	; 1
-    178c:	b8 01       	movw	r22, r16
-    178e:	0e 94 b6 06 	call	0xd6c	; 0xd6c <net_compare_ip>
-    1792:	88 23       	and	r24, r24
-    1794:	d9 f1       	breq	.+118    	; 0x180c <pio_util_handle_udp_test+0xbe>
-    1796:	80 90 5f 01 	lds	r8, 0x015F
-    179a:	90 90 60 01 	lds	r9, 0x0160
-    179e:	8c 16       	cp	r8, r28
-    17a0:	9d 06       	cpc	r9, r29
-    17a2:	a1 f5       	brne	.+104    	; 0x180c <pio_util_handle_udp_test+0xbe>
-    // send UDP packet back again
-    // flip IP/UDP
-    const uint8_t *src_ip = ip_get_src_ip(ip_buf);
-    net_copy_ip(src_ip, ip_buf + 16); // set tgt ip
-    17a4:	0d e8       	ldi	r16, 0x8D	; 141
-    17a6:	11 e0       	ldi	r17, 0x01	; 1
-    17a8:	b8 01       	movw	r22, r16
-    17aa:	6c 5f       	subi	r22, 0xFC	; 252
-    17ac:	7f 4f       	sbci	r23, 0xFF	; 255
-    17ae:	c8 01       	movw	r24, r16
-    17b0:	0e 94 43 06 	call	0xc86	; 0xc86 <net_copy_ip>
-    net_copy_ip(g_sConfig.test_ip, ip_buf + 12); // set src ip
-    17b4:	0f 2e       	mov	r0, r31
-    17b6:	fb e5       	ldi	r31, 0x5B	; 91
-    17b8:	cf 2e       	mov	r12, r31
-    17ba:	f1 e0       	ldi	r31, 0x01	; 1
-    17bc:	df 2e       	mov	r13, r31
-    17be:	f0 2d       	mov	r31, r0
-    17c0:	c6 01       	movw	r24, r12
-    17c2:	b8 01       	movw	r22, r16
-    17c4:	0e 94 43 06 	call	0xc86	; 0xc86 <net_copy_ip>
-#define UDP_LENGTH_OFF    4
-#define UDP_CHECKSUM_OFF  6
-#define UDP_DATA_OFF      8
-
-inline const uint8_t *udp_get_data_ptr(const uint8_t *udp_buf) { return udp_buf + UDP_DATA_OFF; }
-inline uint16_t  udp_get_src_port(const uint8_t *udp_buf) { return net_get_word(udp_buf + UDP_SRC_PORT_OFF); }
-    17c8:	c5 01       	movw	r24, r10
-    17ca:	0e 94 54 06 	call	0xca8	; 0xca8 <net_get_word>
-    17ce:	7c 01       	movw	r14, r24
-    uint16_t src_port = udp_get_src_port(udp_buf);
-    net_put_word(udp_buf + UDP_SRC_PORT_OFF, dst_port);
-    17d0:	c5 01       	movw	r24, r10
-    17d2:	b4 01       	movw	r22, r8
-    17d4:	0e 94 5e 06 	call	0xcbc	; 0xcbc <net_put_word>
-    net_put_word(udp_buf + UDP_TGT_PORT_OFF, src_port);
-    17d8:	c5 01       	movw	r24, r10
-    17da:	02 96       	adiw	r24, 0x02	; 2
-    17dc:	b7 01       	movw	r22, r14
-    17de:	0e 94 5e 06 	call	0xcbc	; 0xcbc <net_put_word>
-
-    // flip eth
-    net_copy_mac(g_pDataBuffer + ETH_OFF_SRC_MAC, g_pDataBuffer + ETH_OFF_TGT_MAC);
-    17e2:	0f 2e       	mov	r0, r31
-    17e4:	fc ee       	ldi	r31, 0xEC	; 236
-    17e6:	ef 2e       	mov	r14, r31
-    17e8:	ff ef       	ldi	r31, 0xFF	; 255
-    17ea:	ff 2e       	mov	r15, r31
-    17ec:	f0 2d       	mov	r31, r0
-    17ee:	e0 0e       	add	r14, r16
-    17f0:	f1 1e       	adc	r15, r17
-    17f2:	0a 51       	subi	r16, 0x1A	; 26
-    17f4:	10 40       	sbci	r17, 0x00	; 0
-    17f6:	c7 01       	movw	r24, r14
-    17f8:	b8 01       	movw	r22, r16
-    17fa:	0e 94 34 06 	call	0xc68	; 0xc68 <net_copy_mac>
-    net_copy_mac(g_sConfig.mac_addr, g_pDataBuffer + ETH_OFF_SRC_MAC);
-    17fe:	c6 01       	movw	r24, r12
-    1800:	0c 97       	sbiw	r24, 0x0c	; 12
-    1802:	b7 01       	movw	r22, r14
-    1804:	0e 94 34 06 	call	0xc68	; 0xc68 <net_copy_mac>
-    1808:	81 e0       	ldi	r24, 0x01	; 1
-    180a:	01 c0       	rjmp	.+2      	; 0x180e <pio_util_handle_udp_test+0xc0>
-
-    return 1;
-    180c:	80 e0       	ldi	r24, 0x00	; 0
- } else {
- 	return 0;
- }
-}
-    180e:	df 91       	pop	r29
-    1810:	cf 91       	pop	r28
-    1812:	1f 91       	pop	r17
-    1814:	0f 91       	pop	r16
-    1816:	ff 90       	pop	r15
-    1818:	ef 90       	pop	r14
-    181a:	df 90       	pop	r13
-    181c:	cf 90       	pop	r12
-    181e:	bf 90       	pop	r11
-    1820:	af 90       	pop	r10
-    1822:	9f 90       	pop	r9
-    1824:	8f 90       	pop	r8
-    1826:	08 95       	ret
-
-00001828 <pio_util_send_packet>:
+0000174e <pio_util_send_packet>:
 
   return ubRecvResult;
 }
 
 uint8_t pio_util_send_packet(uint16_t size)
 {
-    1828:	ff 92       	push	r15
-    182a:	0f 93       	push	r16
-    182c:	1f 93       	push	r17
-    182e:	cf 93       	push	r28
-    1830:	df 93       	push	r29
-    1832:	ec 01       	movw	r28, r24
-extern void timerDelay100us(uint16_t uwCount);
-
-// ----- hardware timer -----
-
-// 16 bit hw timer with 4us resolution
-inline void timerReset(void) { TCNT1 = 0; }
-    1834:	04 e8       	ldi	r16, 0x84	; 132
-    1836:	10 e0       	ldi	r17, 0x00	; 0
-    1838:	f8 01       	movw	r30, r16
-    183a:	11 82       	std	Z+1, r1	; 0x01
-    183c:	10 82       	st	Z, r1
+    174e:	ff 92       	push	r15
+    1750:	0f 93       	push	r16
+    1752:	1f 93       	push	r17
+    1754:	cf 93       	push	r28
+    1756:	df 93       	push	r29
+    1758:	ec 01       	movw	r28, r24
+    175a:	04 e8       	ldi	r16, 0x84	; 132
+    175c:	10 e0       	ldi	r17, 0x00	; 0
+    175e:	f8 01       	movw	r30, r16
+    1760:	11 82       	std	Z+1, r1	; 0x01
+    1762:	10 82       	st	Z, r1
   timerReset();
   uint8_t result = enc28j60_send(g_pDataBuffer, size);
-    183e:	83 e7       	ldi	r24, 0x73	; 115
-    1840:	91 e0       	ldi	r25, 0x01	; 1
-    1842:	be 01       	movw	r22, r28
-    1844:	0e 94 cc 0c 	call	0x1998	; 0x1998 <enc28j60_send>
-    1848:	f8 2e       	mov	r15, r24
-inline uint16_t  timerGetState(void) { return TCNT1; }
-    184a:	f8 01       	movw	r30, r16
-    184c:	60 81       	ld	r22, Z
-    184e:	71 81       	ldd	r23, Z+1	; 0x01
+    1764:	83 e7       	ldi	r24, 0x73	; 115
+    1766:	91 e0       	ldi	r25, 0x01	; 1
+    1768:	be 01       	movw	r22, r28
+    176a:	0e 94 0c 0c 	call	0x1818	; 0x1818 <enc28j60_send>
+    176e:	f8 2e       	mov	r15, r24
+    1770:	f8 01       	movw	r30, r16
+    1772:	60 81       	ld	r22, Z
+    1774:	71 81       	ldd	r23, Z+1	; 0x01
   // NOTE(KaiN#7): Is it really that short?
   uint16_t delta = timerGetState();
 
   uint16_t rate = timerCalculateKbps(size, delta);
-    1850:	ce 01       	movw	r24, r28
-    1852:	0e 94 b7 01 	call	0x36e	; 0x36e <timerCalculateKbps>
-    1856:	ac 01       	movw	r20, r24
+    1776:	ce 01       	movw	r24, r28
+    1778:	0e 94 b7 01 	call	0x36e	; 0x36e <timerCalculateKbps>
+    177c:	ac 01       	movw	r20, r24
   if(result == PIO_OK) {
-    1858:	ff 20       	and	r15, r15
-    185a:	29 f4       	brne	.+10     	; 0x1866 <pio_util_send_packet+0x3e>
+    177e:	ff 20       	and	r15, r15
+    1780:	29 f4       	brne	.+10     	; 0x178c <pio_util_send_packet+0x3e>
     stats_update_ok(STATS_ID_PIO_TX, size, rate);
-    185c:	83 e0       	ldi	r24, 0x03	; 3
-    185e:	be 01       	movw	r22, r28
-    1860:	0e 94 fc 0c 	call	0x19f8	; 0x19f8 <stats_update_ok>
-    1864:	07 c0       	rjmp	.+14     	; 0x1874 <pio_util_send_packet+0x4c>
+    1782:	83 e0       	ldi	r24, 0x03	; 3
+    1784:	be 01       	movw	r22, r28
+    1786:	0e 94 3c 0c 	call	0x1878	; 0x1878 <stats_update_ok>
+    178a:	07 c0       	rjmp	.+14     	; 0x179a <pio_util_send_packet+0x4c>
   }
   else {
     stats_get(STATS_ID_PIO_TX)->err++;
-    1866:	e7 e8       	ldi	r30, 0x87	; 135
-    1868:	f7 e0       	ldi	r31, 0x07	; 7
-    186a:	80 81       	ld	r24, Z
-    186c:	91 81       	ldd	r25, Z+1	; 0x01
-    186e:	01 96       	adiw	r24, 0x01	; 1
-    1870:	91 83       	std	Z+1, r25	; 0x01
-    1872:	80 83       	st	Z, r24
+    178c:	e7 e8       	ldi	r30, 0x87	; 135
+    178e:	f7 e0       	ldi	r31, 0x07	; 7
+    1790:	80 81       	ld	r24, Z
+    1792:	91 81       	ldd	r25, Z+1	; 0x01
+    1794:	01 96       	adiw	r24, 0x01	; 1
+    1796:	91 83       	std	Z+1, r25	; 0x01
+    1798:	80 83       	st	Z, r24
   }
 
   return result;
 }
-    1874:	8f 2d       	mov	r24, r15
-    1876:	df 91       	pop	r29
-    1878:	cf 91       	pop	r28
-    187a:	1f 91       	pop	r17
-    187c:	0f 91       	pop	r16
-    187e:	ff 90       	pop	r15
-    1880:	08 95       	ret
+    179a:	8f 2d       	mov	r24, r15
+    179c:	df 91       	pop	r29
+    179e:	cf 91       	pop	r28
+    17a0:	1f 91       	pop	r17
+    17a2:	0f 91       	pop	r16
+    17a4:	ff 90       	pop	r15
+    17a6:	08 95       	ret
 
-00001882 <pio_util_handle_arp>:
-/**
- * Handles ARP request.
- * @param uwPacketSize Received ethernet frame size.
- */
-uint8_t pio_util_handle_arp(uint16_t uwPacketSize)
-{
-    1882:	ef 92       	push	r14
-    1884:	ff 92       	push	r15
-    1886:	0f 93       	push	r16
-    1888:	1f 93       	push	r17
-    188a:	cf 93       	push	r28
-    188c:	df 93       	push	r29
-    188e:	ec 01       	movw	r28, r24
-    1890:	8f e7       	ldi	r24, 0x7F	; 127
-    1892:	91 e0       	ldi	r25, 0x01	; 1
-    1894:	0e 94 54 06 	call	0xca8	; 0xca8 <net_get_word>
-	// Sanity check
-  uint16_t uwEtherType = eth_get_pkt_type(g_pDataBuffer);
-  if(uwEtherType != ETH_TYPE_ARP) {
-    1898:	86 50       	subi	r24, 0x06	; 6
-    189a:	98 40       	sbci	r25, 0x08	; 8
-    189c:	d9 f5       	brne	.+118    	; 0x1914 <pio_util_handle_arp+0x92>
-    return 0;
-  }
-  if(uwPacketSize <= ETH_HDR_SIZE) {
-    189e:	cf 30       	cpi	r28, 0x0F	; 15
-    18a0:	d1 05       	cpc	r29, r1
-    18a2:	c0 f1       	brcs	.+112    	; 0x1914 <pio_util_handle_arp+0x92>
-  // Payload buffer pointer & size
-  uint8_t *pPayloadBuffer = g_pDataBuffer + ETH_HDR_SIZE;
-  uint16_t uwPayloadSize = uwPacketSize - ETH_HDR_SIZE;
-
-  // Is it an ARP request?
-  if(
-    18a4:	be 01       	movw	r22, r28
-    18a6:	6e 50       	subi	r22, 0x0E	; 14
-    18a8:	70 40       	sbci	r23, 0x00	; 0
-    18aa:	81 e8       	ldi	r24, 0x81	; 129
-    18ac:	91 e0       	ldi	r25, 0x01	; 1
-    18ae:	0e 94 0b 06 	call	0xc16	; 0xc16 <arp_is_ipv4>
-    18b2:	88 23       	and	r24, r24
-    18b4:	89 f1       	breq	.+98     	; 0x1918 <pio_util_handle_arp+0x96>
-
-extern uint8_t arp_is_ipv4(const uint8_t *buf, uint16_t len);
-extern void arp_make_reply(uint8_t *buf, const uint8_t *my_mac, const uint8_t *my_ip);
-
-/* getter */
-inline uint16_t arp_get_op(const uint8_t *buf) { return net_get_word(buf + ARP_OFF_OP); }
-    18b6:	87 e8       	ldi	r24, 0x87	; 135
-    18b8:	91 e0       	ldi	r25, 0x01	; 1
-    18ba:	0e 94 54 06 	call	0xca8	; 0xca8 <net_get_word>
-    18be:	01 97       	sbiw	r24, 0x01	; 1
-    18c0:	59 f5       	brne	.+86     	; 0x1918 <pio_util_handle_arp+0x96>
-		arp_is_ipv4(pPayloadBuffer, uwPayloadSize) &&
-		arp_get_op(pPayloadBuffer) == ARP_REQUEST
-	) {
-    // Is plipbox being searched?
-    const uint8_t *pTargetIp = arp_get_tgt_ip(pPayloadBuffer);
-    if(net_compare_ip(pTargetIp, g_sConfig.test_ip)) {
-    18c2:	89 e9       	ldi	r24, 0x99	; 153
-    18c4:	91 e0       	ldi	r25, 0x01	; 1
-    18c6:	6b e5       	ldi	r22, 0x5B	; 91
-    18c8:	71 e0       	ldi	r23, 0x01	; 1
-    18ca:	0e 94 b6 06 	call	0xd6c	; 0xd6c <net_compare_ip>
-    18ce:	88 23       	and	r24, r24
-    18d0:	19 f1       	breq	.+70     	; 0x1918 <pio_util_handle_arp+0x96>
-      arp_make_reply(pPayloadBuffer, g_sConfig.mac_addr, g_sConfig.test_ip);
-    18d2:	01 e8       	ldi	r16, 0x81	; 129
-    18d4:	11 e0       	ldi	r17, 0x01	; 1
-    18d6:	0f 2e       	mov	r0, r31
-    18d8:	ff e4       	ldi	r31, 0x4F	; 79
-    18da:	ef 2e       	mov	r14, r31
-    18dc:	f1 e0       	ldi	r31, 0x01	; 1
-    18de:	ff 2e       	mov	r15, r31
-    18e0:	f0 2d       	mov	r31, r0
-    18e2:	a7 01       	movw	r20, r14
-    18e4:	44 5f       	subi	r20, 0xF4	; 244
-    18e6:	5f 4f       	sbci	r21, 0xFF	; 255
-    18e8:	c8 01       	movw	r24, r16
-    18ea:	b7 01       	movw	r22, r14
-    18ec:	0e 94 cd 05 	call	0xb9a	; 0xb9a <arp_make_reply>
-	net_put_word(pkt + ETH_OFF_TYPE, type);
-}
-
-inline void eth_make_bcast(uint8_t *pkt, const uint8_t *my_mac)
-{
-	net_copy_mac(net_bcast_mac, pkt + ETH_OFF_TGT_MAC);
-    18f0:	0e 50       	subi	r16, 0x0E	; 14
-    18f2:	10 40       	sbci	r17, 0x00	; 0
-    18f4:	80 e0       	ldi	r24, 0x00	; 0
-    18f6:	91 e0       	ldi	r25, 0x01	; 1
-    18f8:	b8 01       	movw	r22, r16
-    18fa:	0e 94 34 06 	call	0xc68	; 0xc68 <net_copy_mac>
-	net_copy_mac(my_mac, pkt + ETH_OFF_SRC_MAC);
-    18fe:	0a 5f       	subi	r16, 0xFA	; 250
-    1900:	1f 4f       	sbci	r17, 0xFF	; 255
-    1902:	c7 01       	movw	r24, r14
-    1904:	b8 01       	movw	r22, r16
-    1906:	0e 94 34 06 	call	0xc68	; 0xc68 <net_copy_mac>
-      eth_make_bcast(g_pDataBuffer, g_sConfig.mac_addr);
-      pio_util_send_packet(uwPacketSize);
-    190a:	ce 01       	movw	r24, r28
-    190c:	0e 94 14 0c 	call	0x1828	; 0x1828 <pio_util_send_packet>
-    1910:	81 e0       	ldi	r24, 0x01	; 1
-    1912:	03 c0       	rjmp	.+6      	; 0x191a <pio_util_handle_arp+0x98>
-    1914:	80 e0       	ldi	r24, 0x00	; 0
-    1916:	01 c0       	rjmp	.+2      	; 0x191a <pio_util_handle_arp+0x98>
-    1918:	81 e0       	ldi	r24, 0x01	; 1
-    }
-  }
-
-  return 1;
-}
-    191a:	df 91       	pop	r29
-    191c:	cf 91       	pop	r28
-    191e:	1f 91       	pop	r17
-    1920:	0f 91       	pop	r16
-    1922:	ff 90       	pop	r15
-    1924:	ef 90       	pop	r14
-    1926:	08 95       	ret
-
-00001928 <pio_util_recv_packet>:
+000017a8 <pio_util_recv_packet>:
 /**
  * Receives data from ENC28j60, calculates stats & does logging.
  * @param pDataSize Pointer to addr to be filled with read data size.
  */
 uint8_t pio_util_recv_packet(uint16_t *pDataSize)
 {
-    1928:	ff 92       	push	r15
-    192a:	0f 93       	push	r16
-    192c:	1f 93       	push	r17
-    192e:	cf 93       	push	r28
-    1930:	df 93       	push	r29
-    1932:	ec 01       	movw	r28, r24
-extern void timerDelay100us(uint16_t uwCount);
-
-// ----- hardware timer -----
-
-// 16 bit hw timer with 4us resolution
-inline void timerReset(void) { TCNT1 = 0; }
-    1934:	04 e8       	ldi	r16, 0x84	; 132
-    1936:	10 e0       	ldi	r17, 0x00	; 0
-    1938:	f8 01       	movw	r30, r16
-    193a:	11 82       	std	Z+1, r1	; 0x01
-    193c:	10 82       	st	Z, r1
+    17a8:	ff 92       	push	r15
+    17aa:	0f 93       	push	r16
+    17ac:	1f 93       	push	r17
+    17ae:	cf 93       	push	r28
+    17b0:	df 93       	push	r29
+    17b2:	ec 01       	movw	r28, r24
+    17b4:	04 e8       	ldi	r16, 0x84	; 132
+    17b6:	10 e0       	ldi	r17, 0x00	; 0
+    17b8:	f8 01       	movw	r30, r16
+    17ba:	11 82       	std	Z+1, r1	; 0x01
+    17bc:	10 82       	st	Z, r1
   // Fetch packet from ENC28j60, measure elapsed time
   timerReset();
   uint8_t ubRecvResult = enc28j60_recv(g_pDataBuffer, DATABUF_SIZE, pDataSize);
-    193e:	83 e7       	ldi	r24, 0x73	; 115
-    1940:	91 e0       	ldi	r25, 0x01	; 1
-    1942:	6a ee       	ldi	r22, 0xEA	; 234
-    1944:	75 e0       	ldi	r23, 0x05	; 5
-    1946:	ae 01       	movw	r20, r28
-    1948:	0e 94 ce 0c 	call	0x199c	; 0x199c <enc28j60_recv>
-    194c:	f8 2e       	mov	r15, r24
-inline uint16_t  timerGetState(void) { return TCNT1; }
-    194e:	f8 01       	movw	r30, r16
-    1950:	60 81       	ld	r22, Z
-    1952:	71 81       	ldd	r23, Z+1	; 0x01
+    17be:	83 e7       	ldi	r24, 0x73	; 115
+    17c0:	91 e0       	ldi	r25, 0x01	; 1
+    17c2:	6a ee       	ldi	r22, 0xEA	; 234
+    17c4:	75 e0       	ldi	r23, 0x05	; 5
+    17c6:	ae 01       	movw	r20, r28
+    17c8:	0e 94 0e 0c 	call	0x181c	; 0x181c <enc28j60_recv>
+    17cc:	f8 2e       	mov	r15, r24
+    17ce:	f8 01       	movw	r30, r16
+    17d0:	60 81       	ld	r22, Z
+    17d2:	71 81       	ldd	r23, Z+1	; 0x01
   uint16_t uwTimeDelta = timerGetState();
   uint16_t uwDataRate = timerCalculateKbps(*pDataSize, uwTimeDelta);
-    1954:	88 81       	ld	r24, Y
-    1956:	99 81       	ldd	r25, Y+1	; 0x01
-    1958:	0e 94 b7 01 	call	0x36e	; 0x36e <timerCalculateKbps>
-    195c:	ac 01       	movw	r20, r24
+    17d4:	88 81       	ld	r24, Y
+    17d6:	99 81       	ldd	r25, Y+1	; 0x01
+    17d8:	0e 94 b7 01 	call	0x36e	; 0x36e <timerCalculateKbps>
+    17dc:	ac 01       	movw	r20, r24
 
   if(ubRecvResult == PIO_OK) {
-    195e:	ff 20       	and	r15, r15
-    1960:	31 f4       	brne	.+12     	; 0x196e <pio_util_recv_packet+0x46>
+    17de:	ff 20       	and	r15, r15
+    17e0:	31 f4       	brne	.+12     	; 0x17ee <pio_util_recv_packet+0x46>
 		// Update stats - write new data size & rate
     stats_update_ok(STATS_ID_PIO_RX, *pDataSize, uwDataRate);
-    1962:	68 81       	ld	r22, Y
-    1964:	79 81       	ldd	r23, Y+1	; 0x01
-    1966:	82 e0       	ldi	r24, 0x02	; 2
-    1968:	0e 94 fc 0c 	call	0x19f8	; 0x19f8 <stats_update_ok>
-    196c:	07 c0       	rjmp	.+14     	; 0x197c <pio_util_recv_packet+0x54>
+    17e2:	68 81       	ld	r22, Y
+    17e4:	79 81       	ldd	r23, Y+1	; 0x01
+    17e6:	82 e0       	ldi	r24, 0x02	; 2
+    17e8:	0e 94 3c 0c 	call	0x1878	; 0x1878 <stats_update_ok>
+    17ec:	07 c0       	rjmp	.+14     	; 0x17fc <pio_util_recv_packet+0x54>
   }
   else {
 		// Update stats - increase error count
     stats_get(STATS_ID_PIO_RX)->err++;
-    196e:	eb e7       	ldi	r30, 0x7B	; 123
-    1970:	f7 e0       	ldi	r31, 0x07	; 7
-    1972:	80 81       	ld	r24, Z
-    1974:	91 81       	ldd	r25, Z+1	; 0x01
-    1976:	01 96       	adiw	r24, 0x01	; 1
-    1978:	91 83       	std	Z+1, r25	; 0x01
-    197a:	80 83       	st	Z, r24
+    17ee:	eb e7       	ldi	r30, 0x7B	; 123
+    17f0:	f7 e0       	ldi	r31, 0x07	; 7
+    17f2:	80 81       	ld	r24, Z
+    17f4:	91 81       	ldd	r25, Z+1	; 0x01
+    17f6:	01 96       	adiw	r24, 0x01	; 1
+    17f8:	91 83       	std	Z+1, r25	; 0x01
+    17fa:	80 83       	st	Z, r24
   }
 
   return ubRecvResult;
 }
-    197c:	8f 2d       	mov	r24, r15
-    197e:	df 91       	pop	r29
-    1980:	cf 91       	pop	r28
-    1982:	1f 91       	pop	r17
-    1984:	0f 91       	pop	r16
-    1986:	ff 90       	pop	r15
-    1988:	08 95       	ret
+    17fc:	8f 2d       	mov	r24, r15
+    17fe:	df 91       	pop	r29
+    1800:	cf 91       	pop	r28
+    1802:	1f 91       	pop	r17
+    1804:	0f 91       	pop	r16
+    1806:	ff 90       	pop	r15
+    1808:	08 95       	ret
 
-0000198a <enc28j60_init>:
+0000180a <enc28j60_init>:
 	if(result == PIO_OK) {
 		// NOTE: UART - rev=hex_byte(rev)
 	}
 
   return PIO_OK;
 }
-    198a:	80 e0       	ldi	r24, 0x00	; 0
-    198c:	08 95       	ret
+    180a:	80 e0       	ldi	r24, 0x00	; 0
+    180c:	08 95       	ret
 
-0000198e <enc28j60_exit>:
+0000180e <enc28j60_exit>:
 	#endif
 	// Moved note from pio_exit
 	// NOTE: UART - time_stamp_spc() pio: exit\r\n
   SetBank(ECON1);
   writeOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_RXEN);
 }
-    198e:	08 95       	ret
+    180e:	08 95       	ret
 
-00001990 <enc28j60_control>:
+00001810 <enc28j60_control>:
 			return PIO_OK;
 		}
     default:
       return PIO_NOT_FOUND;
   }
 }
-    1990:	80 e0       	ldi	r24, 0x00	; 0
-    1992:	08 95       	ret
+    1810:	80 e0       	ldi	r24, 0x00	; 0
+    1812:	08 95       	ret
 
-00001994 <enc28j60_status>:
+00001814 <enc28j60_status>:
       return PIO_OK;
     default:
       *value = 0;
       return PIO_NOT_FOUND;
   }
 }
-    1994:	80 e0       	ldi	r24, 0x00	; 0
-    1996:	08 95       	ret
+    1814:	80 e0       	ldi	r24, 0x00	; 0
+    1816:	08 95       	ret
 
-00001998 <enc28j60_send>:
+00001818 <enc28j60_send>:
 
   // initiate send
   writeReg(ETXND, TXSTART_INIT+size);
   writeOp(ENC28J60_BIT_FIELD_SET, ECON1, ECON1_TXRTS);
   return PIO_OK;
 }
-    1998:	80 e0       	ldi	r24, 0x00	; 0
-    199a:	08 95       	ret
+    1818:	80 e0       	ldi	r24, 0x00	; 0
+    181a:	08 95       	ret
 
-0000199c <enc28j60_recv>:
+0000181c <enc28j60_recv>:
   // read packet
   readBuf(len, data);
 
   next_pkt();
   return result;
 }
-    199c:	80 e0       	ldi	r24, 0x00	; 0
-    199e:	08 95       	ret
+    181c:	80 e0       	ldi	r24, 0x00	; 0
+    181e:	08 95       	ret
 
-000019a0 <enc28j60_has_recv>:
+00001820 <enc28j60_has_recv>:
 {
 	#ifdef NOENC
 	return 0;
 	#endif
   return readRegByte(EPKTCNT);
 }
-    19a0:	80 e0       	ldi	r24, 0x00	; 0
-    19a2:	08 95       	ret
+    1820:	80 e0       	ldi	r24, 0x00	; 0
+    1822:	08 95       	ret
 
-000019a4 <spi_init>:
+00001824 <spi_init>:
 #include "spi.h"
 
 void spi_init(void)
 {
 	// output: CS, MOSI, SCK, input: MISO, card detect, write protect
 	SPI_DDR |= SPI_SCK | SPI_MOSI | SD_CS | ETH_CS;
-    19a4:	e4 e2       	ldi	r30, 0x24	; 36
-    19a6:	f0 e0       	ldi	r31, 0x00	; 0
-    19a8:	80 81       	ld	r24, Z
-    19aa:	8e 62       	ori	r24, 0x2E	; 46
-    19ac:	80 83       	st	Z, r24
+    1824:	e4 e2       	ldi	r30, 0x24	; 36
+    1826:	f0 e0       	ldi	r31, 0x00	; 0
+    1828:	80 81       	ld	r24, Z
+    182a:	8e 62       	ori	r24, 0x2E	; 46
+    182c:	80 83       	st	Z, r24
 	SPI_DDR &= ~(SPI_MISO | SD_DETECT | SD_LOCK);
-    19ae:	80 81       	ld	r24, Z
-    19b0:	8e 76       	andi	r24, 0x6E	; 110
-    19b2:	80 83       	st	Z, r24
+    182e:	80 81       	ld	r24, Z
+    1830:	8e 76       	andi	r24, 0x6E	; 110
+    1832:	80 83       	st	Z, r24
 
 	// MOSI, SCK = 0, Eth CS = 1
 	SPI_PORT &= ~(SPI_MOSI | SPI_SCK);
-    19b4:	e5 e2       	ldi	r30, 0x25	; 37
-    19b6:	f0 e0       	ldi	r31, 0x00	; 0
-    19b8:	80 81       	ld	r24, Z
-    19ba:	87 7d       	andi	r24, 0xD7	; 215
-    19bc:	80 83       	st	Z, r24
+    1834:	e5 e2       	ldi	r30, 0x25	; 37
+    1836:	f0 e0       	ldi	r31, 0x00	; 0
+    1838:	80 81       	ld	r24, Z
+    183a:	87 7d       	andi	r24, 0xD7	; 215
+    183c:	80 83       	st	Z, r24
 	SPI_PORT |= ETH_CS;
-    19be:	80 81       	ld	r24, Z
-    19c0:	84 60       	ori	r24, 0x04	; 4
-    19c2:	80 83       	st	Z, r24
+    183e:	80 81       	ld	r24, Z
+    1840:	84 60       	ori	r24, 0x04	; 4
+    1842:	80 83       	st	Z, r24
 
   SPCR = _BV(SPE) | _BV(MSTR); // 8 MHz @ 16
-    19c4:	80 e5       	ldi	r24, 0x50	; 80
-    19c6:	8c bd       	out	0x2c, r24	; 44
+    1844:	80 e5       	ldi	r24, 0x50	; 80
+    1846:	8c bd       	out	0x2c, r24	; 44
 	SPSR = _BV(SPI2X);
-    19c8:	81 e0       	ldi	r24, 0x01	; 1
-    19ca:	8d bd       	out	0x2d, r24	; 45
+    1848:	81 e0       	ldi	r24, 0x01	; 1
+    184a:	8d bd       	out	0x2d, r24	; 45
 }
-    19cc:	08 95       	ret
+    184c:	08 95       	ret
 
-000019ce <stats_reset>:
+0000184e <stats_reset>:
 #include "base/uart.h"
 
 stats_t stats[STATS_ID_NUM];
 
 void stats_reset(void)
 {
-    19ce:	ed e5       	ldi	r30, 0x5D	; 93
-    19d0:	f7 e0       	ldi	r31, 0x07	; 7
+    184e:	ed e5       	ldi	r30, 0x5D	; 93
+    1850:	f7 e0       	ldi	r31, 0x07	; 7
   for(uint8_t i=0;i<STATS_ID_NUM;i++) {
-    19d2:	2d e8       	ldi	r18, 0x8D	; 141
-    19d4:	37 e0       	ldi	r19, 0x07	; 7
+    1852:	2d e8       	ldi	r18, 0x8D	; 141
+    1854:	37 e0       	ldi	r19, 0x07	; 7
     stats_t *s = &stats[i];
     s->bytes = 0;
-    19d6:	10 82       	st	Z, r1
-    19d8:	11 82       	std	Z+1, r1	; 0x01
-    19da:	12 82       	std	Z+2, r1	; 0x02
-    19dc:	13 82       	std	Z+3, r1	; 0x03
+    1856:	10 82       	st	Z, r1
+    1858:	11 82       	std	Z+1, r1	; 0x01
+    185a:	12 82       	std	Z+2, r1	; 0x02
+    185c:	13 82       	std	Z+3, r1	; 0x03
     s->cnt = 0;
-    19de:	15 82       	std	Z+5, r1	; 0x05
-    19e0:	14 82       	std	Z+4, r1	; 0x04
+    185e:	15 82       	std	Z+5, r1	; 0x05
+    1860:	14 82       	std	Z+4, r1	; 0x04
     s->err = 0;
-    19e2:	17 82       	std	Z+7, r1	; 0x07
-    19e4:	16 82       	std	Z+6, r1	; 0x06
+    1862:	17 82       	std	Z+7, r1	; 0x07
+    1864:	16 82       	std	Z+6, r1	; 0x06
     s->drop = 0;
-    19e6:	11 86       	std	Z+9, r1	; 0x09
-    19e8:	10 86       	std	Z+8, r1	; 0x08
+    1866:	11 86       	std	Z+9, r1	; 0x09
+    1868:	10 86       	std	Z+8, r1	; 0x08
     s->max_rate = 0;
-    19ea:	13 86       	std	Z+11, r1	; 0x0b
-    19ec:	12 86       	std	Z+10, r1	; 0x0a
-    19ee:	3c 96       	adiw	r30, 0x0c	; 12
+    186a:	13 86       	std	Z+11, r1	; 0x0b
+    186c:	12 86       	std	Z+10, r1	; 0x0a
+    186e:	3c 96       	adiw	r30, 0x0c	; 12
 
 stats_t stats[STATS_ID_NUM];
 
 void stats_reset(void)
 {
   for(uint8_t i=0;i<STATS_ID_NUM;i++) {
-    19f0:	e2 17       	cp	r30, r18
-    19f2:	f3 07       	cpc	r31, r19
-    19f4:	81 f7       	brne	.-32     	; 0x19d6 <stats_reset+0x8>
+    1870:	e2 17       	cp	r30, r18
+    1872:	f3 07       	cpc	r31, r19
+    1874:	81 f7       	brne	.-32     	; 0x1856 <stats_reset+0x8>
     s->cnt = 0;
     s->err = 0;
     s->drop = 0;
     s->max_rate = 0;
   }
 }
-    19f6:	08 95       	ret
+    1876:	08 95       	ret
 
-000019f8 <stats_update_ok>:
+00001878 <stats_update_ok>:
 
 void stats_update_ok(uint8_t id, uint16_t size, uint16_t rate)
 {
-    19f8:	0f 93       	push	r16
-    19fa:	1f 93       	push	r17
+    1878:	0f 93       	push	r16
+    187a:	1f 93       	push	r17
   stats_t *s = &stats[id];
-    19fc:	9c e0       	ldi	r25, 0x0C	; 12
-    19fe:	89 9f       	mul	r24, r25
-    1a00:	c0 01       	movw	r24, r0
-    1a02:	11 24       	eor	r1, r1
-    1a04:	fc 01       	movw	r30, r24
-    1a06:	e3 5a       	subi	r30, 0xA3	; 163
-    1a08:	f8 4f       	sbci	r31, 0xF8	; 248
+    187c:	9c e0       	ldi	r25, 0x0C	; 12
+    187e:	89 9f       	mul	r24, r25
+    1880:	c0 01       	movw	r24, r0
+    1882:	11 24       	eor	r1, r1
+    1884:	fc 01       	movw	r30, r24
+    1886:	e3 5a       	subi	r30, 0xA3	; 163
+    1888:	f8 4f       	sbci	r31, 0xF8	; 248
   s->cnt++;
-    1a0a:	84 81       	ldd	r24, Z+4	; 0x04
-    1a0c:	95 81       	ldd	r25, Z+5	; 0x05
-    1a0e:	01 96       	adiw	r24, 0x01	; 1
-    1a10:	95 83       	std	Z+5, r25	; 0x05
-    1a12:	84 83       	std	Z+4, r24	; 0x04
+    188a:	84 81       	ldd	r24, Z+4	; 0x04
+    188c:	95 81       	ldd	r25, Z+5	; 0x05
+    188e:	01 96       	adiw	r24, 0x01	; 1
+    1890:	95 83       	std	Z+5, r25	; 0x05
+    1892:	84 83       	std	Z+4, r24	; 0x04
   s->bytes += size;
-    1a14:	8b 01       	movw	r16, r22
-    1a16:	20 e0       	ldi	r18, 0x00	; 0
-    1a18:	30 e0       	ldi	r19, 0x00	; 0
-    1a1a:	80 81       	ld	r24, Z
-    1a1c:	91 81       	ldd	r25, Z+1	; 0x01
-    1a1e:	a2 81       	ldd	r26, Z+2	; 0x02
-    1a20:	b3 81       	ldd	r27, Z+3	; 0x03
-    1a22:	80 0f       	add	r24, r16
-    1a24:	91 1f       	adc	r25, r17
-    1a26:	a2 1f       	adc	r26, r18
-    1a28:	b3 1f       	adc	r27, r19
-    1a2a:	80 83       	st	Z, r24
-    1a2c:	91 83       	std	Z+1, r25	; 0x01
-    1a2e:	a2 83       	std	Z+2, r26	; 0x02
-    1a30:	b3 83       	std	Z+3, r27	; 0x03
+    1894:	8b 01       	movw	r16, r22
+    1896:	20 e0       	ldi	r18, 0x00	; 0
+    1898:	30 e0       	ldi	r19, 0x00	; 0
+    189a:	80 81       	ld	r24, Z
+    189c:	91 81       	ldd	r25, Z+1	; 0x01
+    189e:	a2 81       	ldd	r26, Z+2	; 0x02
+    18a0:	b3 81       	ldd	r27, Z+3	; 0x03
+    18a2:	80 0f       	add	r24, r16
+    18a4:	91 1f       	adc	r25, r17
+    18a6:	a2 1f       	adc	r26, r18
+    18a8:	b3 1f       	adc	r27, r19
+    18aa:	80 83       	st	Z, r24
+    18ac:	91 83       	std	Z+1, r25	; 0x01
+    18ae:	a2 83       	std	Z+2, r26	; 0x02
+    18b0:	b3 83       	std	Z+3, r27	; 0x03
   if(rate > s->max_rate) {
-    1a32:	82 85       	ldd	r24, Z+10	; 0x0a
-    1a34:	93 85       	ldd	r25, Z+11	; 0x0b
-    1a36:	84 17       	cp	r24, r20
-    1a38:	95 07       	cpc	r25, r21
-    1a3a:	10 f4       	brcc	.+4      	; 0x1a40 <stats_update_ok+0x48>
+    18b2:	82 85       	ldd	r24, Z+10	; 0x0a
+    18b4:	93 85       	ldd	r25, Z+11	; 0x0b
+    18b6:	84 17       	cp	r24, r20
+    18b8:	95 07       	cpc	r25, r21
+    18ba:	10 f4       	brcc	.+4      	; 0x18c0 <stats_update_ok+0x48>
     s->max_rate = rate;
-    1a3c:	53 87       	std	Z+11, r21	; 0x0b
-    1a3e:	42 87       	std	Z+10, r20	; 0x0a
+    18bc:	53 87       	std	Z+11, r21	; 0x0b
+    18be:	42 87       	std	Z+10, r20	; 0x0a
   }
 }
-    1a40:	1f 91       	pop	r17
-    1a42:	0f 91       	pop	r16
-    1a44:	08 95       	ret
+    18c0:	1f 91       	pop	r17
+    18c2:	0f 91       	pop	r16
+    18c4:	08 95       	ret
 
-00001a46 <dump_line>:
+000018c6 <dump_line>:
       break;
     default:
 			// NOTE: UART - ?
       break;
   }
 }
-    1a46:	08 95       	ret
+    18c6:	08 95       	ret
 
-00001a48 <dump_header>:
+000018c8 <dump_header>:
 
 static void dump_header(void)
 {
 	// NOTE: UART - cnt  bytes    err  drop rate\r\n
 }
-    1a48:	08 95       	ret
+    18c8:	08 95       	ret
 
-00001a4a <stats_dump_all>:
+000018ca <stats_dump_all>:
 {
   dump_header();
   for(uint8_t i=0;i<STATS_ID_NUM;i++) {
     dump_line(i);
   }
 }
-    1a4a:	08 95       	ret
+    18ca:	08 95       	ret
 
-00001a4c <stats_dump>:
+000018cc <stats_dump>:
   }
   if(pio) {
     dump_line(STATS_ID_PIO_RX);
     dump_line(STATS_ID_PIO_TX);
   }
 }
-    1a4c:	08 95       	ret
+    18cc:	08 95       	ret
 
-00001a4e <__mulsi3>:
-    1a4e:	62 9f       	mul	r22, r18
-    1a50:	d0 01       	movw	r26, r0
-    1a52:	73 9f       	mul	r23, r19
-    1a54:	f0 01       	movw	r30, r0
-    1a56:	82 9f       	mul	r24, r18
-    1a58:	e0 0d       	add	r30, r0
-    1a5a:	f1 1d       	adc	r31, r1
-    1a5c:	64 9f       	mul	r22, r20
-    1a5e:	e0 0d       	add	r30, r0
-    1a60:	f1 1d       	adc	r31, r1
-    1a62:	92 9f       	mul	r25, r18
-    1a64:	f0 0d       	add	r31, r0
-    1a66:	83 9f       	mul	r24, r19
-    1a68:	f0 0d       	add	r31, r0
-    1a6a:	74 9f       	mul	r23, r20
-    1a6c:	f0 0d       	add	r31, r0
-    1a6e:	65 9f       	mul	r22, r21
-    1a70:	f0 0d       	add	r31, r0
-    1a72:	99 27       	eor	r25, r25
-    1a74:	72 9f       	mul	r23, r18
-    1a76:	b0 0d       	add	r27, r0
-    1a78:	e1 1d       	adc	r30, r1
-    1a7a:	f9 1f       	adc	r31, r25
-    1a7c:	63 9f       	mul	r22, r19
-    1a7e:	b0 0d       	add	r27, r0
-    1a80:	e1 1d       	adc	r30, r1
-    1a82:	f9 1f       	adc	r31, r25
-    1a84:	bd 01       	movw	r22, r26
-    1a86:	cf 01       	movw	r24, r30
-    1a88:	11 24       	eor	r1, r1
-    1a8a:	08 95       	ret
+000018ce <__mulsi3>:
+    18ce:	62 9f       	mul	r22, r18
+    18d0:	d0 01       	movw	r26, r0
+    18d2:	73 9f       	mul	r23, r19
+    18d4:	f0 01       	movw	r30, r0
+    18d6:	82 9f       	mul	r24, r18
+    18d8:	e0 0d       	add	r30, r0
+    18da:	f1 1d       	adc	r31, r1
+    18dc:	64 9f       	mul	r22, r20
+    18de:	e0 0d       	add	r30, r0
+    18e0:	f1 1d       	adc	r31, r1
+    18e2:	92 9f       	mul	r25, r18
+    18e4:	f0 0d       	add	r31, r0
+    18e6:	83 9f       	mul	r24, r19
+    18e8:	f0 0d       	add	r31, r0
+    18ea:	74 9f       	mul	r23, r20
+    18ec:	f0 0d       	add	r31, r0
+    18ee:	65 9f       	mul	r22, r21
+    18f0:	f0 0d       	add	r31, r0
+    18f2:	99 27       	eor	r25, r25
+    18f4:	72 9f       	mul	r23, r18
+    18f6:	b0 0d       	add	r27, r0
+    18f8:	e1 1d       	adc	r30, r1
+    18fa:	f9 1f       	adc	r31, r25
+    18fc:	63 9f       	mul	r22, r19
+    18fe:	b0 0d       	add	r27, r0
+    1900:	e1 1d       	adc	r30, r1
+    1902:	f9 1f       	adc	r31, r25
+    1904:	bd 01       	movw	r22, r26
+    1906:	cf 01       	movw	r24, r30
+    1908:	11 24       	eor	r1, r1
+    190a:	08 95       	ret
 
-00001a8c <__udivmodqi4>:
-    1a8c:	99 1b       	sub	r25, r25
-    1a8e:	79 e0       	ldi	r23, 0x09	; 9
-    1a90:	04 c0       	rjmp	.+8      	; 0x1a9a <__udivmodqi4_ep>
+0000190c <__udivmodqi4>:
+    190c:	99 1b       	sub	r25, r25
+    190e:	79 e0       	ldi	r23, 0x09	; 9
+    1910:	04 c0       	rjmp	.+8      	; 0x191a <__udivmodqi4_ep>
 
-00001a92 <__udivmodqi4_loop>:
-    1a92:	99 1f       	adc	r25, r25
-    1a94:	96 17       	cp	r25, r22
-    1a96:	08 f0       	brcs	.+2      	; 0x1a9a <__udivmodqi4_ep>
-    1a98:	96 1b       	sub	r25, r22
+00001912 <__udivmodqi4_loop>:
+    1912:	99 1f       	adc	r25, r25
+    1914:	96 17       	cp	r25, r22
+    1916:	08 f0       	brcs	.+2      	; 0x191a <__udivmodqi4_ep>
+    1918:	96 1b       	sub	r25, r22
 
-00001a9a <__udivmodqi4_ep>:
-    1a9a:	88 1f       	adc	r24, r24
-    1a9c:	7a 95       	dec	r23
-    1a9e:	c9 f7       	brne	.-14     	; 0x1a92 <__udivmodqi4_loop>
-    1aa0:	80 95       	com	r24
-    1aa2:	08 95       	ret
+0000191a <__udivmodqi4_ep>:
+    191a:	88 1f       	adc	r24, r24
+    191c:	7a 95       	dec	r23
+    191e:	c9 f7       	brne	.-14     	; 0x1912 <__udivmodqi4_loop>
+    1920:	80 95       	com	r24
+    1922:	08 95       	ret
 
-00001aa4 <__udivmodsi4>:
-    1aa4:	a1 e2       	ldi	r26, 0x21	; 33
-    1aa6:	1a 2e       	mov	r1, r26
-    1aa8:	aa 1b       	sub	r26, r26
-    1aaa:	bb 1b       	sub	r27, r27
-    1aac:	fd 01       	movw	r30, r26
-    1aae:	0d c0       	rjmp	.+26     	; 0x1aca <__udivmodsi4_ep>
+00001924 <__udivmodsi4>:
+    1924:	a1 e2       	ldi	r26, 0x21	; 33
+    1926:	1a 2e       	mov	r1, r26
+    1928:	aa 1b       	sub	r26, r26
+    192a:	bb 1b       	sub	r27, r27
+    192c:	fd 01       	movw	r30, r26
+    192e:	0d c0       	rjmp	.+26     	; 0x194a <__udivmodsi4_ep>
 
-00001ab0 <__udivmodsi4_loop>:
-    1ab0:	aa 1f       	adc	r26, r26
-    1ab2:	bb 1f       	adc	r27, r27
-    1ab4:	ee 1f       	adc	r30, r30
-    1ab6:	ff 1f       	adc	r31, r31
-    1ab8:	a2 17       	cp	r26, r18
-    1aba:	b3 07       	cpc	r27, r19
-    1abc:	e4 07       	cpc	r30, r20
-    1abe:	f5 07       	cpc	r31, r21
-    1ac0:	20 f0       	brcs	.+8      	; 0x1aca <__udivmodsi4_ep>
-    1ac2:	a2 1b       	sub	r26, r18
-    1ac4:	b3 0b       	sbc	r27, r19
-    1ac6:	e4 0b       	sbc	r30, r20
-    1ac8:	f5 0b       	sbc	r31, r21
+00001930 <__udivmodsi4_loop>:
+    1930:	aa 1f       	adc	r26, r26
+    1932:	bb 1f       	adc	r27, r27
+    1934:	ee 1f       	adc	r30, r30
+    1936:	ff 1f       	adc	r31, r31
+    1938:	a2 17       	cp	r26, r18
+    193a:	b3 07       	cpc	r27, r19
+    193c:	e4 07       	cpc	r30, r20
+    193e:	f5 07       	cpc	r31, r21
+    1940:	20 f0       	brcs	.+8      	; 0x194a <__udivmodsi4_ep>
+    1942:	a2 1b       	sub	r26, r18
+    1944:	b3 0b       	sbc	r27, r19
+    1946:	e4 0b       	sbc	r30, r20
+    1948:	f5 0b       	sbc	r31, r21
 
-00001aca <__udivmodsi4_ep>:
-    1aca:	66 1f       	adc	r22, r22
-    1acc:	77 1f       	adc	r23, r23
-    1ace:	88 1f       	adc	r24, r24
-    1ad0:	99 1f       	adc	r25, r25
-    1ad2:	1a 94       	dec	r1
-    1ad4:	69 f7       	brne	.-38     	; 0x1ab0 <__udivmodsi4_loop>
-    1ad6:	60 95       	com	r22
-    1ad8:	70 95       	com	r23
-    1ada:	80 95       	com	r24
-    1adc:	90 95       	com	r25
-    1ade:	9b 01       	movw	r18, r22
-    1ae0:	ac 01       	movw	r20, r24
-    1ae2:	bd 01       	movw	r22, r26
-    1ae4:	cf 01       	movw	r24, r30
-    1ae6:	08 95       	ret
+0000194a <__udivmodsi4_ep>:
+    194a:	66 1f       	adc	r22, r22
+    194c:	77 1f       	adc	r23, r23
+    194e:	88 1f       	adc	r24, r24
+    1950:	99 1f       	adc	r25, r25
+    1952:	1a 94       	dec	r1
+    1954:	69 f7       	brne	.-38     	; 0x1930 <__udivmodsi4_loop>
+    1956:	60 95       	com	r22
+    1958:	70 95       	com	r23
+    195a:	80 95       	com	r24
+    195c:	90 95       	com	r25
+    195e:	9b 01       	movw	r18, r22
+    1960:	ac 01       	movw	r20, r24
+    1962:	bd 01       	movw	r22, r26
+    1964:	cf 01       	movw	r24, r30
+    1966:	08 95       	ret
 
-00001ae8 <__eerd_block_m328p>:
-    1ae8:	dc 01       	movw	r26, r24
-    1aea:	cb 01       	movw	r24, r22
+00001968 <__eerd_block_m328p>:
+    1968:	dc 01       	movw	r26, r24
+    196a:	cb 01       	movw	r24, r22
 
-00001aec <__eerd_blraw_m328p>:
-    1aec:	fc 01       	movw	r30, r24
-    1aee:	f9 99       	sbic	0x1f, 1	; 31
-    1af0:	fe cf       	rjmp	.-4      	; 0x1aee <__eerd_blraw_m328p+0x2>
-    1af2:	06 c0       	rjmp	.+12     	; 0x1b00 <__eerd_blraw_m328p+0x14>
-    1af4:	f2 bd       	out	0x22, r31	; 34
-    1af6:	e1 bd       	out	0x21, r30	; 33
-    1af8:	f8 9a       	sbi	0x1f, 0	; 31
-    1afa:	31 96       	adiw	r30, 0x01	; 1
-    1afc:	00 b4       	in	r0, 0x20	; 32
-    1afe:	0d 92       	st	X+, r0
-    1b00:	41 50       	subi	r20, 0x01	; 1
-    1b02:	50 40       	sbci	r21, 0x00	; 0
-    1b04:	b8 f7       	brcc	.-18     	; 0x1af4 <__eerd_blraw_m328p+0x8>
-    1b06:	08 95       	ret
+0000196c <__eerd_blraw_m328p>:
+    196c:	fc 01       	movw	r30, r24
+    196e:	f9 99       	sbic	0x1f, 1	; 31
+    1970:	fe cf       	rjmp	.-4      	; 0x196e <__eerd_blraw_m328p+0x2>
+    1972:	06 c0       	rjmp	.+12     	; 0x1980 <__eerd_blraw_m328p+0x14>
+    1974:	f2 bd       	out	0x22, r31	; 34
+    1976:	e1 bd       	out	0x21, r30	; 33
+    1978:	f8 9a       	sbi	0x1f, 0	; 31
+    197a:	31 96       	adiw	r30, 0x01	; 1
+    197c:	00 b4       	in	r0, 0x20	; 32
+    197e:	0d 92       	st	X+, r0
+    1980:	41 50       	subi	r20, 0x01	; 1
+    1982:	50 40       	sbci	r21, 0x00	; 0
+    1984:	b8 f7       	brcc	.-18     	; 0x1974 <__eerd_blraw_m328p+0x8>
+    1986:	08 95       	ret
 
-00001b08 <__eerd_word_m328p>:
-    1b08:	a8 e1       	ldi	r26, 0x18	; 24
-    1b0a:	b0 e0       	ldi	r27, 0x00	; 0
-    1b0c:	42 e0       	ldi	r20, 0x02	; 2
-    1b0e:	50 e0       	ldi	r21, 0x00	; 0
-    1b10:	0c 94 76 0d 	jmp	0x1aec	; 0x1aec <__eerd_blraw_m328p>
+00001988 <__eerd_word_m328p>:
+    1988:	a8 e1       	ldi	r26, 0x18	; 24
+    198a:	b0 e0       	ldi	r27, 0x00	; 0
+    198c:	42 e0       	ldi	r20, 0x02	; 2
+    198e:	50 e0       	ldi	r21, 0x00	; 0
+    1990:	0c 94 b6 0c 	jmp	0x196c	; 0x196c <__eerd_blraw_m328p>
 
-00001b14 <__eewr_block_m328p>:
-    1b14:	dc 01       	movw	r26, r24
-    1b16:	cb 01       	movw	r24, r22
-    1b18:	03 c0       	rjmp	.+6      	; 0x1b20 <__eewr_block_m328p+0xc>
-    1b1a:	2d 91       	ld	r18, X+
-    1b1c:	0e 94 95 0d 	call	0x1b2a	; 0x1b2a <__eewr_r18_m328p>
-    1b20:	41 50       	subi	r20, 0x01	; 1
-    1b22:	50 40       	sbci	r21, 0x00	; 0
-    1b24:	d0 f7       	brcc	.-12     	; 0x1b1a <__eewr_block_m328p+0x6>
-    1b26:	08 95       	ret
+00001994 <__eewr_block_m328p>:
+    1994:	dc 01       	movw	r26, r24
+    1996:	cb 01       	movw	r24, r22
+    1998:	03 c0       	rjmp	.+6      	; 0x19a0 <__eewr_block_m328p+0xc>
+    199a:	2d 91       	ld	r18, X+
+    199c:	0e 94 d5 0c 	call	0x19aa	; 0x19aa <__eewr_r18_m328p>
+    19a0:	41 50       	subi	r20, 0x01	; 1
+    19a2:	50 40       	sbci	r21, 0x00	; 0
+    19a4:	d0 f7       	brcc	.-12     	; 0x199a <__eewr_block_m328p+0x6>
+    19a6:	08 95       	ret
 
-00001b28 <__eewr_byte_m328p>:
-    1b28:	26 2f       	mov	r18, r22
+000019a8 <__eewr_byte_m328p>:
+    19a8:	26 2f       	mov	r18, r22
 
-00001b2a <__eewr_r18_m328p>:
-    1b2a:	f9 99       	sbic	0x1f, 1	; 31
-    1b2c:	fe cf       	rjmp	.-4      	; 0x1b2a <__eewr_r18_m328p>
-    1b2e:	1f ba       	out	0x1f, r1	; 31
-    1b30:	92 bd       	out	0x22, r25	; 34
-    1b32:	81 bd       	out	0x21, r24	; 33
-    1b34:	20 bd       	out	0x20, r18	; 32
-    1b36:	0f b6       	in	r0, 0x3f	; 63
-    1b38:	f8 94       	cli
-    1b3a:	fa 9a       	sbi	0x1f, 2	; 31
-    1b3c:	f9 9a       	sbi	0x1f, 1	; 31
-    1b3e:	0f be       	out	0x3f, r0	; 63
-    1b40:	01 96       	adiw	r24, 0x01	; 1
-    1b42:	08 95       	ret
+000019aa <__eewr_r18_m328p>:
+    19aa:	f9 99       	sbic	0x1f, 1	; 31
+    19ac:	fe cf       	rjmp	.-4      	; 0x19aa <__eewr_r18_m328p>
+    19ae:	1f ba       	out	0x1f, r1	; 31
+    19b0:	92 bd       	out	0x22, r25	; 34
+    19b2:	81 bd       	out	0x21, r24	; 33
+    19b4:	20 bd       	out	0x20, r18	; 32
+    19b6:	0f b6       	in	r0, 0x3f	; 63
+    19b8:	f8 94       	cli
+    19ba:	fa 9a       	sbi	0x1f, 2	; 31
+    19bc:	f9 9a       	sbi	0x1f, 1	; 31
+    19be:	0f be       	out	0x3f, r0	; 63
+    19c0:	01 96       	adiw	r24, 0x01	; 1
+    19c2:	08 95       	ret
 
-00001b44 <__eewr_word_m328p>:
-    1b44:	0e 94 94 0d 	call	0x1b28	; 0x1b28 <__eewr_byte_m328p>
-    1b48:	27 2f       	mov	r18, r23
-    1b4a:	0c 94 95 0d 	jmp	0x1b2a	; 0x1b2a <__eewr_r18_m328p>
+000019c4 <__eewr_word_m328p>:
+    19c4:	0e 94 d4 0c 	call	0x19a8	; 0x19a8 <__eewr_byte_m328p>
+    19c8:	27 2f       	mov	r18, r23
+    19ca:	0c 94 d5 0c 	jmp	0x19aa	; 0x19aa <__eewr_r18_m328p>
 
-00001b4e <_exit>:
-    1b4e:	f8 94       	cli
+000019ce <_exit>:
+    19ce:	f8 94       	cli
 
-00001b50 <__stop_program>:
-    1b50:	ff cf       	rjmp	.-2      	; 0x1b50 <__stop_program>
+000019d0 <__stop_program>:
+    19d0:	ff cf       	rjmp	.-2      	; 0x19d0 <__stop_program>

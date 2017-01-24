@@ -38,18 +38,5 @@ extern uint8_t pio_util_recv_packet(uint16_t *size);
 */
 extern uint8_t pio_util_send_packet(uint16_t size);
 
-/* check current packet in pkt_buf if its an ARP packet.
-   return 1 if its ARP.
-   if its an ARP request for me then reply it and
-   create a reply packet in pkt_buf first.
-*/
-extern uint8_t pio_util_handle_arp(uint16_t size);
-
-/* check if its an incoming UDP test packet.
-   if yes prepare reply packet in pkt_buf but do
-   NOT send it.
-   returns 1 if test packet was handled.
-*/
-extern uint8_t pio_util_handle_udp_test(uint16_t size);
 
 #endif

@@ -22,12 +22,6 @@
 
 #include <stdint.h>
 
-/// Version macros
-#define VERSION_MAJ "0"
-#define VERSION_MIN "6"
-#define VERSION VERSION_MAJ "." VERSION_MIN
-#define BUILD_DATE "BUILD_DATE"
-
 /// CPU cycle count per microsecond
 #define F_CPU 20000000UL
 #define CYCLES_PER_US ((F_CPU+500000)/1000000)
