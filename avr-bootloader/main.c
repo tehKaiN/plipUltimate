@@ -77,6 +77,10 @@ void blink(uint8_t ubCount) {
 }
 
 /**
+ * Exits bootloader with given status code.
+ * Status code is indicated by series of LED blinks of given length.
+ * @param ubCode Status code.
+ */
  * Exits bootloader with given result code.
  * Result code is indicated by status LED.
  * @param ubCode Result code.
@@ -191,7 +195,7 @@ int main(void) {
 
 		// Abort if request is not flash-related
 		if(ubRequest != CMD_SEND_BOOT)
-			bootExit(4); // 4
+			bootExit(4);
 
 		// Read page from Ami
 		if(!bootReadPageFromAmi())
