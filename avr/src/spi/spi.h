@@ -24,24 +24,36 @@
 #include "../global.h"
 #include "../pinout.h"
 
-extern void spi_init(void);
+extern void spiInit(void);
 
-inline void spi_out(uint8_t data)
-{
+inline void spiWriteByte(uint8_t data) {
   SPDR = data;
   while (!(SPSR&(1<<SPIF)));
 }
 
-inline uint8_t spi_in(void)
-{
+inline uint8_t spiReadByte(void) {
   SPDR = 0x00;
   while (!(SPSR&(1<<SPIF)));
   return SPDR;
 }
 
-inline void spi_enable_eth(void)  {SPI_PORT &= ~ETH_CS;}
-inline void spi_disable_eth(void) {SPI_PORT |= ETH_CS;}
-inline void spi_enable_sd(void)   {SPI_PORT &= ~SD_CS;}
-inline void spi_disable_sd(void)  {SPI_PORT |= SD_CS;}
+inline void spiEnableEth(void) {
+	SPI_PORT |= SD_CS;
+	SPI_PORT &= ~ETH_CS;
+}
+inline void spiDisableEth(void) {
+	SPI_PORT |= ETH_CS;
+}
+inline void spiEnableSd(void) {
+	SPI_PORT |= ETH_CS;
+	SPI_PORT &= ~SD_CS;
+}
+inline void spiDisableSd(void) {
+	SPI_PORT |= SD_CS;
+}
+inline void spiDisableAll(void) {
+	SPI_PORT |= ETH_CS;
+	SPI_PORT |= SD_CS;
+}
 
 #endif

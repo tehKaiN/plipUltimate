@@ -259,12 +259,12 @@ static uint8_t readOp (uint8_t op, uint8_t address) {
 	#ifdef NOENC
 	return 0;
 	#endif
-	spi_enable_eth();
-	spi_out(op | (address & ADDR_MASK));
+	spiEnableEth();
+	spiWriteByte(op | (address & ADDR_MASK));
 	if (address & 0x80)
-		spi_out(0x00);
-	uint8_t result = spi_in();
-	spi_disable_eth();
+		spiWriteByte(0x00);
+	uint8_t result = spiReadByte();
+	spiDisableEth();
 	return result;
 }
 
@@ -272,22 +272,22 @@ static void writeOp (uint8_t op, uint8_t address, uint8_t data) {
 	#ifdef NOENC
 	return;
 	#endif
-	spi_enable_eth();
-	spi_out(op | (address & ADDR_MASK));
-	spi_out(data);
-	spi_disable_eth();
+	spiEnableEth();
+	spiWriteByte(op | (address & ADDR_MASK));
+	spiWriteByte(data);
+	spiDisableEth();
 }
 
 static void readBuf(uint16_t len, uint8_t* data) {
 	#ifdef NOENC
 	return;
 	#endif
-	spi_enable_eth();
-	spi_out(ENC28J60_READ_BUF_MEM);
+	spiEnableEth();
+	spiWriteByte(ENC28J60_READ_BUF_MEM);
 	while (len--) {
-		*data++ = spi_in();
+		*data++ = spiReadByte();
 	}
-	spi_disable_eth();
+	spiDisableEth();
 }
 
 static void SetBank (uint8_t address) {
@@ -380,8 +380,9 @@ uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
 	#ifdef NOENC
 	return 0;
 	#endif
-  spi_init();
-  spi_disable_eth();
+
+  spiInit();
+  spiDisableEth();
 
   is_full_duplex = (flags & PIO_INIT_FULL_DUPLEX) == PIO_INIT_FULL_DUPLEX;
 
@@ -566,12 +567,12 @@ uint8_t enc28j60_send(const uint8_t *data, uint16_t size)
 
   // fill buffer
   uint16_t num = size;
-  spi_enable_eth(),
-  spi_out(ENC28J60_WRITE_BUF_MEM);
+  spiEnableEth(),
+  spiWriteByte(ENC28J60_WRITE_BUF_MEM);
   while(num--) {
-    spi_out(*data++);
+    spiWriteByte(*data++);
   }
-  spi_disable_eth();
+  spiDisableEth();
 
   // wait for tx ready
   while (readOp(ENC28J60_READ_CTRL_REG, ECON1) & ECON1_TXRTS)
@@ -695,7 +696,7 @@ uint8_t enc28j60_do_BIST ( void )
 	#define RANDOM_RACE		0b1100
 
 // init
-    spi_disable_eth();
+    spiDisableEth();
 
     writeOp(ENC28J60_SOFT_RESET, 0, ENC28J60_SOFT_RESET);
     _delay_ms(2); // errata B7/2
