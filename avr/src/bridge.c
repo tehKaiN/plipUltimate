@@ -72,7 +72,7 @@ static void bridgeCommOnline(const uint8_t *buf)
   if(!net_compare_mac(g_sConfig.mac_addr, src_mac)) {
     // update mac param and save
     net_copy_mac(src_mac, g_sConfig.mac_addr);
-    param_save();
+    configSaveToRom();
 
     // re-configure PIO
     enc28j60_exit();

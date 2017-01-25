@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifndef _PARAM_H
-#define _PARAM_H
+#ifndef _CONFIG_H
+#define _CONFIG_H
 
 #include "global.h"
 
@@ -43,19 +43,17 @@ typedef struct _tConfig {
 extern tConfig g_sConfig;
 
 // param result
-#define PARAM_OK                  0
-#define PARAM_EEPROM_NOT_READY    1
-#define PARAM_EEPROM_CRC_MISMATCH 2
+#define CONFIG_OK                  0
+#define CONFIG_EEPROM_NOT_READY    1
+#define CONFIG_EEPROM_CRC_MISMATCH 2
 
 // init parameters. try to load from eeprom or use default
-void param_init(void);
+void configInit(void);
 // save param to eeprom (returns param result)
-uint8_t param_save(void);
+uint8_t configSaveToRom(void);
 // load param from eeprom (returns param result)
-uint8_t param_load(void);
+uint8_t configLoadFromRom(void);
 // reset param
-void param_reset(void);
-// show params
-void param_dump(void);
+void configReset(void);
 
-#endif
+#endif // _CONFIG_H

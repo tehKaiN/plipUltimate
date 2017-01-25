@@ -93,7 +93,7 @@ static void cmdSetConfig(void) {
 
 		// Update ROM config
 		if(g_pDataBuffer[1] == WRITE_TYPE_DEFAULT) {
-			if(param_save())
+			if(configSaveToRom())
 				ubResult |= 0b100;
 		}
 

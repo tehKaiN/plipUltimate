@@ -51,8 +51,7 @@ static const tConfig PROGMEM sc_sDefaultConfig = {
 };
 
 // build check sum for parameter block
-static uint16_t calc_crc16(tConfig *p)
-{
+static uint16_t configCalcCrc16(tConfig *p) {
   uint16_t crc16 = 0xffff;
   uint8_t *data = (uint8_t *)p;
   uint16_t i;
@@ -63,44 +62,40 @@ static uint16_t calc_crc16(tConfig *p)
   return crc16;
 }
 
-uint8_t param_save(void)
-{
+uint8_t configSaveToRom(void) {
   // check that eeprom is writable
   if(!eeprom_is_ready())
-    return PARAM_EEPROM_NOT_READY;
+    return CONFIG_EEPROM_NOT_READY;
 
   // write current param to eeprom
   eeprom_write_block(&g_sConfig,&s_sEepromConfig,sizeof(tConfig));
 
   // calc current parameter crc
-  uint16_t crc16 = calc_crc16(&g_sConfig);
+  uint16_t crc16 = configCalcCrc16(&g_sConfig);
   eeprom_write_word(&s_uwEepromCrc,crc16);
 
-  return PARAM_OK;
+  return CONFIG_OK;
 }
 
-uint8_t param_load(void)
-{
-  // check that eeprom is readable
+uint8_t configLoadFromRom(void) {
+  // Check if eeprom is readable
   if(!eeprom_is_ready())
-    return PARAM_EEPROM_NOT_READY;
+    return CONFIG_EEPROM_NOT_READY;
 
-  // read param
+  // Read config
   eeprom_read_block(&g_sConfig,&s_sEepromConfig,sizeof(tConfig));
 
-  // read crc16
-  uint16_t crc16 = eeprom_read_word(&s_uwEepromCrc);
-  uint16_t my_crc16 = calc_crc16(&g_sConfig);
-  if(crc16 != my_crc16) {
-    param_reset();
-    return PARAM_EEPROM_CRC_MISMATCH;
+  // Read crc16
+  uint16_t uwCrc = eeprom_read_word(&s_uwEepromCrc);
+  if(uwCrc != configCalcCrc16(&g_sConfig)) {
+    configReset();
+    return CONFIG_EEPROM_CRC_MISMATCH;
   }
 
-  return PARAM_OK;
+  return CONFIG_OK;
 }
 
-void param_reset(void)
-{
+void configReset(void) {
 	uint8_t i;
   // restore default param
   uint8_t *out = (uint8_t *)&g_sConfig;
@@ -110,8 +105,7 @@ void param_reset(void)
   }
 }
 
-void param_init(void)
-{
-  if(param_load()!=PARAM_OK)
-    param_reset();
+void configInit(void) {
+  if(configLoadFromRom() != CONFIG_OK)
+    configReset();
 }

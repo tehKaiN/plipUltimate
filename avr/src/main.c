@@ -77,7 +77,7 @@ int main(void)
   LED_PORT |= LED_STATUS;
 
 	// Load config
-	param_init();
+	configInit();
 
 	// Do the main loop
 	bridgeLoop();

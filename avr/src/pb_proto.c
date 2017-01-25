@@ -284,13 +284,13 @@ static uint8_t parHandleAmiWriteBurst(uint16_t *ret_size)
   PAR_STATUS_PORT ^= PAR_BUSY; // trigger start of burst
   for(i=0;i<words;i++) {
     // wait REQ == 1
-    while(!(PAR_STATUS_PIN & PAR_POUT) && (PAR_STATUS_PIN & PAR_SEL))
+    while(!(PAR_STATUS_PIN & PAR_POUT) && (PAR_STATUS_PIN & PAR_SEL));
 		if(!(PAR_STATUS_PIN & PAR_SEL))
 			break;
     *(ptr++) = PAR_DATA_PIN;
 
     // wait REQ == 0
-    while((PAR_STATUS_PIN & PAR_POUT) && (PAR_STATUS_PIN & PAR_SEL))
+    while((PAR_STATUS_PIN & PAR_POUT) && (PAR_STATUS_PIN & PAR_SEL));
 		if(!(PAR_STATUS_PIN & PAR_SEL))
 			break;
     *(ptr++) = PAR_DATA_PIN;
