@@ -22,7 +22,7 @@
 #include "pkt_buf.h"
 #include "pb_proto.h"
 #include "base/uartutil.h"
-#include "param.h"
+#include "config.h"
 #include "base/timer.h"
 #include "stats.h"
 #include "base/util.h"

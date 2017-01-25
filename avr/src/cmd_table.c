@@ -22,7 +22,7 @@
 #include "base/util.h"
 
 #include "net/net.h"
-#include "param.h"
+#include "config.h"
 #include "stats.h"
 
 COMMAND(cmd_param_toggle)

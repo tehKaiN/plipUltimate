@@ -23,7 +23,7 @@
 #include "pkt_buf.h"
 #include "base/util.h"
 #include "net/eth.h"
-#include "param.h"
+#include "config.h"
 #include "spi/enc28j60.h"
 #include "pio_util.h"
 

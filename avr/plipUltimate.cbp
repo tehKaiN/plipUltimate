@@ -78,6 +78,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src/cmdkey_table.h" />
+		<Unit filename="src/config.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="src/config.h" />
 		<Unit filename="src/fuse.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -97,10 +101,6 @@
 		<Unit filename="src/net/net.h" />
 		<Unit filename="src/net/tcp.h" />
 		<Unit filename="src/net/udp.h" />
-		<Unit filename="src/param.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/param.h" />
 		<Unit filename="src/pb_proto.c">
 			<Option compilerVar="CC" />
 		</Unit>

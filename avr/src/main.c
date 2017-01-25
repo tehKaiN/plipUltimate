@@ -23,7 +23,7 @@
 #include "base/uart.h"
 #include "base/uartutil.h"
 #include "base/timer.h"
-#include "param.h"
+#include "config.h"
 
 #include "bridge.h"
 #include "pinout.h"

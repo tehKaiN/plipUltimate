@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "param.h"
+#include "config.h"
 #include "base/uartutil.h"
 #include "base/uart.h"
 #include "net/net.h"

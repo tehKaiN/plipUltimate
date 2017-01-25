@@ -24,7 +24,7 @@
 #include "base/uartutil.h"
 #include "stats.h"
 #include "pkt_buf.h"
-#include "param.h"
+#include "config.h"
 
 #include "net/net.h"
 #include "net/eth.h"
