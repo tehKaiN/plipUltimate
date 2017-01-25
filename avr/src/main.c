@@ -73,7 +73,6 @@ int main(void)
 	timerInit();
 
   // Initialize status LED
-  LED_DDR |= LED_STATUS;
   LED_PORT |= LED_STATUS;
 
 	// Load config

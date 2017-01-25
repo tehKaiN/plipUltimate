@@ -21,6 +21,8 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include "../spi/enc28j60.h"
+#include "../pinout.h"
 
 // timer s_uw10msCounterer
 volatile uint16_t g_uwTimer100us; ///< Number of 100us intervals passed
@@ -65,6 +67,12 @@ ISR(TIMER1_COMPA_vect) {
     s_uw10msCounter = 0;
     g_uwTimer10ms++;
   }
+
+  // Update ENC28J60 status on LED
+  if(g_ubEncOnline)
+		LED_DDR |= LED_STATUS;
+	else
+		LED_DDR &= ~LED_STATUS;
 }
 
 /// Busy-wait for supplied number of 10ms intervals

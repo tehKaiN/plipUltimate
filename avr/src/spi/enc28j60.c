@@ -255,6 +255,8 @@ static uint16_t gNextPacketPtr;
 static uint8_t is_full_duplex;
 static uint8_t rev;
 
+uint8_t g_ubEncOnline = 0;
+
 static uint8_t readOp (uint8_t op, uint8_t address) {
 	#ifdef NOENC
 	return 0;
@@ -381,7 +383,7 @@ uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
 	return 0;
 	#endif
 
-  spiInit();
+  spiInit(); // TODO(KaiN#7): move to main/bridge
   spiDisableEth();
 
   is_full_duplex = (flags & PIO_INIT_FULL_DUPLEX) == PIO_INIT_FULL_DUPLEX;
@@ -393,10 +395,9 @@ uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
   // wait or error
   uint16_t count = 0;
   while (!readOp(ENC28J60_READ_CTRL_REG, ESTAT) & ESTAT_CLKRDY) {
-    count ++;
+		timerDelay100us(1);
+    ++count;
     if(count == 0xfff) {
-			// Moved error from pio_init
-			// NOTE: UART = ERROR: hex_byte(result)
       return PIO_NOT_FOUND;
     }
   }
@@ -474,10 +475,11 @@ uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags)
 	uint8_t rev, result;
 	result = enc28j60_status(PIO_STATUS_VERSION, &rev);
 	if(result == PIO_OK) {
-		// NOTE: UART - rev=hex_byte(rev)
+		g_ubEncOnline = 1;
+		return PIO_OK;
 	}
 
-  return PIO_OK;
+  return PIO_NOT_FOUND;
 }
 
 // ---------- exit ----------
@@ -491,6 +493,7 @@ void enc28j60_exit(void)
 	// NOTE: UART - time_stamp_spc() pio: exit\r\n
   SetBank(ECON1);
   writeOp(ENC28J60_BIT_FIELD_CLR, ECON1, ECON1_RXEN);
+  g_ubEncOnline = 0;
 }
 
 // ---------- control ----------
