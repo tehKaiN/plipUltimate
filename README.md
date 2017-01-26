@@ -28,7 +28,17 @@ All releases consists of:
 
 Unlike PlipBox, this project uses it's own custom PCB. Because of track pitches and vias, it is strongly advised to send Gerbers to board house.
 
-After assembling device, you will need to program AVR with attached .hex file using on-board ISP header. Use programmer of your choice. I tend to use cheap Arduino clone as programmer (see [ArduinoISP](https://www.arduino.cc/en/Tutorial/ArduinoISP)).
+After assembling device, you will need to program AVR with attached .hex file using on-board ISP header. Use programmer of your choice. I tend to use cheap Arduino clone as programmer (see [ArduinoISP](https://www.arduino.cc/en/Tutorial/ArduinoISP)). 
+
+Flashing from release is done as follows:  
+```
+avrdude -V -p m328p -c arduino -b 19200 -PCOM3 -Uflash:w:"avr-bin\plipUltimate.hex":i -Uflash:w:"avr-bin\avr-bootloader.hex":i -Ueeprom:w:"avr-bin\plipUltimate.eep":i -U lfuse:w:"avr-bin\plipUltimate.lfs":i -U hfuse:w:"avr-bin\plipUltimate.hfs":i -U efuse:w:"avr-bin\plipUltimate.efs":i -U lock:w:"avr-bin\plipUltimate.lock":i
+```
+Whereas from repository:  
+```
+avrdude -V -p m328p -c arduino -b 19200 -PCOM3 -Uflash:w:"avr\bin\Debug\plipUltimate.hex":i -Uflash:w:"avr-bootloader\bin\Debug\avr-bootloader.hex":i -Ueeprom:w:"avr\bin\Debug\plipUltimate.eep":i -U lfuse:w:"avr\bin\Debug\plipUltimate.lfs":i -U hfuse:w:"avr\bin\Debug\plipUltimate.hfs":i -U efuse:w:"avr\bin\Debug\plipUltimate.efs":i -U lock:w:"avr\bin\Debug\plipUltimate.lock":i
+```
+Where `-c arduino` is your ISP type and `-PCOM3` is your ISP's COM port.
 
 ## Amiga configuration
 
