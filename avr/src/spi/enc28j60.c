@@ -1,14 +1,9 @@
-// Microchip ENC28J60 Ethernet Interface Driver
-// Author: Guido Socher
-// Copyright: GPL V2
-//
-// Based on the enc28j60.c file from the AVRlib library by Pascal Stang.
-// For AVRlib See http://www.procyonengineering.com/
-// Used with explicit permission of Pascal Stang.
-//
-// 2010-05-20 <jc@wippler.nl>
-//
-// Adjusted by Christian Vogelgsaang to be Arduino-free C code
+/*
+ * This file is part of PlipUltimate.
+ * License: GPLv2
+ * Full license: https://github.com/tehKaiN/plipUltimate/blob/master/LICENSE
+ * Authors list: https://github.com/tehKaiN/plipUltimate/blob/master/AUTHORS
+ */
 
 #include "../global.h"
 #include "../base/timer.h"
