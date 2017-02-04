@@ -37,13 +37,13 @@ $Descr A3 16535 11693
 encoding utf-8
 Sheet 1 1
 Title "Plip ultimate - main layout"
-Date "2016-05-24"
+Date "2017-02-04"
 Rev "2"
 Comp ""
-Comment1 "Marcin Nowosad, idx 20139"
-Comment2 "Mikrokontrolery i Urządzenia Wbudowane"
-Comment3 "Wydział Elektryczny"
-Comment4 "Zachodniopomorski Uniwersytet Technologiczny w Szczecinie"
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
 $EndDescr
 $Comp
 L IEEEE-1284A CON1
