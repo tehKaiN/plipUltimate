@@ -33,3 +33,12 @@ hex2puf/*.puf
 
 #plipTool test files
 amiga-sw/plipTool/*.puf
+amiga-sw/plipTool/plipTool
+
+avr/bin/
+
+avr-bootloader/bin/
+
+hex2puf/hex2puf
+
+hex2puf/hex2puf\.exe
