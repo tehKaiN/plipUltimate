@@ -1,0 +1,75 @@
+PCB REVISION 2.1 NOTES
+
+This revision was designed as experimental to prototype things and as such
+it is not designed in best way. Assemble at your own risk! If you are
+faint-hearted or want all the features, just wait for rev3.
+
+1. There are some bugs on PCB, so power selection WILL NOT work. Don't even
+bother soldering MOSFETs. When assembling, you have to decide, if you want to
+power it from passive PoE OR micro USB.
+
+1.A. When powering from passive PoE:
+
+ - don't solder U5, U6, R11, R12, D3 and CON4;
+ - connect U3's pad 4 with either U6 pad 1 or 6, or C18's "+" pad;
+ - connect U5's pad 1 with either pad 3 or 7, or C18's "-" pad.
+ For U3 and L2, turn your iron to 450 Celsius.
+ 
+1.B. When powering from micro USB:
+
+- don't solder U3, U5, U6, C15, R11, R12, D2, D3 and L2;
+- connect U6's pad 3 with 1 or 6;
+- connect U5's pad 6 with 3 or 7.
+ 
+2. U7's biggest pad (plate) is mistakenly connected to GND. You must cut traces
+between this pad and rest of ground plane with as large margin as possible,
+or cover it in kapton and solder remaining leads. Be sure you've isolated this
+pad correctly, because after soldering your multimeter buzzer won't indicate
+connection properly. Who the hell designs IC with biggest heat flow
+not connected to GND?
+
+BE SURE TO COMPLY TO STEPS 1 AND 2, OTHERWISE YOU _WILL_ BURN THIS PIECE OF JUNK
+
+Also, there are problems with CON3 and CON5 footprints. It may be necessary
+to cut CON3's LED leads and mechanical pins. R9 and R10 are then not needed.
+Also CON5 mechanical holes may be too small.
+
+BOM
+	Connectors
+		CON1: d-sub 25 male connector
+		CON2: 2x3 IDC connector - for programming only
+		CON3: Ethernet socket with LEDs
+		CON4: USB micro-B socket
+		CON5: half-sized SD card socket
+	Capacitors
+		C1-C4, C6-C7, C9, C12-C14, C16  100nF 0805
+		C8                              10uF  0805
+		C10-C11                         18pF  0805
+		C15                             100uF 50V electrolytic loESR SMD
+		C17                             10nF  0805
+		C18                             220uF 35V electrolytic loESR SMD
+		C19                             10uF  6.3V 0805
+	Resistors (all 0805)
+		R1, R3-R4  10k
+		R2         2.7k  1%
+		R5-R8      49.9R 1%
+		R9-R10     270R
+		R13-R14    4.7k
+	Coils, ferrites
+		L1  Ferrite Bead 100mA  0805
+		L2  DE1207-100          DE1207
+	Diodes
+		D1  Yellow SMD  0805
+		D2  SS34        SMA
+		D3  BZV55C10    SOD80
+	Crystals, generators
+		G1  CFPS 72-20M  7x5
+		X1  25MHz        3x2.4
+	ICs
+		U1  ENC28J60    SSOP-28
+		U2  ATmega 328p TQFP-32
+		U3 LM2596-5.0   TO-263
+		U4 74LVC125     SO-14
+		U7 AMS1117 3V3  SOT-223
+
+EOF
