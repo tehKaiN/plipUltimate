@@ -9,9 +9,6 @@ OUTPUT_NAME = plipUltimate
 OUT = $(OUTPUT_DIR)$(OUTPUT_NAME)
 ELF = $(OUT).elf
 
-CC_FLAGS = -Wall -std=c11 -mmcu=atmega328p
-LINK_FLAGS = -mmcu=atmega328p -Wl,-Map=$(OUT).map,--cref
-
 SRC_DIR = src$(SL)main$(SL)
 OBJ_DIR = obj$(SL)main$(SL)
 INC_DIR = inc
@@ -34,6 +31,8 @@ CC_FLAGS_RELEASE = -Os -fno-common
 CC_FLAGS_COMMON = -std=c11 -mmcu=atmega328p -Wall -Werror -Wstrict-prototypes
 
 CC_FLAGS = $(CC_FLAGS_RELEASE) -I$(INC_DIR) $(CC_FLAGS_COMMON)
+
+LINK_FLAGS = -mmcu=atmega328p -Wl,-Map=$(OUT).map,--cref
 
 plipUltimate.elf: $(OBJS)
 	@echo Linking: $@

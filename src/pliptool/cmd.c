@@ -5,13 +5,13 @@
  * Authors list: https://github.com/tehKaiN/plipUltimate/blob/master/AUTHORS
  */
 
-#include "cmd.h"
+#include <pliptool/cmd.h>
 #include <stdio.h>
 #include <string.h>
-#include "ack.h"
-#include "data.h"
-#include "par.h"
-#include "timer.h"
+#include <pliptool/ack.h>
+#include <pliptool/data.h>
+#include <pliptool/par.h>
+#include <pliptool/timer.h>
 
 /**
  *  Magic EtherType value
@@ -29,21 +29,21 @@
 
 UBYTE cmdReadResponse(UBYTE ubResponseCode) {
 	ULONG ulTimeout = 7000000; // Longer timeouts - especially for ROM writes
-	
+
 	// Wait for plip's reaction
 	while(!g_ubAckEdge && ulTimeout)
 		--ulTimeout;
-	
+
 	if(!g_ubAckEdge) {
 		// Edge not detected
 		printf("ERR: No response from plip!\n");
 		return 0;
 	}
-	
+
 	// Receive data from plip
 	dataRecv();
 	// dataDump(g_pRecvBfr, g_uwRecvSize); // DEBUG
-		
+
 	// Check response code
 	if(g_pRecvBfr[0] != (ubResponseCode | CMD_RESPONSE)) {
 		printf(
@@ -61,7 +61,7 @@ void cmdReset(void) {
 		0, 0, 0, 0, 0, 0,
 		ETH_TYPE_MAGIC_CMD>>8, ETH_TYPE_MAGIC_CMD&0xFF
 	};
-	
+
 	printf("Sending CMD_RESET...");
 	dataSend(pResetPacket, 14);
 	printf("OK\n");
@@ -70,15 +70,15 @@ void cmdReset(void) {
 UBYTE cmdFlash(tPage *pPages, UBYTE ubPageCount) {
 	ULONG ulTimer;
 	UBYTE i, ubDoHiPout, ubByte;
-		
+
 	// Reset to enter boot mode
 	cmdReset();
-	
+
 	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;
 	PAR_STATUS_DDR |= PAR_POUT | PAR_SEL;
 	PAR_DATA_DDR = 0xFF;
 	PAR_DATA_VAL = 0x00;
-	
+
 	// Plip takes ~65ms to wake up
 	timerDelayMs(70);
 
@@ -89,19 +89,19 @@ UBYTE cmdFlash(tPage *pPages, UBYTE ubPageCount) {
 		g_ubAckEdge = 0;
 		PAR_STATUS_VAL |= PAR_POUT;
 		putc('P', stdout);
-		
+
 		// Wait for Ack edge
 		ulTimer = 100000;
 		while(--ulTimer && !g_ubAckEdge);
 		if(!ulTimer)
 			goto sendFail;
 		putc('A', stdout);
-		
+
 		// POut lo
 		g_ubAckEdge = 0;
 		PAR_STATUS_VAL &= ~PAR_POUT;
 		putc('p', stdout);
-		
+
 		// Wait for Ack edge
 		ulTimer = 100000;
 		while(--ulTimer && !g_ubAckEdge);
@@ -110,24 +110,24 @@ UBYTE cmdFlash(tPage *pPages, UBYTE ubPageCount) {
 		putc('A', stdout);
 	}
 	printf(" OK\n");
-		
+
 	for(i = 0; i != ubPageCount; ++i) {
 		// Clear ACK detection
 		g_ubAckEdge = 0;
-		
+
 		// Send page write request
 		PAR_DATA_VAL = PBPROTO_CMD_SEND_FLASH;
 		PAR_STATUS_VAL |= PAR_SEL;
-				
+
 		if(!parWaitBusy(1))
 			goto sendFail;
-		
+
 		// Send page number
 		PAR_DATA_VAL = pPages[i].ubIdx;
 		PAR_STATUS_VAL |= PAR_POUT;
 		if(!parWaitBusy(0))
 			goto sendFail;
-		
+
 		// Send page bytes
 		ubDoHiPout = 0;
 		for(ubByte = 0; ubByte != BOOT_PAGE_BYTE_SIZE; ++ubByte) {
@@ -145,11 +145,11 @@ UBYTE cmdFlash(tPage *pPages, UBYTE ubPageCount) {
 				ubDoHiPout = 0;
 			}
 		}
-		
+
 		// Finish page with POUT and SEL low
 		PAR_STATUS_VAL &= ~(PAR_POUT|PAR_SEL);
 		PAR_DATA_VAL = 0;
-		
+
 		// Wait for ACK
 		ulTimer = 100000;
 		while(ulTimer && !g_ubAckEdge)
@@ -161,7 +161,7 @@ UBYTE cmdFlash(tPage *pPages, UBYTE ubPageCount) {
 	}
 	parMakeLow();
 	return 1;
-	
+
 sendFail:
 	parMakeLow();
 	return 0;
@@ -173,17 +173,17 @@ UBYTE cmdConfigGet(tConfig *pConfig) {
 		0, 0, 0, 0, 0, 0,
 		ETH_TYPE_MAGIC_CMD>>8, ETH_TYPE_MAGIC_CMD&0xFF
 	};
-	
+
 	// Send config request
 	printf("Requesting plip config...");
 	dataSend(pGetConfigPacket, 14);
 	printf("OK\n");
-	
+
 	if(cmdReadResponse(CMD_GETCONFIG)) {
 		memcpy(pConfig, &g_pRecvBfr[14], sizeof(tConfig));
 		return 1;
 	}
-	return 0;	
+	return 0;
 }
 
 void cmdConfigSet(tConfig *pConfig, UBYTE ubWriteType) {
@@ -192,15 +192,15 @@ void cmdConfigSet(tConfig *pConfig, UBYTE ubWriteType) {
 		0, 0, 0, 0, 0, 0,
 		ETH_TYPE_MAGIC_CMD>>8, ETH_TYPE_MAGIC_CMD&0xFF, 0
 	};
-	
+
 	if(ubWriteType == WRITE_TYPE_INVALID) {
 		printf("ERR: Invalid write type\n");
 		return;
 	}
-	
+
 	// Config type - default (rom) vs current (ram)
 	pSetConfigPacket[1] = ubWriteType;
-	
+
 	memcpy(&pSetConfigPacket[14+0], pConfig, sizeof(tConfig));
 	printf(
 		"Writing %s config to plip...",

@@ -5,11 +5,11 @@
  * Authors list: https://github.com/tehKaiN/plipUltimate/blob/master/AUTHORS
  */
 
-#include "data.h"
+#include <pliptool/data.h>
 #include <string.h>
 #include <stdio.h>
-#include "par.h"
-#include "ack.h"
+#include <pliptool/par.h>
+#include <pliptool/ack.h>
 
 /**
  *  Transmission types:
@@ -29,34 +29,34 @@ UWORD g_uwRecvSize;
 void dataRecv(void) {
 	UWORD i;
 	UBYTE ubDoHiPout;
-	
+
 	g_uwRecvSize = 0;
 	memset(g_pRecvBfr, 0, RECV_BFR_SIZE);
-	
+
 	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;   // Clear status DDR
 	PAR_STATUS_DDR |= PAR_POUT | PAR_SEL; // Set status DDR
 	PAR_STATUS_VAL &= ~PAR_STATUS_MASK;   // Clear status pins
-	
+
 	// Send recv request
 	PAR_DATA_DDR = 0xFF;             // Set data DDR to output
 	PAR_DATA_VAL = PBPROTO_CMD_RECV; // Send recv request cmd
 	PAR_STATUS_VAL |= PAR_SEL;       // Trigger plip
 	if(!parWaitBusy(1))              // Wait for plip ack
 		goto sendFail;
-	
+
 	// Receive data
 	PAR_DATA_DDR = 0x00;               // Set data DDR to input
-	
+
 	PAR_STATUS_VAL |= PAR_POUT;        // Let plip know that we're ready for more
 	if(!parWaitBusy(0))                // Wait for BUSY change
 		goto sendFail;
 	g_uwRecvSize |= PAR_DATA_VAL << 8; // Read upper size byte
-	
+
 	PAR_STATUS_VAL &= ~PAR_POUT;
 	if(!parWaitBusy(1))
 		goto sendFail;
 	g_uwRecvSize |= PAR_DATA_VAL;      // Read lower size byte
-	
+
 	ubDoHiPout = 1;
 	for(i = 0; i != g_uwRecvSize; ++i) {
 		if(ubDoHiPout) {
@@ -73,10 +73,10 @@ void dataRecv(void) {
 		}
 		g_pRecvBfr[i] = PAR_DATA_VAL;
 	}
-	
+
 	// Make all pins low
 	parMakeLow();
-	
+
 sendFail:
 	parMakeLow();
 }
@@ -87,20 +87,20 @@ sendFail:
  */
 void dataSend(const UBYTE *pData, UWORD uwSize) {
 	UWORD i;
-	
+
 	// Reset ACK edge detection
 	g_ubAckEdge = 0;
-	
+
 	PAR_DATA_DDR = 0xFF;                            // Set data DDR
 	PAR_STATUS_DDR &= ~PAR_STATUS_MASK;             // Clear status DDR
 	PAR_STATUS_DDR |= PAR_POUT | PAR_SEL;           // Set status DDR
 	PAR_STATUS_VAL &= ~PAR_STATUS_MASK;             // Clear status pins
-	
+
 	// Send send request
 	PAR_DATA_VAL = PBPROTO_CMD_SEND;
 	PAR_STATUS_VAL |= PAR_SEL;
 	parWaitBusy(1);
-	
+
 	// Send size
 	PAR_DATA_VAL = uwSize >> 8;
 	PAR_STATUS_VAL |= PAR_POUT;
@@ -108,7 +108,7 @@ void dataSend(const UBYTE *pData, UWORD uwSize) {
 	PAR_DATA_VAL = uwSize & 0xFF;
 	PAR_STATUS_VAL &= ~PAR_POUT;
 	parWaitBusy(1);
-	
+
 	// Send rest of data
 	UBYTE ubDoHiPout = 1;
 	for(i = 0; i != uwSize; ++i) {
@@ -124,7 +124,7 @@ void dataSend(const UBYTE *pData, UWORD uwSize) {
 			ubDoHiPout = 1;
 		}
 	}
-	
+
 	// Make all pins low
 	parMakeLow();
 }

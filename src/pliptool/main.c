@@ -5,16 +5,16 @@
  * Authors list: https://github.com/tehKaiN/plipUltimate/blob/master/AUTHORS
  */
 
-#include "main.h"
+#include <pliptool/main.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "ack.h"
-#include "buildver.h"
-#include "data.h"
-#include "par.h"
-#include "cmd.h"
-#include "timer.h"
+#include <pliptool/ack.h>
+#include <pliptool/buildver.h>
+#include <pliptool/data.h>
+#include <pliptool/par.h>
+#include <pliptool/cmd.h>
+#include <pliptool/timer.h>
 
 void printUsage(void) {
 	printf("TODO: usage\n");
@@ -36,7 +36,7 @@ UBYTE parseMac(tConfig *pConfig, char *szMac) {
 	pConfig->mac_addr[3] = uwD;
 	pConfig->mac_addr[4] = uwE;
 	pConfig->mac_addr[5] = uwF;
-	
+
 	return 1;
 }
 
@@ -61,15 +61,15 @@ void configDisplay(tConfig *pConfig) {
 int main(int lArgCount, char **pArgs) {
 	printf("plipTool ver. %d.%d.%d.\n", BUILD_YEAR, BUILD_MONTH, BUILD_DAY);
 	timerCreate();
-		
-	if(!parReserve("plipTool")) {		
+
+	if(!parReserve("plipTool")) {
 		return 1;
 	}
 	if(!ackReserve()) {
 		parFree();
 		return 1;
 	}
-	
+
 	if(lArgCount < 2) {
 		printf("ERR: no commands specified\n");
 		printUsage();
@@ -93,7 +93,7 @@ int main(int lArgCount, char **pArgs) {
 			else {
 				UBYTE i, ubErr, ubWriteType;
 				ubWriteType = WRITE_TYPE_CURRENT;
-				
+
 				ubErr = 0;
 				for(i = 2; i != lArgCount; ++i) {
 					if(!strcmp(pArgs[i], "default"))
@@ -116,7 +116,7 @@ int main(int lArgCount, char **pArgs) {
 		UBYTE ubPageCount, i;
 		FILE *pPufFile;
 		tPage *pPages;
-		
+
 		if(lArgCount < 3)
 			printf("ERR: No PUF file specified\n");
 		else {
@@ -133,22 +133,22 @@ int main(int lArgCount, char **pArgs) {
 					fread(&pPages[i].pData, BOOT_PAGE_BYTE_SIZE, 1, pPufFile);
 				}
 				printf("OK\n");
-				
+
 				// Send pages to Ami
 				if(cmdFlash(pPages, ubPageCount))
 					printf("Flashed successfully!\n");
 				else
 					printf("Error while flashing. Try again?\n");
-				
+
 				fclose(pPufFile);
 				free(pPages);
 			}
 		}
 	}
-		
+
 	ackFree();
 	parFree();
 	timerDestroy();
-	
+
 	return 0;
 }

@@ -5,7 +5,7 @@
  * Authors list: https://github.com/tehKaiN/plipUltimate/blob/master/AUTHORS
  */
 
-#include "par.h"
+#include <pliptool/par.h>
 #include <stdio.h>
 #include <resources/misc.h>
 #include <clib/misc_protos.h>
@@ -32,13 +32,13 @@ void parMakeLow(void) {
  */
 UBYTE parReserve(char *szOwnerName) {
 	char *pOwner;
-	
+
 	MiscBase = (struct Library*)OpenResource(MISCNAME);
 	if(!MiscBase) {
 		printf("ERR: Couldn't open %s\n", MISCNAME);
 		return 0;
 	}
-	
+
 	pOwner = AllocMiscResource(MR_PARALLELPORT, szOwnerName);
 	if(pOwner) {
 		printf("ERR: Parallel data lines access blocked by: %s\n", pOwner);
@@ -62,13 +62,13 @@ void parFree(void) {
 UBYTE parWaitBusy(UBYTE ubVal) {
 	volatile UBYTE ubBusy;
 	UWORD uwTimeout;
-	
+
 	uwTimeout = 1;
 	do {
 		ubBusy = ((PAR_STATUS_VAL & PAR_BUSY) != 0);
 		++uwTimeout;
 	} while(ubBusy != ubVal && uwTimeout);
-	
+
 	if(ubBusy == ubVal)
 		return 1;
 	printf("ERR: BUSY=%u timeout!\n",ubVal);

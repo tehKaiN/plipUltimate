@@ -9,11 +9,6 @@ OUTPUT_NAME = bootloader
 OUT = $(OUTPUT_DIR)$(OUTPUT_NAME)
 ELF = $(OUT).elf
 
-CC_FLAGS = -Wall -std=c11 -mmcu=atmega328p
-LINK_FLAGS = -mmcu=atmega328p \
-	-Wl,-Map=$(OUT).map,--cref \
-	-Wl,--section-start=.text=0x7000
-
 SRC_DIR = src$(SL)bootloader$(SL)
 OBJ_DIR = obj$(SL)bootloader$(SL)
 INC_DIR = inc
@@ -29,6 +24,10 @@ CC_FLAGS_RELEASE = -Os -fno-common
 CC_FLAGS_COMMON = -std=gnu11 -mmcu=atmega328p -Wall -Werror -Wstrict-prototypes
 
 CC_FLAGS = $(CC_FLAGS_RELEASE) -I$(INC_DIR) $(CC_FLAGS_COMMON)
+
+LINK_FLAGS = -mmcu=atmega328p \
+	-Wl,-Map=$(OUT).map,--cref \
+	-Wl,--section-start=.text=0x7000
 
 bootloader.elf: $(OBJS)
 	@echo Linking: $@

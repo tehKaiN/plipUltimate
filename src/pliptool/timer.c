@@ -5,7 +5,7 @@
  * Authors list: https://github.com/tehKaiN/plipUltimate/blob/master/AUTHORS
  */
 
-#include "timer.h"
+#include <pliptool/timer.h>
 #include <stdio.h>
 #include <clib/timer_protos.h>
 
@@ -18,7 +18,7 @@ void timerCreate(void) {
 }
 
 void timerDestroy(void) {
-  CloseDevice(&timereq);	
+  CloseDevice(&timereq);
 }
 
 void timerDelayMs(UWORD uwMs) {

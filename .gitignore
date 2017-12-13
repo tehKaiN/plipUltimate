@@ -48,3 +48,5 @@ hex2puf/hex2puf\.exe
 bin/main/
 
 bin/bootloader/
+
+bin/pliptool/

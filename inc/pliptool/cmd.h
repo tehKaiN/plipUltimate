@@ -9,7 +9,7 @@
 #define GUARD_CMD_H
 
 #include <clib/exec_protos.h>
-#include "main.h"
+#include <pliptool/main.h>
 
 /**
  *  Config write types.
