@@ -12,7 +12,7 @@
  * ENC28J60 online status.
  * 1 if ENC is set up correctly, otherwise 0
  */
-uint8_t g_ubEncOnline;
+extern uint8_t g_ubEncOnline;
 
 uint8_t enc28j60_init(const uint8_t macaddr[6], uint8_t flags);
 void enc28j60_exit(void);
