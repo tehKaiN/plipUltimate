@@ -42,3 +42,5 @@ avr-bootloader/bin/
 hex2puf/hex2puf
 
 hex2puf/hex2puf\.exe
+
+\.vscode/
