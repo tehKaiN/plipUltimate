@@ -11,7 +11,7 @@
 #include <avr/wdt.h>
 #define F_CPU 20000000
 #include <util/delay.h>
-#include "pinout.h"
+#include <bootloader/pinout.h>
 
 /**
  * ATmega 328p has 256 pages, 64 words each.
@@ -35,7 +35,7 @@ uint8_t g_ubPageIdx;
  * @param ubValue     Desired pin value. 1 for high, 0 for low.
  * @return 1 if monitored pin reaches its desired state, otherwise 0.
  */
-uint8_t waitForStatusPin(uint8_t ubStatusPin, uint8_t ubValue) {
+static uint8_t waitForStatusPin(uint8_t ubStatusPin, uint8_t ubValue) {
 	uint16_t uwCounter = 0;
 	while(uwCounter < 20000) {
 		if(((PAR_STATUS_PIN >> ubStatusPin) & 1) == ubValue)
@@ -52,7 +52,7 @@ uint8_t waitForStatusPin(uint8_t ubStatusPin, uint8_t ubValue) {
  * 1 second of low state.
  * @param ubCount Blink count.
  */
-void blink(uint8_t ubCount) {
+static void blink(uint8_t ubCount) {
 	LED_PORT &= ~LED_STATUS;
 	_delay_ms(1000);
 	while(ubCount--) {
@@ -69,11 +69,7 @@ void blink(uint8_t ubCount) {
  * Status code is indicated by series of LED blinks of given length.
  * @param ubCode Status code.
  */
- * Exits bootloader with given result code.
- * Result code is indicated by status LED.
- * @param ubCode Result code.
- */
-void bootExit(uint8_t ubCode) {
+static void bootExit(uint8_t ubCode) {
 	LED_DDR |= LED_STATUS;
 	blink(ubCode);
 	LED_PORT = 0;
@@ -90,7 +86,7 @@ void bootExit(uint8_t ubCode) {
  * After successful sending, last POUT state should be high, but Ami is expected
  * to set it low afterwards.
  */
-uint8_t bootReadPageFromAmi(void) {
+static uint8_t bootReadPageFromAmi(void) {
   uint8_t *pPageByteBfr = (uint8_t*)g_pPageBuffer;
   uint8_t ubPOutWait = 0;
   uint8_t i;
@@ -118,13 +114,13 @@ uint8_t bootReadPageFromAmi(void) {
  * Writes prepared flash page.
  * This function expects received data to be already in little-endian.
  */
-void bootFlashPage(void) {
-	uint8_t ubSreg;
+static void bootFlashPage(void) {
+	// uint8_t ubSreg;
 	uint32_t ulPageAddr;
 	uint8_t i;
 
 	// Disable interrupts
-	ubSreg = SREG;
+	// ubSreg = SREG; // TODO what for?
 	cli();
 
 	// Calculate page address
@@ -141,7 +137,7 @@ void bootFlashPage(void) {
   // Write page
   boot_page_write_safe(ulPageAddr);
 	boot_rww_enable_safe();
-  ubSreg = SREG;
+  // ubSreg = SREG; // TODO what for?
 }
 
 int main(void) {

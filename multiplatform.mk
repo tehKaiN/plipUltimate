@@ -3,7 +3,7 @@ ifdef ComSpec
 	# Windows
 	ROOT = $(shell chdir)
 	NEWLINE = @echo.
-	RM = @del
+	RM = del
 	SL = /
 else
 	# Linux

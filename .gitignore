@@ -46,3 +46,5 @@ hex2puf/hex2puf\.exe
 \.vscode/
 
 bin/main/
+
+bin/bootloader/
