@@ -1,3 +1,6 @@
+# Makefile's name
+HERE := $(lastword $(MAKEFILE_LIST))
+
 # Multi-platform
 -include multiplatform.mk
 
@@ -27,14 +30,15 @@ OBJS = $(MAIN_OBJS) $(NET_OBJS) $(BASE_OBJS) $(SPI_OBJS)
 
 CC = avr-gcc
 CC_FLAGS_DEBUG = -g
-CC_FLAGS_RELEASE = -Os
+CC_FLAGS_RELEASE = -Os -fno-common
+CC_FLAGS_COMMON = -std=c11 -mmcu=atmega328p -Wall -Werror -Wstrict-prototypes
 
-CC_FLAGS = $(CC_FLAGS_RELEASE) -I$(INC_DIR) -Wall -std=c99 -mmcu=atmega328p
+CC_FLAGS = $(CC_FLAGS_RELEASE) -I$(INC_DIR) $(CC_FLAGS_COMMON)
 
 plipUltimate.elf: $(OBJS)
 	@echo Linking: $@
 	@$(CC) $(LINK_FLAGS) -o "$(OUTPUT_DIR)$@" $(OBJS)
-	$(MAKE) --no-print-directory post-build
+	@$(MAKE) --no-print-directory post-build -f $(HERE)
 
 all: clean plipUltimate.elf
 
